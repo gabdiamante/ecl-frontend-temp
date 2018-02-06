@@ -1,4 +1,6 @@
-;(function (){
+import angular from 'angular';
+
+(function (){
     'use strict';
 
     angular
@@ -384,7 +386,7 @@
                 fromDate    : "&",
                 toDate      : "&"
             },
-            templateUrl: "./html/complex-table-directive.html",
+            template: require("./html/complex-table-directive.html"),
             controller: function($scope) {
 
                 var viewWatch = $scope.$watch('vm.search', function (currentValue, oldValue) {

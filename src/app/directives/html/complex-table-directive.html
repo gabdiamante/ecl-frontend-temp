@@ -232,8 +232,8 @@
 <div style="clear:both;"></div>
 
 <div class="table-responsive top-margin-sm">
-    <table class="table table-hover" >
-        <thead>
+    <table class="table table-hover" style="border: solid 1px #ddd;" >
+        <thead style="border: solid 1px #49413b !important;">
             <tr class="header_title">
                 <th ng-hide="val.hidden" ng-style="{width: val.width + 'px'}" ng-repeat="(key,val) in options.columnDefs">
                     <span ng-if="!val.headerCellTemplate" ng-bind="val.displayName || (val.name | titlecase)"></span>
