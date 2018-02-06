@@ -150,7 +150,11 @@ a {cursor: pointer !important;outline : none !important;}
     right: 35px;
     top: 15px;
 }
-.font-34 { font-size: 34px !important; }
+.subheader-title { 
+    position: absolute;
+    margin-top: 8px;
+    font-size: 24px !important; 
+}
 .text-white {color:#fff !important;}
 .table > thead > tr > th,
 .table > tbody > tr > td {
