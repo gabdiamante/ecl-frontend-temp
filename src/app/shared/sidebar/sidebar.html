@@ -1,0 +1,142 @@
+<div class="sidebar collapse"
+    ng-class="{'slide-out': vm.sidebarService.isActive, 'slide-in': !vm.sidebarService.isActive, in: '!navCollapsed', 'slide-transition': !vm.sidebarService.first}"
+    style="z-index: 1000">
+    <ul class="nav sidebar-content margin-top-md">
+        <li ui-sref-active="active" class="margin-top">
+            <a href="" ui-sref="app.dashboard">
+                <strong><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</strong>
+            </a>
+        </li>
+        <li ui-sref-active="active">
+            <a href="" ui-sref="app.monitoring">
+                <strong><i class="fa fa-desktop" aria-hidden="true"></i> Monitoring</strong>
+            </a>
+        </li>
+        <li ui-sref-active="active">
+            <a ng-click="vm.deliveriesMenu = !vm.deliveriesMenu">
+                <strong><i class="fa fa-truck" aria-hidden="true"></i> Deliveries</strong>
+            </a>
+        </li> 
+        <div class="treeview-menu" ng-class="{'show':vm.deliveriesMenu, 'hide':!vm.deliveriesMenu}">
+            <ul class="nav">
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.deliveries-bad-address" class="bar-item button">
+                        <strong><i class="fa fa-exclamation-triangle"></i> Bad Address</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.deliveries-staging" class="bar-item button">
+                        <strong><i class="fa fa-circle-o-notch"></i> Staging</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.deliveries-dispatched" class="bar-item button">
+                        <strong><i class="fa fa-paper-plane"></i> Dispatched</strong>
+                    </a>                    
+                </li>
+            </ul>
+        </div>
+        <li ui-sref-active="active">
+            <a ng-click="vm.pickupsMenu = !vm.pickupsMenu">
+                <strong><i class="fa fa-dropbox" aria-hidden="true"></i> Pickups</strong>
+            </a>
+        </li>
+        <div class="treeview-menu" ng-class="{'show':vm.pickupsMenu, 'hide':!vm.pickupsMenu}">
+            <ul class="nav">
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.pickups-bad-address" class="bar-item button">
+                        <strong><i class="fa fa-exclamation-triangle"></i> Bad Address</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.pickups-staging" class="bar-item button">
+                        <strong><i class="fa fa-circle-o-notch"></i> Staging</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.pickups-dispatched" class="bar-item button">
+                        <strong><i class="fa fa-paper-plane"></i> Dispatched</strong>
+                    </a>                    
+                </li>
+            </ul>
+        </div>
+        <li ui-sref-active="active">
+            <a href="" ng-click="vm.usersMenu = !vm.usersMenu">
+                <strong><i class="fa fa-users" aria-hidden="true"></i> Users</strong>
+            </a>
+        </li>
+        <div class="treeview-menu" ng-class="{'show':vm.usersMenu, 'hide':!vm.usersMenu}">
+            <ul class="nav">
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.couriers" class="bar-item button">
+                        <strong><i class="fa fa-motorcycle"></i> Couriers</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.merchants" class="bar-item button">
+                        <strong><i class="fa fa-cubes"></i> Merchants</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.hub-supports" class="bar-item button">
+                        <strong><i class="fa fa-address-book"></i> Hub Supports</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.dispatchers" class="bar-item button">
+                        <strong><i class="fa fa-address-card"></i> Dispatchers</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.personnels" class="bar-item button">
+                        <strong><i class="fa fa-slideshare"></i> Personnels</strong>
+                    </a>                    
+                </li>
+            </ul>
+        </div>
+        <li ui-sref-active="active">
+            <a ng-click="vm.dataManagementMenu = !vm.dataManagementMenu">
+                <strong><i class="fa fa-database" aria-hidden="true"></i> Data Management</strong>
+            </a>
+        </li>
+        <div class="treeview-menu" ng-class="{'show':vm.dataManagementMenu, 'hide':!vm.dataManagementMenu}">
+            <ul class="nav">
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.couriers" class="bar-item button">
+                        <strong><i class="fa fa-motorcycle"></i> Couriers</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.merchants" class="bar-item button">
+                        <strong><i class="fa fa-cubes"></i> Merchants</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.hub-supports" class="bar-item button">
+                        <strong><i class="fa fa-address-book"></i> Hub Supports</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.dispatchers" class="bar-item button">
+                        <strong><i class="fa fa-address-card"></i> Dispatchers</strong>
+                    </a>                    
+                </li>
+                <li ui-sref-active="active" class="">
+                    <a ui-sref="app.personnels" class="bar-item button">
+                        <strong><i class="fa fa-slideshare"></i> Personnels</strong>
+                    </a>                    
+                </li>
+            </ul>
+        </div>
+        <li ui-sref-active="active">
+            <a href="" ui-sref="app.import-export">
+                <strong><i class="fa fa-exchange" aria-hidden="true"></i> Import/Export</strong>
+            </a>
+        </li>
+        <li ui-sref-active="active">
+            <a href="" ui-sref="app.history">
+                <strong><i class="fa fa-history" aria-hidden="true"></i> History</strong>
+            </a>
+        </li>
+    </ul>
+</div>
