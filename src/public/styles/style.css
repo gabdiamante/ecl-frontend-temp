@@ -116,7 +116,7 @@ a {cursor: pointer !important;outline : none !important;}
 }
 .content-view {
     /* padding: 62px 0px 0px 15px; */
-    padding: 62px 0px 0px 0px;
+    padding: 50px 0px 0px 0px;
 }
 #wrapper {
     padding-left: 0;
@@ -129,7 +129,28 @@ a {cursor: pointer !important;outline : none !important;}
     width: 100%;
     height: 100%;
     padding: 0;
+} 
+
+.sub-header {
+    height: 50px;
+    background-color: #065496;
 }
+
+.title-header-left{
+    position: absolute;
+    top: 20px;
+    color: rgba(0,0,0,0.40);
+    left: 33px;
+    z-index: 0;
+}
+
+.title-header-right {
+    position: absolute;
+    color: rgba(0,0,0,0.40);
+    right: 35px;
+    top: 15px;
+}
+.font-34 { font-size: 34px !important; }
 .text-white {color:#fff !important;}
 .table > thead > tr > th,
 .table > tbody > tr > td {

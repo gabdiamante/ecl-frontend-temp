@@ -43,7 +43,7 @@ import angular from 'angular';
         vm.view_profile = view_profile;
         vm.toggleSidebar = toggleSidebar;
 
-        vm.logo = require('Images/nav-logo.png');
+        vm.logo = require('Images/abel-emoji.jpg');
         vm.$onInit = function() {};
 
         function view_profile() {
