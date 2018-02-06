@@ -260,6 +260,31 @@ const GLOBAL = {
             	callback(false, response); 
 	        }
         });
+	},
+	getModel:  function (obj,is, value) {
+        try {
+            if (typeof is == 'string') {
+                var parts = is.replace(/["']/g, "").split(/[.[\]]{1,2}/);
+                if (parts[parts.length-1] == '') parts.length--;
+                if (parts[parts.length-1] == '$index') parts.length--;
+                return this.getModel(obj,parts, value);
+            }
+            else if (is.length==1 && value!==undefined) {
+                if (value == '_delete_')
+                    return delete obj[is[0]];
+                else {
+                    return obj[is[0]] = value;
+                }
+            }
+            else if (is.length==0)
+                return obj;
+            else if (typeof obj[is[0]] !== 'undefined'){
+                return this.getModel(obj[is[0]],is.slice(1), value);
+            } else {
+                return;
+            }
+        } catch(err) {
+        }    
     }
 };
 
