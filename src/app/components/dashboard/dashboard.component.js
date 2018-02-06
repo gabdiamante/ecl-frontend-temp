@@ -1,4 +1,5 @@
 import angular from 'angular';
+import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
 
 (function() {
@@ -25,11 +26,12 @@ import TABLES from 'Helpers/tables';
         QueryService,
         logger
     ) {
-        var vm = this;
+        var vm          = this;
         vm.titleHeader  = 'Dashboard';
         vm.limit        = '20';
         vm.page         = '1';
-        vm.per_page     = ['1','20','50','100','200'];
+        vm.per_page     = ['10','20','50','100','200'];
+        vm.items        = { roleUserCheck:[] };
 
         vm.option_table   = { 
             emptyColumn: true,
@@ -37,8 +39,8 @@ import TABLES from 'Helpers/tables';
             hideSearchByKey:true 
         };
 
+        vm.option_table.columnDefs = TABLES.users.columnDefs;  
         vm.option_table.data = [];
-        vm.option_table.columnDefs = TABLES.users.columnDefs; 
 
         getData ();
     
@@ -63,18 +65,17 @@ import TABLES from 'Helpers/tables';
         }
 
         function handleNames (data) {
-            for (let i = 0; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++)
                 data[i].fullname = data[i].first_name + ' ' + data[i].last_name;
-            }
             return data;
         }
 
-        vm.toggleCheckRoleUserAll = (checkbox, model_name,propertyName) => {
+        vm.toggleCheckRoleUserAll = (checkbox, model_name,propertyName) => { 
             // var values_of_id = _.pluck(vm.option_table.data, propertyName);
             if (checkbox) 
                 GLOBAL.getModel(vm.items, model_name, angular.copy(vm.option_table.data));
             else 
-                GLOBAL.getModel(vm.items, model_name, []);
+                GLOBAL.getModel(vm.items, model_name, []); 
         }; 
     } 
 })();
