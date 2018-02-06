@@ -1,0 +1,277 @@
+<div ng-if="options.complexFilter">
+    <div class="col-md-12 no-padding" > 
+        <div class="row">
+            <div class="col-md-4 col-xs-12 top-margin-sm" > <!-- top-margin-sm -->
+                <form class="input-group" ng-submit="applyFilters({ data: vm.c_filter })" ng-hide="options.hideSearchByKey" >
+                    <input type="text" style="z-index:0;" class="form-control" placeholder="Search by Keyword" ng-model="vm.c_filter.search" />
+                    <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                </form> 
+            </div> 
+            <div class="col-md-8 col-xs-12 form-inline top-margin-sm" align="right"> <!-- top-margin-sm -->
+                <button class="btn" ng-click="vm.c_filter.filter=!vm.c_filter.filter" ng-hide="options.hideFilter">
+                    <i class="glyphicon glyphicon-filter"></i>
+                    <label class="admin__control-support-text">Filters</label>
+                </button>
+                <!-- <div class="btn-group" auto-close="outsideClick" uib-dropdown dropdown-append-to-body>
+                    <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans" uib-dropdown-toggle>
+                        <i class="glyphicon glyphicon-eye-open"></i>
+                        <label class="admin__control-support-text"> Default View </label>
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right pd-0-10" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+                        <button class="btn btn-white" ng-click="vm.defaultview()">Default View</button><br>
+                        <a class="btn btn-white" ng-click="vm.saveView()">Save View as...</a>
+                    </div>
+                </div>
+                <div class="btn-group" auto-close="outsideClick" uib-dropdown dropdown-append-to-body>
+                    <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans" uib-dropdown-toggle>
+                        <i class="fa fa-gear"></i>
+                        <label class="admin__control-support-text"> Columns </label>
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right pd-0-10" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 70%;" >
+                        <div class="col-md-12 mg-8 nav-menu-item-last">
+                            <label ng-bind="vm.columnChecked + ' out of ' + vm.columns.length || '0' + ' visible'"></label>
+                        </div>
+                        <div class="col-md-12 div-select-150"> 
+                            <div class="col-md-4 col-xs-12" ng-repeat="column in vm.columns">
+                                <div class="checkbox" style="margin:0px;">
+                                    <label><input type="checkbox" ng-model="vm.col[$index]" value="column" ng-click="vm.selectColumn(vm.col)"><span ng-bind="column"></span></label>
+                                </div>
+                            </div>  
+                        </div>
+                        <div class="col-md-12 mg-8">
+                            <button class="btn btn-white">Reset</button>
+                            <button class="btn btn-default pull-right">Cancel</button>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="btn-group" auto-close="outsideClick" ng-hide="options.hideExportOpt" uib-dropdown dropdown-append-to-body is-open="dropdownIsOpen" >
+                    <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans" uib-dropdown-toggle>
+                        <i class="glyphicon glyphicon-open"></i>
+                        <label class="admin__control-support-text"> Export </label>
+                        <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right pd-0-10" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+                        <li role="menuitem" class="mg-8">
+                            <input type="radio" ng-model="vm.exportType" value="csv" /> CSV
+                        </li>
+                        <!-- <li class="mg-8">
+                            <input type="radio" ng-model="vm.exportType" value="xml" /> Excel XML
+                        </li> -->
+                        <li class="mg-8" role="menuitem">
+                            <button type="button" class="btn btn-white" ng-click="dropdownIsOpen = false;">Cancel</button>
+                            <button type="button" class="btn" ng-click="exportData({data:vm.exportType}); dropdownIsOpen = false;" >Export</button> 
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div class="col-md-12 no-padding">
+        <div class="col-md-12 top-margin-sm light-grey" ng-if="vm.c_filter.filter">
+            <div class="clearfix"> 
+                <div class="col-md-3 top-margin-sm" ng-hide="field.hidden" ng-repeat="field in vm.filter_fields" >
+                    <div ng-if="field.type=='date'">
+                        <label class="admin__control-support-text" ng-bind="field.label"></label>
+                        <div class="form-group row">
+                            <span for="fromDate" class="col-sm-4">From</span>
+                            <div class="col-sm-8">
+                                <p class="input-group" >
+                                    <input id="fromDate" style="z-index:0;" name="fromDate" type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.c_filter[field.nameFrom]" is-open="vm['from_opened'+field.nameFrom]" uib-min-date="vm.minDate" uib-max-date="'2015-06-22'" uib-datepicker-options="vm.dateOptions" readonly />
+                                    <span class="input-group-btn">
+                                        <button style="z-index:0;" type="button" class="btn btn-default" ng-click="vm.fromOpen($event, field.nameFrom)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p> 
+                            </div>
+                        </div> 
+                        <div class="form-group row">
+                            <span for="toDate" class="col-sm-4">To</span>
+                            <div class="col-sm-8"> 
+                                <p class="input-group" >
+                                    <input id="toDate" style="z-index:0;" name="toDate" type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.c_filter[field.nameTo]" is-open="vm['to_opened'+field.nameTo]" uib-min-date="vm.minDate" uib-max-date="'2015-06-22'" uib-datepicker-options="vm.dateOptions" readonly />
+                                    <span class="input-group-btn">
+                                        <button style="z-index:0;" type="button" class="btn btn-default" ng-click="vm.toOpen($event, field.nameTo)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>  
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="field.type=='range'">
+                        <label class="admin__control-support-text" ng-bind="field.label"></label>
+                        <div class="form-group row">
+                            <span for="fromBaseGrandTotal" class="col-sm-4">From</span>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="fromBaseGrandTotal" numbers-only="numbers-only" ng-model="vm.c_filter[field.nameFrom]" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <span for="toBaseGrandTotal" class="col-sm-4">To</span>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="toBaseGrandTotal" numbers-only="numbers-only" ng-model="vm.c_filter[field.nameTo]" />
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="field.type=='text'">
+                        <label class="admin__control-support-text" ng-bind="field.label" ></label>
+                        <input type="text" class="form-control" ng-model="vm.c_filter[field.name]" />  
+                    </div>
+                    <div ng-if="field.type=='select'">
+                        <label class="admin__control-support-text" ng-bind="field.label" ></label>
+                        <div compile-html="field.template"></div>
+                    </div>
+                </div> 
+            </div>
+            <div class="col-md-6 form-inline pad-20" align="left">
+                <div ng-if="options.advancedFilter">
+                    <a ng-if="!vm.show_advanced_filter" ng-click="vm.advancedFilter(false)" >Show Advanced Filters</a>
+                    <a ng-if="vm.show_advanced_filter" ng-click="vm.advancedFilter(true)" >Hide Advanced Filters</a>
+                </div>
+            </div>
+            <div class="col-md-6 form-inline pad-20" align="right">
+                <button type="button" class="btn btn-white light-grey" ng-click="vm.c_filter.filter = false;">Cancel</button>
+                <button type="button" class="btn btn-default" ng-click="resetFilter()" >Reset</button>
+                <button type="button" class="btn btn-default" ng-click="applyFilters({ data:vm.c_filter })" >Apply Filters</button>
+            </div>
+        </div>
+    </div> 
+</div>
+<div ng-if="options.searchTemplate" class="col-md-12 no-padding"> 
+    <div class="row">
+        <div class="col-md-6 col-xs-6 top-margin-sm" ng-if="options.resetFilter">
+            <div class="pd-5-0">
+                &nbsp;&nbsp; <label ng-click="reset('vm.search')"><a>Reset Filter</a></label> &nbsp;&nbsp;
+                <span ng-bind="options.data.length + ' Records Found'"></span>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12 top-margin-sm form-inline" ng-if="options.emptyColumn" ></div> 
+        <div class="col-md-6 col-xs-12 top-margin-sm form-inline" ng-if="options.tableSearch" > 
+            <div class="input-group" >
+                <input type="text" style="z-index:0;" class="form-control" placeholder="Search by Keyword" ng-model="vm.keyword" ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.keyword)" />
+                <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                </span>
+            </div> 
+        </div> 
+        <div class="col-md-6 col-xs-12 top-margin-sm form-inline" ng-if="options.actionFilter" > 
+            <select class="form-control" ng-options="action for action in vm.actions" ng-model="vm.c_filter.status" ng-change="applyFilters({data:vm.c_filter})"> 
+                <option value='' selected>ALL</option>
+            </select> &nbsp; <label ng-bind="options.data.length"></label> records found 
+        </div> 
+        <div class="col-md-6 col-xs-12 top-margin-sm form-inline" ng-if="options.actionMethod" > 
+            <select class="form-control" ng-options="action.value as action.label for action in vm.actions" ng-model="vm.val" ng-change="updateRows({data:vm.val})"> 
+                <option value='' disabled selected>Actions</option>
+            </select> &nbsp; <label ng-bind="options.data.length"></label> records found 
+        </div> 
+        <div class="col-md-6 col-xs-12 top-margin-sm" ng-if="options.records">
+            <span ng-bind="'Selected ' + options.records.title + ':'"></span><br/>
+            <span ng-bind="options.records.countAll + ' records found '"></span>
+            <span ng-if="options.records.countSelected.length > 0" ng-bind="'('+ options.records.countSelected +')'"></span>
+        </div>
+        <div class="col-md-6 col-xs-12 top-margin-sm" ng-if="options.searchAndFilter">
+            <div class="form-inline">
+                <div class="form-group form-group-margin" >
+                    <button type="button" class="btn" ng-click="vm.filterTable(vm.search)">Search</button>
+                    <button type="button" class="btn btn-white" ng-click="vm.search={}; vm.filterTable(vm.search)">
+                        <strong class="text-primary">Reset Filter</strong>
+                    </button>
+                    <span ng-bind="options.data.length || '0'"></span><span> Records Found</span> 
+                </div> 
+            </div>
+        </div> 
+        <div class="col-md-6 col-sm-12 col-xs-12 top-margin-sm" ng-if="options.searchAndFilterLock">
+            <div class="form-inline">
+                <div class="col-md-12 col-xs-12 top-margin-sm">
+                    <div class="row">
+                        <div class="form-group form-group-margin" >
+                            <button type="button" class="btn" ng-click="vm.filterTable(vm.search)">Search</button>
+                        </div>
+                        <div class="form-group form-group-margin" >
+                            <button type="button" class="btn btn-white" ng-click="vm.search = {}; vm.filterTable()">
+                                <strong class="text-primary">Reset Filter</strong>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 top-margin-sm">
+                    <div class="row">
+                        <div class="form-group form-group-margin" >
+                            <select class="form-control" ng-options="act.value as act.label for act in vm.actions" ng-model="vm.sel_action">
+                                <option class="admin__control-select-placeholder" value="" disabled>Actions</option> 
+                            </select>
+                        </div>
+                        <div class="form-group form-group-margin" >
+                            <button type="button" class="btn" ng-click="searchFilter({data:vm.sel_action})">Submit</button>
+                        </div>
+                        <span ng-bind="options.data.length || '0'"></span><span> Records Found</span> <!-- replace with dynamic data -->
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-6 col-sm-12 col-xs-12 top-margin-sm">
+            <div class="clearfix" align="right"> 
+                <div class="form-inline"> 
+                    <div class="form-group form-group-margin" >
+                        <select style="width:70px;" class="form-control" ng-options="per for per in vm.per_page" ng-change="goTo({data:{limit:vm.limit, page:1}})" ng-model="vm.limit"></select> &nbsp; per page &nbsp;
+                        <button type="button" class="btn btn-default" ng-click="prev()">
+                            <i class="glyphicon glyphicon-chevron-left"></i>
+                        </button> 
+                        <input type="text" numbers-only="numbers-only" class="form-control" style="width: 40px; display:inline-block;" ng-model="vm.page" ng-keyup="$event.keyCode == 13 && goTo({data:{limit:vm.limit, page:vm.page}})" /> &nbsp; of {{vm.total_page || '1'}} &nbsp; 
+                        <button type="button" class="btn btn-default" ng-click="next()">
+                            <i class="glyphicon glyphicon-chevron-right"></i>
+                        </button> 
+                    </div> 
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="clear:both;"></div>
+
+<div class="table-responsive top-margin-sm">
+    <table class="table table-hover" style="border: solid 1px #ddd;" >
+        <thead style="border: solid 1px #49413b !important;">
+            <tr class="header_title">
+                <th ng-hide="val.hidden" ng-style="{width: val.width + 'px'}" ng-repeat="(key,val) in options.columnDefs">
+                    <span ng-if="!val.headerCellTemplate" ng-bind="val.displayName || (val.name | titlecase)"></span>
+                    <span ng-if="val.headerCellTemplate" compile-html="val.headerCellTemplate"></span>
+                </th>
+            </tr>
+            <tr ng-if="options.headerInput" class="header_input" >
+                <th ng-hide="val.hidden" style="vertical-align: top" ng-style="{width: val.width + 'px'}" ng-repeat="(key,val) in options.columnDefs">
+                    <span ng-if="!val.headerInputTemplate">
+                        <input class="form-control custom-input" style="width:100%" type="text" ng-model="vm.search[val.name]" ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.search)" />
+                    </span>
+                    <span ng-if="val.headerInputTemplate">
+                        <span compile-html="val.headerInputTemplate"></span>
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-init="parentIndex=$index" ng-repeat="(dataKey, dataVal) in options.data" ng-click="trClick({data: dataVal})">
+                <td ng-hide="columnDefsval.hidden" ng-click="(columnDefsval.cellTemplate.indexOf('check') !=-1 && columnDefsval.cellTemplate.indexOf('check') != null ) && $event.stopPropagation()" ng-init="COL_FIELD=dataVal[columnDefsval.name]; row.columns=columnDefsval; row.entity= dataVal; lastIndex=options.columnDefs.length-1; propertyIndex= $index + (parentIndex * lastIndex) + parentIndex" style="cursor: pointer;" ng-repeat="(columnDefskey, columnDefsval) in options.columnDefs" >
+                    <span ng-if="columnDefsval.cellTemplate" compile-html="columnDefsval.cellTemplate"></span>
+                    <span ng-if="!columnDefsval.cellTemplate" ng-bind-html="dataVal[columnDefsval.name] | displaynone"></span>
+                </td> 
+            </tr>
+            <tr ng-if="options.data.length == 0">
+                <td colspan="{{options.columnDefs.length}}" align="center" ng-bind-html="vm.loading | handlefetch : vm.titleHeader"></td>
+            </tr>
+        </tbody>
+        <tfoot ng-if="options.footerTemplate && (options.data.length > 0)">
+            <tr class="header_title">
+                <th ng-repeat="(key,val) in options.columnDefs">
+                    <span ng-if="!val.currency" ng-bind="totalValue({data:val.name})"></span>
+                    <span ng-if="val.currency" ng-bind="totalValue({data:val.name}) | currency:vm.currencySymbol"></span>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<br />
+
+

@@ -1,10 +1,11 @@
 .sidebar {
     height: 100%;
-    background-color: #e5e5e5;
+    background-color: #ffffff;
     position: fixed !important;
     z-index: 1;
     overflow: auto;
     width: 250px;
+    box-shadow: 1px 2px 8px 1px #999999;
 }
 
 .sidebar-content {
@@ -20,7 +21,7 @@
     display: block;
     padding: 13px 15px 13px 19px;
     text-decoration: none;
-    color: rgb(119, 119, 119);
+    color: rgb(20, 100, 177);
     font-size: 13px;
     font-weight: 500;
 }
@@ -30,13 +31,13 @@
 .sidebar-content .active a:focus,
 .sidebar-content .active a:visited {
     color: #f8e9e9 !important;
-    background: #acacac !important;
-    border-left: solid 2px rgb(119, 119, 119) !important;
+    background: #1464b1 !important;
+    border-left: solid 2px rgb(0, 0, 0) !important;
 }
 .sidebar .nav li > a:hover {
-    background: #acacac !important;
-    color: #f8e9e9;
-    border-left: solid 2px rgb(119, 119, 119) !important;
+    color: #f8e9e9 !important;
+    background: #1464b1 !important;
+    border-left: solid 2px rgb(0, 0, 0) !important;
 }
 .sidebar.slide-in {
     transform: translateX(-250px);
@@ -66,14 +67,14 @@
     padding: 5px 0 10px;
     margin: 0;
     padding-left: 35px;
-    background-color: #e5e5e5;
+    background-color: #ffffff;
     transition: all 0.3s ease;
     -webkit-transition: all 0.3s ease;
 }
 .treeview-menu:before {
     width: 2px;
     bottom: 35px;
-    background: rgb(119, 119, 119);
+    background: #000000;
     content: "";
     position: absolute;
     top: 0;
@@ -86,8 +87,8 @@
     display: block;
     height: 0.5em;
     width: 22px;
-    border-bottom: 2px solid rgb(119, 119, 119);
-    border-left: 2px solid rgb(119, 119, 119);
+    border-bottom: 2px solid #000000;
+    border-left: 2px solid #000000;
     border-radius: 0 0 0 .3em;
     content: '';
 }

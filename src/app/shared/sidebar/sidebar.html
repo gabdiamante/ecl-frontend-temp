@@ -1,6 +1,6 @@
 <div class="sidebar collapse"
     ng-class="{'slide-out': vm.sidebarService.isActive, 'slide-in': !vm.sidebarService.isActive, in: '!navCollapsed', 'slide-transition': !vm.sidebarService.first}"
-    style="z-index: 1000">
+    style="z-index: 0">
     <ul class="nav sidebar-content margin-top-md">
         <li ui-sref-active="active" class="margin-top">
             <a href="" ui-sref="app.dashboard">
@@ -102,30 +102,25 @@
         <div class="treeview-menu" ng-class="{'show':vm.dataManagementMenu, 'hide':!vm.dataManagementMenu}">
             <ul class="nav">
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.couriers" class="bar-item button">
-                        <strong><i class="fa fa-motorcycle"></i> Couriers</strong>
+                    <a ui-sref="app.hubs" class="bar-item button">
+                        <strong><i class="fa fa-file-archive"></i> Hubs</strong>
                     </a>                    
                 </li>
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.merchants" class="bar-item button">
-                        <strong><i class="fa fa-cubes"></i> Merchants</strong>
+                    <a ui-sref="app.distribution-centers" class="bar-item button">
+                        <strong><i class="fa fa-building"></i> Distribution Centers</strong>
                     </a>                    
                 </li>
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.hub-supports" class="bar-item button">
-                        <strong><i class="fa fa-address-book"></i> Hub Supports</strong>
+                    <a ui-sref="app.zones" class="bar-item button">
+                        <strong><i class="fa fa-map"></i> Zones</strong>
                     </a>                    
                 </li>
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.dispatchers" class="bar-item button">
-                        <strong><i class="fa fa-address-card"></i> Dispatchers</strong>
+                    <a ui-sref="app.vehicles" class="bar-item button">
+                        <strong><i class="fa fa-car"></i> Vehicles</strong>
                     </a>                    
-                </li>
-                <li ui-sref-active="active" class="">
-                    <a ui-sref="app.personnels" class="bar-item button">
-                        <strong><i class="fa fa-slideshare"></i> Personnels</strong>
-                    </a>                    
-                </li>
+                </li> 
             </ul>
         </div>
         <li ui-sref-active="active">

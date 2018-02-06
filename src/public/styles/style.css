@@ -116,7 +116,7 @@ a {cursor: pointer !important;outline : none !important;}
 }
 .content-view {
     /* padding: 62px 0px 0px 15px; */
-    padding: 62px 0px 0px 0px;
+    padding: 50px 0px 0px 0px;
 }
 #wrapper {
     padding-left: 0;
@@ -129,11 +129,53 @@ a {cursor: pointer !important;outline : none !important;}
     width: 100%;
     height: 100%;
     padding: 0;
+} 
+
+.sub-header {
+    height: 50px;
+    background-color: #065496;
+}
+
+.title-header-left{
+    position: absolute;
+    top: 20px;
+    color: rgba(0,0,0,0.40);
+    left: 33px;
+    z-index: 0;
+}
+
+.title-header-right {
+    position: absolute;
+    color: rgba(0,0,0,0.40);
+    right: 35px;
+    top: 15px;
+}
+.subheader-title { 
+    position: absolute;
+    margin-top: 8px;
+    font-size: 24px !important; 
 }
 .text-white {color:#fff !important;}
-.table > thead > tr > th,
-.table > tbody > tr > td {
-    padding: 15px !important;
+tr.header_title th{
+    color: #ddd;
+    background-color: #49413b;
+    font-size: 12px;
 }
+
+tr.header_input th {
+    background-color: #f5f5f5
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #eaf7fb;
+}
+.table>tbody>tr>td {
+    background: #fff !important;
+    padding:10px  !important;
+} 
+td, button {
+    outline: none !important;
+}
+.top-margin-sm{ margin-top: 20px; }
 .margin{margin:8px;}
 .padding{padding:8px;}

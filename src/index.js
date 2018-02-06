@@ -6,6 +6,7 @@ const styles = require.context('./', true, /.*\.(css)$/);
 const helpers = require.context('./app/helpers', true, /.*\.js$/);
 const services = require.context('./app', true, /.*\.service\.js$/);
 const filters = require.context('./app', true, /.*\.filter\.js$/);
+const directives = require.context('./app', true, /.*\.directive\.js$/);
 const components = require.context(
     './app',
     true,
@@ -18,5 +19,6 @@ styles.keys().forEach(styles);
 helpers.keys().forEach(helpers);
 services.keys().forEach(services);
 filters.keys().forEach(filters);
+directives.keys().forEach(directives);
 components.keys().forEach(components);
 configs.keys().forEach(configs);
