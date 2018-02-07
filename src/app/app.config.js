@@ -162,7 +162,7 @@ import angular from 'angular';
             })
 
             .state('app.couriers', {
-                url: 'couriers',
+                url: 'couriers?page&limit&search',
                 component: 'couriers'
             })
 

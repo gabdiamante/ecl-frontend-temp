@@ -138,7 +138,7 @@
         </div>
     </div> 
 </div>
-<div ng-if="options.searchTemplate" class="col-md-12 no-padding"> 
+<div ng-if="options.searchTemplate" class="no-padding"> 
     <div class="row">
         <div class="col-md-6 col-xs-6 top-margin-sm" ng-if="options.resetFilter">
             <div class="pd-5-0">
@@ -146,7 +146,6 @@
                 <span ng-bind="options.data.length + ' Records Found'"></span>
             </div>
         </div>
-        <div class="col-md-6 col-xs-12 top-margin-sm form-inline" ng-if="options.emptyColumn" ></div> 
         <div class="col-md-6 col-xs-12 top-margin-sm form-inline" ng-if="options.tableSearch" > 
             <div class="input-group" >
                 <input type="text" style="z-index:0;" class="form-control" placeholder="Search by Keyword" ng-model="vm.keyword" ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.keyword)" />
@@ -210,7 +209,8 @@
                 </div>
             </div>
         </div> 
-        <div class="col-md-6 col-sm-12 col-xs-12 top-margin-sm">
+        <div class="col-md-6 col-xs-12 top-margin-sm form-inline" ng-if="options.emptyColumn" ></div> 
+        <div class="col-md-6 col-sm-12 col-xs-12 top-margin-sm" ng-if="!options.defaultPagination">
             <div class="clearfix" align="right"> 
                 <div class="form-inline"> 
                     <div class="form-group form-group-margin" >
@@ -270,7 +270,20 @@
                 </th>
             </tr>
         </tfoot>
-    </table>
+    </table> 
+</div>
+<div class="row" ng-if="options.defaultPagination">
+    <div class="col-md-6 col-sm-5 col-xs-12">
+        <ul style="margin-top:0px; margin-bottom:0px;" uib-pagination boundary-links="true" total-items="vm.total_items" ng-model="vm.pagination.page" ng-click="goTo({data:{limit:vm.pagination.limit, page:vm.pagination.page}})" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+    </div>
+    <div class="col-md-6 col-sm-7 col-xs-12" align="right">
+        <ul style="margin-top:0px; margin-bottom:0px;" class="pagination pagination-sm" >
+            <li class="disabled" ><a  href="" >Display</a></li>
+            <li ng-class="{'active':vm.pagination.limit==num}" ng-repeat="num in vm.per_page" > 
+                <a ng-click="vm.goTo({data:{limit:num, page:'1'}})" ng-bind="num"></a>
+            </li> 
+        </ul> 
+    </div>
 </div>
 <br />
 
