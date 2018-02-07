@@ -52,6 +52,7 @@ import TABLES from 'Helpers/tables';
         vm.option_table.data = [];
 
         vm.goTo         = goTo;
+        vm.trClick      = trClick;
 
         getData ();
     
@@ -91,6 +92,10 @@ import TABLES from 'Helpers/tables';
 
         function goTo (data) { 
             $state.go('app.couriers', data);
+        }
+
+        function trClick (data) {
+            console.log(data);
         }
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name,propertyName) => { 

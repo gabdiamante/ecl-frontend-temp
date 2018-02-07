@@ -166,6 +166,11 @@ import angular from 'angular';
                 component: 'couriers'
             })
 
+            .state('app.courier-details', {
+                url: 'courier-details?id',
+                component: 'courierDetails'
+            })
+
             .state('app.dispatchers', {
                 url: 'dispatchers',
                 component: 'dispatchers'
