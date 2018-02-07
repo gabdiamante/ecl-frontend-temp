@@ -89,13 +89,13 @@ import TABLES from 'Helpers/tables';
                 data[i].fullname = data[i].first_name + ' ' + data[i].last_name;
             return data;
         }
-
+  
         function goTo (data) { 
             $state.go('app.couriers', data);
         }
 
         function trClick (data) {
-            console.log(data);
+            $state.go('app.courier-details', { id:data.id });
         }
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name,propertyName) => { 
