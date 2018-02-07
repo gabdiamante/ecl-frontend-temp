@@ -32,8 +32,8 @@ import TABLES from 'Helpers/tables';
         vm.titleHeader = 'Couriers';
         
         vm.pagination           = {};
-        vm.pagination.pagestate = $stateParams.page || 1; 
-        vm.pagination.limit     = $stateParams.limit || 10; 
+        vm.pagination.pagestate = $stateParams.page || '1'; 
+        vm.pagination.limit     = $stateParams.limit || '5'; 
         vm.per_page             = ['10','20','50','100','200'];
         vm.total_page           = '1';
         vm.total_items          = '0';
@@ -69,12 +69,13 @@ import TABLES from 'Helpers/tables';
 
             QueryService
                 .query(request)
-                .then(function (response) {
-                    vm.option_table.data = handleNames(response.data.data); 
-                    vm.pagination.page  = $stateParams.page || '1';
-                    vm.pagination.limit = $stateParams.limit || '10';
-                    vm.total_page = response.data.total_pages;
-                    vm.total_items = response.data.total;
+                .then(function (response) { 
+                    console.log(response);
+                    vm.option_table.data    = handleNames(response.data.data); 
+                    vm.pagination.page      = $stateParams.page || '1';
+                    vm.pagination.limit     = $stateParams.limit || '5';
+                    vm.total_page           = response.data.total_pages;
+                    vm.total_items          = response.data.total;
                 }, function (err) {
                     logger.error(MESSAGE.error, err, '');
                 })
