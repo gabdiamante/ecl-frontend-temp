@@ -1,4 +1,49 @@
 const UTIL = {
+    colors: [
+        //
+        '#f97000',
+        '#1a92a0',
+        '#d50000',
+        '#2c4caa',
+        '#008000',
+        '#ffab00',
+        '#00cad0',
+        '#3314ab',
+        '#eb403b',
+        '#48e6da',
+        '#227FB0',
+        '#1f5ea8',
+        '#b32E37',
+        '#6c2a6a',
+        '#5c4399',
+        '#274389',
+        '#2E64FE',
+        '#DF01A5',
+        '#0B3B24',
+        '#BF00FF',
+        '#04B4AE',
+        '#2ab0c5',
+        '#0B3861',
+        '#9500d8',
+        '#0404B4',
+        '#FF0080',
+        '#e98931',
+        '#8904B1',
+        '#2EFEF7',
+        '#086A87',
+        '#f24e04',
+        '#8A0808',
+        '#850000',
+        '#c10000',
+        '#c4ee26',
+        '#35f2e4',
+        '#336927',
+        '#ff00db',
+        '#b46c9f',
+        '#fd00f2',
+        '#fd6600',
+        '	#371760'
+    ],
     getNetwork: function(string) {
         if (!string) {
             return '';
@@ -250,5 +295,23 @@ const UTIL = {
         return color;
     }
 };
+
+UTIL.colors = UTIL.colors.concat(getRandomColors(200));
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++)
+        color += letters[Math.floor(Math.random() * 16)];
+    return color;
+}
+
+function getRandomColors(repeat) {
+    var arr = [];
+    for (var i = 0; i <= repeat; i++) {
+        arr.push(getRandomColor());
+    }
+    return arr;
+}
 
 export default UTIL;

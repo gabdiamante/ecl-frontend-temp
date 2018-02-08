@@ -1,0 +1,8 @@
+var TPLS = {
+	zones : {
+		url : 'app/components/stores/geofence/form.html',
+		ctrl : 'GeofenceFormCtrl'
+	}
+};
+
+export default TPLS;

@@ -24,6 +24,7 @@ import 'moment';
         require('angular-sanitize'),
         'btford.socket-io',
         require('angular-toastr'),
-        require('angular-ui-bootstrap')
+        require('angular-ui-bootstrap'),
+        require('ngMap')
     ]);
 })();

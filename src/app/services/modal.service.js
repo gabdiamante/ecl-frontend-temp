@@ -10,7 +10,7 @@ import angular from 'angular';
     function ModalService($uibModal) {
         const service = {
             // list_modal: list_modal,
-            // form_modal: form_modal,
+            form_modal: form_modal,
             confirm_modal: confirm_modal,
             // email_modal: email_modal,
             message_modal: message_modal,
@@ -44,42 +44,27 @@ import angular from 'angular';
         //         });
         // }
 
-        /** NO TAB MODAL IN APP/SHARED/MODALS */
-        // function form_modal(form, type, modal, callback) {
-        //     var modalInstance = $uibModal
-        //         .open({
-        //             templateUrl: 'app/shared/modals/tab-modal/tab-modal.html',
-        //             controller: 'TabModalCtrl',
-        //             controllerAs: 'vm',
-        //             size: 'md',
-        //             backdrop: false,
-        //             resolve: {
-        //                 form: function() {
-        //                     return form;
-        //                 },
-        //                 modal: function() {
-        //                     return modal;
-        //                 },
-        //                 type: function() {
-        //                     return type;
-        //                 }
-        //             }
-        //         })
-        //         .result.then(function(data) {
-        //             if (data) {
-        //                 callback(data);
-        //             }
-        //         });
-        // }
+        function form_modal(request, modal, template, size, classes) {
+            var modalInstance = $uibModal.open({
+                templateUrl: template.url,
+                controller: template.ctrl,
+                controllerAs: 'vm',
+                size: size || 'md',
+                windowClass: classes || '',
+                backdrop: 'static',
+                resolve: {
+                    Request: function() {
+                        return request;
+                    },
+                    Modal: function() {
+                        return modal;
+                    }
+                }
+            });
 
-        /*
-            @param options.header:          The title of the confirm dialog box.
-            @param options.message:         The message displayed on the confirm dialog box.
-            @param [options.okButtonLabel]: The label of confirm button. Defaults to 'ok'.
+            return modalInstance.result;
+        }
 
-            @return <Promise>: A promise that resolves to true or false,
-                depending on whether the user clicked ok or cancel.
-        */
         function confirm_modal(options) {
             // Open a ui bootstrap modal
             var modalInstance = $uibModal.open({
