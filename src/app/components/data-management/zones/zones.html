@@ -55,7 +55,7 @@
 	</div>
 	<div class="row is-flex">
 		<div class="col-md-9 geofence-map">
-			<map zoom="11" style="height:100%;" class="top-margin-sm" center="{{vm.center_map_lat_lng}}" id="geofencing"
+			<map zoom="11" style="height:100%;" default-style="false" class="top-margin-sm" center="{{vm.center_map_lat_lng}}" id="geofencing"
 			    zoom-control-options="{position:'LEFT_TOP'}" street-view-control-options="{position:'LEFT_TOP'}">
 			    <drawing-manager  on-overlaycomplete="vm.onMapOverlayCompleted('POST')" id="zonePolygon"
 			      ng-if="vm.showDrawingManager" 
@@ -71,7 +71,7 @@
 			<div id="zone_container" style="height: 63vh; overflow-y: scroll;" class="top-margin-sm" >
 				<ul class="list-group list-scroll" style="">
 					<li id="{{shape.groupId}}" ng-click="vm.updatePolygon($event, shape, $index)" class="list-group-item" ng-repeat="shape in vm.zones" >
-						<i style="color: {{vm.colors[$index]}}" class="fa fa-fw fa-map-marker" aria-hidden="true" ></i>
+						<i ng-style="{ color: vm.colors[$index] }" class="fa fa-fw fa-map-marker" aria-hidden="true" ></i>
 						<span ng-bind="shape.name" uib-tooltip="{{shape.name}}" tooltip-placement="right" ></span>
 						<!-- <span ng-bind="' - ' + shape.zone_name" ></span>  -->
 						<span class="pull-right">

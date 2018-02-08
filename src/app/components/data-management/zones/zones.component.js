@@ -2,7 +2,6 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import UTILS from 'Helpers/util';
 import GMAP from 'Helpers/map/gmap';
-import TPLS from 'Helpers/tpls';
 var jsts = require('jsts');
 
 (function() {
@@ -57,7 +56,7 @@ var jsts = require('jsts');
         vm.route_name = 'zone';
         vm.current_state = $state.current.name;
         vm.search_key = $stateParams.search_value || '';
-        vm.TPLS = TPLS.zones;
+        vm.TPLS = 'zonesFormModalCtrl';
         vm.titleHeader = 'Zone Areas';
         vm.subTitleHeader = vm.titleHeader.slice(0, -1);
         vm.pending_update = 0;
@@ -94,6 +93,10 @@ var jsts = require('jsts');
         vm.colors = UTILS.colors;
 
         init();
+
+        NgMap.getMap({ id: 'geofencing' }).then(function(map) {
+            google.maps.event.trigger(map, 'resize');
+        });
 
         function init() {
             google.maps.Polygon.prototype.my_getBounds =

@@ -44,16 +44,16 @@ import angular from 'angular';
         //         });
         // }
 
-        function form_modal(request, modal, template, size, classes) {
+        function form_modal(request, modal, component_template, size, classes) {
             var modalInstance = $uibModal.open({
-                templateUrl: template.url,
-                controller: template.ctrl,
-                controllerAs: 'vm',
+                component: component_template || '',
+                // controllerAs: 'vm',
                 size: size || 'md',
                 windowClass: classes || '',
                 backdrop: 'static',
                 resolve: {
                     Request: function() {
+                        console.log(request);
                         return request;
                     },
                     Modal: function() {
