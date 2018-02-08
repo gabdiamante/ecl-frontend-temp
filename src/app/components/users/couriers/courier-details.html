@@ -1,0 +1,47 @@
+<div class="col-md-12 top-margin-sm">
+    <button class="btn btn-primary btn-sm" back="">
+        <i class="fa fa-reply"></i>	Back
+    </button>
+    <ul class="list-group margin-top">
+        <li class="list-group-item clearfix">
+            <span class="col-md-3">Plate Number : </span> 
+            <span class="text-bold ng-binding" ng-bind="vm.data.id">WID206</span> 
+
+        </li>	
+        <li class="list-group-item clearfix">
+            <span class="col-md-3">Model : </span> 
+            <span class="text-bold ng-binding" ng-bind="vm.data.model">L-300 FB</span> 
+        </li>	
+        <li class="list-group-item clearfix">
+            <span class="col-md-3">Courier : </span> 
+            <!-- ngIf: vm.data.lastName --><a href="#!/courier?id=883" ui-sref="app.courier({id:vm.data.courierId})" class="text-bold text-primary ng-binding ng-scope" ng-if="vm.data.lastName" ng-bind="vm.data.lastName +', '+ vm.data.firstName">ACHIVIDA, JOSE REXIE</a><!-- end ngIf: vm.data.lastName --> 
+        </li>
+        <li class="list-group-item clearfix">
+            <span class="col-md-3">Max Weight (KG): </span> 
+            <span ng-bind="vm.data.maxWeight" class="ng-binding">1000</span> 
+        </li>
+        <li class="list-group-item clearfix">
+            <span class="col-md-3">Max Dimension (CBM) : </span>  
+            <span ng-bind="vm.data.maxDimension" class="ng-binding">4</span> 
+        </li>
+    </ul>
+    <ul class="list-group"> 
+        <p class="medium">Utilization</p>
+        <li class="list-group-item clearfix">
+            <span class="col-md-3">Weight (KG): </span> 
+            <span ng-bind="vm.totalW + vm.totalPW | number:2" class="ng-binding">0.00</span>
+            <span ng-bind="'/ ' + vm.data.maxWeight" class="ng-binding">/ 1000</span> 
+            <span class="text-bold margin-left ng-binding">
+                ()
+            </span> 
+        </li>
+        <li class="list-group-item clearfix">
+            <span class="col-md-3">Dimension (CBM) : </span>  
+            <span ng-bind="vm.totalD + vm.totalPD | number:2" class="ng-binding">0.00</span>
+            <span ng-bind="'/ ' + vm.data.maxDimension" class="ng-binding">/ 4</span> 
+            <span class="text-bold margin-left ng-binding">
+                ()
+            </span> 
+        </li>	
+    </ul>
+</div>

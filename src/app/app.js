@@ -10,12 +10,15 @@ import angular from 'angular';
 import '@uirouter/angularjs';
 import 'angular-socket-io';
 import 'moment';
+import 'angular-permission';
 
 (function() {
     'use strict';
 
     angular.module('app', [
         'ui.router',
+        'permission',
+        'permission.ui',
         require('angular-aria'),
         require('angular-chart.js'),
         require('angular-cookies'),
@@ -25,6 +28,7 @@ import 'moment';
         'btford.socket-io',
         require('angular-toastr'),
         require('angular-ui-bootstrap'),
-        require('ngMap')
+        require('ngMap'),
+        require('checklist-model')
     ]);
 })();

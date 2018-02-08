@@ -120,7 +120,7 @@ import angular from 'angular';
                     }
                 }
             })
-            
+
             .state('app.dashboard', {
                 url: 'dashboard',
                 component: 'dashboard'
@@ -162,8 +162,13 @@ import angular from 'angular';
             })
 
             .state('app.couriers', {
-                url: 'couriers',
+                url: 'couriers?page&limit&search',
                 component: 'couriers'
+            })
+
+            .state('app.courier-details', {
+                url: 'courier-details?id',
+                component: 'courierDetails'
             })
 
             .state('app.dispatchers', {
@@ -210,17 +215,17 @@ import angular from 'angular';
                 url: 'import-export',
                 component: 'importExport'
             })
-            
+
             .state('app.history', {
                 url: 'history',
                 component: 'history'
             })
-            
+
             .state('app.settings', {
                 url: 'settings',
                 component: 'settings'
             })
-            
+
             .state('login', {
                 url: '/login',
                 views: {
