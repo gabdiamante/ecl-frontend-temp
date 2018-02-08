@@ -162,8 +162,13 @@ import angular from 'angular';
             })
 
             .state('app.couriers', {
-                url: 'couriers',
+                url: 'couriers?page&limit&search',
                 component: 'couriers'
+            })
+
+            .state('app.courier-details', {
+                url: 'courier-details?id',
+                component: 'courierDetails'
             })
 
             .state('app.dispatchers', {

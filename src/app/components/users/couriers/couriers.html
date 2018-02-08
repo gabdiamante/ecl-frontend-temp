@@ -2,4 +2,7 @@
     <div class="col-md-12 sub-header">
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
+    <div class="col-md-12">
+        <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" tr-click="vm.trClick(data)"></complex-table>
+    </div>
 </div>

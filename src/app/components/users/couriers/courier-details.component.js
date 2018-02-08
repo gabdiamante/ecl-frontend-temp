@@ -1,17 +1,16 @@
 import angular from 'angular';
-import GLOBAL from 'Helpers/global';
-import TABLES from 'Helpers/tables';
+import GLOBAL from 'Helpers/global'; 
 
 (function() {
     'use strict';
 
-    angular.module('app').component('dashboard', {
-        template: require('./dashboard.html'),
-        controller: DashboardCtrl,
+    angular.module('app').component('courierDetails', {
+        template: require('./courier-details.html'),
+        controller: CourierDetailsCtrl,
         controllerAs: 'vm'
     });
 
-    DashboardCtrl.$inject = [
+    CourierDetailsCtrl.$inject = [
         '$scope',
         '$state',
         'ModalService',
@@ -19,7 +18,7 @@ import TABLES from 'Helpers/tables';
         'logger'
     ];
 
-    function DashboardCtrl(
+    function CourierDetailsCtrl(
         $scope,
         $state,
         ModalService,
@@ -27,6 +26,6 @@ import TABLES from 'Helpers/tables';
         logger
     ) {
         var vm          = this;
-        vm.titleHeader  = 'Dashboard';
+        vm.titleHeader  = 'Courier Details';
     } 
 })();

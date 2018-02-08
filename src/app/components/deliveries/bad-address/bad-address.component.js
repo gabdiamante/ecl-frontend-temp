@@ -31,6 +31,7 @@ import TABLES from 'Helpers/tables';
         vm.limit        = '20';
         vm.page         = '1';
         vm.per_page     = ['1','20','50','100','200'];
+        vm.items        = { roleUserCheck:[] };
 
         vm.option_table   = { 
             emptyColumn: true,
