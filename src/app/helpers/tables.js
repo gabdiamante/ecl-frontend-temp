@@ -17,6 +17,26 @@ const TABLES = {
             { name: 'vehicle', displayName: 'Assigned Vehicle', cellTemplate:`<a ui-sref="row.entity.vehicle">{{COL_FIELD}}</a>` }, 
             { name: 'updatedAt', displayName: 'Date Updated', cellTemplate:`{{ COL_FIELD | date:short }}` } 
         ]
+    },
+    courier_deliveries : {
+        columnDefs : [
+            { name: 'airway_bill', displayName: 'AWB CODE', cellTemplate:`<a ui-sref="row.entity.id">{{COL_FIELD}}</a>` },
+            { name: 'shipper', displayName: 'SHPR' },
+            { name: 'consignee', displayName: 'CNEE' },
+            { name: 'status', displayName: 'STATUS', cellTemplate:`<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>` }, 
+            { name: 'checkin', displayName: 'CHECK IN', cellTemplate:`{{ COL_FIELD | date:'HH:mm' }}` }, 
+            { name: 'checkout', displayName: 'CHECK OUT', cellTemplate:`{{ COL_FIELD | date:'HH:mm' }}` } 
+        ]
+    },
+    courier_pickups : {
+        columnDefs : [
+            { name: 'booking_code', displayName: 'BOOKING CODE', cellTemplate:`<a ui-sref="row.entity.id">{{COL_FIELD}}</a>` },
+            { name: 'shipper', displayName: 'SHPR' },
+            { name: 'consignee', displayName: 'CNEE' },
+            { name: 'status', displayName: 'STATUS', cellTemplate:`<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>` }, 
+            { name: 'checkin', displayName: 'CHECK IN', cellTemplate:`{{ COL_FIELD | date:'hh:mm' }}` }, 
+            { name: 'checkout', displayName: 'CHECK OUT', cellTemplate:`{{ COL_FIELD | date:'hh:mm' }}` } 
+        ]
     }
 };
 

@@ -1,4 +1,5 @@
 import URLS from 'Helpers/urls';
+import {GoogleCharts} from 'google-charts';
 
 /*
 *   put all global variables
@@ -285,7 +286,38 @@ const GLOBAL = {
             }
         } catch(err) {
         }    
-    }
+	},
+	drawChart : function (chart_data, element) {
+		const pie_data = GoogleCharts.api.visualization.arrayToDataTable(chart_data);
+		const pie_options = { 
+			// pieHole: 0.6,
+			pieSliceTextStyle: {
+				color: 'white',
+				fontSize: 14,
+			},
+			slices: {
+				0: {color: '#607d8b'},
+				1: {color: '#e51c23'},
+				2: {color: '#4caf4f'}
+			},
+			legend: {
+				position: 'none', /* all legend hidden */
+				textStyle: {
+					color: 'black',
+					fontSize: 13,
+					fontName: 'arial'
+				}
+			}, 
+			titleTextStyle: {
+				color: 'black',
+				fontSize: 14,
+				fontName: 'arial'
+			},
+			chartArea: {left: 0, top: 10, width: '100%', height: '80%'} 
+		};
+		const pie_chart = new GoogleCharts.api.visualization.PieChart(document.getElementById(element));
+        pie_chart.draw(pie_data, pie_options);
+	}
 };
 
 

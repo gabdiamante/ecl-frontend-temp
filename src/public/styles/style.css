@@ -213,8 +213,8 @@ td, button {
 .radius-0 { border-radius: 0px !important; }
 .margin-0 { margin: 0px; }
 .relative-pos { position: relative; } 
-.small-box { height: 100px !important; } 
-.medium-box { height: 300px !important; } 
+.small-box { min-height: 100px !important; } 
+.medium-box { min-height: 300px !important; } 
 .bg-secondary { background-color:  #607d8b !important; }
 .bg-success { background-color:  #4caf4f !important; }
 .bg-danger { background-color:  #e51c23 !important; } 

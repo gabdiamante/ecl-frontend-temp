@@ -38,6 +38,7 @@
     "chart.js": "^2.6.0",
     "checklist-model": "^0.11.0",
     "font-awesome": "^4.7.0",
+    "google-charts": "^1.0.0",
     "js-marker-clusterer": "^1.0.0",
     "jsts": "^1.4.0",
     "lodash.find": "^4.6.0",

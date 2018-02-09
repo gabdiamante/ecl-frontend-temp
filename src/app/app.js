@@ -11,6 +11,7 @@ import '@uirouter/angularjs';
 import 'angular-socket-io';
 import 'moment';
 import 'angular-permission'; 
+import 'google-charts';
 
 (function() {
     'use strict';

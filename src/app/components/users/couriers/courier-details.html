@@ -17,12 +17,44 @@
         </div>
         <div class="clearfix"></div>
         <div class="row is-flex">
-            <div class="col-md-3 col-sm-3 col-xs-12 top-margin-sm relative-pos">
-                <div class="col-md-12 div-border padding-lg height-100" align="center">
-                    <i class="fa fa-user-circle fa-5x"></i> 
+            <div class="col-md-3 col-sm-4 col-xs-12 top-margin-sm relative-pos">
+                <div class="col-md-12 div-border padding-lg height-100">
+                    <div class="col-md-12" align="center">
+                        <div class="row">
+                            <i class="fa fa-user-circle fa-5x"></i> 
+                            <h3>Ruru Magana</h3>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
+                            <i class="fa fa-id-card"></i>
+                        </div>
+                        <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
+                            <span>RMAGANA</span>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
+                            <span>+639284765882</span>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
+                            <i class="fa fa-car"></i>
+                        </div>
+                        <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
+                            <span>ABE 999</span>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
+                            <i class="fa fa-map"></i>
+                        </div>
+                        <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
+                            <span>zone-001</span>
+                        </div>
+                    </div>
                 </div> 
             </div>
-            <div class="col-md-9 col-sm-9 col-xs-12 top-margin-sm relative-pos">
+            <div class="col-md-9 col-sm-8 col-xs-12 top-margin-sm relative-pos">
                 <div class="col-md-12 height-100 div-border">
                     <div class="row">
                         <div class="panel panel-primary relative-pos radius-0 margin-0">
@@ -32,74 +64,133 @@
                             </div>
                             <div class="panel-body" style="padding:0px 5px !important" >
                                 <div class="col-md-3 col-sm-6 col-xs-12 top-margin-sm">
-                                    <div class="small-box div-border bg-light"></div>
+                                    <div class="small-box div-border bg-light padding-lg" align="center">
+                                        <h4>200</h4>
+                                        <span>Total Assignments</span>
+                                    </div>
                                 </div>
                                 <div class="col-md-3 col-sm-6 col-xs-12 top-margin-sm">
-                                    <div class="small-box div-border bg-secondary"></div>
+                                    <div class="small-box div-border bg-secondary">
+                                        <div class="small-box div-border bg-light padding-lg" align="center">
+                                            <h4 class="text-white">108</h4>
+                                            <span class="text-white">No Attempt</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-3 col-sm-6 col-xs-12 top-margin-sm">
-                                    <div class="small-box div-border bg-success"></div>
+                                    <div class="small-box div-border bg-secondary">
+                                        <div class="small-box div-border bg-success padding-lg" align="center">
+                                            <h4 class="text-white">48</h4>
+                                            <span class="text-white">Successful</span>
+                                        </div>
+                                    </div>
                                 </div> 
                                 <div class="col-md-3 col-sm-6 col-xs-12 top-margin-sm">
-                                    <div class="small-box div-border bg-danger"></div>
+                                    <div class="small-box div-border bg-secondary">
+                                        <div class="small-box div-border bg-danger padding-lg" align="center">
+                                            <h4 class="text-white">44</h4>
+                                            <span class="text-white">Unsuccessful</span>
+                                        </div>
+                                    </div>
                                 </div> 
                                 <div class="clearfix"></div> 
                                 <div class="col-md-6 col-sm-12 col-sx-12 top-margin-sm">
-                                    <div class="div-border-solid medium-box"></div>
+                                    <div class="div-border-solid medium-box">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <h4>DELIVERIES</h4>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                            <h4>100</h4>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="padding-lg" id="delivery_chart"></div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                                <span><strong>No Attempt</strong></span>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <span class="label bg-secondary">60</span> &nbsp; 60%
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                                <span><strong>Successful</strong></span>  
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <span class="label bg-success">18</span> &nbsp; 18%
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                                <span><strong>Failed</strong></span> 
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <span class="label bg-danger">22</span>  &nbsp; 22%
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                                <span><strong>Efficiency</strong></span> 
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <strong><span ng-bind="(((22 + 18) / 100 * 100).toFixed(2) || '0') + '%'" ></span></strong>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <br />
+                                    </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12 col-sx-12 top-margin-sm">
-                                    <div class="div-border-solid medium-box"></div>
+                                    <div class="div-border-solid medium-box">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <h4>PICKUPS</h4>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                            <h4>100</h4>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="padding-lg" id="pickup_chart"></div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                                <span><strong>No Attempt</strong></span>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <span class="label bg-secondary">48</span> &nbsp; 48%
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                                <span><strong>Successful</strong></span>  
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <span class="label bg-success">30</span> &nbsp; 30%
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                                <span><strong>Failed</strong></span> 
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <span class="label bg-danger">22</span>  &nbsp; 22%
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6" align="right">
+                                                <span><strong>Efficiency</strong></span> 
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <strong><span ng-bind="(((22 + 30) / 100 * 100).toFixed(2) || '0') + '%'" ></span></strong>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <br />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div> 
-                </div>
-                <div>
-                    
-                </div>
+                </div> 
             </div>
         </div> 
-        <!-- <ul class="list-group margin-top">
-            <li class="list-group-item clearfix">
-                <span class="col-md-3">Plate Number : </span> 
-                <span class="text-bold ng-binding" ng-bind="vm.data.id">WID206</span> 
-                
-            </li>	
-            <li class="list-group-item clearfix">
-                <span class="col-md-3">Model : </span> 
-                <span class="text-bold ng-binding" ng-bind="vm.data.model">L-300 FB</span> 
-            </li>	
-            <li class="list-group-item clearfix">
-                <span class="col-md-3">Courier : </span> 
-                <a href="#!/courier?id=883" ui-sref="app.courier({id:vm.data.courierId})" class="text-bold text-primary ng-binding ng-scope" ng-if="vm.data.lastName" ng-bind="vm.data.lastName +', '+ vm.data.firstName">ACHIVIDA, JOSE REXIE</a>
-            </li>
-            <li class="list-group-item clearfix">
-                <span class="col-md-3">Max Weight (KG): </span> 
-                <span ng-bind="vm.data.maxWeight" class="ng-binding">1000</span> 
-            </li>
-            <li class="list-group-item clearfix">
-                <span class="col-md-3">Max Dimension (CBM) : </span>  
-                <span ng-bind="vm.data.maxDimension" class="ng-binding">4</span> 
-            </li>
-        </ul>
-        <ul class="list-group"> 
-            <p class="medium">Utilization</p>
-            <li class="list-group-item clearfix">
-                <span class="col-md-3">Weight (KG): </span> 
-                <span ng-bind="vm.totalW + vm.totalPW | number:2" class="ng-binding">0.00</span>
-                <span ng-bind="'/ ' + vm.data.maxWeight" class="ng-binding">/ 1000</span> 
-                <span class="text-bold margin-left ng-binding">
-                    ()
-                </span> 
-            </li>
-            <li class="list-group-item clearfix">
-                <span class="col-md-3">Dimension (CBM) : </span>  
-                <span ng-bind="vm.totalD + vm.totalPD | number:2" class="ng-binding">0.00</span>
-                <span ng-bind="'/ ' + vm.data.maxDimension" class="ng-binding">/ 4</span> 
-                <span class="text-bold margin-left ng-binding">
-                    ()
-                </span> 
-            </li>	
-        </ul> -->
+        <div class="row">
+            <div class="col-md-12 top-margin-sm">
+                <uib-tabset active="vm.default_def">
+                    <uib-tab ng-click="vm.selectTab('courier_deliveries')" index="'courier_deliveries'" heading="DELIVERIES" >
+                        <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" prev="vm.prev()" next="vm.next()" export-data="vm.exportData(data)"></complex-table>
+                    </uib-tab>
+                    <uib-tab ng-click="vm.selectTab('courier_pickups')" index="'courier_pickups'" heading="PICKUPS" >
+                        <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" prev="vm.prev()" next="vm.next()" export-data="vm.exportData(data)"></complex-table>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
     </div>
 </div>
