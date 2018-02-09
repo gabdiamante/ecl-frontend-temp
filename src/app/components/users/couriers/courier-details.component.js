@@ -27,5 +27,7 @@ import GLOBAL from 'Helpers/global';
     ) {
         var vm          = this;
         vm.titleHeader  = 'Courier Details';
+
+        
     } 
 })();
