@@ -19,14 +19,8 @@ import TABLES from 'Helpers/tables';
         'logger'
     ];
 
-    function DashboardCtrl(
-        $scope,
-        $state,
-        ModalService,
-        QueryService,
-        logger
-    ) {
-        var vm          = this;
-        vm.titleHeader  = 'Dashboard';
-    } 
+    function DashboardCtrl($scope, $state, ModalService, QueryService, logger) {
+        var vm = this;
+        vm.titleHeader = 'Dashboard';
+    }
 })();

@@ -29,6 +29,7 @@ import 'google-charts';
         'btford.socket-io',
         require('angular-toastr'),
         require('angular-ui-bootstrap'),
-        require('checklist-model') 
+        require('ngMap'),
+        require('checklist-model')
     ]);
 })();

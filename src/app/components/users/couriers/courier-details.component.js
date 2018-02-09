@@ -1,7 +1,11 @@
 import angular from 'angular';
+<<<<<<< HEAD
 import GLOBAL from 'Helpers/global'; 
 import TABLES from 'Helpers/tables';
 import {GoogleCharts} from 'google-charts';
+=======
+import GLOBAL from 'Helpers/global';
+>>>>>>> master
 
 (function() {
     'use strict';
