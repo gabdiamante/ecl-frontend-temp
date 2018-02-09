@@ -12,6 +12,7 @@ import 'angular-socket-io';
 import 'moment';
 import 'angular-permission'; 
 import 'google-charts';
+import 'ngmap';
 
 (function() {
     'use strict';
@@ -29,7 +30,7 @@ import 'google-charts';
         'btford.socket-io',
         require('angular-toastr'),
         require('angular-ui-bootstrap'),
-        require('ngMap'),
+        'ngMap',
         require('checklist-model')
     ]);
 })();
