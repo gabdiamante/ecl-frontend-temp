@@ -4,7 +4,7 @@ import GLOBAL from 'Helpers/global';
 (function() {
     'use strict';
 
-    angular.module('app').component('zonesFormModalCtrl', {
+    angular.module('app').component('zonesFormModal', {
         template: require('./zoneform.html'),
         controller: ZonesFormModalCtrl,
         controllerAs: 'vm',

@@ -131,6 +131,7 @@ import angular from 'angular';
                 component: 'monitoring'
             })
 
+            //DELIVERIES
             .state('app.deliveries-bad-address', {
                 url: 'deliveries/bad-address',
                 component: 'deliveriesBadAddress'
@@ -146,6 +147,7 @@ import angular from 'angular';
                 component: 'deliveriesDispatched'
             })
 
+            //PICKUPS
             .state('app.pickups-bad-address', {
                 url: 'pickups/bad-address',
                 component: 'pickupsBadAddress'
@@ -161,6 +163,7 @@ import angular from 'angular';
                 component: 'pickupsDispatched'
             })
 
+            // USERS
             .state('app.couriers', {
                 url: 'couriers?page&limit&search',
                 component: 'couriers'
@@ -196,9 +199,15 @@ import angular from 'angular';
                 component: 'dcs'
             })
 
+            //DATA-MANAGEMENT
             .state('app.hubs', {
                 url: 'hubs',
                 component: 'hubs'
+            })
+
+            .state('app.hub-details', {
+                url: 'hub-details?id',
+                component: 'hubDetails'
             })
 
             .state('app.vehicles', {

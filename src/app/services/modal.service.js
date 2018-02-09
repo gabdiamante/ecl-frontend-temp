@@ -53,7 +53,6 @@ import angular from 'angular';
                 backdrop: 'static',
                 resolve: {
                     Request: function() {
-                        console.log(request);
                         return request;
                     },
                     Modal: function() {

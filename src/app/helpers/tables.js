@@ -18,6 +18,7 @@ const TABLES = {
         ],
         filter_fields: []
     },
+    //USERS
     couriers: {
         columnDefs: [
             {
@@ -36,6 +37,25 @@ const TABLES = {
                 name: 'updatedAt',
                 displayName: 'Date Updated',
                 cellTemplate: `{{ COL_FIELD | date:short }}`
+            }
+        ]
+    },
+    //DATA-MANAGEMENT
+    hubs: {
+        columnDefs: [
+            {
+                name: 'code',
+                cellTemplate: `<a ui-sref="app.hub-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'name' },
+            {
+                name: 'address',
+                cellTemplate: `<span ng-bind="COL_FIELD | titlecase"></span>`
+            },
+            {
+                name: 'updatedAt',
+                displayName: 'Date',
+                cellTemplate: `{{ COL_FIELD | date:short}}`
             }
         ]
     }

@@ -33,6 +33,10 @@ import angular from 'angular';
         $rootScope.active_tab = active_tab;
         $rootScope.next = next;
 
+        $rootScope.$back = function() {
+            window.history.back();
+        };
+
         vm.sidebarService = SidebarService;
 
         vm.$onInit = function() {
