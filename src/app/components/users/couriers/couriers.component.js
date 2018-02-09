@@ -48,7 +48,7 @@ import TABLES from 'Helpers/tables';
             tableSearch: true
         };
 
-        vm.option_table.columnDefs = TABLES.users.columnDefs;
+        vm.option_table.columnDefs = TABLES.couriers.columnDefs;
         vm.option_table.data = [];
 
         vm.goTo = goTo;
@@ -74,11 +74,61 @@ import TABLES from 'Helpers/tables';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.option_table.data = handleNames(response.data.data);
-                        vm.pagination.page = $stateParams.page || '1';
-                        vm.pagination.limit = $stateParams.limit || '10';
-                        vm.total_page = response.data.total_pages;
-                        vm.total_items = response.data.total;
+                        vm.option_table.data = [
+                            {
+                                id: 1,
+                                name: 'Abel Madrid',
+                                contact: '09879733958',
+                                zone: 'zone-001',
+                                vehicle: 'ABE 999',
+                                updatedAt: new Date()
+                            },
+                            {
+                                id: 2,
+                                name: 'Ruru Magana',
+                                contact: '09567458568',
+                                zone: 'zone-002',
+                                vehicle: 'BEL 999',
+                                updatedAt: new Date()
+                            },
+                            {
+                                id: 3,
+                                name: 'Lester Dequina',
+                                contact: '09456847884',
+                                zone: 'zone-003',
+                                vehicle: 'TER 783',
+                                updatedAt: new Date()
+                            },
+                            {
+                                id: 4,
+                                name: 'Marvin Zabala',
+                                contact: '09568457933',
+                                zone: 'zone-004',
+                                vehicle: 'ABE 474',
+                                updatedAt: new Date()
+                            },
+                            {
+                                id: 5,
+                                name: 'Christasn Tecson',
+                                contact: '09872927553',
+                                zone: 'zone-005',
+                                vehicle: 'ABE 463',
+                                updatedAt: new Date()
+                            },
+                            {
+                                id: 6,
+                                name: 'Gabriel Diamante',
+                                contact: '09327692734',
+                                zone: 'zone-006',
+                                vehicle: 'ABE 087',
+                                updatedAt: new Date()
+                            }
+                        ];
+                        // vm.option_table.data    = handleNames(response.data.data);
+                        // vm.pagination.page      = $stateParams.page || '1';
+                        // vm.pagination.limit     = $stateParams.limit || '10';
+                        // vm.total_page           = response.data.total_pages;
+                        // vm.total_items          = response.data.total;
                     },
                     function(err) {
                         logger.error(MESSAGE.error, err, '');

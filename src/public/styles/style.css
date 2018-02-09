@@ -105,7 +105,7 @@ a {
 .btn-primary.active.focus,
 .btn-primary.focus {
     color: #fff !important;
-    background-color: #26a69a !important;
+    background-color: #1464b1 !important;
 }
 .btn {
     border-radius: 0 !important;
@@ -268,6 +268,9 @@ button {
 .padding {
     padding: 8px;
 }
+.padding-lg {
+    padding: 15px;
+}
 
 .img-con {
     position: relative;
@@ -287,4 +290,15 @@ button {
 .geofence-map,
 #geofencing {
     height: 500px !important;
+}
+
+.div-border {
+    box-shadow: 0px 0px 5px 0px #a3a3a3;
+}
+
+.container-md-height {
+    min-height: 400px !important;
+}
+
+.panel-primary {
 }

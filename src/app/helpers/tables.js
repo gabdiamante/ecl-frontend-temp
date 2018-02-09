@@ -17,6 +17,27 @@ const TABLES = {
             { name: 'fullname', displayName: 'Name' }
         ],
         filter_fields: []
+    },
+    couriers: {
+        columnDefs: [
+            {
+                name: 'name',
+                displayName: 'Name',
+                cellTemplate: `<a ui-sref="row.entity.id">{{COL_FIELD}}</a>`
+            },
+            { name: 'contact', displayName: 'Contact' },
+            { name: 'zone', displayName: 'Zone' },
+            {
+                name: 'vehicle',
+                displayName: 'Assigned Vehicle',
+                cellTemplate: `<a ui-sref="row.entity.vehicle">{{COL_FIELD}}</a>`
+            },
+            {
+                name: 'updatedAt',
+                displayName: 'Date Updated',
+                cellTemplate: `{{ COL_FIELD | date:short }}`
+            }
+        ]
     }
 };
 
