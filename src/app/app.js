@@ -10,7 +10,7 @@ import angular from 'angular';
 import '@uirouter/angularjs';
 import 'angular-socket-io';
 import 'moment';
-import 'angular-permission'; 
+import 'angular-permission';
 
 (function() {
     'use strict';
@@ -28,6 +28,7 @@ import 'angular-permission';
         'btford.socket-io',
         require('angular-toastr'),
         require('angular-ui-bootstrap'),
-        require('checklist-model') 
+        require('ngMap'),
+        require('checklist-model')
     ]);
 })();

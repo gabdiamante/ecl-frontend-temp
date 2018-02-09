@@ -1,5 +1,104 @@
 <div class="content-view">
     <div class="col-md-12 sub-header">
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
-    </div> 
+	</div> 
+	
+	<div class="geofence top-margin-sm content col-md-12">
+		<div class="row">
+			<div class="col-md-4">
+				<form class="form-horizontal" ng-submit="vm.search(vm.search_key)">
+					<!-- <div class="form-group">
+						<div class="col-sm-12">
+							<div class="input-group has-feedback">
+								<input type="text" class="form-control" ng-model="vm.search_key" placeholder="Search" />
+								<i class="form-control-feedback glyphicon glyphicon-remove" ng-click="vm.clearField()" ng-if="vm.search_key"></i>
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="submit">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+					</div> -->
+					<div class="col-md-6 col-xs-12 pad-0 form-inline" > 
+						<div class="input-group" >
+							<input type="text" style="z-index:0;" class="form-control" placeholder="Search by Keyword" ng-model="vm.keyword" ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.keyword)" />
+							<span class="input-group-addon">
+								<i class="fa fa-search"></i>
+							</span>
+						</div> 
+					</div> 
+				</form>
+				
+			</div>
+			<div class="col-md-5">
+				<button class="btn btn-default pull-right" ng-show="!vm.showButton && !vm.showSaveChanges && !vm.zoneNotYetLoaded" ng-click="vm.addZone()">
+					<i class="fa fa-plus"></i>
+					Add Zone
+				</button>
+				
+				<div class="pull-right">
+					<button class="btn btn-default" ng-show="vm.showSaveChanges" ng-click="vm.cancel()">Cancel</button>
+					<button class="btn btn-default" ng-show="vm.showButton && !vm.notCompleted" ng-click="vm.clearPolygon()">
+						<i class="fa fa-times"></i>
+						Clear
+					</button>
+					<button class="btn btn-primary" ng-disabled="vm.notCompleted" ng-show="vm.showButton && !vm.showSaveChanges" ng-click="vm.savePolygon()">
+						<i class="fa fa-save"></i>
+						Save
+					</button>	
+
+					<button class="btn btn-primary" ng-show="vm.showSaveChanges" ng-disabled="vm.overlap" ng-click="vm.saveChanges(true)">
+						<i class="fa fa-save"></i>
+						Save Changes
+					</button>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<p class="pull-right">Total Cities: <label class="label label-primary " ng-bind="vm.zones.length"></label> </p>
+			</div>
+		</div>
+		<div class="row is-flex">
+			<div class="col-md-9 geofence-map">
+				<map zoom="11" style="height:100%;" default-style="false" class="top-margin-sm" center="{{vm.center_map_lat_lng}}" id="geofencing"
+					zoom-control-options="{position:'LEFT_TOP'}" street-view-control-options="{position:'LEFT_TOP'}">
+					<drawing-manager  on-overlaycomplete="vm.onMapOverlayCompleted('POST')" id="zonePolygon"
+					ng-if="vm.showDrawingManager" 
+					drawingControl="false"
+					drawingMode="polygon"
+					polygonOptions="{editable:true, draggable:false, strokeWeight: 2}">
+					</drawing-manager>
+					<shape ng-repeat="shape in vm.zones"  on-click="vm.updatePolygon(shape, $index)" id="{{$index}}" name="polygon" editable="{{shape.editable}}" stroke-color="{{vm.colors[$index]}}" stroke-opacity="1" path="{{shape.polygon}}"  paths="{{shape.polygon}}" center="{{shape.center}}"  stroke-weight="2" fill-color="{{vm.colors[$index]}}" 
+					on-mouseup="vm.onMouseUp(shape,$index)"></shape>
+				</map>	
+			</div>
+			<div class="col-md-3"> 
+				<div id="zone_container" class="top-margin-sm scroll scrollable-menu" >
+					<ul class="list-group list-scroll" style="">
+						<li id="{{shape.groupId}}" ng-click="vm.updatePolygon($event, shape, $index)" class="list-group-item scroll-items" ng-repeat="shape in vm.zones" >
+							<i ng-style="{ color: vm.colors[$index] }" class="fa fa-fw fa-map-marker" aria-hidden="true" ></i>
+							<span ng-bind="shape.name" uib-tooltip="{{shape.name}}" tooltip-placement="right" ></span>
+							<!-- <span ng-bind="' - ' + shape.zone_name" ></span>  -->
+							<span class="pull-right">
+
+								<button class="btn btn-success btn-xs" title="Details"  ng-show="shape.editable" ui-sref="app.zone-details({id: shape.id})">
+									<i class="fa fa-info-circle" aria-hidden="true"></i>
+								</button>
+								<button class="btn btn-warning btn-xs" title="Update"  ng-show="shape.editable" ng-click="vm.saveChanges(false)">
+									<i class="fa fa-edit"></i>
+								</button>
+								<button class="btn btn-danger btn-xs" title="Deactivate"  ng-show="shape.editable" ng-click="vm.deleteZone(shape, $index)">
+									<i class="fa fa-trash"></i>
+								</button>
+							</span> 
+						</li>
+						<li class="list-group-item text-center" ng-if="!vm.zones.length">
+							<span ng-bind-html="vm.isLoading | handlefetch : vm.titleHeader">No zones found</span>
+						</li>
+					</ul> 
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+

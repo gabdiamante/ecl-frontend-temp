@@ -1,0 +1,42 @@
+<div class="modal-header bg-primary">
+    <span class="text-uppercase lead">{{ vm.titleHeader }}</span>
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+</div>
+<div class="modal-body top-margin-sm">
+    <form name="nameForm">
+        <div class="clearfix">
+            <div class="form-group" >
+                <label for="uname">Code: </label>
+                <input type="text" ng-model="vm.data.zone_code" class="form-control" placeholder="Code" id="zone_code" name="zone_code" ng-required="true" >
+                <span class="text-red font-10" ng-show="nameForm.zone_code.$invalid && vm.submitted">*Required</span>
+            </div>
+            <div class="form-group">
+                <label for="zone_name">Name:</label>
+                <input type="text" ng-mouseleave="vm.alert();" ng-model="vm.data.zone_name"class="form-control" placeholder="Name" id="zone_name" name="zone_name" ng-required="true" >
+                <span class="text-red font-10" ng-show="nameForm.zone_name.$invalid && vm.submitted">*Required</span>
+            </div>
+            <!-- <div class="form-group">
+                <label for="zone_tags">Tags:</label>
+
+                <tags-input min-length="1" add-on-blur="false" enable-editing-last-tag="true" allow-leftover-text="false"  name="zone_tags" ng-model="vm.data.zone_tags" 
+                 placeholder="Fill and press enter to add alternative zone names" replace-spaces-with-dashes="false">
+                          <auto-complete source="vm.loadMemo($query)"
+                                         min-length="0"
+                                         debounceDelay="10"
+                                         load-on-focus="true"
+                                         load-on-empty="true"
+                                         max-results-to-show="32"
+
+                            ></auto-complete>
+                </tags-input>
+            </div> -->
+
+
+
+        </div>
+        <div class="text-center top-margin-sm clearfix">
+            <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; nameForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
+        </div>
+    </form>
+</div>

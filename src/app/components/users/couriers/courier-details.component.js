@@ -1,5 +1,5 @@
 import angular from 'angular';
-import GLOBAL from 'Helpers/global'; 
+import GLOBAL from 'Helpers/global';
 
 (function() {
     'use strict';
@@ -25,9 +25,7 @@ import GLOBAL from 'Helpers/global';
         QueryService,
         logger
     ) {
-        var vm          = this;
-        vm.titleHeader  = 'Courier Details';
-
-        
-    } 
+        var vm = this;
+        vm.titleHeader = 'Courier Details';
+    }
 })();
