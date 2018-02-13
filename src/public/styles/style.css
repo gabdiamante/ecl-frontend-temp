@@ -308,6 +308,7 @@ button {
 .bg-secondary { background-color:  #607d8b !important; }
 .bg-success { background-color:  #4caf4f !important; }
 .bg-danger { background-color:  #e51c23 !important; } 
+.large{ font-size:18px!important }
 
 /* is-flex for matching column heights */
 .row.is-flex {
