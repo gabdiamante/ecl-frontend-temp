@@ -71,9 +71,9 @@ const TABLES = {
     },
     courier_pickups : {
         columnDefs : [
-            { name: 'booking_code', displayName: 'BOOKING CODE', cellTemplate:`<a ui-sref="row.entity.id">{{COL_FIELD}}</a>` },
-            { name: 'shipper', displayName: 'SHPR' },
-            { name: 'consignee', displayName: 'CNEE' },
+            { name: 'booking_code', displayName: 'BOOKING CODE', cellTemplate:`<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>` },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'cneeName', displayName: 'CNEE' },
             { name: 'status', displayName: 'STATUS', cellTemplate:`<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>` }, 
             { name: 'checkin', displayName: 'CHECK IN', cellTemplate:`{{ COL_FIELD | date:'hh:mm' }}` }, 
             { name: 'checkout', displayName: 'CHECK OUT', cellTemplate:`{{ COL_FIELD | date:'hh:mm' }}` } 

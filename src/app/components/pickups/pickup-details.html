@@ -1,0 +1,96 @@
+<div class="content-view">
+    <div class="col-md-12 sub-header">
+        <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
+    </div> 
+    <div class="col-md-12 top-margin-sm">	
+        <button class="btn btn-primary btn-sm" back>
+            <i class="fa fa-reply"></i>
+            Back
+        </button> 
+        <div class="col-md-12">
+            <div class="row">
+                <ul class="list-group margin-top">
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Account Number : </span> 
+                        <span class="text-bold" ng-bind-html="vm.data.accountNumber | displaynone"></span>
+                    </li>
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Paymode : </span> 
+                        <span class="text-bold" ng-bind-html="vm.data.payMode | displaynone"></span>
+                    </li>
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">COD Amount : </span> 
+                        <span class="text-bold" ng-bind="vm.data.cod | currency:'&#x20B1;'"></span>
+                    </li>
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Total Charges : </span> 
+                        <span class="text-bold" ng-bind="vm.data.totalCharge | currency:'&#x20B1;'"></span>
+                    </li>
+                </ul>
+                <span class="large text-uppercase">Shipper</span>
+                <ul class="list-group margin-top">
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Name : </span> 
+                        <span class="text-bold" ng-bind-html="vm.data.shipperName | displaynone"></span>
+                    </li>
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Address : </span> 
+                        <span class="text-bold no-padding" ng-bind-html="vm.data.shipperAddress | displaynone"></span>
+                    </li>
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Contact : </span> 
+                        <span class="text-bold " ng-bind-html="vm.data.shipperContactNumber | handlePccDisplay"></span>
+                    </li>
+                </ul>
+                <ul class="list-group margin-top">
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Name : </span> 
+                        <span class="text-bold" ng-bind-html="vm.data.receiverName | displaynone" ng-class="{'text-light-grey text-italic':!vm.data.receiverName}"></span>
+                    </li>
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Relationship : </span> 
+                        <span class="text-bold" ng-bind-html="vm.data.relationship | displaynone" ng-class="{'text-light-grey text-italic' :!vm.data.relationship}"></span>
+                    </li>
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Receiver ID Type : </span> 
+                        <span class="text-bold" ng-bind-html="vm.data.receiverID_TYPE | displaynone" ng-class="{'text-light-grey text-italic':!vm.data.receiverID_TYPE}"></span>
+                    </li>
+                    <li class="list-group-item clearfix">
+                        <span class="col-md-3">Receiver ID Number : </span> 
+                        <span class="text-bold" ng-bind-html="vm.data.receiverID_NUMBER | displaynone" ng-class="{'text-light-grey text-italic':!vm.data.receiverID_NUMBER}"></span>
+                    </li>
+                    <div class="col-md-12 clearfix margin-top">
+                        <div class="col-md-6 clearfix" align="center">
+                            <p class=" " ng-if="!vm.data.shipperSignature">Receiver Signature:</p>
+                            <div class="img-placeholder relative-pos">
+                                <p class=" " ng-if="vm.data.shipperSignature ">Shipper Signature:</p>
+                                <span ng-if="!vm.data.cneeSignature &&!vm.data.receiverSignature && !vm.data.shipperSignature ">
+                                    <i class="fa fa-picture-o fa-5x "></i>
+                                    <p class="small">No image available</p>
+                                </span>
+                                <a ng-if="vm.data.cneeSignature || vm.data.receiverSignature || vm.data.shipperSignature" href="{{vm.data.cneeSignature || vm.data.receiverSignature || vm.data.shipperSignature }}" target="_blank">
+                                    <img class="" ng-src="{{vm.data.cneeSignature || vm.data.receiverSignature || vm.data.shipperSignature }}" alt="">
+                                </a>
+                            </div>
+                            <br />
+                        </div>
+    
+                        <div class="col-md-6 clearfix" align="center">
+                            <p class=" " >Receiver Photo:</p>
+                            <div class="img-placeholder relative-pos">
+                                <span ng-if="!vm.data.receiverPicture">
+                                    <i class="fa fa-picture-o fa-5x "></i>
+                                    <p class="small">No image available</p>
+                                </span>
+                                <a ng-if="vm.data.receiverPicture" href="{{vm.data.receiverPicture }}" target="_blank">
+                                    <img class="" ng-src="{{vm.data.receiverPicture }}" alt="">
+                                </a>
+                            </div>
+                            <br />
+                        </div>
+                    </div> 
+                </ul> 
+            </div>	
+        </div>
+    </div>
+</div>    

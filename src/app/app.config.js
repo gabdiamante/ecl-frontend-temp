@@ -168,6 +168,11 @@ import angular from 'angular';
                 component: 'pickupsDispatched'
             })
 
+            .state('app.pickup-details', {
+                url: 'pickup-details?id',
+                component: 'pickupDetails'
+            })
+
             // USERS
             .state('app.couriers', {
                 url: 'couriers?page&limit&search',
