@@ -1,12 +1,12 @@
 const TABLES = {
     users: {
         columnDefs: [
-            {
-                width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
-                cellTemplate:
-                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
-            },
+            // {
+            //     width: 50,
+            //     headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+            //     cellTemplate:
+            //         '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+            // },
             { name: 'id', displayName: 'ID', width: 50 },
             {
                 name: 'avatar',
@@ -22,7 +22,7 @@ const TABLES = {
     couriers: {
         columnDefs: [
             {
-                name: 'name',
+                name: 'fullname',
                 displayName: 'Name',
                 cellTemplate: `<a ui-sref="row.entity.id">{{COL_FIELD}}</a>`
             },
@@ -185,10 +185,10 @@ const TABLES = {
             {
                 name: 'airway_bill',
                 displayName: 'AWB CODE',
-                cellTemplate: `<a ui-sref="row.entity.id">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
-            { name: 'shipper', displayName: 'SHPR' },
-            { name: 'consignee', displayName: 'CNEE' },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'cneeName', displayName: 'CNEE' },
             {
                 name: 'status',
                 displayName: 'STATUS',
@@ -211,10 +211,10 @@ const TABLES = {
             {
                 name: 'booking_code',
                 displayName: 'BOOKING CODE',
-                cellTemplate: `<a ui-sref="row.entity.id">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
-            { name: 'shipper', displayName: 'SHPR' },
-            { name: 'consignee', displayName: 'CNEE' },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'cneeName', displayName: 'CNEE' },
             {
                 name: 'status',
                 displayName: 'STATUS',
@@ -229,6 +229,27 @@ const TABLES = {
                 name: 'checkout',
                 displayName: 'CHECK OUT',
                 cellTemplate: `{{ COL_FIELD | date:'hh:mm' }}`
+            }
+        ]
+    },
+    delivery_bad_address: {
+        columnDefs: [
+            {
+                name: 'airway_bill',
+                displayName: 'CODE',
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'cneeName', displayName: 'CNEE' },
+            {
+                name: 'cneeAddress',
+                displayName: 'CNEE ADDRESS',
+                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;<i class="fa fa-pencil"></i>`
+            },
+            {
+                name: 'reason',
+                displayName: 'REASON',
+                cellTemplate: `<span ng-bind="COL_FIELD | date:short"></span>`
             }
         ]
     }

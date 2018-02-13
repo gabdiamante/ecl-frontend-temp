@@ -306,7 +306,8 @@ button {
 .height-100 {
     height: 100%;
 }
-.radius-0 {
+.radius-0,
+ul li {
     border-radius: 0px !important;
 }
 .margin-0 {
@@ -329,6 +330,9 @@ button {
 }
 .bg-danger {
     background-color: #e51c23 !important;
+}
+.large {
+    font-size: 18px !important;
 }
 
 /* is-flex for matching column heights */
@@ -720,5 +724,25 @@ body.scroll::-webkit-scrollbar {
 }
 .low-opacity {
     opacity: 0.5;
+}
+/******************************************************/
+
+.img-placeholder {
+    width: 250px;
+    min-height: 250px;
+    border: #dddddd solid 5px;
+}
+.img-placeholder img[class] {
+    width: 100%;
+}
+.img-placeholder img {
+    object-fit: cover !important;
+    height: 250px;
+}
+
+.img-placeholder span {
+    position: absolute;
+    top: 35%;
+    left: 30%;
 }
 /******************************************************/

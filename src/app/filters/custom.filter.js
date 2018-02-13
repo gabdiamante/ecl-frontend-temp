@@ -36,7 +36,8 @@ import angular from 'angular';
         .filter('middleInitial', middleInitial)
         .filter('convertPcc', convertPcc)
         .filter('handleThreshold', handleThreshold)
-        .filter('handleStores', handleStores);
+        .filter('handleStores', handleStores)
+        .filter('handlePccDisplay', handlePccDisplay);
 
     function handlefetch($sce) {
         return function(input, text, text_muted) {
@@ -581,6 +582,18 @@ import angular from 'angular';
                 return $filter('filter')(data, { groupId: value }, true)[0][
                     key
                 ];
+        };
+    }
+
+    function handlePccDisplay($sce) {
+        return function(value, pre, suf) {
+            if (value) {
+                return value ? pre + value.substr(-10) : '';
+            } else {
+                return $sce.trustAsHtml(
+                    "<span class='text-italic low-opacity'>None</span>"
+                );
+            }
         };
     }
 })();

@@ -10,7 +10,7 @@ import angular from 'angular';
 import '@uirouter/angularjs';
 import 'angular-socket-io';
 import 'moment';
-import 'angular-permission'; 
+import 'angular-permission';
 import 'google-charts';
 import 'ngmap';
 
@@ -31,6 +31,7 @@ import 'ngmap';
         require('angular-toastr'),
         require('angular-ui-bootstrap'),
         'ngMap',
-        require('checklist-model')
+        require('checklist-model'),
+        require('angular-ui-mask')
     ]);
 })();

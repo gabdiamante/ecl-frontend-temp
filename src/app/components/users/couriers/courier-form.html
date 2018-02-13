@@ -1,0 +1,40 @@
+<div class="modal-header bg-primary">
+        <span class="text-uppercase lead" ng-cloak>
+            {{vm.titleHeader}}
+        </span>
+        <button  type="button" class="close"ng-click="vm.cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body margin-top">
+        <div class="col-md-12 ">
+            <form action="" name="courierForm" class="materialize" novalidate > 
+                <div class="col-md-12">
+                    <input  class="form-control text-uppercase" type="text" placeholder=" " ng-model="vm.data.firstName" name="firstName" required="">
+                    <label class="md-label">First Name </label>
+                    <span class="text-red small" ng-show="courierForm.firstName.$invalid && vm.submitted">* Required</span>
+                </div>
+                <div class="col-md-12">
+                    <input  class="form-control text-uppercase" 
+                            type="text" placeholder=" " ng-model="vm.data.lastName" name="lastName" required="">
+                    <label class="md-label">Last Name </label>
+                    <span class="text-red small" ng-show="courierForm.lastName.$invalid && vm.submitted">* Required</span>
+                </div>
+                <div class="col-md-12">
+                   <label class="control-label small text-theme">Contact Number</label>
+                  <input type="text" name="contact" placeholder=" " class="form-control" required="" ng-model="vm.data.contact" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_"	required/>
+                   <span class="small">(+63) 921-123-4567</span>
+                   <span class="text-red small" ng-show="courierForm.contact.$invalid && vm.submitted">* Required</span>
+               </div>
+                <div class="col-md-12" ng-if = "!vm.data.id">
+                    <input  class="form-control text-uppercase" type="text" name="username" placeholder=" " ng-model="vm.data.username" required="">
+                    <label class="md-label">Username</label>
+                    <span class="text-red small" ng-show="courierForm.username.$invalid && vm.submitted">* Required</span>
+                </div>
+            </form>
+        </div>
+    
+        <div class="text-center top-margin-sm clearfix">
+            <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; courierForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
+        </div>
+    </div>
+    
