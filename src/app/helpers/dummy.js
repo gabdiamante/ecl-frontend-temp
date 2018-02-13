@@ -5,32 +5,28 @@ const DUMMY = {
             id: 1,
             code: 'AXQ',
             name: 'AXQ HUB',
-            address:
-                'DURIAN PARK, 124 DOMESTIC RD BARANGAY 191 PASAY METRO MANILA',
+            address: 'DURIAN PARK, 124 DOMESTIC RD BARANGAY 191 PASAY METRO MANILA',
             updatedAt: new Date()
         },
         {
             id: 2,
             code: 'DBH',
             name: 'DB HUB',
-            address:
-                'HANGAR, GENERAL AVIATION AREA, MANILA DOMESTIC AIRPORT BARANGAY 191 PASAY CITY METRO MANILA',
+            address: 'HANGAR, GENERAL AVIATION AREA, MANILA DOMESTIC AIRPORT BARANGAY 191 PASAY CITY METRO MANILA',
             updatedAt: new Date()
         },
         {
             id: 3,
             code: 'DTN',
             name: 'DTN HUB',
-            address:
-                'KM 40 BANAWE DE STA.ROSA BLDG. F. REYES ST. PUROK 6 BRGY. BALIBAGO STA. ROSA, LAGUNA',
+            address: 'KM 40 BANAWE DE STA.ROSA BLDG. F. REYES ST. PUROK 6 BRGY. BALIBAGO STA. ROSA, LAGUNA',
             updatedAt: new Date()
         },
         {
             id: 4,
             code: 'LCX',
             name: 'LCX HUB',
-            address:
-                '306, VVS BUILDING, MULTINATIONAL AVENUE, MULTINATIONAL VILLAGE MOONWALK PARAÑAQUE METRO MANILA',
+            address: '306, VVS BUILDING, MULTINATIONAL AVENUE, MULTINATIONAL VILLAGE MOONWALK PARAÑAQUE METRO MANILA',
             updatedAt: new Date()
         },
         {
@@ -71,17 +67,18 @@ const DUMMY = {
                 payMode :'',
                 cod :'',
                 totalCharge :'',
-                shipperAddress :'',
-                shipperContactNumber :'',
-                cneeAddress :'',
-                cneeContactNumber :'',
-                receiverName :'',
-                relationship :'',
+                shipperAddress :'S & T Complex, Jamboree Road, Barangay Timugan, Los Baños, 4030 Laguna',
+                shipperContactNumber :'092759328938',
+                cneeAddress :'Jamboree Rd, Los Baños, Laguna',
+                cneeContactNumber :'09835837659',
+                receiverName :'Marvin Zabala',
+                relationship :'friend',
                 receiverID_TYPE :'',
                 receiverID_NUMBER :'',
                 shipperSignature :'',
                 receiverSignature :'',
-                receiverPicture :''
+                receiverPicture :'',
+                reason : 'Address no found'
             },
             { 
                 id:1, 
@@ -95,17 +92,18 @@ const DUMMY = {
                 payMode :'',
                 cod :'',
                 totalCharge :'',
-                shipperAddress :'',
-                shipperContactNumber :'',
-                cneeAddress :'',
-                cneeContactNumber :'',
-                receiverName :'',
-                relationship :'',
+                shipperAddress :'BPI- National Seed Quality Control Services R4A, BPI Compound, Los Baños, Laguna',
+                shipperContactNumber :'09385739200',
+                cneeAddress :'Regional Science and Technology Center, Jamboree Road, Timugan, Los Banos, Laguna, Los Baños, Laguna',
+                cneeContactNumber :'09165346281',
+                receiverName :'Abel Magana',
+                relationship :'colleague',
                 receiverID_TYPE :'',
                 receiverID_NUMBER :'',
                 shipperSignature :'',
                 receiverSignature :'',
-                receiverPicture :''
+                receiverPicture :'',
+                reason : 'Address no found'
             },
             { 
                 id:2, 
@@ -119,17 +117,18 @@ const DUMMY = {
                 payMode :'',
                 cod :'',
                 totalCharge :'',
-                shipperAddress :'',
-                shipperContactNumber :'',
-                cneeAddress :'',
-                cneeContactNumber :'',
-                receiverName :'',
-                relationship :'',
+                shipperAddress :'Barangay Lalakay, Los Baños, 4030 Laguna',
+                shipperContactNumber :'09168246138',
+                cneeAddress :'Lopez Avenue, Los Baños, 4030 Laguna',
+                cneeContactNumber :'09845718564',
+                receiverName :'Christan Tecson',
+                relationship :'friend',
                 receiverID_TYPE :'',
                 receiverID_NUMBER :'',
                 shipperSignature :'',
                 receiverSignature :'',
-                receiverPicture :''
+                receiverPicture :'',
+                reason : 'Address no found'
             },
             { 
                 id:3, 
@@ -143,17 +142,18 @@ const DUMMY = {
                 payMode :'',
                 cod :'',
                 totalCharge :'',
-                shipperAddress :'',
-                shipperContactNumber :'',
-                cneeAddress :'',
-                cneeContactNumber :'',
-                receiverName :'',
-                relationship :'',
+                shipperAddress :'3308 Lawin St., Rhoda Subd., Los Banos 4030, Los Baños, Laguna',
+                shipperContactNumber :'09164381687',
+                cneeAddress :'3427 Tikling Street Extension,, Rhoda Subdivision, Los Banos, 4030 Laguna',
+                cneeContactNumber :'09468124466',
+                receiverName :'Jomar Furiscal',
+                relationship :'Friend',
                 receiverID_TYPE :'',
                 receiverID_NUMBER :'',
                 shipperSignature :'',
                 receiverSignature :'',
-                receiverPicture :''
+                receiverPicture :'',
+                reason : 'Zone no found'
             }
         ],
         courier_pickups : [
