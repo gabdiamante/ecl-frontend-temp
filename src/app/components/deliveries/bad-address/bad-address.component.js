@@ -1,6 +1,7 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
+import DUMMY from 'Helpers/dummy';
 
 (function() {
     'use strict';
@@ -30,17 +31,19 @@ import TABLES from 'Helpers/tables';
         vm.titleHeader = 'Bad Address';
         vm.limit = '20';
         vm.page = '1';
-        vm.per_page = ['1', '20', '50', '100', '200'];
+        vm.per_page = ['10', '20', '50', '100', '200'];
         vm.items = { roleUserCheck: [] };
 
         vm.option_table = {
             emptyColumn: true,
+            defaultPagination: true,
+            hideSearchByKey: true,
             searchTemplate: true,
-            hideSearchByKey: true
+            tableSearch: true
         };
 
         vm.option_table.data = [];
-        vm.option_table.columnDefs = TABLES.users.columnDefs;
+        vm.option_table.columnDefs = TABLES.delivery_bad_address.columnDefs;
 
         getData();
 
@@ -57,7 +60,8 @@ import TABLES from 'Helpers/tables';
 
             QueryService.query(request).then(
                 function(response) {
-                    vm.option_table.data = handleNames(response.data.data);
+                    vm.option_table.data = DUMMY.users.courier_deliveries;
+                    // vm.option_table.data = handleNames(response.data.data);
                 },
                 function(err) {
                     logger.error(MESSAGE.error, err, '');

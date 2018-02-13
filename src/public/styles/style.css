@@ -300,7 +300,7 @@ button {
 .div-border { box-shadow: 0px 0px 5px 0px #a3a3a3; } 
 .div-border-solid { border: solid 1px #cfcdcd; } 
 .height-100 { height: 100%; }
-.radius-0 { border-radius: 0px !important; }
+.radius-0, ul li { border-radius: 0px !important; }
 .margin-0 { margin: 0px; }
 .relative-pos { position: relative; } 
 .small-box { min-height: 100px !important; } 
@@ -308,6 +308,7 @@ button {
 .bg-secondary { background-color:  #607d8b !important; }
 .bg-success { background-color:  #4caf4f !important; }
 .bg-danger { background-color:  #e51c23 !important; } 
+.large{ font-size:18px!important }
 
 /* is-flex for matching column heights */
 .row.is-flex {
@@ -419,4 +420,33 @@ body.scroll::-webkit-scrollbar {
     -webkit-box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
 }
+
+.text-italic {
+    font-style: italic;
+}
+.low-opacity {
+  opacity: 0.5;
+}
+
+.img-placeholder {
+	width: 250px;
+	min-height: 250px;
+	border: #dddddd solid 5px;
+
+}
+.img-placeholder img[class] {
+	width: 100%;
+}
+.img-placeholder img {
+ object-fit:cover !important;
+	height: 250px;
+}
+
+.img-placeholder span {
+	position: absolute;
+	top: 35%;
+	left: 30%;
+	
+}
+
 /******************************************************/ 

@@ -31,6 +31,7 @@ import 'ngmap';
         require('angular-toastr'),
         require('angular-ui-bootstrap'),
         'ngMap',
-        require('checklist-model')
+        require('checklist-model'),
+        require('angular-ui-mask')
     ]);
 })();
