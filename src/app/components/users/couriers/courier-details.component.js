@@ -1,6 +1,7 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global'; 
 import TABLES from 'Helpers/tables';
+import DUMMY from 'Helpers/dummy';
 import {GoogleCharts} from 'google-charts';
 
 (function() {
@@ -13,22 +14,27 @@ import {GoogleCharts} from 'google-charts';
     });
 
     CourierDetailsCtrl.$inject = [
+        '$filter',
         '$scope',
         '$state',
+        '$stateParams',
         'ModalService',
         'QueryService',
         'logger'
     ];
 
     function CourierDetailsCtrl(
+        $filter,
         $scope,
         $state,
+        $stateParams,
         ModalService,
         QueryService,
         logger
     ) {
         var vm          = this;
         vm.titleHeader  = 'Courier Details';
+        vm.per_page     = ['10', '20', '50', '100', '200'];
         vm.loading      = false;
         vm.option_table = { 
             emptyColumn: true,
@@ -50,30 +56,20 @@ import {GoogleCharts} from 'google-charts';
             ['Unsuccessful', 22],
             ['Successful', 30]
         ];
-        vm.courier_deliveries = [
-            { airway_bill:'awb-001', shipper:'shipper-001', consignee:'cnee-001', status:'successful', checkin:new Date(), checkout:new Date() },
-            { airway_bill:'awb-002', shipper:'shipper-002', consignee:'cnee-002', status:'failed', checkin:new Date(), checkout:new Date() },
-            { airway_bill:'awb-003', shipper:'shipper-003', consignee:'cnee-003', status:'successful', checkin:new Date(), checkout:new Date() },
-            { airway_bill:'awb-004', shipper:'shipper-004', consignee:'cnee-004', status:'failed', checkin:new Date(), checkout:new Date() }
-        ];
-        vm.courier_pickups = [
-            { booking_code:'book-001', shipper:'shipper-001', consignee:'cnee-001', status:'successful', checkin:new Date(), checkout:new Date() },
-            { booking_code:'book-002', shipper:'shipper-002', consignee:'cnee-002', status:'failed', checkin:new Date(), checkout:new Date() },
-            { booking_code:'book-003', shipper:'shipper-003', consignee:'cnee-003', status:'successful', checkin:new Date(), checkout:new Date() },
-            { booking_code:'book-004', shipper:'shipper-004', consignee:'cnee-004', status:'failed', checkin:new Date(), checkout:new Date() },
-            { booking_code:'book-005', shipper:'shipper-005', consignee:'cnee-005', status:'failed', checkin:new Date(), checkout:new Date() },
-            { booking_code:'book-006', shipper:'shipper-006', consignee:'cnee-006', status:'successful', checkin:new Date(), checkout:new Date() }
-        ];
-        vm.option_table.columnDefs = TABLES.courier_deliveries.columnDefs;  
-        vm.option_table.data = vm.courier_deliveries;
+        vm.courier_deliveries       = DUMMY.users.courier_deliveries;
+        vm.courier_pickups          = DUMMY.users.courier_pickups;
+        vm.option_table.columnDefs  = TABLES.courier_deliveries.columnDefs;  
+        vm.option_table.data        = vm.courier_deliveries;
 
-        vm.selectTab    = selectTab;
-        vm.getCourier   = getCourier;
+        vm.selectTab        = selectTab;
+        vm.getCourier       = getCourier;
+        vm.updateCourier    = updateCourier;
 
         init();
 
         function init () {
-
+            vm.courier = $filter('filter')(DUMMY.users.couriers, { id:$stateParams.id })[0];
+            console.log(vm.courier);
         }
 
         GoogleCharts.load(drawCharts);
@@ -87,9 +83,36 @@ import {GoogleCharts} from 'google-charts';
             getCourier(str);
         }
 
-        function getCourier (str) {
+        function getCourier (str) { 
             vm.option_table.columnDefs = TABLES[str].columnDefs;
             vm.option_table.data = vm[str];
         }
+
+        function updateCourier (data) {
+            var modal = { header: 'Update Courier' };
+            var request = {
+                method: 'PUT',
+                body: data,
+                params: false,
+                hasFile: false,
+                route: { [vm.route_name]: '' },
+                cache_string: vm.route_name
+            };
+
+            ModalService
+                .form_modal(request, modal, 'courierForm', 'md', '')
+                .then(function (response) {
+                    if (response) {
+                        vm.courier = (response);
+                    }
+                }, function (error) {
+                    logger.error(error.data.message);
+                });
+        }
+
+        window.onresize = function () {
+            GoogleCharts.load(drawCharts);
+        };
+        
     } 
 })();

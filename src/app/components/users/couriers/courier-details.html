@@ -6,11 +6,11 @@
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <button class="btn btn-primary">
-                    <i class="fa fa-chevron-circle-left"></i> Back
+                    <i class="fa fa-reply"></i> Back
                 </button>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6" align="right">
-                <button class="btn btn-primary">
+                <button type="button" class="btn btn-primary" >
                     <i class="fa fa-calendar"></i> Select Date
                 </button>
             </div>    
@@ -19,10 +19,17 @@
         <div class="row is-flex">
             <div class="col-md-3 col-sm-4 col-xs-12 top-margin-sm relative-pos">
                 <div class="col-md-12 div-border padding-lg height-100">
+                    <div class="col-md-12" align="right">
+                        <div class="row">
+                            <button class="btn btn-default btn-xs" ng-click="vm.updateCourier(vm.courier)">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </div>
+                    </div> 
                     <div class="col-md-12" align="center">
                         <div class="row">
                             <i class="fa fa-user-circle fa-5x"></i> 
-                            <h3>Ruru Magana</h3>
+                            <h3 ng-bind="vm.courier.firstName + ' ' + vm.courier.lastName"></h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -31,25 +38,25 @@
                             <i class="fa fa-id-card"></i>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
-                            <span>RMAGANA</span>
+                            <span ng-bind="vm.courier.username"></span>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
                             <i class="fa fa-phone"></i>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
-                            <span>+639284765882</span>
+                            <span ng-bind-html="vm.courier.contact | handlePccDisplay : '+63'"></span>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
                             <i class="fa fa-car"></i>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
-                            <span>ABE 999</span>
+                            <span ng-bind="vm.courier.vehicle"></span>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
                             <i class="fa fa-map"></i>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
-                            <span>zone-001</span>
+                            <span ng-bind="vm.courier.zone"></span>
                         </div>
                     </div>
                 </div> 
@@ -97,10 +104,10 @@
                                 <div class="col-md-6 col-sm-12 col-sx-12 top-margin-sm">
                                     <div class="div-border-solid medium-box">
                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                            <h4>DELIVERIES</h4>
+                                            <h4><strong>DELIVERIES</strong></h4>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6" align="right">
-                                            <h4>100</h4>
+                                            <h4><strong>100</strong></h4>
                                         </div>
                                         <div class="clearfix"></div>
                                         <div class="padding-lg" id="delivery_chart"></div>
@@ -137,10 +144,10 @@
                                 <div class="col-md-6 col-sm-12 col-sx-12 top-margin-sm">
                                     <div class="div-border-solid medium-box">
                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                            <h4>PICKUPS</h4>
+                                            <h4><strong>PICKUPS</strong></h4>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6" align="right">
-                                            <h4>100</h4>
+                                            <h4><strong>100</strong></h4>
                                         </div>
                                         <div class="clearfix"></div>
                                         <div class="padding-lg" id="pickup_chart"></div>

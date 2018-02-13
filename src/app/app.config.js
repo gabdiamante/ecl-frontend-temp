@@ -147,6 +147,11 @@ import angular from 'angular';
                 component: 'deliveriesDispatched'
             })
 
+            .state('app.delivery-details', {
+                url: 'delivery-details?id',
+                component: 'deliveryDetails'
+            })
+
             //PICKUPS
             .state('app.pickups-bad-address', {
                 url: 'pickups/bad-address',
