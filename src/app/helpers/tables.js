@@ -56,27 +56,180 @@ const TABLES = {
                 name: 'updatedAt',
                 displayName: 'Date',
                 cellTemplate: `{{ COL_FIELD | date:short}}`
+            },
+            {
+                name: 'action',
+                displayName: ' ',
+                cellTemplate: `<div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
+                                <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+                                    <li role="menuitem">
+                                        <a ui-sref="app.hub-details({ id: row.entity.id })">
+                                            <i class="fa fa-info-circle"></i> &nbsp;Details
+                                        </a>
+                                    </li>
+                                    <li role="menuitem" >
+                                        <a ng-click="vm.handleUpdateItem(row.entity)">
+                                            <i class="fa fa-edit"></i> &nbsp;Update
+                                        </a>
+                                    </li> 
+                                    <li class="divider" ></li>
+                                    <li role="menuitem">
+                                        <a ng-click="vm.handleDeactivateItem(row.entity)">
+                                            <i class="fa fa-ban"></i>
+                                            Deactivate
+                                        </a>
+                                    </li> 
+                                </ul>
+                            </div>`
             }
         ]
     },
-    courier_deliveries : {
-        columnDefs : [
-            { name: 'airway_bill', displayName: 'AWB CODE', cellTemplate:`<a ui-sref="row.entity.id">{{COL_FIELD}}</a>` },
-            { name: 'shipper', displayName: 'SHPR' },
-            { name: 'consignee', displayName: 'CNEE' },
-            { name: 'status', displayName: 'STATUS', cellTemplate:`<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>` }, 
-            { name: 'checkin', displayName: 'CHECK IN', cellTemplate:`{{ COL_FIELD | date:'HH:mm' }}` }, 
-            { name: 'checkout', displayName: 'CHECK OUT', cellTemplate:`{{ COL_FIELD | date:'HH:mm' }}` } 
+    distribution_centers: {
+        columnDefs: [
+            {
+                name: 'code',
+                cellTemplate: `<a ui-sref="app.dc-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'name' },
+            {
+                name: 'address',
+                cellTemplate: `<span ng-bind="COL_FIELD | titlecase"></span>`
+            },
+            {
+                name: 'hub_name',
+                displayName: 'Hub'
+            },
+            {
+                name: 'zone_name',
+                displayName: 'Zone'
+            },
+            {
+                name: 'action',
+                displayName: ' ',
+                cellTemplate: `<div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
+                                <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+                                    <li role="menuitem">
+                                        <a ui-sref="app.dc-details({ id: row.entity.id })">
+                                            <i class="fa fa-info-circle"></i> &nbsp;Details
+                                        </a>
+                                    </li>
+                                    <li role="menuitem" >
+                                        <a ng-click="vm.handleUpdateItem(row.entity)">
+                                            <i class="fa fa-edit"></i> &nbsp;Update
+                                        </a>
+                                    </li> 
+                                    <li class="divider" ></li>
+                                    <li role="menuitem">
+                                        <a ng-click="vm.handleDeactivateItem(row.entity)">
+                                            <i class="fa fa-ban"></i>
+                                            Deactivate
+                                        </a>
+                                    </li> 
+                                </ul>
+                            </div>`
+            }
         ]
     },
-    courier_pickups : {
-        columnDefs : [
-            { name: 'booking_code', displayName: 'BOOKING CODE', cellTemplate:`<a ui-sref="row.entity.id">{{COL_FIELD}}</a>` },
+    vehicles: {
+        columnDefs: [
+            {
+                name: 'plate_number',
+                cellTemplate: `<a ui-sref="app.vehicle-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'model' },
+            { name: 'max_weight' },
+            { name: 'max_volume' },
+            {
+                name: 'updated',
+                displayName: 'Date',
+                cellTemplate: `{{ COL_FIELD | date:short}}`
+            },
+            {
+                name: 'action',
+                displayName: ' ',
+                cellTemplate: `<div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
+                                <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+                                    <li role="menuitem">
+                                        <a ui-sref="app.vehicle-details({ id: row.entity.id })">
+                                            <i class="fa fa-info-circle"></i> &nbsp;Details
+                                        </a>
+                                    </li>
+                                    <li role="menuitem" >
+                                        <a ng-click="vm.handleUpdateItem(row.entity)">
+                                            <i class="fa fa-edit"></i> &nbsp;Update
+                                        </a>
+                                    </li> 
+                                    <li class="divider" ></li>
+                                    <li role="menuitem">
+                                        <a ng-click="vm.handleDeactivateItem(row.entity)">
+                                            <i class="fa fa-ban"></i>
+                                            Deactivate
+                                        </a>
+                                    </li> 
+                                </ul>
+                            </div>`
+            }
+        ]
+    },
+    courier_deliveries: {
+        columnDefs: [
+            {
+                name: 'airway_bill',
+                displayName: 'AWB CODE',
+                cellTemplate: `<a ui-sref="row.entity.id">{{COL_FIELD}}</a>`
+            },
             { name: 'shipper', displayName: 'SHPR' },
             { name: 'consignee', displayName: 'CNEE' },
-            { name: 'status', displayName: 'STATUS', cellTemplate:`<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>` }, 
-            { name: 'checkin', displayName: 'CHECK IN', cellTemplate:`{{ COL_FIELD | date:'hh:mm' }}` }, 
-            { name: 'checkout', displayName: 'CHECK OUT', cellTemplate:`{{ COL_FIELD | date:'hh:mm' }}` } 
+            {
+                name: 'status',
+                displayName: 'STATUS',
+                cellTemplate: `<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>`
+            },
+            {
+                name: 'checkin',
+                displayName: 'CHECK IN',
+                cellTemplate: `{{ COL_FIELD | date:'HH:mm' }}`
+            },
+            {
+                name: 'checkout',
+                displayName: 'CHECK OUT',
+                cellTemplate: `{{ COL_FIELD | date:'HH:mm' }}`
+            }
+        ]
+    },
+    courier_pickups: {
+        columnDefs: [
+            {
+                name: 'booking_code',
+                displayName: 'BOOKING CODE',
+                cellTemplate: `<a ui-sref="row.entity.id">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipper', displayName: 'SHPR' },
+            { name: 'consignee', displayName: 'CNEE' },
+            {
+                name: 'status',
+                displayName: 'STATUS',
+                cellTemplate: `<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>`
+            },
+            {
+                name: 'checkin',
+                displayName: 'CHECK IN',
+                cellTemplate: `{{ COL_FIELD | date:'hh:mm' }}`
+            },
+            {
+                name: 'checkout',
+                displayName: 'CHECK OUT',
+                cellTemplate: `{{ COL_FIELD | date:'hh:mm' }}`
+            }
         ]
     }
 };

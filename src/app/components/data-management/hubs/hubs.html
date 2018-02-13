@@ -2,6 +2,10 @@
     <div class="col-md-12 sub-header">
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
+    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handlePostItem()" >
+            <i  class="fa fa-plus fa-lg text-white" ></i>
+    </button>
+
     <div class="col-md-12">
             <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
     </div>

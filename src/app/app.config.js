@@ -194,14 +194,9 @@ import angular from 'angular';
                 component: 'personnels'
             })
 
-            .state('app.distribution-centers', {
-                url: 'distribution-centers',
-                component: 'dcs'
-            })
-
             //DATA-MANAGEMENT
             .state('app.hubs', {
-                url: 'hubs',
+                url: 'hubs?size&deleted',
                 component: 'hubs'
             })
 
@@ -210,9 +205,24 @@ import angular from 'angular';
                 component: 'hubDetails'
             })
 
+            .state('app.distribution-centers', {
+                url: 'distribution-centers?size&deleted',
+                component: 'dcs'
+            })
+
+            .state('app.dc-details', {
+                url: 'dc-details?id',
+                component: 'dcsDetails'
+            })
+
             .state('app.vehicles', {
-                url: 'vehicles',
+                url: 'vehicles?size&deleted',
                 component: 'vehicles'
+            })
+
+            .state('app.vehicle-details', {
+                url: 'vehicle-details?id',
+                component: 'vehicleDetails'
             })
 
             .state('app.zones', {
