@@ -136,6 +136,8 @@ var jsts = require('jsts');
                             shape.overlay,
                             vm.postNewGeofenceMap.shapes[key]
                         );
+
+                        console.log('overlayClickListener', shape);
                         if (shape.overlay !== vm.geofenceMap.shapes[key]) {
                             detectOverlap(wkt[0], wkt[1], function(res) {
                                 if (res) {
@@ -158,6 +160,9 @@ var jsts = require('jsts');
 
             for (var key in vm.geofenceMap.shapes) {
                 var wkt = checkPolygon(e.overlay, vm.geofenceMap.shapes[key]);
+
+                console.log('onMapOverlayCompleted wkt', wkt);
+
                 if (e.overlay !== vm.geofenceMap.shapes[key]) {
                     detectOverlap(wkt[0], wkt[1], function(res) {
                         if (res) {
@@ -306,10 +311,13 @@ var jsts = require('jsts');
                         if (prop == vm.shapeIndex) {
                             shape.overlay = vm.geofenceMaps.shapes[prop];
                             for (var key in vm.geofenceMaps.shapes) {
+                                console.log(vm.zones[key], data); // determine dc hub
+
                                 var wkt = checkPolygon(
                                     shape.overlay,
                                     vm.geofenceMaps.shapes[key]
                                 );
+
                                 if (
                                     shape.overlay !== vm.geofenceMap.shapes[key]
                                 ) {
@@ -497,9 +505,9 @@ var jsts = require('jsts');
                     // else
                     //     $anchorScroll();
 
-                    var container = document.getElementById('zone_container');
-                    var scrollTo = document.getElementById(shape.groupId);
-                    container.scrollTop = scrollTo.offsetTop - 22; // adjust 22 pixels
+                    // var container = document.getElementById('zone_container');
+                    // var scrollTo = document.getElementById(shape.groupId);
+                    // container.scrollTop = scrollTo.offsetTop - 22; // adjust 22 pixels
 
                     if (
                         !(
@@ -602,11 +610,11 @@ var jsts = require('jsts');
                 method: 'GET',
                 body: false,
                 // token   : vm.user.token,
-                params: { limit: 999999999 },
+                params: { page: 1, limit: 999999999 },
                 hasFile: false,
                 cache: false,
                 // route   : {[vm.route_name]:'' }
-                route: { 'data-management': 'store_group' }
+                route: { zone: '' }
             };
 
             if (key) req.params.search_value = key;
@@ -616,7 +624,10 @@ var jsts = require('jsts');
                     function(response) {
                         console.log('z', response);
                         getMap();
-                        vm.zones = response.data.data.items;
+
+                        vm.zones = response.data.data.items || [];
+                        filterStringPolygon(vm.zones);
+
                         vm.polygonsCopy = angular.copy(vm.zones);
                         vm.total = response.data.data.total;
                         // if (update_view_center_latlng)
@@ -669,6 +680,12 @@ var jsts = require('jsts');
 
         function confirmation(content) {
             return ModalService.confirm_modal(content);
+        }
+
+        function filterStringPolygon(zones) {
+            for (let z = 0; z < zones.length; z++) {
+                zones[z].polygon = JSON.parse(zones[z].string_polygon);
+            }
         }
     }
 })();

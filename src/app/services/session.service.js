@@ -15,13 +15,7 @@ import angular from 'angular';
 
         // This function saves user data into browser cookies
         this.saveUser = function(data) {
-            $cookies.putObject('user', {
-                id: data.id,
-                fullname: data.fullName,
-                phoneNumber: data.phoneNumber,
-                email: data.email,
-                token: data.token
-            });
+            $cookies.putObject('user', data);
         };
 
         this.getUser = function() {

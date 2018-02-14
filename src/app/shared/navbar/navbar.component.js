@@ -65,6 +65,9 @@ import angular from 'angular';
                     console.error('logout failed');
                     console.log(response);
 
+                    // Clear the user in session
+                    SessionService.clearUser();
+
                     // Go to login page
                     $state.go('login');
                 });
