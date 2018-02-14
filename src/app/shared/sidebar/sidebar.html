@@ -20,17 +20,17 @@
         <div class="treeview-menu" ng-class="{'show':vm.deliveriesMenu, 'hide':!vm.deliveriesMenu}">
             <ul class="nav">
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.deliveries-bad-address" class="bar-item button">
+                    <a ui-sref="app.deliveries-bad_address({view:'bad_address'})" class="bar-item button">
                         <strong><i class="fa fa-exclamation-triangle"></i>&nbsp; Bad Address</strong>
                     </a>                    
                 </li>
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.deliveries-staging" class="bar-item button">
+                    <a ui-sref="app.deliveries-staging({view:'staging'})" class="bar-item button">
                         <strong><i class="fa fa-circle-o-notch"></i>&nbsp; Staging</strong>
                     </a>                    
                 </li>
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.deliveries-dispatched" class="bar-item button">
+                    <a ui-sref="app.deliveries-dispatched({view:'dispatched'})" class="bar-item button">
                         <strong><i class="fa fa-paper-plane"></i>&nbsp; Dispatched</strong>
                     </a>                    
                 </li>
@@ -44,17 +44,17 @@
         <div class="treeview-menu" ng-class="{'show':vm.pickupsMenu, 'hide':!vm.pickupsMenu}">
             <ul class="nav">
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.pickups-bad-address" class="bar-item button">
+                    <a ui-sref="app.pickups-bad_address({view:'bad_address'})" class="bar-item button">
                         <strong><i class="fa fa-exclamation-triangle"></i>&nbsp; Bad Address</strong>
                     </a>                    
                 </li>
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.pickups-staging" class="bar-item button">
+                    <a ui-sref="app.pickups-staging({view:'staging'})" class="bar-item button">
                         <strong><i class="fa fa-circle-o-notch"></i>&nbsp; Staging</strong>
                     </a>                    
                 </li>
                 <li ui-sref-active="active" class="">
-                    <a ui-sref="app.pickups-dispatched" class="bar-item button">
+                    <a ui-sref="app.pickups-dispatched({view:'dispatched'})" class="bar-item button">
                         <strong><i class="fa fa-paper-plane"></i>&nbsp; Dispatched</strong>
                     </a>                    
                 </li>

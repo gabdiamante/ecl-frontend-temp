@@ -132,18 +132,18 @@ import angular from 'angular';
             })
 
             //DELIVERIES
-            .state('app.deliveries-bad-address', {
-                url: 'deliveries/bad-address',
+            .state('app.deliveries-bad_address', {
+                url: 'deliveries_v1?view&page&limit',
                 component: 'deliveriesBadAddress'
             })
 
             .state('app.deliveries-staging', {
-                url: 'deliveries/staging',
+                url: 'deliveries_v2?view&page&limit',
                 component: 'deliveriesStaging'
             })
 
             .state('app.deliveries-dispatched', {
-                url: 'deliveries/dispatched',
+                url: 'deliveries_v3?view&page&limit',
                 component: 'deliveriesDispatched'
             })
 
@@ -153,18 +153,18 @@ import angular from 'angular';
             })
 
             //PICKUPS
-            .state('app.pickups-bad-address', {
-                url: 'pickups/bad-address',
+            .state('app.pickups-bad_address', {
+                url: 'pickups_v1?view&page&limit',
                 component: 'pickupsBadAddress'
             })
 
             .state('app.pickups-staging', {
-                url: 'pickups/staging',
+                url: 'pickups_v2?view&page&limit',
                 component: 'pickupsStaging'
             })
 
             .state('app.pickups-dispatched', {
-                url: 'pickups/dispatched',
+                url: 'pickups_v3?view&page&limit',
                 component: 'pickupsDispatched'
             })
 

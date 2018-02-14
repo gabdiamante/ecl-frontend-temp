@@ -256,7 +256,8 @@ tr.header_input th {
     padding: 10px !important;
 }
 td,
-button {
+button,
+div {
     outline: none !important;
 }
 .top-margin-sm {
@@ -297,6 +298,10 @@ button {
     border-color: #a3a3a3 !important;
 }
 
+.panel-group .panel + .panel {
+    margin-top: 0px !important;
+}
+
 .div-border {
     box-shadow: 0px 0px 5px 0px #a3a3a3;
 }
@@ -307,6 +312,7 @@ button {
     height: 100%;
 }
 .radius-0,
+.panel-group .panel,
 ul li {
     border-radius: 0px !important;
 }
@@ -693,6 +699,9 @@ body.scroll::-webkit-scrollbar {
     padding-right: 0px !important;
     padding-bottom: 0px !important;
     padding-left: 0px !important;
+}
+.accord .panel-body {
+    padding: 0px 15px !important; 
 }
 /******************************************************/
 
