@@ -64,7 +64,7 @@ import DUMMY from 'Helpers/dummy';
                 method: 'GET',
                 body: item,
                 params: {
-                    per_page: 10,
+                    limit: 10,
                     page: 1
                 },
                 hasFile: false,

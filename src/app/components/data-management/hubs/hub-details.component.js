@@ -30,19 +30,48 @@ import DUMMY from 'Helpers/dummy';
     ) {
         var vm = this;
         vm.titleHeader = 'Hub Details';
+        vm.route_name = 'site';
         vm.handleUpdateItem = handleUpdateItem;
 
         vm.$onInit = function() {
             vm.TPLS = 'hubFormModal';
 
-            vm.item_details =
-                $filter('filter')(
-                    DUMMY.sites,
-                    { id: parseInt($state.params.id), type: 'HUB' },
-                    true
-                )[0] || {};
+            getDetails();
+
+            // vm.item_details =
+            //     $filter('filter')(
+            //         DUMMY.sites,
+            //         { id: parseInt($state.params.id), type: 'HUB' },
+            //         true
+            //     )[0] || {};
             console.log($state.params.id, vm.item_details);
         };
+
+        function getDetails() {
+            vm.loading = true;
+            var request = {
+                method: 'GET',
+                body: false,
+                params: false,
+                hasFile: false,
+                route: { [vm.route_name]: $state.params.id },
+                cache: false
+            };
+
+            QueryService.query(request)
+                .then(
+                    function(response) {
+                        console.log('hub', response);
+                        vm.item_details = response.data.data.items[0];
+                    },
+                    function(err) {
+                        //logger.error(MESSAGE.error, err, '');
+                    }
+                )
+                .finally(function() {
+                    vm.loading = false;
+                });
+        }
 
         function handleUpdateItem(item) {
             var modal = {
@@ -52,14 +81,11 @@ import DUMMY from 'Helpers/dummy';
             };
 
             var request = {
-                method: 'GET',
+                method: 'PUT',
                 body: item,
-                params: {
-                    per_page: 10,
-                    page: 1
-                },
+                params: false,
                 hasFile: false,
-                route: { users: '' },
+                route: { [vm.route_name]: item.id },
                 cache: false
             };
 

@@ -49,12 +49,11 @@ const TABLES = {
             },
             { name: 'name' },
             {
-                name: 'address',
-                cellTemplate: `<span ng-bind="COL_FIELD | titlecase"></span>`
+                name: 'address'
             },
             {
-                name: 'updatedAt',
-                displayName: 'Date',
+                name: 'updated',
+                displayName: 'Date Updated',
                 cellTemplate: `{{ COL_FIELD | date:short}}`
             },
             {
@@ -64,7 +63,7 @@ const TABLES = {
                                 <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-v"></i>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+                                <ul ng-if="vm.deleted != 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
                                     <li role="menuitem">
                                         <a ui-sref="app.hub-details({ id: row.entity.id })">
                                             <i class="fa fa-info-circle"></i> &nbsp;Details
@@ -83,6 +82,14 @@ const TABLES = {
                                         </a>
                                     </li> 
                                 </ul>
+                                <ul ng-if="vm.deleted == 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+                                    <li role="menuitem">
+                                        <a ng-click="vm.handleReactivateItem(row.entity)">
+                                            <i class="fa fa-edit"></i>
+                                            Reactivate
+                                        </a>
+                                    </li> 
+                                </ul>
                             </div>`
             }
         ]
@@ -95,15 +102,14 @@ const TABLES = {
             },
             { name: 'name' },
             {
-                name: 'address',
-                cellTemplate: `<span ng-bind="COL_FIELD | titlecase"></span>`
+                name: 'address'
             },
             {
-                name: 'hub_name',
+                name: 'hub_code',
                 displayName: 'Hub'
             },
             {
-                name: 'zone_name',
+                name: 'zone_code',
                 displayName: 'Zone'
             },
             {
@@ -113,7 +119,7 @@ const TABLES = {
                                 <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-v"></i>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+                                <ul ng-if="vm.deleted != 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
                                     <li role="menuitem">
                                         <a ui-sref="app.dc-details({ id: row.entity.id })">
                                             <i class="fa fa-info-circle"></i> &nbsp;Details
@@ -129,6 +135,14 @@ const TABLES = {
                                         <a ng-click="vm.handleDeactivateItem(row.entity)">
                                             <i class="fa fa-ban"></i>
                                             Deactivate
+                                        </a>
+                                    </li> 
+                                </ul>
+                                <ul ng-if="vm.deleted == 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+                                    <li role="menuitem">
+                                        <a ng-click="vm.handleReactivateItem(row.entity)">
+                                            <i class="fa fa-edit"></i>
+                                            Reactivate
                                         </a>
                                     </li> 
                                 </ul>
@@ -157,7 +171,7 @@ const TABLES = {
                                 <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-v"></i>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+                                <ul ng-if="vm.deleted != 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
                                     <li role="menuitem">
                                         <a ui-sref="app.vehicle-details({ id: row.entity.id })">
                                             <i class="fa fa-info-circle"></i> &nbsp;Details
@@ -173,6 +187,14 @@ const TABLES = {
                                         <a ng-click="vm.handleDeactivateItem(row.entity)">
                                             <i class="fa fa-ban"></i>
                                             Deactivate
+                                        </a>
+                                    </li> 
+                                </ul>
+                                <ul ng-if="vm.deleted == 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+                                    <li role="menuitem">
+                                        <a ng-click="vm.handleReactivateItem(row.entity)">
+                                            <i class="fa fa-edit"></i>
+                                            Reactivate
                                         </a>
                                     </li> 
                                 </ul>

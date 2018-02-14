@@ -51,20 +51,44 @@ import DUMMY from 'Helpers/dummy';
             console.log(vm.data);
             vm.storeData = [];
 
-            getHubs();
+            getSites();
             getType();
             //console.log(Modal);
         };
 
-        function getHubs() {
-            vm.hubs =
-                $filter('filter')(
-                    angular.copy(DUMMY.sites),
-                    { type: 'HUB' },
-                    true
-                ) || [];
-            vm.hubs.unshift({ code: 'Select Hub' });
-            vm.data.hub_id = vm.data.hub_id || vm.hubs[0].id;
+        function getSites() {
+            vm.loading = true;
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '9999999999',
+                    page: '1',
+                    is_active: 1
+                },
+                hasFile: false,
+                route: { site: '' },
+                cache: false
+            };
+
+            console.log('hubr', request);
+
+            QueryService.query(request)
+                .then(
+                    function(response) {
+                        console.log('hubs', response);
+                        vm.sites = response.data.data.items;
+                        vm.sites.unshift({ code: 'Select Sites' });
+                        vm.data.site_id = vm.data.site_id || vm.sites[0].id;
+                        // vm.total_items          = response.data.data.total;
+                    },
+                    function(error) {
+                        logger.error(error.data.message);
+                    }
+                )
+                .finally(function() {
+                    vm.loading = false;
+                });
         }
 
         function getType() {
@@ -79,24 +103,46 @@ import DUMMY from 'Helpers/dummy';
 
         function save(data, action) {
             vm.disable = true;
+            vm.loading = true;
+
+            vm.Request.body = vm.data;
 
             if (vm.Modal.method == 'add') {
-                logger.success(vm.Modal.title + ' added.');
-                close(vm.data, action);
+                console.log(vm.Modal.method);
+                QueryService.query(vm.Request)
+                    .then(
+                        function(response) {
+                            console.log('vehicle', response);
+                            logger.success(vm.Modal.title + ' added.');
+                            close(vm.data, action);
+                        },
+                        function(error) {
+                            logger.error(error.data.message);
+                        }
+                    )
+                    .finally(function() {
+                        vm.loading = false;
+                        vm.disable = false;
+                    });
             } else if (vm.Modal.method == 'edit') {
-                logger.success(vm.Modal.title + ' updated.');
-                close(vm.data, action);
+                console.log(vm.Request);
+
+                QueryService.query(vm.Request)
+                    .then(
+                        function(response) {
+                            console.log('vehicle', response);
+                            logger.success(vm.Modal.title + ' updated.');
+                            close(vm.data, action);
+                        },
+                        function(err) {
+                            logger.error(error.data.message);
+                        }
+                    )
+                    .finally(function() {
+                        vm.loading = false;
+                        vm.disable = false;
+                    });
             }
-
-            // QueryService
-            //     .query(Request)
-            //     .then( function (response) {
-
-            //     }, function (error) {
-            //         logger.error(error.data.message || 'Cannot established URL:' + GLOBAL.set_url(Request.route));
-            //     }).finally( function () {
-            //         vm.disable = false;
-            //     });
         }
 
         function close(data, action) {

@@ -54,24 +54,47 @@ import GLOBAL from 'Helpers/global';
 
         function save(data, action) {
             vm.disable = true;
+            vm.loading = true;
+
+            vm.data.type = 'HUB';
+            vm.Request.body = vm.data;
 
             if (vm.Modal.method == 'add') {
-                logger.success(vm.Modal.title + ' added.');
-                close(vm.data, action);
+                console.log(vm.Modal.method);
+                QueryService.query(vm.Request)
+                    .then(
+                        function(response) {
+                            console.log('hubsss', response);
+                            logger.success(vm.Modal.title + ' added.');
+                            close(vm.data, action);
+                        },
+                        function(error) {
+                            logger.error(error.data.message);
+                        }
+                    )
+                    .finally(function() {
+                        vm.loading = false;
+                        vm.disable = false;
+                    });
             } else if (vm.Modal.method == 'edit') {
-                logger.success(vm.Modal.title + ' updated.');
-                close(vm.data, action);
+                console.log(vm.Request);
+
+                QueryService.query(vm.Request)
+                    .then(
+                        function(response) {
+                            console.log('hub', response);
+                            logger.success(vm.Modal.title + ' updated.');
+                            close(vm.data, action);
+                        },
+                        function(err) {
+                            logger.error(error.data.message);
+                        }
+                    )
+                    .finally(function() {
+                        vm.loading = false;
+                        vm.disable = false;
+                    });
             }
-
-            // QueryService
-            //     .query(Request)
-            //     .then( function (response) {
-
-            //     }, function (error) {
-            //         logger.error(error.data.message || 'Cannot established URL:' + GLOBAL.set_url(Request.route));
-            //     }).finally( function () {
-            //         vm.disable = false;
-            //     });
         }
 
         function close(data, action) {

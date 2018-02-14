@@ -206,7 +206,7 @@ import angular from 'angular';
 
             //DATA-MANAGEMENT
             .state('app.hubs', {
-                url: 'hubs?size&deleted',
+                url: 'hubs?size&deleted&page&limit&search',
                 component: 'hubs'
             })
 
@@ -216,7 +216,7 @@ import angular from 'angular';
             })
 
             .state('app.distribution-centers', {
-                url: 'distribution-centers?size&deleted',
+                url: 'distribution-centers?size&deleted&page&limit&search',
                 component: 'dcs'
             })
 
@@ -226,7 +226,7 @@ import angular from 'angular';
             })
 
             .state('app.vehicles', {
-                url: 'vehicles?size&deleted',
+                url: 'vehicles?size&deleted&page&limit&search',
                 component: 'vehicles'
             })
 

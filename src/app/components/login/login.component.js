@@ -14,7 +14,8 @@ import angular from 'angular';
         '$state',
         'ModalService',
         'QueryService',
-        'SessionService'
+        'SessionService',
+        'logger'
     ];
 
     function LoginCtrl(
@@ -22,7 +23,8 @@ import angular from 'angular';
         $state,
         ModalService,
         QueryService,
-        SessionService
+        SessionService,
+        logger
     ) {
         var vm = this;
 
@@ -48,21 +50,24 @@ import angular from 'angular';
         vm.forgot = forgot;
 
         function login(user) {
+            user.type = 'ADMINISTRATOR';
+
             var req = {
-                method  : 'POST', // POST, GET, PUT, DELETE
-                body    : user, // data to be sent
-                params  : false, // sample { page:1, limit:10 }
-                hasFile : false, // formData to be sent
-                route   : {login:''}, // will result /users
-                cache   : false, // false if not needed
-                cache_string : [''] 
+                method: 'POST', // POST, GET, PUT, DELETE
+                body: user, // data to be sent
+                params: false, // sample { page:1, limit:10 }
+                hasFile: false, // formData to be sent
+                route: { auth: 'sign-in' }, // will result /users
+                cache: false, // false if not needed
+                cache_string: ['']
             };
             // Signal the start of login
             startLogin();
 
             QueryService.query(req)
                 .then(function(response) {
-                    var data = response.data;
+                    var data = response.data.data;
+
                     // var data = response.data.data.items[0];
 
                     // Store this data somewhere for future use
@@ -79,7 +84,7 @@ import angular from 'angular';
                     if (response.status == 400) {
                         var error = response.data.errors[0];
 
-                        var context = error.context;
+                        var context = error.message;
 
                         // Show the context as error message
                         errorLogin(context);
@@ -128,6 +133,8 @@ import angular from 'angular';
             vm.showErrorMessage = true;
 
             vm.errorMessage = message;
+
+            logger.error(vm.errorMessage);
         }
 
         function forgot() {
