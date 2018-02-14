@@ -34,6 +34,7 @@ import DUMMY from 'Helpers/dummy';
         vm.handleUpdateItem = handleUpdateItem;
 
         vm.$onInit = function() {
+            console.log($scope);
             vm.TPLS = 'hubFormModal';
 
             getDetails();

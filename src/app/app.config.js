@@ -189,6 +189,11 @@ import angular from 'angular';
                 component: 'dispatchers'
             })
 
+            .state('app.dispatcher-details', {
+                url: 'dispatcher-details?id',
+                component: 'hubDetails'
+            })
+
             .state('app.hub-supports', {
                 url: 'hub-supports',
                 component: 'hubSupports'
