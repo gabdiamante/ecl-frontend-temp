@@ -230,6 +230,15 @@
 </div>
 
 <div style="clear:both;"></div>
+<div class="col-md-12 col-xs-12 top-margin-sm form-inline pad-0" ng-if="options.tableDeactivate">
+        <button type="button" ng-if="!vm.deleted" title="View deactivated {{vm.view+'s'}}" class="btn btn-sm btn-default pull-right" ng-click="vm.changeListView(true)">
+            <i class="fa fa-ban"></i>
+        </button>
+        <button type="button" ng-if="vm.deleted" title="View active {{vm.view+'s'}}" class="btn btn-sm btn-primary pull-right" ng-click="vm.changeListView()">
+            <i class="fa fa-check-square-o"></i>
+        </button>
+</div>
+<div style="clear:both;"></div>
 
 <div class="table-responsive top-margin-sm">
     <table class="table table-hover" style="border: solid 1px #ddd;" >

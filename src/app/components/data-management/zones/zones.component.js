@@ -67,6 +67,10 @@ var jsts = require('jsts');
         vm.latLng = [];
         vm.shapes = [];
 
+        vm.zoom = 11;
+        vm.minZoom = false;
+        vm.maxZoom = false;
+
         vm.updating = false;
         vm.showModal = true;
         vm.showButton = false;
@@ -91,6 +95,10 @@ var jsts = require('jsts');
         vm.search = search;
         vm.clearField = clearField;
         vm.colors = UTILS.colors;
+
+        vm.zoomIn = zoomIn;
+        vm.zoomOut = zoomOut;
+        vm.resetZoom = resetZoom;
 
         init();
 
@@ -635,6 +643,28 @@ var jsts = require('jsts');
         function clearField() {
             vm.search_key = '';
             $state.go(vm.current_state, { search_value: '' });
+        }
+
+        function zoomIn() {
+            console.log('ssin');
+            vm.minZoom = false;
+            vm.zoom = vm.zoom + 1;
+            if (vm.zoom == 15) {
+                vm.maxZoom = true;
+            }
+        }
+
+        function zoomOut() {
+            vm.maxZoom = false;
+            vm.zoom = vm.zoom - 1;
+            if (vm.zoom == 8) {
+                vm.minZoom = true;
+            }
+        }
+
+        function resetZoom() {
+            vm.zoom = 11;
+            centerToPolygons(vm.geofenceMap.shapes);
         }
 
         function confirmation(content) {

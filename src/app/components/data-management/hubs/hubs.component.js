@@ -16,6 +16,7 @@ import DUMMY from 'Helpers/dummy';
         '$scope',
         '$state',
         '$stateParams',
+        '$filter',
         'ModalService',
         'QueryService',
         'logger'
@@ -25,13 +26,19 @@ import DUMMY from 'Helpers/dummy';
         $scope,
         $state,
         $stateParams,
+        $filter,
         ModalService,
         QueryService,
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Hubs';
+        vm.title = 'Hub';
+        vm.titleHeader = vm.title + 's';
+        vm.view = 'hub';
 
+        vm.TPLS = 'hubFormModal';
+
+        vm.deleted = $stateParams.deleted;
         vm.pagination = {};
         vm.pagination.pagestate = $stateParams.page || '1';
         vm.pagination.limit = $stateParams.limit || '10';
@@ -46,7 +53,8 @@ import DUMMY from 'Helpers/dummy';
             defaultPagination: true,
             hideSearchByKey: true,
             searchTemplate: true,
-            tableSearch: true
+            tableSearch: true,
+            tableDeactivate: true
         };
 
         vm.option_table.columnDefs = TABLES.hubs.columnDefs;
@@ -54,6 +62,13 @@ import DUMMY from 'Helpers/dummy';
 
         vm.goTo = goTo;
         vm.trClick = trClick;
+
+        vm.changeSize = changeSize;
+        vm.changeListView = changeListView;
+
+        vm.handlePostItem = handlePostItem;
+        vm.handleUpdateItem = handleUpdateItem;
+        vm.handleDeactivateItem = handleDeactivateItem;
 
         getData();
 
@@ -68,14 +83,17 @@ import DUMMY from 'Helpers/dummy';
                 },
                 hasFile: false,
                 route: { users: '' },
-                cache: true,
-                cache_string: 'user'
+                cache: false
             };
 
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.option_table.data = DUMMY.hubs;
+                        vm.option_table.data = $filter('filter')(
+                            angular.copy(DUMMY.sites),
+                            { type: 'HUB' },
+                            true
+                        );
                         // vm.option_table.data    = handleNames(response.data.data);
                         // vm.pagination.page      = $stateParams.page || '1';
                         // vm.pagination.limit     = $stateParams.limit || '10';
@@ -83,12 +101,133 @@ import DUMMY from 'Helpers/dummy';
                         // vm.total_items          = response.data.total;
                     },
                     function(err) {
-                        logger.error(MESSAGE.error, err, '');
+                        //logger.error(MESSAGE.error, err, '');
                     }
                 )
                 .finally(function() {
                     vm.loading = false;
                 });
+        }
+
+        function handlePostItem() {
+            var modal = {
+                title: vm.title,
+                titleHeader: 'Add ' + vm.title,
+                method: 'add'
+            };
+
+            var request = {
+                method: 'GET',
+                body: {},
+                params: {
+                    per_page: 10,
+                    page: 1
+                },
+                hasFile: false,
+                route: { users: '' },
+                cache: false
+            };
+
+            formModal(request, modal, vm.TPLS).then(
+                function(response) {
+                    if (response) {
+                        response.updatedAt = new Date();
+                        vm.option_table.data.unshift(response);
+                    }
+                },
+                function(error) {
+                    logger.error(
+                        error.data.message || catchError(request.route)
+                    );
+                }
+            );
+        }
+
+        function handleUpdateItem(item) {
+            var modal = {
+                title: vm.title,
+                titleHeader: 'Edit ' + vm.title,
+                method: 'edit'
+            };
+
+            var request = {
+                method: 'GET',
+                body: item,
+                params: {
+                    per_page: 10,
+                    page: 1
+                },
+                hasFile: false,
+                route: { users: '' },
+                cache: false
+            };
+
+            formModal(request, modal, vm.TPLS).then(
+                function(response) {
+                    if (response) {
+                        console.log(response);
+                        vm.option_table.data[
+                            vm.option_table.data.indexOf(item)
+                        ] = response;
+                    }
+                },
+                function(error) {
+                    logger.error(
+                        error.data.message || catchError(request.route)
+                    );
+                }
+            );
+        }
+
+        function handleDeactivateItem(item) {
+            var request = {
+                method: 'DELETE',
+                body: false,
+                params: false,
+                hasFile: false,
+                route: { [vm.route_name]: item.id },
+                cache_string: vm.route_name
+            };
+
+            var content = {
+                header: 'Remove ' + vm.title,
+                message:
+                    'Are you sure you want to remove ' +
+                    vm.title.toLowerCase() +
+                    ' ',
+                prop: item.first_name + ' ' + item.last_name
+            };
+
+            confirmation(content).then(function(response) {
+                if (response) {
+                    QueryService.query(request).then(
+                        function(response) {
+                            vm.option_table.data.splice(
+                                vm.option_table.data.indexOf(item),
+                                1
+                            );
+                            logger.success(vm.title + ' removed!');
+                        },
+                        function(error) {
+                            logger.error(
+                                error.data.message || catchError(request.route)
+                            );
+                        }
+                    );
+                }
+            });
+        }
+
+        function changeSize(size) {
+            $state.go($state.current.name, { page: 1, size: size });
+        }
+
+        function changeListView(status) {
+            $state.go($state.current.name, {
+                page: 1,
+                size: $stateParams.size,
+                deleted: status
+            });
         }
 
         function handleNames(data) {
@@ -98,7 +237,7 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function goTo(data) {
-            $state.go('app.hubs', data);
+            $state.go($state.current.name, data);
         }
 
         function trClick(data) {
@@ -115,5 +254,13 @@ import DUMMY from 'Helpers/dummy';
                 );
             else GLOBAL.getModel(vm.items, model_name, []);
         };
+
+        function formModal(request, modal, template, size) {
+            return ModalService.form_modal(request, modal, template, size);
+        }
+
+        function confirmation(content) {
+            return ModalService.confirm_modal(content);
+        }
     }
 })();

@@ -585,14 +585,15 @@ import angular from 'angular';
         };
     }
 
-    function handlePccDisplay ($sce) {
-        return function (value, pre, suf) { 
+    function handlePccDisplay($sce) {
+        return function(value, pre, suf) {
             if (value) {
-                return (value) ? pre + value.substr(-10) : '';
+                return value ? pre + value.substr(-10) : '';
             } else {
-                return $sce.trustAsHtml("<span class='text-italic low-opacity'>None</span>");
+                return $sce.trustAsHtml(
+                    "<span class='text-italic low-opacity'>None</span>"
+                );
             }
         };
-    } 
-
+    }
 })();
