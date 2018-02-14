@@ -75,7 +75,9 @@ import DUMMY from 'Helpers/dummy';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.option_table.data = handleNames(DUMMY.users.couriers);
+                        vm.option_table.data = handleNames(
+                            DUMMY.users.couriers
+                        );
 
                         // vm.option_table.data    = handleNames(response.data.data);
                         // vm.pagination.page      = $stateParams.page || '1';

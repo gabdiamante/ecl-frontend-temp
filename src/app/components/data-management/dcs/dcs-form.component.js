@@ -1,12 +1,13 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
+import DUMMY from 'Helpers/dummy';
 
 (function() {
     'use strict';
 
-    angular.module('app').component('hubFormModal', {
-        template: require('./hub-form.html'),
-        controller: HubFormModalCtrl,
+    angular.module('app').component('distributionCenterFormModal', {
+        template: require('./dcs-form.html'),
+        controller: DCFormModalCtrl,
         controllerAs: 'vm',
         bindings: {
             modalInstance: '<',
@@ -14,7 +15,7 @@ import GLOBAL from 'Helpers/global';
         }
     });
 
-    HubFormModalCtrl.$inject = [
+    DCFormModalCtrl.$inject = [
         '$rootScope',
         '$state',
         '$cookies',
@@ -25,7 +26,7 @@ import GLOBAL from 'Helpers/global';
         'logger'
     ];
 
-    function HubFormModalCtrl(
+    function DCFormModalCtrl(
         $rootScope,
         $state,
         $cookies,
@@ -47,10 +48,30 @@ import GLOBAL from 'Helpers/global';
 
             vm.titleHeader = vm.Modal.titleHeader;
             vm.data = angular.copy(vm.Request.body);
+            console.log(vm.data);
             vm.storeData = [];
 
+            getHubs();
+            getZones();
             //console.log(Modal);
         };
+
+        function getHubs() {
+            vm.hubs =
+                $filter('filter')(
+                    angular.copy(DUMMY.sites),
+                    { type: 'HUB' },
+                    true
+                ) || [];
+            vm.hubs.unshift({ code: 'Select Hub' });
+            vm.data.hub_id = vm.data.hub_id || vm.hubs[0].id;
+        }
+
+        function getZones() {
+            vm.zones = angular.copy(DUMMY.zones) || [];
+            vm.zones.unshift({ code: 'Select Zones' });
+            vm.data.zone_id = vm.data.zone_id || vm.zones[0].id;
+        }
 
         function save(data, action) {
             vm.disable = true;

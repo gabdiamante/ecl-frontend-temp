@@ -10,7 +10,7 @@ import angular from 'angular';
 import '@uirouter/angularjs';
 import 'angular-socket-io';
 import 'moment';
-import 'angular-permission'; 
+import 'angular-permission';
 import 'google-charts';
 import 'ngmap';
 

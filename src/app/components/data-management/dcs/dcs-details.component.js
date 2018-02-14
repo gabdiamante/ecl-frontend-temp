@@ -5,13 +5,13 @@ import DUMMY from 'Helpers/dummy';
 (function() {
     'use strict';
 
-    angular.module('app').component('hubDetails', {
-        template: require('./hub-details.html'),
-        controller: HubDetailsCtrl,
+    angular.module('app').component('dcsDetails', {
+        template: require('./dcs-details.html'),
+        controller: DCsDetailsCtrl,
         controllerAs: 'vm'
     });
 
-    HubDetailsCtrl.$inject = [
+    DCsDetailsCtrl.$inject = [
         '$scope',
         '$state',
         '$filter',
@@ -20,7 +20,7 @@ import DUMMY from 'Helpers/dummy';
         'logger'
     ];
 
-    function HubDetailsCtrl(
+    function DCsDetailsCtrl(
         $scope,
         $state,
         $filter,
@@ -29,16 +29,26 @@ import DUMMY from 'Helpers/dummy';
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Hub Details';
+        vm.titleHeader = 'Distribution Centers Details';
         vm.handleUpdateItem = handleUpdateItem;
 
+        //temporary
+        $scope.$watch(
+            'vm.item_details',
+            function(new_val, old_val) {
+                joinHubs(new_val);
+                joinZones(new_val);
+            },
+            true
+        );
+
         vm.$onInit = function() {
-            vm.TPLS = 'hubFormModal';
+            vm.TPLS = 'distributionCenterFormModal';
 
             vm.item_details =
                 $filter('filter')(
                     DUMMY.sites,
-                    { id: parseInt($state.params.id), type: 'HUB' },
+                    { id: parseInt($state.params.id), type: 'DC' },
                     true
                 )[0] || {};
             console.log($state.params.id, vm.item_details);
@@ -46,8 +56,8 @@ import DUMMY from 'Helpers/dummy';
 
         function handleUpdateItem(item) {
             var modal = {
-                title: 'Hub',
-                titleHeader: 'Edit Hub',
+                title: 'Distribution Center',
+                titleHeader: 'Edit Distribution Center',
                 method: 'edit'
             };
 
@@ -80,6 +90,22 @@ import DUMMY from 'Helpers/dummy';
 
         function formModal(request, modal, template, size) {
             return ModalService.form_modal(request, modal, template, size);
+        }
+
+        function joinZones(item) {
+            item.zone_name = $filter('filter')(
+                DUMMY.zones,
+                { id: item.zone_id },
+                true
+            )[0].name;
+        }
+
+        function joinHubs(item) {
+            item.hub_name = $filter('filter')(
+                DUMMY.sites,
+                { id: item.hub_id, type: 'HUB' },
+                true
+            )[0].name;
         }
     }
 })();

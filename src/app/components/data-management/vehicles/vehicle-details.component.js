@@ -5,13 +5,13 @@ import DUMMY from 'Helpers/dummy';
 (function() {
     'use strict';
 
-    angular.module('app').component('hubDetails', {
-        template: require('./hub-details.html'),
-        controller: HubDetailsCtrl,
+    angular.module('app').component('vehicleDetails', {
+        template: require('./vehicle-details.html'),
+        controller: VehicleDetailsCtrl,
         controllerAs: 'vm'
     });
 
-    HubDetailsCtrl.$inject = [
+    VehicleDetailsCtrl.$inject = [
         '$scope',
         '$state',
         '$filter',
@@ -20,7 +20,7 @@ import DUMMY from 'Helpers/dummy';
         'logger'
     ];
 
-    function HubDetailsCtrl(
+    function VehicleDetailsCtrl(
         $scope,
         $state,
         $filter,
@@ -29,16 +29,25 @@ import DUMMY from 'Helpers/dummy';
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Hub Details';
+        vm.titleHeader = 'Vehicle Details';
         vm.handleUpdateItem = handleUpdateItem;
 
+        //temporary
+        $scope.$watch(
+            'vm.item_details',
+            function(new_val, old_val) {
+                joinHubs(new_val);
+            },
+            true
+        );
+
         vm.$onInit = function() {
-            vm.TPLS = 'hubFormModal';
+            vm.TPLS = 'vehicleFormModal';
 
             vm.item_details =
                 $filter('filter')(
-                    DUMMY.sites,
-                    { id: parseInt($state.params.id), type: 'HUB' },
+                    DUMMY.vehicles,
+                    { id: $state.params.id },
                     true
                 )[0] || {};
             console.log($state.params.id, vm.item_details);
@@ -46,8 +55,8 @@ import DUMMY from 'Helpers/dummy';
 
         function handleUpdateItem(item) {
             var modal = {
-                title: 'Hub',
-                titleHeader: 'Edit Hub',
+                title: 'Vehicle',
+                titleHeader: 'Edit Vehicle',
                 method: 'edit'
             };
 
@@ -80,6 +89,14 @@ import DUMMY from 'Helpers/dummy';
 
         function formModal(request, modal, template, size) {
             return ModalService.form_modal(request, modal, template, size);
+        }
+
+        function joinHubs(item) {
+            item.hub_name = $filter('filter')(
+                DUMMY.sites,
+                { id: item.hub_id, type: 'HUB' },
+                true
+            )[0].name;
         }
     }
 })();

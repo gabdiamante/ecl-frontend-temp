@@ -1,12 +1,13 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
+import DUMMY from 'Helpers/dummy';
 
 (function() {
     'use strict';
 
-    angular.module('app').component('hubFormModal', {
-        template: require('./hub-form.html'),
-        controller: HubFormModalCtrl,
+    angular.module('app').component('vehicleFormModal', {
+        template: require('./vehicle-form.html'),
+        controller: VehicleFormModalCtrl,
         controllerAs: 'vm',
         bindings: {
             modalInstance: '<',
@@ -14,7 +15,7 @@ import GLOBAL from 'Helpers/global';
         }
     });
 
-    HubFormModalCtrl.$inject = [
+    VehicleFormModalCtrl.$inject = [
         '$rootScope',
         '$state',
         '$cookies',
@@ -25,7 +26,7 @@ import GLOBAL from 'Helpers/global';
         'logger'
     ];
 
-    function HubFormModalCtrl(
+    function VehicleFormModalCtrl(
         $rootScope,
         $state,
         $cookies,
@@ -47,10 +48,34 @@ import GLOBAL from 'Helpers/global';
 
             vm.titleHeader = vm.Modal.titleHeader;
             vm.data = angular.copy(vm.Request.body);
+            console.log(vm.data);
             vm.storeData = [];
 
+            getHubs();
+            getType();
             //console.log(Modal);
         };
+
+        function getHubs() {
+            vm.hubs =
+                $filter('filter')(
+                    angular.copy(DUMMY.sites),
+                    { type: 'HUB' },
+                    true
+                ) || [];
+            vm.hubs.unshift({ code: 'Select Hub' });
+            vm.data.hub_id = vm.data.hub_id || vm.hubs[0].id;
+        }
+
+        function getType() {
+            vm.types = [
+                { name: 'Motorcycle', value: '2W' },
+                { name: 'Truck', value: '4W' }
+            ];
+
+            vm.types.unshift({ name: 'Select Type' });
+            vm.data.type = vm.data.type || vm.types[0].id;
+        }
 
         function save(data, action) {
             vm.disable = true;
