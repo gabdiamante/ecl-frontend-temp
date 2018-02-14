@@ -153,18 +153,18 @@ import angular from 'angular';
             })
 
             //PICKUPS
-            .state('app.pickups-bad-address', {
-                url: 'pickups/bad-address',
+            .state('app.pickups-bad_address', {
+                url: 'pickups_v1?view&page&limit',
                 component: 'pickupsBadAddress'
             })
 
             .state('app.pickups-staging', {
-                url: 'pickups/staging',
+                url: 'pickups_v2?view&page&limit',
                 component: 'pickupsStaging'
             })
 
             .state('app.pickups-dispatched', {
-                url: 'pickups/dispatched',
+                url: 'pickups_v3?view&page&limit',
                 component: 'pickupsDispatched'
             })
 

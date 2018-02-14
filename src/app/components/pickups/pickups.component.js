@@ -8,23 +8,23 @@ import DUMMY from 'Helpers/dummy';
 
     angular
         .module('app')
-        .component('deliveriesBadAddress', {
+        .component('pickupsBadAddress', {
             template: require('./bad-address/bad-address.html'),
-            controller: DeliveriesCtrl,
+            controller: PickupsCtrl,
             controllerAs: 'vm'
         })
-        .component('deliveriesStaging', {
+        .component('pickupsStaging', {
             template: require('./staging/staging.html'),
-            controller: DeliveriesCtrl,
+            controller: PickupsCtrl,
             controllerAs: 'vm'
         })
-        .component('deliveriesDispatched', {
+        .component('pickupsDispatched', {
             template: require('./dispatched/dispatched.html'),
-            controller: DeliveriesCtrl,
+            controller: PickupsCtrl,
             controllerAs: 'vm'
         });
 
-    DeliveriesCtrl.$inject = [
+        PickupsCtrl.$inject = [
         '$scope',
         '$state',
         '$stateParams',
@@ -33,7 +33,7 @@ import DUMMY from 'Helpers/dummy';
         'logger'
     ];
 
-    function DeliveriesCtrl(
+    function PickupsCtrl(
         $scope,
         $state,
         $stateParams,
@@ -60,14 +60,15 @@ import DUMMY from 'Helpers/dummy';
         };
 
         vm.option_table.data = [];
-        vm.option_table.columnDefs = TABLES['delivery_'+vm.view].columnDefs;
+        vm.option_table.columnDefs = TABLES['pickup_'+vm.view].columnDefs;
 
         vm.dispatched = [
             { firstName:'Gabriel', lastName:'Diamante', assignments:'4' },
             { firstName:'Ruru', lastName:'Magana', assignments:'4' },
             { firstName:'Abel', lastName:'Madrid', assignments:'4' },
             { firstName:'Marvin', lastName:'Zabala', assignments:'4' },
-            { firstName:'Christan', lastName:'Tecson', assignments:'4' }
+            { firstName:'Christan', lastName:'Tecson', assignments:'4' },
+            { firstName:'Lester', lastName:'Dequina', assignments:'4' }
         ];
         
         vm.goTo             = goTo;
@@ -91,7 +92,7 @@ import DUMMY from 'Helpers/dummy';
 
             QueryService.query(request).then(
                 function(response) {
-                    vm.option_table.data = DUMMY.users.courier_deliveries;
+                    vm.option_table.data = DUMMY.users.courier_pickups;
                     // vm.option_table.data = handleNames(response.data.data);
                 },
                 function(err) {
@@ -109,7 +110,7 @@ import DUMMY from 'Helpers/dummy';
 
         function goTo(data) { 
             data.view = vm.view; 
-            $state.go('app.deliveries-'+vm.view, data);
+            $state.go('app.pickups-'+vm.view, data);
         }
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {

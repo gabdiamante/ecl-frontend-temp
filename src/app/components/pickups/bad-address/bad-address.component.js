@@ -1,30 +1,30 @@
-import angular from 'angular';
+// import angular from 'angular';
 
-(function() {
-    'use strict';
+// (function() {
+//     'use strict';
 
-    angular.module('app').component('pickupsBadAddress', {
-        template: require('./bad-address.html'),
-        controller: PickupsBadAddressCtrl,
-        controllerAs: 'vm'
-    });
+//     angular.module('app').component('pickupsBadAddress', {
+//         template: require('./bad-address.html'),
+//         controller: PickupsBadAddressCtrl,
+//         controllerAs: 'vm'
+//     });
 
-    PickupsBadAddressCtrl.$inject = [
-        '$scope',
-        '$state',
-        'ModalService',
-        'QueryService',
-        'logger'
-    ];
+//     PickupsBadAddressCtrl.$inject = [
+//         '$scope',
+//         '$state',
+//         'ModalService',
+//         'QueryService',
+//         'logger'
+//     ];
 
-    function PickupsBadAddressCtrl(
-        $scope,
-        $state,
-        ModalService,
-        QueryService,
-        logger
-    ) {
-        var vm = this;
-        vm.titleHeader = 'Bad Address';
-    }
-})();
+//     function PickupsBadAddressCtrl(
+//         $scope,
+//         $state,
+//         ModalService,
+//         QueryService,
+//         logger
+//     ) {
+//         var vm = this;
+//         vm.titleHeader = 'Bad Address';
+//     }
+// })();

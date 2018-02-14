@@ -1,30 +1,30 @@
-import angular from 'angular';
+// import angular from 'angular';
 
-(function() {
-    'use strict';
+// (function() {
+//     'use strict';
 
-    angular.module('app').component('pickupsStaging', {
-        template: require('./staging.html'),
-        controller: pickupsStagingCtrl,
-        controllerAs: 'vm'
-    });
+//     angular.module('app').component('pickupsStaging', {
+//         template: require('./staging.html'),
+//         controller: pickupsStagingCtrl,
+//         controllerAs: 'vm'
+//     });
 
-    pickupsStagingCtrl.$inject = [
-        '$scope',
-        '$state',
-        'ModalService',
-        'QueryService',
-        'logger'
-    ];
+//     pickupsStagingCtrl.$inject = [
+//         '$scope',
+//         '$state',
+//         'ModalService',
+//         'QueryService',
+//         'logger'
+//     ];
 
-    function pickupsStagingCtrl(
-        $scope,
-        $state,
-        ModalService,
-        QueryService,
-        logger
-    ) {
-        var vm = this;
-        vm.titleHeader = 'Staging';
-    }
-})();
+//     function pickupsStagingCtrl(
+//         $scope,
+//         $state,
+//         ModalService,
+//         QueryService,
+//         logger
+//     ) {
+//         var vm = this;
+//         vm.titleHeader = 'Staging';
+//     }
+// })();

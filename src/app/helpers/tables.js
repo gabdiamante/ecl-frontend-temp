@@ -296,6 +296,73 @@ const TABLES = {
                 cellTemplate: '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
             }
         ]
+    },
+    pickup_bad_address: {
+        columnDefs: [
+            {
+                name: 'booking_code',
+                displayName: 'CODE',
+                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' }, 
+            {
+                name: 'shipperAddress',
+                displayName: 'SHPR ADDRESS',
+                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;<i class="fa fa-pencil"></i>`
+            },
+            {
+                name: 'reason',
+                displayName: 'REASON',
+                cellTemplate: `<span ng-bind="COL_FIELD | date:short"></span>`
+            },
+            {
+                name:'shipperContactNumber',
+                displayName:'CONTACT',
+                cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
+            }
+        ]
+    },
+    pickup_staging: {
+        columnDefs: [
+            {
+                name: 'booking_code',
+                displayName: 'CODE',
+                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' }, 
+            { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
+            {
+                name:'shipperContactNumber',
+                displayName:'CONTACT',
+                cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
+            },
+            {
+                width: 50,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                cellTemplate: '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+            }
+        ]
+    },
+    pickup_dispatched: {
+        columnDefs: [
+            {
+                name: 'booking_code',
+                displayName: 'CODE',
+                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' }, 
+            { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
+            {
+                name: 'status',
+                displayName: 'STATUS',
+                cellTemplate: `<span ng-bind="COL_FIELD | displaynone"></span>`
+            },
+            {
+                width: 50,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                cellTemplate: '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+            }
+        ]
     }
 };
 
