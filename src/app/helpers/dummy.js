@@ -400,8 +400,7 @@ const DUMMY = {
                 payMode: '',
                 cod: '',
                 totalCharge: '',
-                shipperAddress:
-                    'S & T Complex, Jamboree Road, Barangay Timugan, Los Baños, 4030 Laguna',
+                shipperAddress: 'S & T Complex, Jamboree Road, Barangay Timugan, Los Baños, 4030 Laguna',
                 shipperContactNumber: '092759328938',
                 cneeAddress: 'Jamboree Rd, Los Baños, Laguna',
                 cneeContactNumber: '09835837659',
@@ -426,11 +425,9 @@ const DUMMY = {
                 payMode: '',
                 cod: '',
                 totalCharge: '',
-                shipperAddress:
-                    'BPI- National Seed Quality Control Services R4A, BPI Compound, Los Baños, Laguna',
+                shipperAddress: 'BPI- National Seed Quality Control Services R4A, BPI Compound, Los Baños, Laguna',
                 shipperContactNumber: '09385739200',
-                cneeAddress:
-                    'Regional Science and Technology Center, Jamboree Road, Timugan, Los Banos, Laguna, Los Baños, Laguna',
+                cneeAddress: 'Regional Science and Technology Center, Jamboree Road, Timugan, Los Banos, Laguna, Los Baños, Laguna',
                 cneeContactNumber: '09165346281',
                 receiverName: 'Abel Magana',
                 relationship: 'colleague',
@@ -478,11 +475,9 @@ const DUMMY = {
                 payMode: '',
                 cod: '',
                 totalCharge: '',
-                shipperAddress:
-                    '3308 Lawin St., Rhoda Subd., Los Banos 4030, Los Baños, Laguna',
+                shipperAddress: '3308 Lawin St., Rhoda Subd., Los Banos 4030, Los Baños, Laguna',
                 shipperContactNumber: '09164381687',
-                cneeAddress:
-                    '3427 Tikling Street Extension,, Rhoda Subdivision, Los Banos, 4030 Laguna',
+                cneeAddress: '3427 Tikling Street Extension,, Rhoda Subdivision, Los Banos, 4030 Laguna',
                 cneeContactNumber: '09468124466',
                 receiverName: 'Jomar Furiscal',
                 relationship: 'Friend',

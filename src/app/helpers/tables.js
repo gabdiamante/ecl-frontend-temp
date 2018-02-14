@@ -252,6 +252,50 @@ const TABLES = {
                 cellTemplate: `<span ng-bind="COL_FIELD | date:short"></span>`
             }
         ]
+    },
+    delivery_staging: {
+        columnDefs: [
+            {
+                name: 'airway_bill',
+                displayName: 'CODE',
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'cneeName', displayName: 'CNEE' },
+            { name: 'cneeAddress', displayName: 'CNEE ADDRESS' },
+            {
+                name: 'datePickup',
+                displayName: 'REASON',
+                cellTemplate: `<span ng-bind="datePickup || vm.date | date:short"></span>`
+            },
+            {
+                width: 50,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                cellTemplate: '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+            }
+        ]
+    },
+    delivery_dispatched: {
+        columnDefs: [
+            {
+                name: 'airway_bill',
+                displayName: 'CODE',
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'cneeName', displayName: 'CNEE' },
+            { name: 'cneeAddress', displayName: 'CNEE ADDRESS' },
+            {
+                name: 'datePickup',
+                displayName: 'REASON',
+                cellTemplate: `<span ng-bind="datePickup || vm.date | date:short"></span>`
+            },
+            {
+                width: 50,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                cellTemplate: '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+            }
+        ]
     }
 };
 

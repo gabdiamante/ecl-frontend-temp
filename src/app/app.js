@@ -11,6 +11,7 @@ import '@uirouter/angularjs';
 import 'angular-socket-io';
 import 'moment';
 import 'angular-permission';
+import 'angular-animate';
 import 'google-charts';
 import 'ngmap';
 
@@ -32,6 +33,7 @@ import 'ngmap';
         require('angular-ui-bootstrap'),
         'ngMap',
         require('checklist-model'),
-        require('angular-ui-mask')
+        require('angular-ui-mask'), 
+        'ngAnimate'
     ]);
 })();

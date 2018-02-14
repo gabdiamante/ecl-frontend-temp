@@ -132,18 +132,18 @@ import angular from 'angular';
             })
 
             //DELIVERIES
-            .state('app.deliveries-bad-address', {
-                url: 'deliveries/bad-address',
+            .state('app.deliveries-bad_address', {
+                url: 'deliveries_v1?view&page&limit',
                 component: 'deliveriesBadAddress'
             })
 
             .state('app.deliveries-staging', {
-                url: 'deliveries/staging',
+                url: 'deliveries_v2?view&page&limit',
                 component: 'deliveriesStaging'
             })
 
             .state('app.deliveries-dispatched', {
-                url: 'deliveries/dispatched',
+                url: 'deliveries_v3?view&page&limit',
                 component: 'deliveriesDispatched'
             })
 
