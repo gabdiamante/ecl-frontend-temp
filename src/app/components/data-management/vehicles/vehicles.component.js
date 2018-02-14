@@ -35,6 +35,7 @@ import DUMMY from 'Helpers/dummy';
         vm.title = 'Vehicle';
         vm.titleHeader = vm.title + 's';
         vm.view = 'vehicle';
+        vm.route_name = 'vehicle';
 
         vm.TPLS = 'vehicleFormModal';
 
@@ -69,6 +70,7 @@ import DUMMY from 'Helpers/dummy';
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
         vm.handleDeactivateItem = handleDeactivateItem;
+        vm.handleReactivateItem = handleReactivateItem;
 
         getData();
 
@@ -78,23 +80,30 @@ import DUMMY from 'Helpers/dummy';
                 method: 'GET',
                 body: false,
                 params: {
-                    per_page: vm.pagination.limit,
-                    page: vm.pagination.pagestate
+                    limit: vm.pagination.limit,
+                    page: vm.pagination.pagestate,
+                    is_active: vm.deleted == 'true' ? 0 : 1
                 },
                 hasFile: false,
-                route: { users: '' },
-                cache: false
+                route: { [vm.route_name]: '' },
+                cache: false,
+                cache_string: vm.route_name
             };
+
+            console.log('vehcilesr', request);
 
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.option_table.data = DUMMY.vehicles;
+                        console.log('vehicles', response);
+                        // vm.option_table.data = DUMMY.vehicles;
+                        vm.option_table.data = response.data.data.items;
+
                         // vm.option_table.data    = handleNames(response.data.data);
                         // vm.pagination.page      = $stateParams.page || '1';
                         // vm.pagination.limit     = $stateParams.limit || '10';
                         // vm.total_page           = response.data.total_pages;
-                        // vm.total_items          = response.data.total;
+                        vm.total_items = response.data.data.total;
                     },
                     function(err) {
                         //logger.error(MESSAGE.error, err, '');
@@ -113,21 +122,17 @@ import DUMMY from 'Helpers/dummy';
             };
 
             var request = {
-                method: 'GET',
+                method: 'POST',
                 body: {},
-                params: {
-                    per_page: 10,
-                    page: 1
-                },
+                params: false,
                 hasFile: false,
-                route: { users: '' },
-                cache: false
+                route: { [vm.route_name]: '' }
             };
 
             formModal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
-                        response.updated = new Date();
+                        response.updatedAt = new Date();
                         vm.option_table.data.unshift(response);
                     }
                 },
@@ -147,15 +152,11 @@ import DUMMY from 'Helpers/dummy';
             };
 
             var request = {
-                method: 'GET',
+                method: 'PUT',
                 body: item,
-                params: {
-                    per_page: 10,
-                    page: 1
-                },
+                params: false,
                 hasFile: false,
-                route: { users: '' },
-                cache: false
+                route: { [vm.route_name]: item.id }
             };
 
             formModal(request, modal, vm.TPLS).then(
@@ -177,18 +178,18 @@ import DUMMY from 'Helpers/dummy';
 
         function handleDeactivateItem(item) {
             var request = {
-                method: 'DELETE',
+                method: 'PUT',
                 body: false,
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: item.id },
-                cache_string: vm.route_name
+                route: { [vm.route_name]: item.id, deactivate: '' },
+                cache: false
             };
 
             var content = {
-                header: 'Remove ' + vm.title,
+                header: 'Deactivate ' + vm.title,
                 message:
-                    'Are you sure you want to remove ' +
+                    'Are you sure you want to deactivate ' +
                     vm.title.toLowerCase() +
                     ' ',
                 prop: item.first_name + ' ' + item.last_name
@@ -202,7 +203,46 @@ import DUMMY from 'Helpers/dummy';
                                 vm.option_table.data.indexOf(item),
                                 1
                             );
-                            logger.success(vm.title + ' removed!');
+                            logger.success(vm.title + ' deactivated!');
+                        },
+                        function(error) {
+                            logger.error(
+                                error.data.message || catchError(request.route)
+                            );
+                        }
+                    );
+                }
+            });
+        }
+
+        function handleReactivateItem(item) {
+            var request = {
+                method: 'PUT',
+                body: false,
+                params: false,
+                hasFile: false,
+                route: { [vm.route_name]: item.id, reactivate: '' },
+                cache: false
+            };
+
+            var content = {
+                header: 'Reactivate ' + vm.title,
+                message:
+                    'Are you sure you want to reactivate ' +
+                    vm.title.toLowerCase() +
+                    ' ',
+                prop: item.first_name + ' ' + item.last_name
+            };
+
+            confirmation(content).then(function(response) {
+                if (response) {
+                    QueryService.query(request).then(
+                        function(response) {
+                            vm.option_table.data.splice(
+                                vm.option_table.data.indexOf(item),
+                                1
+                            );
+                            logger.success(vm.title + ' deactivated!');
                         },
                         function(error) {
                             logger.error(

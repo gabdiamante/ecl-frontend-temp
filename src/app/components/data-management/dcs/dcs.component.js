@@ -37,6 +37,7 @@ import DUMMY from 'Helpers/dummy';
         vm.view = 'distribution center';
 
         vm.TPLS = 'distributionCenterFormModal';
+        vm.route_name = 'site';
 
         vm.deleted = $stateParams.deleted;
         vm.pagination = {};
@@ -69,18 +70,19 @@ import DUMMY from 'Helpers/dummy';
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
         vm.handleDeactivateItem = handleDeactivateItem;
+        vm.handleReactivateItem = handleReactivateItem;
 
         getData();
 
-        //temporary
-        $scope.$watch(
-            'vm.option_table.data',
-            function(new_val, old_val) {
-                joinHubs(new_val);
-                joinZones(new_val);
-            },
-            true
-        );
+        // //temporary
+        // $scope.$watch(
+        //     'vm.option_table.data',
+        //     function(new_val, old_val) {
+        //         joinHubs(new_val);
+        //         joinZones(new_val);
+        //     },
+        //     true
+        // );
 
         function getData() {
             vm.loading = true;
@@ -88,29 +90,36 @@ import DUMMY from 'Helpers/dummy';
                 method: 'GET',
                 body: false,
                 params: {
-                    per_page: vm.pagination.limit,
-                    page: vm.pagination.pagestate
+                    limit: vm.pagination.limit,
+                    page: vm.pagination.pagestate,
+                    type: 'DC',
+                    is_active: vm.deleted == 'true' ? 0 : 1
                 },
                 hasFile: false,
-                route: { users: '' },
-                cache: false
+                route: { [vm.route_name]: '' },
+                cache: false,
+                cache_string: vm.route_name
             };
 
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.option_table.data = $filter('filter')(
-                            angular.copy(DUMMY.sites),
-                            { type: 'DC' },
-                            true
-                        );
-                        console.log('option', vm.option_table.data);
+                        console.log('dcs', response);
+                        vm.option_table.data = response.data.data.items;
+
+                        // vm.option_table.data = $filter('filter')(
+                        //     angular.copy(DUMMY.sites),
+                        //     { type: 'DC' },
+                        //     true
+                        // );
+                        // console.log('option', vm.option_table.data);
 
                         // vm.option_table.data    = handleNames(response.data.data);
                         // vm.pagination.page      = $stateParams.page || '1';
                         // vm.pagination.limit     = $stateParams.limit || '10';
                         // vm.total_page           = response.data.total_pages;
                         // vm.total_items          = response.data.total;
+                        vm.total_items = response.data.data.total;
                     },
                     function(err) {
                         //logger.error(MESSAGE.error, err, '');
@@ -129,15 +138,11 @@ import DUMMY from 'Helpers/dummy';
             };
 
             var request = {
-                method: 'GET',
+                method: 'POST',
                 body: {},
-                params: {
-                    per_page: 10,
-                    page: 1
-                },
+                params: false,
                 hasFile: false,
-                route: { users: '' },
-                cache: false
+                route: { [vm.route_name]: '' }
             };
 
             formModal(request, modal, vm.TPLS).then(
@@ -163,15 +168,11 @@ import DUMMY from 'Helpers/dummy';
             };
 
             var request = {
-                method: 'GET',
+                method: 'PUT',
                 body: item,
-                params: {
-                    per_page: 10,
-                    page: 1
-                },
+                params: false,
                 hasFile: false,
-                route: { users: '' },
-                cache: false
+                route: { [vm.route_name]: item.id }
             };
 
             formModal(request, modal, vm.TPLS).then(
@@ -193,18 +194,18 @@ import DUMMY from 'Helpers/dummy';
 
         function handleDeactivateItem(item) {
             var request = {
-                method: 'DELETE',
+                method: 'PUT',
                 body: false,
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: item.id },
-                cache_string: vm.route_name
+                route: { [vm.route_name]: item.id, deactivate: '' },
+                cache: false
             };
 
             var content = {
-                header: 'Remove ' + vm.title,
+                header: 'Deactivate ' + vm.title,
                 message:
-                    'Are you sure you want to remove ' +
+                    'Are you sure you want to deactivate ' +
                     vm.title.toLowerCase() +
                     ' ',
                 prop: item.first_name + ' ' + item.last_name
@@ -219,6 +220,45 @@ import DUMMY from 'Helpers/dummy';
                                 1
                             );
                             logger.success(vm.title + ' removed!');
+                        },
+                        function(error) {
+                            logger.error(
+                                error.data.message || catchError(request.route)
+                            );
+                        }
+                    );
+                }
+            });
+        }
+
+        function handleReactivateItem(item) {
+            var request = {
+                method: 'PUT',
+                body: false,
+                params: false,
+                hasFile: false,
+                route: { [vm.route_name]: item.id, reactivate: '' },
+                cache: false
+            };
+
+            var content = {
+                header: 'Reactivate ' + vm.title,
+                message:
+                    'Are you sure you want to reactivate ' +
+                    vm.title.toLowerCase() +
+                    ' ',
+                prop: item.first_name + ' ' + item.last_name
+            };
+
+            confirmation(content).then(function(response) {
+                if (response) {
+                    QueryService.query(request).then(
+                        function(response) {
+                            vm.option_table.data.splice(
+                                vm.option_table.data.indexOf(item),
+                                1
+                            );
+                            logger.success(vm.title + ' deactivated!');
                         },
                         function(error) {
                             logger.error(
@@ -275,24 +315,24 @@ import DUMMY from 'Helpers/dummy';
             return ModalService.confirm_modal(content);
         }
 
-        function joinZones(data) {
-            for (var i = 0; i < data.length; i++) {
-                data[i].zone_name = $filter('filter')(
-                    DUMMY.zones,
-                    { id: data[i].zone_id },
-                    true
-                )[0].name;
-            }
-        }
+        // function joinZones(data) {
+        //     for (var i = 0; i < data.length; i++) {
+        //         data[i].zone_name = $filter('filter')(
+        //             DUMMY.zones,
+        //             { id: data[i].zone_id },
+        //             true
+        //         )[0].name;
+        //     }
+        // }
 
-        function joinHubs(data) {
-            for (var i = 0; i < data.length; i++) {
-                data[i].hub_name = $filter('filter')(
-                    DUMMY.sites,
-                    { id: data[i].hub_id, type: 'HUB' },
-                    true
-                )[0].name;
-            }
-        }
+        // function joinHubs(data) {
+        //     for (var i = 0; i < data.length; i++) {
+        //         data[i].hub_name = $filter('filter')(
+        //             DUMMY.sites,
+        //             { id: data[i].hub_id, type: 'HUB' },
+        //             true
+        //         )[0].name;
+        //     }
+        // }
     }
 })();
