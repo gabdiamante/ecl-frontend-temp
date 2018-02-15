@@ -160,7 +160,6 @@ import DUMMY from 'Helpers/dummy';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
-                            console.log('dcs', response);
                             updateZone(response);
                             // logger.success(vm.Modal.title + ' added.');
                             // close(vm.data, action);
@@ -177,7 +176,6 @@ import DUMMY from 'Helpers/dummy';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
-                            console.log('dcs', response);
                             updateZone(response);
                             // logger.success(vm.Modal.title + ' updated.');
                             // close(vm.data, action);
@@ -204,7 +202,7 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function updateZone(response, action) {
-            var item = response.data.data.items[0];
+            var item = response.data.data.items[0] || {};
             console.log('update_zone', item);
 
             vm.loading = true;
@@ -228,7 +226,14 @@ import DUMMY from 'Helpers/dummy';
                         } else if (vm.Modal.method == 'add') {
                             logger.success(vm.Modal.title + ' updated.');
                         }
-                        close(vm.data, action);
+
+                        vm.response_data = item;
+                        var response_zone_data =
+                            response.data.data.items[0] || {};
+                        vm.response_data.zone_id = response_zone_data.id;
+                        vm.response_data.zone_code = response_zone_data.code;
+
+                        close(vm.response_data, action);
                     },
                     function(error) {
                         console.log(error.data.message);

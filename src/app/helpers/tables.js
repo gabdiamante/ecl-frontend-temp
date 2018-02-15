@@ -56,7 +56,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'name',
-                cellTemplate: `<a ui-sref="app.dispatcher-details({ id: row.entity.id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+                cellTemplate: `<a ui-sref="app.dispatcher-details({ id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
             },
             { name: 'username' },
             { name: 'email' },
@@ -68,38 +68,7 @@ const TABLES = {
             {
                 name: 'action',
                 displayName: ' ',
-                cellTemplate: `<div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
-                                <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-v"></i>
-                                </a>
-                                <ul ng-if="vm.deleted != 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
-                                    <li role="menuitem">
-                                        <a ui-sref="app.dispatcher-details({ id: row.entity.id })">
-                                            <i class="fa fa-info-circle"></i> &nbsp;Details
-                                        </a>
-                                    </li>
-                                    <li role="menuitem" >
-                                        <a ng-click="vm.handleUpdateItem(row.entity)">
-                                            <i class="fa fa-edit"></i> &nbsp;Update
-                                        </a>
-                                    </li> 
-                                    <li class="divider" ></li>
-                                    <li role="menuitem">
-                                        <a ng-click="vm.handleDeactivateItem(row.entity)">
-                                            <i class="fa fa-ban"></i>
-                                            Deactivate
-                                        </a>
-                                    </li> 
-                                </ul>
-                                <ul ng-if="vm.deleted == 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
-                                    <li role="menuitem">
-                                        <a ng-click="vm.handleReactivateItem(row.entity)">
-                                            <i class="fa fa-edit"></i>
-                                            Reactivate
-                                        </a>
-                                    </li> 
-                                </ul>
-                            </div>`
+                cellTemplate: `<div ng-include="'template-user-dispatcher-action'"></div>`
             }
         ]
     },
@@ -122,38 +91,7 @@ const TABLES = {
             {
                 name: 'action',
                 displayName: ' ',
-                cellTemplate: `<div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
-                                <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-v"></i>
-                                </a>
-                                <ul ng-if="vm.deleted != 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
-                                    <li role="menuitem">
-                                        <a ui-sref="app.hub-details({ id: row.entity.id })">
-                                            <i class="fa fa-info-circle"></i> &nbsp;Details
-                                        </a>
-                                    </li>
-                                    <li role="menuitem" >
-                                        <a ng-click="vm.handleUpdateItem(row.entity)">
-                                            <i class="fa fa-edit"></i> &nbsp;Update
-                                        </a>
-                                    </li> 
-                                    <li class="divider" ></li>
-                                    <li role="menuitem">
-                                        <a ng-click="vm.handleDeactivateItem(row.entity)">
-                                            <i class="fa fa-ban"></i>
-                                            Deactivate
-                                        </a>
-                                    </li> 
-                                </ul>
-                                <ul ng-if="vm.deleted == 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
-                                    <li role="menuitem">
-                                        <a ng-click="vm.handleReactivateItem(row.entity)">
-                                            <i class="fa fa-edit"></i>
-                                            Reactivate
-                                        </a>
-                                    </li> 
-                                </ul>
-                            </div>`
+                cellTemplate: `<div ng-include="'template-data-management-hub-action'"></div>`
             }
         ]
     },
@@ -178,38 +116,7 @@ const TABLES = {
             {
                 name: 'action',
                 displayName: ' ',
-                cellTemplate: `<div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
-                                <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-v"></i>
-                                </a>
-                                <ul ng-if="vm.deleted != 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
-                                    <li role="menuitem">
-                                        <a ui-sref="app.dc-details({ id: row.entity.id })">
-                                            <i class="fa fa-info-circle"></i> &nbsp;Details
-                                        </a>
-                                    </li>
-                                    <li role="menuitem" >
-                                        <a ng-click="vm.handleUpdateItem(row.entity)">
-                                            <i class="fa fa-edit"></i> &nbsp;Update
-                                        </a>
-                                    </li> 
-                                    <li class="divider" ></li>
-                                    <li role="menuitem">
-                                        <a ng-click="vm.handleDeactivateItem(row.entity)">
-                                            <i class="fa fa-ban"></i>
-                                            Deactivate
-                                        </a>
-                                    </li> 
-                                </ul>
-                                <ul ng-if="vm.deleted == 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
-                                    <li role="menuitem">
-                                        <a ng-click="vm.handleReactivateItem(row.entity)">
-                                            <i class="fa fa-edit"></i>
-                                            Reactivate
-                                        </a>
-                                    </li> 
-                                </ul>
-                            </div>`
+                cellTemplate: `<div ng-include="'template-data-management-dcs-action'"></div>`
             }
         ]
     },
@@ -230,38 +137,7 @@ const TABLES = {
             {
                 name: 'action',
                 displayName: ' ',
-                cellTemplate: `<div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
-                                <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-v"></i>
-                                </a>
-                                <ul ng-if="vm.deleted != 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
-                                    <li role="menuitem">
-                                        <a ui-sref="app.vehicle-details({ id: row.entity.id })">
-                                            <i class="fa fa-info-circle"></i> &nbsp;Details
-                                        </a>
-                                    </li>
-                                    <li role="menuitem" >
-                                        <a ng-click="vm.handleUpdateItem(row.entity)">
-                                            <i class="fa fa-edit"></i> &nbsp;Update
-                                        </a>
-                                    </li> 
-                                    <li class="divider" ></li>
-                                    <li role="menuitem">
-                                        <a ng-click="vm.handleDeactivateItem(row.entity)">
-                                            <i class="fa fa-ban"></i>
-                                            Deactivate
-                                        </a>
-                                    </li> 
-                                </ul>
-                                <ul ng-if="vm.deleted == 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
-                                    <li role="menuitem">
-                                        <a ng-click="vm.handleReactivateItem(row.entity)">
-                                            <i class="fa fa-edit"></i>
-                                            Reactivate
-                                        </a>
-                                    </li> 
-                                </ul>
-                            </div>`
+                cellTemplate: `<div ng-include="'template-data-management-vehicle-action'"></div>`
             }
         ]
     },
@@ -356,7 +232,8 @@ const TABLES = {
             {
                 width: 50,
                 headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
-                cellTemplate: '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                cellTemplate:
+                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
             }
         ]
     },
@@ -378,7 +255,8 @@ const TABLES = {
             {
                 width: 50,
                 headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
-                cellTemplate: '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                cellTemplate:
+                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
             }
         ]
     },
@@ -389,7 +267,7 @@ const TABLES = {
                 displayName: 'CODE',
                 cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
-            { name: 'shipperName', displayName: 'SHPR' }, 
+            { name: 'shipperName', displayName: 'SHPR' },
             {
                 name: 'shipperAddress',
                 displayName: 'SHPR ADDRESS',
@@ -401,8 +279,8 @@ const TABLES = {
                 cellTemplate: `<span ng-bind="COL_FIELD | date:short"></span>`
             },
             {
-                name:'shipperContactNumber',
-                displayName:'CONTACT',
+                name: 'shipperContactNumber',
+                displayName: 'CONTACT',
                 cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
             }
         ]
@@ -414,17 +292,18 @@ const TABLES = {
                 displayName: 'CODE',
                 cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
-            { name: 'shipperName', displayName: 'SHPR' }, 
+            { name: 'shipperName', displayName: 'SHPR' },
             { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
             {
-                name:'shipperContactNumber',
-                displayName:'CONTACT',
+                name: 'shipperContactNumber',
+                displayName: 'CONTACT',
                 cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
             },
             {
                 width: 50,
                 headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
-                cellTemplate: '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                cellTemplate:
+                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
             }
         ]
     },
@@ -435,7 +314,7 @@ const TABLES = {
                 displayName: 'CODE',
                 cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
-            { name: 'shipperName', displayName: 'SHPR' }, 
+            { name: 'shipperName', displayName: 'SHPR' },
             { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
             {
                 name: 'status',
@@ -445,7 +324,8 @@ const TABLES = {
             {
                 width: 50,
                 headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
-                cellTemplate: '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                cellTemplate:
+                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
             }
         ]
     }

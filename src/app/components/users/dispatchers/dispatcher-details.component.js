@@ -5,13 +5,13 @@ import DUMMY from 'Helpers/dummy';
 (function() {
     'use strict';
 
-    angular.module('app').component('vehicleDetails', {
-        template: require('./vehicle-details.html'),
-        controller: VehicleDetailsCtrl,
+    angular.module('app').component('dispatcherDetails', {
+        template: require('./dispatcher-details.html'),
+        controller: DispatcherDetailsCtrl,
         controllerAs: 'vm'
     });
 
-    VehicleDetailsCtrl.$inject = [
+    DispatcherDetailsCtrl.$inject = [
         '$scope',
         '$state',
         '$filter',
@@ -20,7 +20,7 @@ import DUMMY from 'Helpers/dummy';
         'logger'
     ];
 
-    function VehicleDetailsCtrl(
+    function DispatcherDetailsCtrl(
         $scope,
         $state,
         $filter,
@@ -29,31 +29,14 @@ import DUMMY from 'Helpers/dummy';
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Vehicle Details';
-        vm.route_name = 'vehicle';
+        vm.titleHeader = 'Dispatcher Details';
+        vm.route_name = 'dispatcher';
 
         vm.handleUpdateItem = handleUpdateItem;
 
-        //temporary
-        // $scope.$watch(
-        //     'vm.item_details',
-        //     function(new_val, old_val) {
-        //         joinHubs(new_val);
-        //     },
-        //     true
-        // );
-
         vm.$onInit = function() {
-            vm.TPLS = 'vehicleFormModal';
-
+            vm.TPLS = 'dispatcherFormModal';
             getDetails();
-
-            // vm.item_details =
-            //     $filter('filter')(
-            //         DUMMY.vehicles,
-            //         { id: $state.params.id },
-            //         true
-            //     )[0] || {};
         };
 
         function getDetails() {
@@ -70,10 +53,11 @@ import DUMMY from 'Helpers/dummy';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        console.log('vehicle', response);
+                        console.log('dispatcher', response);
                         vm.item_details = response.data.data.items[0];
                     },
                     function(err) {
+                        vm.item_details = {};
                         //logger.error(MESSAGE.error, err, '');
                     }
                 )
@@ -84,8 +68,8 @@ import DUMMY from 'Helpers/dummy';
 
         function handleUpdateItem(item) {
             var modal = {
-                title: 'Vehicle',
-                titleHeader: 'Edit Vehicle',
+                title: 'Dispatcher',
+                titleHeader: 'Edit Dispatcher',
                 method: 'edit'
             };
 
@@ -116,13 +100,5 @@ import DUMMY from 'Helpers/dummy';
         function formModal(request, modal, template, size) {
             return ModalService.form_modal(request, modal, template, size);
         }
-
-        // function joinHubs(item) {
-        //     item.hub_name = $filter('filter')(
-        //         DUMMY.sites,
-        //         { id: item.hub_id, type: 'HUB' },
-        //         true
-        //     )[0].name;
-        // }
     }
 })();

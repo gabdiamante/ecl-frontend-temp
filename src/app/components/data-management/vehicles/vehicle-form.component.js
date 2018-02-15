@@ -48,7 +48,6 @@ import DUMMY from 'Helpers/dummy';
 
             vm.titleHeader = vm.Modal.titleHeader;
             vm.data = angular.copy(vm.Request.body);
-            console.log(vm.data);
             vm.storeData = [];
 
             getSites();
@@ -76,7 +75,6 @@ import DUMMY from 'Helpers/dummy';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        console.log('hubs', response);
                         vm.sites = response.data.data.items;
                         vm.sites.unshift({ code: 'Select Sites' });
                         vm.data.site_id = vm.data.site_id || vm.sites[0].id;
@@ -112,9 +110,10 @@ import DUMMY from 'Helpers/dummy';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
-                            console.log('vehicle', response);
+                            var response_data =
+                                response.data.data.items[0] || {};
                             logger.success(vm.Modal.title + ' added.');
-                            close(vm.data, action);
+                            close(response_data, action);
                         },
                         function(error) {
                             logger.error(error.data.message);
@@ -130,9 +129,10 @@ import DUMMY from 'Helpers/dummy';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
-                            console.log('vehicle', response);
+                            var response_data =
+                                response.data.data.items[0] || {};
                             logger.success(vm.Modal.title + ' updated.');
-                            close(vm.data, action);
+                            close(response_data, action);
                         },
                         function(err) {
                             logger.error(error.data.message);

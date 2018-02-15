@@ -3,38 +3,38 @@
     <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
 </div>
 <div class="modal-body top-margin-sm">
-    <form name="nameForm">
+    <form name="nameForm" class="materialize">
         <div class="clearfix">
             <div class="form-group">
-                <label for="zone_name">Site:</label>
+                <label for="zone_name" class="control-label small text-theme">Site:</label>
                 <select class="form-control" ng-options="item.id as item.code for item in vm.sites" ng-model="vm.data.site_id" name="site_id" required>
                 </select>
                 <span class="text-red font-10" ng-show="nameForm.site_id.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group" >
-                <label for="plate_number">Plate Number: </label>
+                <label for="plate_number" class="control-label small text-theme">Plate Number: </label>
                 <input type="text" ng-model="vm.data.plate_number" class="form-control" placeholder="Plate Number" id="plate_number" name="plate_number" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.plate_number.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group">
-                <label for="model">Model:</label>
+                <label for="model" class="control-label small text-theme">Model:</label>
                 <input type="text"  ng-model="vm.data.model" class="form-control" placeholder="Model" id="model" name="model" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.model.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group">
-                <label for="zone_name">Type:</label>
+                <label for="zone_name" class="control-label small text-theme">Type:</label>
                 <select class="form-control" ng-options="item.value as item.name for item in vm.types" ng-model="vm.data.type" name="type" required>
                 </select>
                 <span class="text-red font-10" ng-show="nameForm.type.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group">
-                <label for="model">Weight:</label>
-                <input type="text"  ng-model="vm.data.max_weight" class="form-control" placeholder="Weight (kg)" id="max_weight" name="max_weight" ng-required="true" >
+                <label for="model" class="control-label small text-theme">Weight:</label>
+                <input type="text" numbers-only ng-model="vm.data.max_weight" class="form-control" placeholder="Weight (kg)" id="max_weight" name="max_weight" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.max_weight.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group">
-                <label for="model">Volume:</label>
-                <input type="text"  ng-model="vm.data.max_volume" class="form-control" placeholder="Volume" id="max_volume" name="max_volume" ng-required="true" >
+                <label for="model" class="control-label small text-theme">Volume:</label>
+                <input type="text" numbers-only ng-model="vm.data.max_volume" class="form-control" placeholder="Volume" id="max_volume" name="max_volume" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.max_volume.$invalid && vm.submitted">*Required</span>
             </div>
             
