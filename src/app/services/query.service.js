@@ -58,8 +58,7 @@ import GLOBAL from 'Helpers/global';
                         }
                         deferred.resolve(response);
                     },
-                    function(error) {
-                        console.log(error);
+                    function(error) { 
                         deferred.reject(error);
                     }
                 )

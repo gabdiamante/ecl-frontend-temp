@@ -30,34 +30,36 @@ import DUMMY from 'Helpers/dummy';
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Couriers';
+        vm.titleHeader  = 'Couriers';
+        vm.route_name   = 'couriers';
+        vm.per_page     = ['10', '20', '50', '100', '200'];
+        vm.total_page   = '1';
+        vm.total_items  = '0';
+        vm.items        = { roleUserCheck: [] };
+        vm.loading      = false;
 
-        vm.pagination = {};
+        vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
-        vm.pagination.limit = $stateParams.limit || '10';
-        vm.per_page = ['10', '20', '50', '100', '200'];
-        vm.total_page = '1';
-        vm.total_items = '0';
-        vm.items = { roleUserCheck: [] };
-        vm.loading = false;
+        vm.pagination.limit     = $stateParams.limit || '10';
 
-        vm.option_table = {
-            emptyColumn: true,
+        vm.option_table = { 
             defaultPagination: true,
             hideSearchByKey: true,
-            searchTemplate: true,
-            tableSearch: true
+            searchTemplate: true 
         };
 
         vm.option_table.columnDefs = TABLES.couriers.columnDefs;
         vm.option_table.data = [];
 
-        vm.goTo = goTo;
-        vm.trClick = trClick;
+        vm.goTo = goTo; 
 
-        getData();
+        init();
 
-        function getData() {
+        function init () {
+            getCouriers();
+        }
+
+        function getCouriers() {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -67,17 +69,16 @@ import DUMMY from 'Helpers/dummy';
                     page: vm.pagination.pagestate
                 },
                 hasFile: false,
-                route: { users: '' },
+                route: { [vm.route_name]: '' },
                 cache: true,
-                cache_string: 'user'
+                cache_string: vm.route_name
             };
 
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.option_table.data = handleNames(
-                            DUMMY.users.couriers
-                        );
+                        console.log('couriers: ', response);
+                        vm.option_table.data = handleNames(response.data.data.items);
 
                         // vm.option_table.data    = handleNames(response.data.data);
                         // vm.pagination.page      = $stateParams.page || '1';
@@ -96,17 +97,13 @@ import DUMMY from 'Helpers/dummy';
 
         function handleNames(data) {
             for (let i = 0; i < data.length; i++)
-                data[i].fullname = data[i].firstName + ' ' + data[i].lastName;
+                data[i].fullname = data[i].first_name + ' ' + ((data[i].middle_name+' ') || '') + data[i].last_name;
             return data;
         }
 
         function goTo(data) {
             $state.go('app.couriers', data);
-        }
-
-        function trClick(data) {
-            $state.go('app.courier-details', { id: data.id });
-        }
+        } 
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {
             // var values_of_id = _.pluck(vm.option_table.data, propertyName);

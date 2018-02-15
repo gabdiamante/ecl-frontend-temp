@@ -24,20 +24,29 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="row.entity.id">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.courier-details({ id:row.entity.user_id })">{{COL_FIELD}}</a>`
             },
-            { name: 'contact', displayName: 'Contact' },
-            { name: 'zone', displayName: 'Zone' },
+            { name: 'username', displayName: 'Username' },
+            { name: 'contact_number', displayName: 'Contact', cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>` },
+            { name: 'zone', displayName: 'Zone', cellTemplate: `<span ng-bind-html="COL_FIELD | displaynone"></span>` },
+            { name: 'email', displayName: 'Email' },
             {
-                name: 'vehicle',
-                displayName: 'Assigned Vehicle',
-                cellTemplate: `<a ui-sref="row.entity.vehicle">{{COL_FIELD}}</a>`
-            },
-            {
-                name: 'updatedAt',
+                name: 'updated',
                 displayName: 'Date Updated',
                 cellTemplate: `{{ COL_FIELD | date:short }}`
             }
+        ]
+    },
+    merchants: {
+        columnDefs: [
+            {
+                name: 'fullname',
+                displayName: 'Name',
+                cellTemplate: `<a ui-sref="app.courier-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'username', displayName:'Username' },
+            { name: 'contact', displayName: 'Contact' },
+            { name: 'status', displayName: 'Status' } 
         ]
     },
     dispatchers: {

@@ -29,34 +29,40 @@
                     <div class="col-md-12" align="center">
                         <div class="row">
                             <i class="fa fa-user-circle fa-5x"></i> 
-                            <h3 ng-bind="vm.courier.firstName + ' ' + vm.courier.lastName"></h3>
+                            <h3 ng-bind-html="vm.courier.first_name+' '+((vm.courier.middle_name+' ') || '')+ vm.courier.last_name | displaynone"></h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
                     <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
-                            <i class="fa fa-id-card"></i>
+                        <div class="col-md-4 col-sm-4 col-xs-4 padding-lg" align="right">
+                            <i class="fa fa-id-card" title="Username" ></i>
                         </div>
-                        <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
-                            <span ng-bind="vm.courier.username"></span>
+                        <div class="col-md-8 col-sm-8 col-xs-8 padding-lg">
+                            <span ng-bind-html="vm.courier.username | displaynone"></span>
                         </div>
-                        <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
-                            <i class="fa fa-phone"></i>
+                        <div class="col-md-4 col-sm-4 col-xs-4 padding-lg" align="right">
+                            <i class="fa fa-envelope" title="Email"></i>
                         </div>
-                        <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
-                            <span ng-bind-html="vm.courier.contact | handlePccDisplay : '+63'"></span>
+                        <div class="col-md-8 col-sm-8 col-xs-8 padding-lg">
+                            <span ng-bind-html="vm.courier.contact_number | handlePccDisplay : '+63'"></span>
                         </div>
-                        <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
-                            <i class="fa fa-car"></i>
+                        <div class="col-md-4 col-sm-4 col-xs-4 padding-lg" align="right">
+                            <i class="fa fa-phone" title="Contact Number"></i>
                         </div>
-                        <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
-                            <span ng-bind="vm.courier.vehicle"></span>
+                        <div class="col-md-8 col-sm-8 col-xs-8 padding-lg">
+                            <span ng-bind-html="vm.courier.email | displaynone"></span>
                         </div>
-                        <div class="col-md-5 col-sm-5 col-xs-5 padding-lg" align="right">
-                            <i class="fa fa-map"></i>
+                        <div class="col-md-4 col-sm-4 col-xs-4 padding-lg" align="right">
+                            <i class="fa fa-car" title="Vehicle"></i>
                         </div>
-                        <div class="col-md-7 col-sm-7 col-xs-7 padding-lg">
-                            <span ng-bind="vm.courier.zone"></span>
+                        <div class="col-md-8 col-sm-8 col-xs-8 padding-lg">
+                            <span ng-bind-html="vm.courier.vehicle | displaynone"></span>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 padding-lg" align="right">
+                            <i class="fa fa-map" title="Zone"></i>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-8 padding-lg">
+                            <span ng-bind-html="vm.courier.zone | displaynone"></span>
                         </div>
                     </div>
                 </div> 
