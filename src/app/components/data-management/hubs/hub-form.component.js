@@ -64,9 +64,11 @@ import GLOBAL from 'Helpers/global';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
+                            var response_data =
+                                response.data.data.items[0] || {};
                             console.log('hubsss', response);
                             logger.success(vm.Modal.title + ' added.');
-                            close(vm.data, action);
+                            close(response_data, action);
                         },
                         function(error) {
                             logger.error(error.data.message);
@@ -82,9 +84,11 @@ import GLOBAL from 'Helpers/global';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
+                            var response_data =
+                                response.data.data.items[0] || {};
                             console.log('hub', response);
                             logger.success(vm.Modal.title + ' updated.');
-                            close(vm.data, action);
+                            close(response_data, action);
                         },
                         function(err) {
                             logger.error(error.data.message);
