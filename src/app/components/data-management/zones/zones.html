@@ -111,9 +111,14 @@
 						<div class="btn-group" uib-dropdown auto-close="outSideClick">
 							<button type="button" class="btn-default dropdown-toggle select-dd" uib-dropdown-toggle> 
 								<span class="pull-left">
-									<i class="fa fa-building"></i>
-									<span class="text-uppercase " ng-bind="vm.hub.name || 'No Hubs'">
-									</span>									
+									<span ng-if="!vm.loadingHub">
+										<i class="fa fa-building"></i>
+										<span class="text-uppercase " ng-bind="vm.hub.name "></span>	
+									</span>
+									<span ng-if="vm.loadingHub">
+										<i class="fa fa-spinner fa-pulse"></i>
+										<span  ng-bind="'Loading'"></span>	
+									</span>						
 								</span>
 								<span class="caret caret-right"></span>
 							</button>

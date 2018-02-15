@@ -60,6 +60,26 @@ const TABLES = {
             }
         ]
     },
+    personnels: {
+        columnDefs: [
+            {
+                name: 'name',
+                cellTemplate: `<a ui-sref="app.personnel-details({ id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+            },
+            { name: 'username' },
+            { name: 'email' },
+            {
+                name: 'updated',
+                displayName: 'Date',
+                cellTemplate: `{{ COL_FIELD | date:short}}`
+            },
+            {
+                name: 'action',
+                displayName: ' ',
+                cellTemplate: `<div ng-include="'template-user-personnel-action'"></div>`
+            }
+        ]
+    },
     //DATA-MANAGEMENT
     hubs: {
         columnDefs: [
@@ -129,6 +149,29 @@ const TABLES = {
             }
         ]
     },
+    bins: {
+        columnDefs: [
+            {
+                name: 'code',
+                cellTemplate: `<a ui-sref="app.bin-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'name' },
+            { name: 'volume' },
+            { name: 'weight' },
+            { name: 'dimension' },
+            {
+                name: 'updated',
+                displayName: 'Date',
+                cellTemplate: `{{ COL_FIELD | date:short}}`
+            },
+            {
+                name: 'action',
+                displayName: ' ',
+                cellTemplate: `<div ng-include="'template-data-management-bin-action'"></div>`
+            }
+        ]
+    },
+    //
     courier_deliveries: {
         columnDefs: [
             {
@@ -314,6 +357,34 @@ const TABLES = {
                 headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
                 cellTemplate:
                     '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+            }
+        ]
+    },
+    //HISTORY
+    history: {
+        columnDefs: [
+            {
+                name: 'code',
+                width: 50,
+                cellTemplate: `<a ui-sref="app.hub-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'Shpr' },
+            {
+                name: 'shipperAddress',
+                displayName: 'Shpr Address'
+            },
+            {
+                name: 'cneeName',
+                displayName: 'Cnee'
+            },
+            {
+                name: 'cneeAddress',
+                displayName: 'Cnee Address'
+            },
+            {
+                name: 'updated',
+                displayName: 'Date Updated',
+                cellTemplate: `{{ COL_FIELD | date:short}}`
             }
         ]
     }

@@ -293,7 +293,176 @@ const UTIL = {
             color += letters[Math.floor(Math.random() * 16)];
         }
         return color;
-    }
+    },
+
+    apiKey: 'AIzaSyB7qDqpj2GgOSU7YaGk5Vccv8fFKBinkt4',
+    snapToRoadUrl: 'https://roads.googleapis.com/v1/snapToRoads',
+    mapUrl:
+        '//maps.google.com/maps/api/js?key=AIzaSyAbc_f76Ej5CwmfeGq0p-lYHtJWSyOLk34&libraries=drawing,geometry,places',
+    dateFormat: 'YYYY-MM-DD',
+    menu: [
+        {
+            title: 'Dashboard',
+            state: 'app.dashboard',
+            icon: 'area-chart',
+            params: {
+                errorsPage: 1,
+                errorsSize: 5
+            }
+        },
+        {
+            title: 'Deliveries',
+            state: 'app.deliveries',
+            icon: 'th-large',
+            params: {
+                page: 1,
+                size: 10,
+                status: 'PENDING',
+                search: ''
+            }
+        }
+    ],
+    deliveryChartOptions: {
+        backgroundColor: {
+            fill: 'transparent'
+        },
+        legend: 'none',
+        is3D: false,
+        colors: ['#607d8b', '#4CAF50', '#f44336']
+    },
+    courierDChartOptions: {
+        backgroundColor: {
+            fill: 'transparent'
+        },
+        legend: 'none',
+        is3D: false,
+        colors: ['#607d8b', '#4CAF50', '#f44336']
+    },
+    courierPChartOptions: {
+        backgroundColor: {
+            fill: 'transparent'
+        },
+        legend: 'none',
+        is3D: false,
+        colors: ['#607d8b', '#4CAF50', '#f44336']
+    },
+    bgColors: [
+        '#4BC0C0', //green
+        '#FF6384', //light-red
+        '#00dcc6' //theme-l1
+    ],
+    bgColors2: ['#67bd6a', '#f6675d', '#00dcc6'],
+
+    vehicleTypes: ['TRUCK', 'MOTORCYCLE'],
+    clusterMapOptions: {
+        imagePath: 'assets/img/cluster/m',
+        maxZoom: 15
+    },
+    markerImage: 'assets/img/marker.svg',
+    colorMarker: 'assets/img/',
+    mapStyles: [
+        {
+            featureType: 'administrative',
+            elementType: 'labels.text.fill',
+            stylers: [
+                {
+                    color: '#444444'
+                }
+            ]
+        },
+        {
+            featureType: 'poi',
+            elementType: 'all',
+            stylers: [
+                {
+                    visibility: 'off'
+                }
+            ]
+        },
+        {
+            featureType: 'road',
+            elementType: 'all',
+            stylers: [
+                {
+                    saturation: -100
+                },
+                {
+                    lightness: 45
+                }
+            ]
+        },
+        {
+            featureType: 'road',
+            elementType: 'geometry.fill',
+            stylers: [
+                {
+                    hue: '#ff0000'
+                }
+            ]
+        },
+        {
+            featureType: 'road.highway',
+            elementType: 'all',
+            stylers: [
+                {
+                    visibility: 'simplified'
+                }
+            ]
+        },
+        {
+            featureType: 'road.highway',
+            elementType: 'geometry.fill',
+            stylers: [
+                {
+                    color: '#e09826'
+                }
+            ]
+        },
+        {
+            featureType: 'road.arterial',
+            elementType: 'labels.icon',
+            stylers: [
+                {
+                    visibility: 'off'
+                }
+            ]
+        },
+        {
+            featureType: 'transit',
+            elementType: 'all',
+            stylers: [
+                {
+                    visibility: 'off'
+                }
+            ]
+        },
+        {
+            featureType: 'water',
+            elementType: 'all',
+            stylers: [
+                {
+                    color: '#00ff80'
+                },
+                {
+                    visibility: 'on'
+                }
+            ]
+        },
+        {
+            featureType: 'water',
+            elementType: 'geometry.fill',
+            stylers: [
+                {
+                    color: '#0b65b1'
+                }
+            ]
+        }
+    ],
+    hubIcon: {
+        url: 'assets/img/warehouse.svg', // url
+        scaledSize: [35, 35]
+    },
+    types: ['delivery', 'pickup']
 };
 
 UTIL.colors = UTIL.colors.concat(getRandomColors(200));
