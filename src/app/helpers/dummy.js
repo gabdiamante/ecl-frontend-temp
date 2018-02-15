@@ -387,6 +387,62 @@ const DUMMY = {
                 updatedAt: new Date()
             }
         ],
+        merchants: [
+            {
+                id: 0,
+                username: 'aroberto',
+                firstName: 'Allen',
+                lastName: ' Roberto',
+                contact: '09168245128',
+                status: 'active',
+                updatedAt: new Date()
+            },
+            {
+                id: 1,
+                username: 'gguiyab',
+                firstName: 'Glenn',
+                lastName: ' Guiyab',
+                contact: '09468247125',
+                status: 'inactive',
+                updatedAt: new Date()
+            },
+            {
+                id: 2,
+                username: 'lparducho',
+                firstName: 'Laurence',
+                lastName: ' Parducho',
+                contact: '09128459137',
+                status: 'active',
+                updatedAt: new Date()
+            },
+            {
+                id: 3,
+                username: 'jfuriscal',
+                firstName: 'Jomar',
+                lastName: ' Furiscal',
+                contact: '09885842452',
+                status: 'inactive',
+                updatedAt: new Date()
+            },
+            {
+                id: 4,
+                username: 'rkdulva',
+                firstName: 'Renz Kevin',
+                lastName: ' Dulva',
+                contact: '09125266860',
+                status: 'inactive',
+                updatedAt: new Date()
+            },
+            {
+                id: 5,
+                username: 'fhipona',
+                firstName: 'Neil Francis',
+                lastName: ' Hipona',
+                contact: '09115402154',
+                status: 'active',
+                updatedAt: new Date()
+            }
+        ],
         courier_deliveries: [
             {
                 id: 0,

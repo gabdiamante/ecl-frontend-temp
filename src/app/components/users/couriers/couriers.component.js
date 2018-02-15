@@ -52,12 +52,15 @@ import DUMMY from 'Helpers/dummy';
         vm.option_table.columnDefs = TABLES.couriers.columnDefs;
         vm.option_table.data = [];
 
-        vm.goTo = goTo;
-        vm.trClick = trClick;
+        vm.goTo = goTo; 
 
-        getData();
+        init();
 
-        function getData() {
+        function init () {
+            getCouriers();
+        }
+
+        function getCouriers() {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -75,9 +78,7 @@ import DUMMY from 'Helpers/dummy';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.option_table.data = handleNames(
-                            DUMMY.users.couriers
-                        );
+                        vm.option_table.data = handleNames(DUMMY.users.couriers);
 
                         // vm.option_table.data    = handleNames(response.data.data);
                         // vm.pagination.page      = $stateParams.page || '1';
@@ -102,11 +103,7 @@ import DUMMY from 'Helpers/dummy';
 
         function goTo(data) {
             $state.go('app.couriers', data);
-        }
-
-        function trClick(data) {
-            $state.go('app.courier-details', { id: data.id });
-        }
+        } 
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {
             // var values_of_id = _.pluck(vm.option_table.data, propertyName);

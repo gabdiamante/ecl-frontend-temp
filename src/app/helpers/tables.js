@@ -24,20 +24,32 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="row.entity.id">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.courier-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'contact', displayName: 'Contact' },
             { name: 'zone', displayName: 'Zone' },
             {
                 name: 'vehicle',
                 displayName: 'Assigned Vehicle',
-                cellTemplate: `<a ui-sref="row.entity.vehicle">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.courier-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
             },
             {
                 name: 'updatedAt',
                 displayName: 'Date Updated',
                 cellTemplate: `{{ COL_FIELD | date:short }}`
             }
+        ]
+    },
+    merchants: {
+        columnDefs: [
+            {
+                name: 'fullname',
+                displayName: 'Name',
+                cellTemplate: `<a ui-sref="app.courier-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'username', displayName:'Username' },
+            { name: 'contact', displayName: 'Contact' },
+            { name: 'status', displayName: 'Status' } 
         ]
     },
     dispatchers: {

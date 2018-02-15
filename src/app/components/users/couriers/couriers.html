@@ -2,7 +2,20 @@
     <div class="col-md-12 sub-header">
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
+    <div class="col-md-12 top-margin-sm">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12" > 
+                <div class="input-group" >
+                    <input type="text" class="form-control" placeholder="Search Courier" ng-model="vm.courier" /> <!--ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.keyword)"-->
+                    <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                </div> 
+            </div> 
+            <div class="col-md-8 col-sm-8 col-xs-12"></div>
+        </div>
+    </div>
     <div class="col-md-12">
-        <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" tr-click="vm.trClick(data)"></complex-table>
+        <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
     </div>
 </div>
