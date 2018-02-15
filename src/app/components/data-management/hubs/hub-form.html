@@ -3,19 +3,19 @@
     <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
 </div>
 <div class="modal-body top-margin-sm">
-    <form name="nameForm">
+    <form name="nameForm" class="materialize">
         <div class="clearfix">
             <div class="form-group" >
-                <label for="uname">Code: </label>
+                <label for="uname" class="control-label small text-theme">Code: </label>
                 <input type="text" ng-model="vm.data.code" class="form-control" placeholder="Code" id="code" name="code" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.code.$invalid && vm.submitted">*Required</span>
             </div>
-            <div class="form-group">
+            <div class="form-group" class="control-label small text-theme">
                 <label for="zone_name">Name:</label>
                 <input type="text"  ng-model="vm.data.name" class="form-control" placeholder="Name" id="name" name="name" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.name.$invalid && vm.submitted">*Required</span>
             </div>
-            <div class="form-group">
+            <div class="form-group" class="control-label small text-theme">
                 <label for="zone_name">Address:</label>
                 <textarea type="text" ng-model="vm.data.address" class="form-control" placeholder="Address" id="address" name="address" ng-required="true" >
                 </textarea>

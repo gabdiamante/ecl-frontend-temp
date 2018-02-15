@@ -28,6 +28,10 @@
                 <span class="text-bold " ng-cloak ng-bind-html="vm.item_details.model | displaynone">  </span>
             </li>
             <li class="list-group-item clearfix">
+                <span class="col-md-3">Type:</span>
+                <span class="text-bold " ng-cloak ng-bind-html="(vm.item_details.type == '4W') ? 'Truck' : (vm.item_details.type == '2W') ? 'Motorcycle': '' | displaynone">  </span>
+            </li>
+            <li class="list-group-item clearfix">
                 <span class="col-md-3">Courier:</span>
                 <span class="text-bold " ng-cloak ng-bind-html="vm.item_details.courier | displaynone">  </span>
             </li>
