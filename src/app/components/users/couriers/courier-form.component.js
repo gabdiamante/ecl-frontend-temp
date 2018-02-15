@@ -1,5 +1,6 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
+import MESSAGE from 'Helpers/message';
 
 (function() {
     'use strict';
@@ -37,32 +38,47 @@ import GLOBAL from 'Helpers/global';
         ModalService,
         logger
     ) {
-        var vm = this;
-        var Modal = null;
-        var Request = null;
-        vm.user = {};
-        vm.item = {};
+        var vm              = this;
+        var Modal           = null;
+        var Request         = null;
+        vm.user             = {};
+        vm.item             = {};
         vm.selected_accoutn = '';
-        vm.submitted = false;
+        vm.submitted        = false;
 
         vm.$onInit = function() {
-            Modal = vm.resolve.Modal;
-            Request = vm.resolve.Request;
-            vm.titleHeader = Modal.header;
-            vm.data = angular.copy(Request.body);
+            Modal           = vm.resolve.Modal;
+            Request         = vm.resolve.Request;
+            vm.titleHeader  = Modal.header;
+            vm.data         = angular.copy(Request.body);
         };
 
-        vm.save = save;
-        vm.cancel = cancel;
+        vm.save             = save;
+        vm.cancel           = cancel;
 
         init();
 
         function init() {}
 
-        function save(data) {
+        function save(data) { 
             vm.disable = true;
             Request.body = GLOBAL.setToUpperCase(angular.copy(data));
-            vm.modalInstance.close(vm.data);
+            QueryService
+                .query(Request)
+                .then(
+                    function(response) { 
+                        console.log(response);
+                        vm.modalInstance.close(data);
+                    },
+                    function(err) {
+                        console.log(err);
+                        // logger.error(MESSAGE.error, err, '');
+                    }
+                )
+                .finally(function() {
+                    vm.loading = false;
+                    vm.disable = false;
+                });
         }
 
         function cancel() {
