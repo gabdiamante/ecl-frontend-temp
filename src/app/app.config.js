@@ -185,13 +185,13 @@ import angular from 'angular';
             })
 
             .state('app.dispatchers', {
-                url: 'dispatchers',
+                url: 'dispatchers?size&deleted&page&limit&search',
                 component: 'dispatchers'
             })
 
             .state('app.dispatcher-details', {
                 url: 'dispatcher-details?id',
-                component: 'hubDetails'
+                component: 'dispatcherDetails'
             })
 
             .state('app.hub-supports', {

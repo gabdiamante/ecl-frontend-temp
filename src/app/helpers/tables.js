@@ -44,7 +44,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'name',
-                cellTemplate: `<a ui-sref="app.dispatcher-details({ id: row.entity.id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+                cellTemplate: `<a ui-sref="app.dispatcher-details({ id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
             },
             { name: 'username' },
             { name: 'email' },
