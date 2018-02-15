@@ -5,9 +5,9 @@ import DUMMY from 'Helpers/dummy';
 (function() {
     'use strict';
 
-    angular.module('app').component('distributionCenterFormModal', {
-        template: require('./dcs-form.html'),
-        controller: DCFormModalCtrl,
+    angular.module('app').component('binFormModal', {
+        template: require('./bin-form.html'),
+        controller: BinFormModalCtrl,
         controllerAs: 'vm',
         bindings: {
             modalInstance: '<',
@@ -15,7 +15,7 @@ import DUMMY from 'Helpers/dummy';
         }
     });
 
-    DCFormModalCtrl.$inject = [
+    BinFormModalCtrl.$inject = [
         '$rootScope',
         '$state',
         '$cookies',
@@ -26,7 +26,7 @@ import DUMMY from 'Helpers/dummy';
         'logger'
     ];
 
-    function DCFormModalCtrl(
+    function BinFormModalCtrl(
         $rootScope,
         $state,
         $cookies,
@@ -48,15 +48,14 @@ import DUMMY from 'Helpers/dummy';
 
             vm.titleHeader = vm.Modal.titleHeader;
             vm.data = angular.copy(vm.Request.body);
-            console.log(vm.data);
             vm.storeData = [];
 
-            getHubs();
+            getSites();
             getZones();
             //console.log(Modal);
         };
 
-        function getHubs() {
+        function getSites() {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -64,7 +63,6 @@ import DUMMY from 'Helpers/dummy';
                 params: {
                     limit: '9999999999',
                     page: '1',
-                    type: 'HUB',
                     is_active: 1
                 },
                 hasFile: false,
@@ -77,10 +75,9 @@ import DUMMY from 'Helpers/dummy';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        console.log('hubs', response);
-                        vm.hubs = response.data.data.items;
-                        vm.hubs.unshift({ code: 'Select Hub' });
-                        vm.data.hub_id = vm.data.hub_id || vm.hubs[0].id;
+                        vm.sites = response.data.data.items;
+                        vm.sites.unshift({ code: 'Select Sites' });
+                        vm.data.site_id = vm.data.site_id || vm.sites[0].id;
                         // vm.total_items          = response.data.data.total;
                     },
                     function(error) {
@@ -90,13 +87,6 @@ import DUMMY from 'Helpers/dummy';
                 .finally(function() {
                     vm.loading = false;
                 });
-
-            // vm.hubs =
-            //     $filter('filter')(
-            //         angular.copy(DUMMY.sites),
-            //         { type: 'HUB' },
-            //         true
-            //     ) || [];
         }
 
         function getZones() {
@@ -114,7 +104,7 @@ import DUMMY from 'Helpers/dummy';
                 cache: false
             };
 
-            console.log('hubr', request);
+            console.log('zone r', request);
 
             QueryService.query(request)
                 .then(
@@ -132,36 +122,23 @@ import DUMMY from 'Helpers/dummy';
                 .finally(function() {
                     vm.loading = false;
                 });
-
-            // vm.zones = angular.copy(DUMMY.zones) || [];
-            // vm.zones.unshift({ code: 'Select Zones' });
-            // vm.data.zone_id = vm.data.zone_id || vm.zones[0].id;
         }
 
         function save(data, action) {
             vm.disable = true;
             vm.loading = true;
 
-            vm.data.type = 'DC';
-            vm.Request.body = {
-                name: vm.data.name,
-                code: vm.data.code,
-                hub_id: vm.data.hub_id,
-                type: vm.data.type,
-                address: vm.data.address,
-                lat: vm.data.lat,
-                lng: vm.data.lng
-            };
-
-            console.log('req', vm.Request);
+            vm.Request.body = vm.data;
 
             if (vm.Modal.method == 'add') {
+                console.log(vm.Modal.method);
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
-                            updateZone(response);
-                            // logger.success(vm.Modal.title + ' added.');
-                            // close(vm.data, action);
+                            var response_data =
+                                response.data.data.items[0] || {};
+                            logger.success(vm.Modal.title + ' added.');
+                            close(response_data, action);
                         },
                         function(error) {
                             logger.error(error.data.message);
@@ -172,12 +149,15 @@ import DUMMY from 'Helpers/dummy';
                         vm.disable = false;
                     });
             } else if (vm.Modal.method == 'edit') {
+                console.log(vm.Request);
+
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
-                            updateZone(response);
-                            // logger.success(vm.Modal.title + ' updated.');
-                            // close(vm.data, action);
+                            var response_data =
+                                response.data.data.items[0] || {};
+                            logger.success(vm.Modal.title + ' updated.');
+                            close(response_data, action);
                         },
                         function(err) {
                             logger.error(error.data.message);
@@ -188,60 +168,6 @@ import DUMMY from 'Helpers/dummy';
                         vm.disable = false;
                     });
             }
-
-            // QueryService
-            //     .query(Request)
-            //     .then( function (response) {
-
-            //     }, function (error) {
-            //         logger.error(error.data.message || 'Cannot established URL:' + GLOBAL.set_url(Request.route));
-            //     }).finally( function () {
-            //         vm.disable = false;
-            //     });
-        }
-
-        function updateZone(response, action) {
-            var item = response.data.data.items[0] || {};
-            console.log('update_zone', item);
-
-            vm.loading = true;
-            var request = {
-                method: 'PUT',
-                body: { site_id: item.id },
-                params: false,
-                hasFile: false,
-                route: { zone: vm.data.zone_id },
-                cache: false,
-                cache_string: vm.route_name
-            };
-
-            QueryService.query(request)
-                .then(
-                    function(response) {
-                        console.log('dcs', response);
-                        vm.total_items = response.data.data.total;
-                        if (vm.Modal.method == 'add') {
-                            logger.success(vm.Modal.title + ' added.');
-                        } else if (vm.Modal.method == 'add') {
-                            logger.success(vm.Modal.title + ' updated.');
-                        }
-
-                        vm.response_data = item;
-                        var response_zone_data =
-                            response.data.data.items[0] || {};
-                        vm.response_data.zone_id = response_zone_data.id;
-                        vm.response_data.zone_code = response_zone_data.code;
-
-                        close(vm.response_data, action);
-                    },
-                    function(error) {
-                        console.log(error.data.message);
-                        //logger.error(MESSAGE.error, err, '');
-                    }
-                )
-                .finally(function() {
-                    vm.loading = false;
-                });
         }
 
         function close(data, action) {

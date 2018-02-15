@@ -6,40 +6,38 @@ import DUMMY from 'Helpers/dummy';
 (function() {
     'use strict';
 
-    angular.module('app').component('hubs', {
-        template: require('./hubs.html'),
-        controller: HubsCtrl,
+    angular.module('app').component('bins', {
+        template: require('./bins.html'),
+        controller: BinsCtrl,
         controllerAs: 'vm'
     });
 
-    HubsCtrl.$inject = [
+    BinsCtrl.$inject = [
         '$scope',
         '$state',
         '$stateParams',
         '$filter',
         'ModalService',
         'QueryService',
-        'logger',
-        '$localStorage'
+        'logger'
     ];
 
-    function HubsCtrl(
+    function BinsCtrl(
         $scope,
         $state,
         $stateParams,
         $filter,
         ModalService,
         QueryService,
-        logger,
-        $localStorage
+        logger
     ) {
         var vm = this;
-        vm.title = 'Hub';
+        vm.title = 'Bin';
         vm.titleHeader = vm.title + 's';
-        vm.view = 'hub';
+        vm.view = 'bin';
+        vm.route_name = 'bin';
 
-        vm.TPLS = 'hubFormModal';
-        vm.route_name = 'site';
+        vm.TPLS = 'binFormModal';
 
         vm.deleted = $stateParams.deleted;
         vm.pagination = {};
@@ -60,7 +58,7 @@ import DUMMY from 'Helpers/dummy';
             tableDeactivate: true
         };
 
-        vm.option_table.columnDefs = TABLES.hubs.columnDefs;
+        vm.option_table.columnDefs = TABLES.bins.columnDefs;
         vm.option_table.data = [];
 
         vm.goTo = goTo;
@@ -84,7 +82,6 @@ import DUMMY from 'Helpers/dummy';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
-                    type: 'HUB',
                     is_active: vm.deleted == 'true' ? 0 : 1
                 },
                 hasFile: false,
@@ -93,19 +90,15 @@ import DUMMY from 'Helpers/dummy';
                 cache_string: vm.route_name
             };
 
-            console.log('hubr', request);
+            console.log('bins r', request);
 
             QueryService.query(request)
                 .then(
                     function(response) {
-                        console.log('hubs', response);
+                        console.log('bins', response);
+                        // vm.option_table.data = DUMMY.vehicles;
                         vm.option_table.data = response.data.data.items;
 
-                        // vm.option_table.data = $filter('filter')(
-                        //     angular.copy(DUMMY.sites),
-                        //     { type: 'HUB' },
-                        //     true
-                        // );
                         // vm.option_table.data    = handleNames(response.data.data);
                         // vm.pagination.page      = $stateParams.page || '1';
                         // vm.pagination.limit     = $stateParams.limit || '10';
@@ -284,7 +277,7 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function trClick(data) {
-            $state.go('app.hub-details', { id: data.id });
+            $state.go('app.vehicle-details', { id: data.id });
         }
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {

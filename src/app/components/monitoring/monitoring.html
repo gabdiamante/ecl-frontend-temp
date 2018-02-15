@@ -3,3 +3,263 @@
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
 </div>
+
+
+<div class="margin-bottom">
+
+    <div class="map-container">
+        <map name="" map-lazy-load="vm.mapUrl" id="mntrng-map" class="dashboard-map" zoom="{{vm.zoom || 8}}" styles="{{vm.mapStyles}}" zoom-control="false" street-view-control="false" map-type-control="false">
+            <custom-marker position="{{vehicle.latitude}}, {{vehicle.longitude}}"
+                    ng-repeat="vehicle in vm.vehicles"
+                    ng-if="vehicle.latitude"
+                    on-click="vm.clickCourier(vehicle)">
+                    <div class="pulse-container" >
+                            <div class="pulse"></div>
+                    </div>
+            </custom-marker>
+            <custom-marker ng-if="vm.viewOne" position="{{vm.courier.latitude}}, {{vm.courier.longitude}}" on-click="vm.clickCourier(vm.courier)">
+                <div class="pulse-container" >
+                        <div class="pulse"></div>
+                    </div>
+            </custom-marker>
+
+            <div ng-if="vm.viewOne">
+                    <marker position="{{vm.hub.lat}}, {{vm.hub.lng}}" id="hub-marker"  on-click="vm.showHubInfo(vm.hub)" icon={{vm.hubIcon}} title="{{vm.hub.name}}">		
+                    </marker>
+            </div>
+            <info-window id="assignInfo" position="{{vm.assign.lat}}, {{vm.assign.lng}}">
+                <div ng-non-bindable>
+                        <span 	class="text-bold"
+                                ng-bind="vm.assign.assignmentType | uppercase">
+                        </span> <br>
+                        <span ng-if="vm.assign.assignmentType !=='redemption'">
+                            Code:
+                            <a href="" class="text-bold text-uppercase" ng-click="vm.viewItemDetails(vm.assign)" ng-bind="vm.assign.code" ng-cloak></a>
+                            <br>
+                        </span>
+                        <span ng-if="vm.assign.assignmentType !=='redemption'">
+                            Shipper: <span class="text-bold text-uppercase" ng-bind="vm.assign.shipperName" ng-cloak></span>
+                            <br>
+                        </span> 
+                        <span ng-if="vm.assign.assignmentType !=='redemption'">
+                            Cnee: <span class="text-bold text-uppercase" ng-bind="vm.assign.cneeName" ng-cloak></span>
+                            <br>
+                        </span> 
+                        <span>
+                            ETA: <span class="text-bold"  ng-bind="vm.assign.eta | date: 'hh:mma'" ng-cloak ></span>
+                            <br>
+                        </span> 
+                        <span>
+                            Distance: <span class="text-bold" ng-bind="((vm.assign.distance/100)/10).toFixed(2) + 'km'" ng-cloak></span>
+                        </span> <br>
+                </div>
+            </info-window>
+
+            <info-window id="courierInfo" position="{{vm.courier.latitude}}, {{vm.courier.longitude}}">
+                <div ng-non-bindable>
+                        <span>
+                            Courier:
+                            <a href="" class="text-blue text-bold text-uppercase" ng-bind="vm.courier.lastName +', '+ vm.courier.firstName"  ng-click="vm.viewDetails(vm.courier)"ng-cloak></a>
+                            <br>
+                        </span>
+                        <span>
+                            Vehicle: <span class="text-bold text-uppercase" ng-bind="vm.courier.vehicleId || vm.courier.id" ng-cloak></span>
+                            <br>
+                        </span> 
+                </div>
+            </info-window>
+    <!-- icons="[{
+                        icon: {{vm.polylineArrow}},
+                        offset: '10px',
+                        repeat: '150px'
+
+                        }]" -->
+            <shape 	name="polyline" 
+                    id="lines"
+                    geodesic="true"
+                        path="{{vm.path}}"
+                        stroke-color="#0fadf5"
+                        stroke-opacity="0.9"
+                        stroke-weight="7">
+            </shape> 
+
+            <shape 	name="polyline" 
+                    id="actualRoute"
+                    geodesic="true"
+                        path="{{vm.actualRoute}}"
+                        stroke-color="rgba(245, 0, 87, 0.57)"
+                        stroke-opacity="0.7"
+                        stroke-weight="7">
+            </shape> 
+
+        </map>
+
+        <div class="map-toolbar" ng-if="!vm.viewOne">
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-4">
+                        <span class="text-white">Select Hub :</span>
+                        <div class="btn-group" uib-dropdown auto-close="outSideClick">
+                            <button type="button" class="btn-default dropdown-toggle select-dd" uib-dropdown-toggle> 
+                                <span class="pull-left">
+                                    <i class="fa fa-building"></i>
+                                    <span class="text-uppercase " ng-bind="vm.hub.name">
+                                    </span>									
+                                </span>
+                                <span class="caret caret-right"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box drop-list-2" uib-dropdown-menu role="menu" >
+                                <ul class="drop-list-menu list-group text-bold">
+                                    <li role="menuitem" class="list-group-item" ng-repeat="hub in vm.hubs" ng-click="vm.selectHub(hub)" > 
+                                        <a href=""  class="text-uppercase" ng-bind="hub.name"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-md-offset-3">
+                        <ul class="list-group-h">
+                            <li class="list-group-item hr">
+                                <div class="btn-group dropbtn">
+                                    <div class="btn-group" uib-dropdown auto-close="disabled">
+                                        <button type="button" class="btn-default dropdown-toggle" uib-dropdown-toggle >
+                                            <span class="pull-left">
+                                                <i class="fa fa-users"></i>
+                                                <span class="text-uppercase ">Couriers</span>									
+                                            </span> 
+                                            <span class="caret caret-right"></span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box  drop-list" role="menu" >
+                                            <form class="materialize margin-top" ng-submit="vm.search(vm.key)">
+                                                <div class="col-md-12">
+                                                    <div class=" col-pull-left">
+                                                        <div class="inner-addon left-addon">
+                                                            <i class="fa fa-search"></i>
+                                                            <input type="text" class="form-control input-sm" name="Search" ng-change="vm.reset()" ng-model="vehicle" placeholder=" " required>
+                                                            <label for="Search" class="md-label">Search</label>
+                                                        </div>
+                                                        <span class="btn-reset" ng-show="vm.key" >
+                                                            &times;
+                                                        </span>
+                                                    </div>		
+                                                </div>
+                                            </form>
+                                            <ul class="list-group clearfix">
+                                                <li class="list-group-item" ng-repeat="vehicle in vm.filteredVehicles = (vm.vehicles | filter:vehicle)">
+                                                    <i class="fa small" ng-class="vehicle.latitude ? 'fa-circle text-green' : 'fa-circle-o text-grey'"></i> &nbsp;
+                                                    <a href="" ng-click="vm.viewDetails(vehicle)" class="text-blue-grey text-bold" ng-bind="vehicle.lastName +', ' +vehicle.firstName"></a>
+                                                </li>
+                                                <div class="text-center" ng-if="!vm.filteredVehicles.length">
+                                                    <span class="center" ng-bind-html="vm.isLoading | handlefetch : 'couriers'"></span>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item hr btn-trans">
+                                    Dispatched :  
+                                    <span class="text-bold" ng-bind="vm.vehicles.length"></span>
+                            </li>
+                            <li class="list-group-item hr btn-trans">
+                                    Online :  
+                                    <span class="text-bold" ng-bind="vm.onlineCount"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+        <div class="map-toolbar" ng-if="vm.viewOne">
+            <div class="col-md-4">
+                    <div class="btn-group" ng-if="vm.viewOne">
+                    <button class="btn btn-default" ng-click="vm.viewAll()">
+                        <i class="fa fa-object-group"></i>
+                        All Couriers
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-2">
+                <div class="col-md-5">
+                    <button class="btn btn-warning pull-right" ui-sref="app.courier({id:vm.courier.courierId, view:'courier-dashboard'})">
+                        <i class="fa fa-user"></i>
+                        <span ng-if="vm.courier.lastName" ng-bind="vm.courier.lastName+', '+vm.courier.firstName"></span>
+                        <i 	class="fa small"
+                            ng-class="vm.courier.status == 'online' ? 'fa-circle text-green' : 'fa-circle-o text-grey'">
+                        </i>
+                        </button>				
+                </div>
+
+                <div class="col-md-4">
+                    <span class="pull-right text-white padding-sm">
+                        Assignments: <span class="text-bold" ng-bind="vm.assignments.length"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="top-right" ng-if="vm.viewOne">			
+            <div class="expandable" ng-class="{'expand':!vm.isOpen}">
+                <div class="expand-header clearfix" title="Assignments">
+                    <i class="fa fa-2x pull-right" ng-class="{'fa-list':!vm.isOpen, 'fa-minus-square-o': vm.isOpen}" ng-click="vm.isOpen=!vm.isOpen"></i>
+                </div>
+                <span class="expand-header-label" ng-show="vm.isOpen"> <i class="fa fa-list"></i>
+                    <span>Assignments</span> <br>
+                </span>
+                <div class="expand-body" drag-scroll="true">
+                    <span class="text-bold text-white padding" ng-bind="vm.today|date:MM-dd-yyyy"></span>
+                    <div class="timeline text-uppercase">
+                        <ul>
+                            <li ng-repeat="item in vm.assignments">
+                                <div ng-class="{'circular':item.assignmentType=='pickup'}" class="{{item.color}} bullet" title="{{item.code}}" ng-click="vm.clickAssignment($event, item, $index)" >
+                                    <span class="bullet-text" ng-bind="$index+1"></span>
+                                </div>
+                                <div class="time" >
+                                    <span ng-bind="item.eta || '00:00' | date: 'HH:mm' "></span> <br>
+                                    <span ng-bind="((item.distance/100)/10).toFixed(2) + 'km'"></span>
+                                </div>
+                                <div class="desc">
+                                    <h3 ng-bind="item.code" title="View Details" ng-click="vm.viewItemDetails(item)"></h3>
+                                    <h4 ng-bind="item.assignmentType"></h4>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="map-toolbar-bottom clearfix">
+            <div class="">
+                <div class="col-md-4">						
+                    <div class="btn-group text-white" ng-if="vm.showName">
+                        <span>Code: <span class="text-bold" ng-bind="vm.selectedZone.code"></span></span> <br>
+                        <span>Name: <span class="text-bold" ng-bind="vm.selectedZone.name"></span></span>
+                    </div>			
+                </div>
+                <div class="col-md-4">
+                    <div class="btn-group padding" ng-if="vm.showName">
+                        <button class="btn-warning btn-xs" title="Update Details" ng-click="vm.saveChanges(false)">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn-danger btn-xs" title="Deactivate Zone" ng-click="vm.deleteZone(vm.selectedZone, $index)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>	
+                </div>
+                <div class="col-md-4">
+                    <div class="btn-group pull-right padding">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="vm.zoomOut()" ng-disabled="vm.minZoom">
+                            <i class="fa fa-search-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm" ng-click="vm.resetZoom()">Reset</button>
+                        <button type="button" class="btn btn-default btn-sm" ng-click="vm.zoomIn()" ng-disabled="vm.maxZoom">
+                            <i class="fa fa-search-plus"></i>
+                        </button>
+                    </div>						
+                </div>
+            </div>
+        </div>	
+    </div>
+</div>
+
+    
+    

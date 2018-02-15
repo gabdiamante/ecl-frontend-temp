@@ -14,6 +14,7 @@ import 'angular-permission';
 import 'angular-animate';
 import 'google-charts';
 import 'ngmap';
+import 'ngstorage';
 
 (function() {
     'use strict';
@@ -33,7 +34,8 @@ import 'ngmap';
         require('angular-ui-bootstrap'),
         'ngMap',
         require('checklist-model'),
-        require('angular-ui-mask'), 
-        'ngAnimate'
+        require('angular-ui-mask'),
+        'ngAnimate',
+        'ngStorage'
     ]);
 })();
