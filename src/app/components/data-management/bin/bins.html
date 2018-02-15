@@ -11,14 +11,14 @@
     </div>
 </div>
 
-<script type="text/ng-template" id="template-user-personnel-action">
+<script type="text/ng-template" id="template-data-management-bin-action">
     <div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
         <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
             <i class="fa fa-ellipsis-v"></i>
         </a>
         <ul ng-if="vm.deleted != 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
             <li role="menuitem">
-                <a ui-sref="app.personnel-details({ id: row.entity.user_id })">
+                <a ui-sref="app.bin-details({ id: row.entity.id })">
                     <i class="fa fa-info-circle"></i> &nbsp;Details
                 </a>
             </li>

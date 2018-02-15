@@ -205,8 +205,13 @@ import angular from 'angular';
             })
 
             .state('app.personnels', {
-                url: 'personnels',
+                url: 'personnels?size&deleted&page&limit&search',
                 component: 'personnels'
+            })
+
+            .state('app.personnel-details', {
+                url: 'personnel-details?id',
+                component: 'personnelDetails'
             })
 
             //DATA-MANAGEMENT
@@ -241,8 +246,18 @@ import angular from 'angular';
             })
 
             .state('app.zones', {
-                url: 'zones',
+                url: 'zones?hubId',
                 component: 'zones'
+            })
+
+            .state('app.bins', {
+                url: 'bins?size&deleted&page&limit&search',
+                component: 'bins'
+            })
+
+            .state('app.bin-details', {
+                url: 'bin-details?id',
+                component: 'binDetails'
             })
 
             .state('app.import-export', {

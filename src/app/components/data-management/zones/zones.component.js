@@ -58,6 +58,8 @@ var jsts = require('jsts');
         vm.search_key = $stateParams.search_value || '';
         vm.TPLS = 'zonesFormModal';
         vm.titleHeader = 'Zone Areas';
+        vm.hubId = $stateParams.hubId;
+        vm.mapStyles = UTILS.mapStyles;
         vm.subTitleHeader = vm.titleHeader.slice(0, -1);
         vm.pending_update = 0;
         vm.intersect_count = 0;
@@ -99,6 +101,7 @@ var jsts = require('jsts');
         vm.zoomIn = zoomIn;
         vm.zoomOut = zoomOut;
         vm.resetZoom = resetZoom;
+        vm.selectHub = selectHub;
 
         init();
 
@@ -110,7 +113,10 @@ var jsts = require('jsts');
             google.maps.Polygon.prototype.my_getBounds =
                 GMAP.prototype.my_getBounds;
             vm[vm.user.app] = true;
-            getZones(vm.search_key, true);
+
+            getHubs();
+
+            // getZones(vm.search_key, true);
         }
 
         function getMap() {
@@ -118,6 +124,117 @@ var jsts = require('jsts');
                 vm.geofenceMap = map;
                 google.maps.event.trigger(vm.geofenceMap, 'resize');
             });
+        }
+
+        function getHubs() {
+            vm.loadingHub = true;
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '999999999',
+                    page: '1',
+                    type: 'HUB',
+                    is_active: 1
+                },
+                hasFile: false,
+                route: { site: '' },
+                cache: false,
+                cache_string: vm.route_name
+            };
+
+            console.log('hubr', request);
+
+            QueryService.query(request)
+                .then(
+                    function(response) {
+                        console.log('hubs', response);
+                        vm.hubs = response.data.data.items;
+
+                        vm.hubs.unshift({ code: 'All', name: 'All' });
+                        vm.hub = vm.hub || vm.hubs[0];
+
+                        checkHubId(vm.hubId, vm.hubs);
+                        getZones(vm.search_key, true);
+                    },
+                    function(error) {
+                        logger.error(error.data.message);
+                        //logger.error(MESSAGE.error, err, '');
+                    }
+                )
+                .finally(function() {
+                    vm.loadingHub = false;
+                });
+        }
+
+        function getZones(key, update_view_center_latlng) {
+            vm.isLoading = true;
+            vm.zones = [];
+            vm.total = 0;
+            vm.page = 0;
+
+            var status;
+
+            if ($stateParams.status == 'active') {
+                status = false;
+            } else {
+                status = true;
+            }
+
+            var req = {
+                method: 'GET',
+                body: false,
+                // token   : vm.user.token,
+                params: { page: 1, limit: 999999999 },
+                hasFile: false,
+                cache: false,
+                // route   : {[vm.route_name]:'' }
+                route: { zone: '' }
+            };
+
+            if (key) req.params.search_value = key;
+
+            QueryService.query(req)
+                .then(
+                    function(response) {
+                        console.log('z', response);
+                        getMap();
+
+                        vm.zones = response.data.data.items || [];
+                        filterStringPolygon(vm.zones);
+
+                        vm.polygonsCopy = angular.copy(vm.zones);
+                        vm.total = response.data.data.total;
+                        // if (update_view_center_latlng)
+                        //     vm.center_map_lat_lng = response.data.data.center.lat + ', ' + response.data.data.center.lng;
+                    },
+                    function(error) {
+                        logger.log(
+                            error.data.errors[0].context,
+                            error,
+                            error.data.errors[0].message
+                        );
+                    }
+                )
+                .finally(function() {
+                    vm.zoneNotYetLoaded = false;
+                    vm.isLoading = false;
+                });
+        }
+
+        function checkHubId(hubId, hubs) {
+            var hub = hubs.filter(function(hub) {
+                return hub.id == hubId;
+            })[0];
+            vm.hub = hub;
+        }
+
+        function selectHub(hub) {
+            vm.selectedHub = hub;
+            vm.hubId = hub.id;
+            $state.go($state.current.name, { hubId: vm.hubId });
+            vm.buttonName = hub.name;
+            getZones();
         }
 
         function overlayClickListener(overlay, method) {
@@ -590,61 +707,6 @@ var jsts = require('jsts');
                     );
                 }
             });
-        }
-
-        function getZones(key, update_view_center_latlng) {
-            vm.isLoading = true;
-            vm.zones = [];
-            vm.total = 0;
-            vm.page = 0;
-
-            var status;
-
-            if ($stateParams.status == 'active') {
-                status = false;
-            } else {
-                status = true;
-            }
-
-            var req = {
-                method: 'GET',
-                body: false,
-                // token   : vm.user.token,
-                params: { page: 1, limit: 999999999 },
-                hasFile: false,
-                cache: false,
-                // route   : {[vm.route_name]:'' }
-                route: { zone: '' }
-            };
-
-            if (key) req.params.search_value = key;
-
-            QueryService.query(req)
-                .then(
-                    function(response) {
-                        console.log('z', response);
-                        getMap();
-
-                        vm.zones = response.data.data.items || [];
-                        filterStringPolygon(vm.zones);
-
-                        vm.polygonsCopy = angular.copy(vm.zones);
-                        vm.total = response.data.data.total;
-                        // if (update_view_center_latlng)
-                        //     vm.center_map_lat_lng = response.data.data.center.lat + ', ' + response.data.data.center.lng;
-                    },
-                    function(error) {
-                        logger.log(
-                            error.data.errors[0].context,
-                            error,
-                            error.data.errors[0].message
-                        );
-                    }
-                )
-                .finally(function() {
-                    vm.zoneNotYetLoaded = false;
-                    vm.isLoading = false;
-                });
         }
 
         function search(key) {
