@@ -1,0 +1,40 @@
+<div class="content-view">
+    <div class="col-md-12 sub-header">
+        <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
+    </div> 
+    
+    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handleUpdateItem(vm.data)" >
+        <i  class="fa fa-pencil fa-lg text-white" ></i>
+    </button>
+    <br />
+
+    <div style="clear:both;"></div>
+
+    <div class="top-margin-sm">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+                <button class="btn btn-primary" ng-click="$root.$back()">
+                    <i class="fa fa-chevron-circle-left"></i> Back
+                </button>
+        </div>
+        <div style="clear:both;"></div>
+        <br />
+        <div  class="col-md-12">
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Name:</span>
+                <span class="text-bold " ng-cloak ng-bind-html="((vm.data.last_name) ? vm.data.last_name + ', ' : '') + vm.data.first_name + ' ' + vm.data.middle_name"></span>
+            </li>
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Username:</span>
+                <span class="text-bold " ng-cloak ng-bind-html="vm.data.username | displaynone">  </span>
+            </li>
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Email:</span>
+                <span class="text-bold " ng-cloak ng-bind-html="vm.data.email | displaynone">  </span>
+            </li>
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Contact:</span>
+                <span class="text-bold" ng-bind-html="vm.data.contact_number | handlePccDisplay : '+63'"></span>
+            </li> 
+        </div>
+    </div>
+</div>

@@ -195,8 +195,13 @@ import angular from 'angular';
             })
 
             .state('app.hub-supports', {
-                url: 'hub-supports',
+                url: 'hub-supports?page&limit&view',
                 component: 'hubSupports'
+            })
+
+            .state('app.hub-support-details', {
+                url: 'hub-support-details?id',
+                component: 'hubSupportDetails'
             })
 
             .state('app.merchants', {
