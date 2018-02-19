@@ -53,7 +53,7 @@ import DUMMY from 'Helpers/dummy';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        console.log('dispatcher', response);
+                        console.log('personnel', response);
                         vm.item_details = response.data.data.items[0];
                     },
                     function(err) {
@@ -68,8 +68,8 @@ import DUMMY from 'Helpers/dummy';
 
         function handleUpdateItem(item) {
             var modal = {
-                title: 'Dispatcher',
-                titleHeader: 'Edit Dispatcher',
+                title: 'Personnel',
+                titleHeader: 'Edit Personnel',
                 method: 'edit'
             };
 
