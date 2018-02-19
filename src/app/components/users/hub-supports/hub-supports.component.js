@@ -148,14 +148,8 @@ import MESSAGE from 'Helpers/message';
                 .confirm_modal(content)
                 .then(
                     function (response) {
-                        if (!response) 
-                            return;
-                            
-                        if (action=='reactivate') 
-                            data.status = 'active';
-                        else if (action=='deactivate') 
-                            data.status = 'deactivated'; 
-                            
+                        if (!response) return; 
+                        data.status = (action=='reactivate') ? 'active' : (action=='deactivate') ? 'deactivated' : 'deactivated';
                         vm.option_table.data.splice(
                             vm.option_table.data.indexOf(
                                 $filter('filter')(vm.option_table.data, { id:data.id })[0]
