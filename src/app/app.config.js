@@ -199,6 +199,11 @@ import angular from 'angular';
                 component: 'hubSupports'
             })
 
+            .state('app.hub-support-details', {
+                url: 'hub-support-details?id',
+                component: 'hubSupportDetails'
+            })
+
             .state('app.merchants', {
                 url: 'merchants',
                 component: 'merchants'

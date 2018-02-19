@@ -65,14 +65,16 @@ import { GoogleCharts } from 'google-charts';
             ['Successful', 30]
         ];
 
-        vm.courier_deliveries = DUMMY.users.courier_deliveries;
-        vm.courier_pickups = DUMMY.users.courier_pickups;
-        vm.option_table.columnDefs = TABLES.courier_deliveries.columnDefs;
-        vm.option_table.data = vm.courier_deliveries;
+        vm.courier_deliveries       = DUMMY.users.courier_deliveries;
+        vm.courier_pickups          = DUMMY.users.courier_pickups;
+        vm.option_table.columnDefs  = TABLES.courier_deliveries.columnDefs;
+        vm.option_table.data        = vm.courier_deliveries;
 
-        vm.selectTab = selectTab;
-        vm.getCourier = getCourier;
-        vm.updateCourier = updateCourier;
+        vm.selectTab                = selectTab;
+        vm.getCourier               = getCourier;
+        vm.updateCourier            = updateCourier;
+
+        GoogleCharts.load(drawCharts);
 
         init();
 
@@ -83,6 +85,10 @@ import { GoogleCharts } from 'google-charts';
             // console.log(vm.courier);
             getCourier(vm.courier_id);
         }
+
+        function selectTab(str) {
+            getCourier(str);
+        } 
 
         function getCourier (courier_id) {
             vm.loading = true;
@@ -112,17 +118,6 @@ import { GoogleCharts } from 'google-charts';
                 });
         }
 
-        GoogleCharts.load(drawCharts);
-
-        function drawCharts() {
-            GLOBAL.drawChart(vm.delivery_data, 'delivery_chart');
-            GLOBAL.drawChart(vm.pickup_data, 'pickup_chart');
-        }
-
-        function selectTab(str) {
-            getCourier(str);
-        } 
-
         function updateCourier(data) {
             var modal = { header: 'Update Courier' };
             var request = {
@@ -149,5 +144,10 @@ import { GoogleCharts } from 'google-charts';
         window.onresize = function() {
             GoogleCharts.load(drawCharts);
         };
+
+        function drawCharts() {
+            GLOBAL.drawChart(vm.delivery_data, 'delivery_chart');
+            GLOBAL.drawChart(vm.pickup_data, 'pickup_chart');
+        }
     }
 })();
