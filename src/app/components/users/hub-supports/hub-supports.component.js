@@ -33,13 +33,16 @@ import MESSAGE from 'Helpers/message';
         logger
     ) {
         var vm = this;
-        vm.titleHeader  = 'Hub Supports';
+        vm.title        = 'Hub Support';
+        vm.titleHeader  = vm.title+'s';
         vm.route_name   = 'hub-support';
         vm.per_page     = ['10', '20', '50', '100', '200'];
         vm.total_page   = '1';
         vm.total_items  = '0';
         vm.items        = { roleUserCheck: [] };
         vm.loading      = false;
+        vm.view         = $stateParams.view || 'active';
+        vm.deleted      = (vm.view == 'active') ? false : true;
 
         vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
@@ -54,8 +57,9 @@ import MESSAGE from 'Helpers/message';
         vm.option_table.columnDefs = TABLES.hub_supports.columnDefs;
         vm.option_table.data = [];
 
-        vm.goTo             = goTo; 
-        vm.handleUpdateItem = handleUpdateItem;
+        vm.goTo                 = goTo; 
+        vm.handleUpdateItem     = handleUpdateItem;
+        vm.handleHSActivation   = handleHSActivation;
 
         init();
 
@@ -81,7 +85,7 @@ import MESSAGE from 'Helpers/message';
             QueryService.query(request)
                 .then(
                     function(response) { 
-                        vm.option_table.data = handleNames(DUMMY.users.hub_supports);
+                        vm.option_table.data = handleNames($filter('filter')(DUMMY.users.hub_supports, { status:vm.view }));
 
                         // vm.option_table.data    = handleNames(response.data.data);
                         // vm.pagination.page      = $stateParams.page || '1';
@@ -99,7 +103,7 @@ import MESSAGE from 'Helpers/message';
         }
 
         function handleUpdateItem (data) {
-            var modal = { header: 'Update Hub Support' };
+            var modal = { header: 'Update '+vm.title };
             var request = {
                 method: 'GET', // PUT
                 body: data,
@@ -120,6 +124,45 @@ import MESSAGE from 'Helpers/message';
                     },
                     function(error) {
                         logger.error(error.data.message || catchError(request.route));
+                    }
+                );
+        }
+
+        function handleHSActivation (data, action) {
+            // var request = {
+            //     method: 'PUT',
+            //     body: false,
+            //     params: false,
+            //     hasFile: false,
+            //     route: { [vm.route_name]: item.id, deactivate: '' },
+            //     cache: false
+            // };
+
+            var content = {
+                header: action+' '+vm.title,
+                message: MESSAGE.confirmMsg(action, vm.title),
+                prop: data.first_name+' '+data.last_name
+            };
+
+            ModalService
+                .confirm_modal(content)
+                .then(
+                    function (response) {
+                        if (!response) 
+                            return;
+                            
+                        if (action=='reactivate') 
+                            data.status = 'active';
+                        else if (action=='deactivate') 
+                            data.status = 'deactivated'; 
+                            
+                        vm.option_table.data.splice(
+                            vm.option_table.data.indexOf(
+                                $filter('filter')(vm.option_table.data, { id:data.id })[0]
+                            ), 1);
+                    },
+                    function (err) {
+                        console.log(err);
                     }
                 );
         }

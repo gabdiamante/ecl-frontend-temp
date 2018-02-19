@@ -723,7 +723,7 @@ const DUMMY = {
                 last_name: ' Bacal',
                 contact_number: '09168524511',
                 email: 'gabby@gmail.com',
-                status: 'inactive',
+                status: 'deactivated',
                 updated: new Date()
             },
             {
@@ -767,7 +767,7 @@ const DUMMY = {
                 last_name: 'Diagana',
                 contact_number: '09824561254',
                 email: 'g.diagana@gmail.com',
-                status: 'active',
+                status: 'deactivated',
                 updated: new Date()
             }
         ]
