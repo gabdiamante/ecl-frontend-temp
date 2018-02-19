@@ -101,56 +101,113 @@
 				drawingMode="polygon"
 				polygonOptions="{editable:true, draggable:false, strokeWeight: 1}">
 				</drawing-manager>
-				<shape ng-repeat="shape in vm.zones"  on-click="vm.updatePolygon(shape, $index)" id="{{$index}}" name="polygon" editable="{{shape.editable}}" stroke-color="{{vm.colors[$index]}}" stroke-opacity="1" path="{{shape.polygon}}"  paths="{{shape.polygon}}" center="{{shape.center}}"  stroke-weight="2" fill-color="{{vm.colors[$index]}}" 
+				<shape ng-repeat="shape in vm.zones"  on-click="vm.updatePolygon(shape, $index)" id="{{$index}}" z-index="{{ shape.type == vm.site_front.code ? 99: 1}}" name="polygon" editable="{{shape.editable}}" stroke-color="{{vm.colors[$index]}}" stroke-opacity="1" path="{{shape.polygon}}"  paths="{{shape.polygon}}" center="{{shape.center}}"  stroke-weight="2" fill-color="{{vm.colors[$index]}}" 
 				on-mouseup="vm.onMouseUp(shape,$index)"></shape>
 			</map>	
 			<div class="map-toolbar">
 				<div class="col-md-12 no-padding">
-					<span class="text-white">Select Hub:</span>
-					<div class="btn-group dropbtn">
-						<div class="btn-group" uib-dropdown auto-close="outSideClick">
-							<button type="button" class="btn-default dropdown-toggle select-dd" uib-dropdown-toggle> 
-								<span class="pull-left">
-									<span ng-if="!vm.loadingHub">
-										<i class="fa fa-building"></i>
-										<span class="text-uppercase " ng-bind="vm.hub.name "></span>	
+					<div class="col-md-3 pad-0">
+						<span class="text-white">Select Type:</span>
+						<div class="btn-group dropbtn">
+							<div class="btn-group" uib-dropdown auto-close="outSideClick">
+								<button type="button" class="btn-default dropdown-toggle select-dd" uib-dropdown-toggle> 
+									<span class="pull-left">
+										<span ng-if="!vm.loadingHub">
+											<i class="fa fa-building"></i>
+											<span class="text-uppercase " ng-bind="vm.site_type.name"></span>	
+										</span>
+										<span ng-if="vm.loadingHub">
+											<i class="fa fa-spinner fa-pulse"></i>
+											<span  ng-bind="'Loading'"></span>	
+										</span>						
 									</span>
-									<span ng-if="vm.loadingHub">
-										<i class="fa fa-spinner fa-pulse"></i>
-										<span  ng-bind="'Loading'"></span>	
-									</span>						
-								</span>
-								<span class="caret caret-right"></span>
-							</button>
-							<div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box drop-list-2" uib-dropdown-menu role="menu" >
-								<ul class="drop-list-menu text-bold">
-									<li role="menuitem" class="" ng-repeat="hub in vm.hubs" ng-click="vm.selectHub(hub)" > 
-										<a href=""  class="text-uppercase" ng-bind="hub.name"></a>
-									</li>
-								</ul>
+									<span class="caret caret-right"></span>
+								</button>
+								<div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box drop-list-2" uib-dropdown-menu role="menu" >
+									<ul class="drop-list-menu text-bold">
+										<li role="menuitem" class="" ng-repeat="site_type in vm.site_types" ng-click="vm.selectType(site_type)" > 
+											<a href="" class="text-uppercase" ng-bind="site_type.name"></a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div ng-if="!vm.site_type.code" class="col-md-3 pad-0">
+						<span class="text-white">Select Front Zone:</span>
+						<div class="btn-group dropbtn">
+							<div class="btn-group" uib-dropdown auto-close="outSideClick">
+								<button type="button" class="btn-default dropdown-toggle select-dd" uib-dropdown-toggle> 
+									<span class="pull-left">
+										<span ng-if="!vm.loadingHub">
+											<i class="fa fa-building"></i>
+											<span class="text-uppercase " ng-bind="vm.site_front.name"></span>	
+										</span>
+										<span ng-if="vm.loadingHub">
+											<i class="fa fa-spinner fa-pulse"></i>
+											<span  ng-bind="'Loading'"></span>	
+										</span>						
+									</span>
+									<span class="caret caret-right"></span>
+								</button>
+								<div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box drop-list-2" uib-dropdown-menu role="menu" >
+									<ul class="drop-list-menu text-bold">
+										<li role="menuitem" class="" ng-repeat="site_front in vm.site_fronts" ng-click="vm.selectSiteFront(site_front)" > 
+											<a href="" class="text-uppercase" ng-bind="site_front.name"></a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 pad-0">
+						<span class="text-white">Select Hub:</span>
+						<div class="btn-group dropbtn">
+							<div class="btn-group" uib-dropdown auto-close="outSideClick">
+								<button type="button" class="btn-default dropdown-toggle select-dd" uib-dropdown-toggle> 
+									<span class="pull-left">
+										<span ng-if="!vm.loadingHub">
+											<i class="fa fa-building"></i>
+											<span class="text-uppercase " ng-bind="vm.hub.name "></span>	
+										</span>
+										<span ng-if="vm.loadingHub">
+											<i class="fa fa-spinner fa-pulse"></i>
+											<span  ng-bind="'Loading'"></span>	
+										</span>						
+									</span>
+									<span class="caret caret-right"></span>
+								</button>
+								<div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box drop-list-2" uib-dropdown-menu role="menu" >
+									<ul class="drop-list-menu text-bold">
+										<li role="menuitem" class="" ng-repeat="hub in vm.hubs" ng-click="vm.selectHub(hub)" > 
+											<a href=""  class="text-uppercase" ng-bind="hub.name"></a>
+										</li>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
 					
+					
 					<div class="pull-right">
 						<div class="btn-group">
-							<button class="btn-default theme-d2" ng-show="!vm.showButton && !vm.showSaveChanges && !vm.zoneNotYetLoaded" ng-click="vm.addZone()">
+							<button class="btn-custom btn-default theme-d2" ng-show="!vm.showButton && !vm.showSaveChanges && !vm.zoneNotYetLoaded" ng-click="vm.addZone()">
 								<i class="fa fa-plus"></i>
 								Add Zone
 							</button>
-							<button class="btn-default" ng-show="vm.showSaveChanges" ng-click="vm.cancel()">
+							<button class="btn-custom  btn-default" ng-show="vm.showSaveChanges" ng-click="vm.cancel()">
 								Cancel
 							</button>
-							<button class="btn-default" ng-show="vm.showButton && !vm.notCompleted" ng-click="vm.clearPolygon()">
+							<button class="btn-custom  btn-default" ng-show="vm.showButton && !vm.notCompleted" ng-click="vm.clearPolygon()">
 								<i class="fa fa-times"></i>
 								Clear
 							</button>
-							<button class="btn-primary theme-d2" ng-disabled="vm.notCompleted" ng-show="vm.showButton && !vm.showSaveChanges" ng-click="vm.savePolygon()">
+							<button class="btn-custom  btn-primary theme-d2" ng-disabled="vm.notCompleted" ng-show="vm.showButton && !vm.showSaveChanges" ng-click="vm.savePolygon()">
 								<i class="fa fa-save"></i>
 								Save
 							</button>	
 
-							<button class="btn-primary theme-d2" ng-show="vm.showSaveChanges" ng-disabled="vm.overlap" ng-click="vm.saveChanges(true)">
+							<button class="btn-custom btn-primary theme-d2" ng-show="vm.showSaveChanges" ng-disabled="vm.overlap" ng-click="vm.saveChanges(true)">
 								<i class="fa fa-save"></i>
 								Save Changes
 							</button>

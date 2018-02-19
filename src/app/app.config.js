@@ -190,7 +190,7 @@ import angular from 'angular';
             })
 
             .state('app.dispatcher-details', {
-                url: 'dispatcher-details?id',
+                url: 'dispatcher-details?site_id&user_id',
                 component: 'dispatcherDetails'
             })
 
@@ -246,7 +246,7 @@ import angular from 'angular';
             })
 
             .state('app.zones', {
-                url: 'zones?hubId',
+                url: 'zones?siteType&siteFront&hubId',
                 component: 'zones'
             })
 

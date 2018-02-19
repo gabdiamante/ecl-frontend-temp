@@ -41,6 +41,7 @@ import DUMMY from 'Helpers/dummy';
         // methods
         vm.save = save;
         vm.cancel = cancel;
+        vm.passwordValidError = passwordValidError;
 
         vm.$onInit = function() {
             vm.Request = vm.resolve.Request;
@@ -93,6 +94,7 @@ import DUMMY from 'Helpers/dummy';
             vm.loading = true;
 
             vm.Request.body = vm.data;
+            vm.Request.body.role = 'DISPATCHER';
 
             if (vm.Modal.method == 'add') {
                 console.log(vm.Modal.method);
@@ -118,6 +120,7 @@ import DUMMY from 'Helpers/dummy';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
+                            console.log('edit dis', response);
                             var response_data =
                                 response.data.data.items[0] || {};
                             logger.success(vm.Modal.title + ' updated.');
@@ -140,6 +143,11 @@ import DUMMY from 'Helpers/dummy';
 
         function cancel(data) {
             vm.modalInstance.close();
+        }
+
+        //validation function
+        function passwordValidError() {
+            return vm.data.password != vm.confirm_password;
         }
     }
 })();

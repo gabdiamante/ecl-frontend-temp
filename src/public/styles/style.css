@@ -47,7 +47,7 @@ a {
 }
 .theme-d2 {
     color: #fff !important;
-    background-color: #00766a !important;
+    background-color: #1464b1 !important;
 }
 .theme-d3 {
     color: #fff !important;
@@ -111,6 +111,16 @@ a {
     border-radius: 0 !important;
     border: 0 !important;
     text-transform: uppercase;
+}
+
+.btn-custom.disabled,
+.btn-custom[disabled],
+fieldset[disabled] .btn-custom {
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: 0.65;
 }
 
 .materialize {

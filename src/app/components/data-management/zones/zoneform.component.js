@@ -42,15 +42,41 @@ import GLOBAL from 'Helpers/global';
         vm.cancel = cancel;
 
         vm.$onInit = function() {
-            var Request = vm.resolve.Request;
-            var Modal = vm.resolve.Modal;
+            vm.Request = vm.resolve.Request;
+            vm.Modal = vm.resolve.Modal;
 
-            vm.titleHeader = 'Add Zone';
-
-            console.log(Modal);
+            vm.titleHeader = vm.Modal.titleHeader;
+            vm.data = angular.copy(vm.Request.body);
+            vm.storeData = [];
         };
 
-        function save(messenger, action) {
+        function save(data) {
+            vm.disable = true;
+
+            Request.body = req;
+            QueryService.query(Request)
+                .then(
+                    function(response) {
+                        if (Request.method === 'POST') {
+                            logger.success(MSG.addSuccess + Modal.title);
+                            response.data.data.dateCreated = new Date();
+                        } else if (Request.method === 'PUT') {
+                            logger.success(MSG.updateSuccess + Modal.title);
+                        }
+                        $uibModalInstance.close(response.data.data);
+                    },
+                    function(error) {
+                        logger.error(
+                            error.data.errors[0].context,
+                            '',
+                            error.data.errors[0].message
+                        );
+                    }
+                )
+                .finally(function() {
+                    vm.disable = false;
+                });
+
             // vm.disable              = true;
             // Request.body            = angular.copy(GLOBAL.setToUpperCase(messenger));
             // Request.body.polygon    = angular.copy(Modal.polygon) || null;
