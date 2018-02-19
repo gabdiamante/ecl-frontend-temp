@@ -3,7 +3,7 @@ import GLOBAL from 'Helpers/global';
 import MESSAGE from 'Helpers/message';
 
 (function() {
-    'use strict';
+    // 'use strict';
 
     angular.module('app').component('hubSupportForm', {
         template: require('./hub-support-form.html'),

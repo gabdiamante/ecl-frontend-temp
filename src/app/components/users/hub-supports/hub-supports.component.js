@@ -115,7 +115,7 @@ import MESSAGE from 'Helpers/message';
                     function(response) {
                         if (response) { 
                             vm.option_table.data[vm.option_table.data.indexOf(data)] = response;
-                            vm.option_table.data = handleNames(vm.option_table.data);
+                            vm.option_table.data = handleNames(angular.copy(vm.option_table.data));
                         }
                     },
                     function(error) {

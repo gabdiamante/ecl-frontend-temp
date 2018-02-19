@@ -67,14 +67,14 @@ import DUMMY from 'Helpers/dummy';
                 });
         }
 
-        function handleUpdateItem(item) {
+        function handleUpdateItem (data) {
             var modal = { header: 'Update Hub Support' };
             var request = {
-                method: 'PUT',
-                body: item,
+                method: 'GET', // PUT
+                body: data,
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: item.id },
+                route: { users: '' },
                 cache: false
             };
 
@@ -82,7 +82,7 @@ import DUMMY from 'Helpers/dummy';
                 .form_modal(request, modal, 'hubSupportForm')
                 .then(
                     function(response) {
-                        if (response) {
+                        if (response) { 
                             console.log(response);
                             vm.data = response;
                         }
@@ -91,7 +91,7 @@ import DUMMY from 'Helpers/dummy';
                         logger.error(error.data.message || catchError(request.route));
                     }
                 );
-        } 
+        }
 
     }
 })();
