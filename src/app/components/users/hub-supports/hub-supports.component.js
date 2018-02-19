@@ -16,6 +16,7 @@ import MESSAGE from 'Helpers/message';
     HubSupportsCtrl.$inject = [
         '$scope',
         '$state',
+        '$filter',
         '$stateParams',
         'ModalService',
         'QueryService',
@@ -25,6 +26,7 @@ import MESSAGE from 'Helpers/message';
     function HubSupportsCtrl(
         $scope,
         $state,
+        $filter,
         $stateParams,
         ModalService,
         QueryService,
@@ -52,7 +54,8 @@ import MESSAGE from 'Helpers/message';
         vm.option_table.columnDefs = TABLES.hub_supports.columnDefs;
         vm.option_table.data = [];
 
-        vm.goTo = goTo; 
+        vm.goTo             = goTo; 
+        vm.handleUpdateItem = handleUpdateItem;
 
         init();
 
@@ -95,7 +98,31 @@ import MESSAGE from 'Helpers/message';
                 });
         }
 
-        
+        function handleUpdateItem (data) {
+            var modal = { header: 'Update Hub Support' };
+            var request = {
+                method: 'GET', // PUT
+                body: data,
+                params: false,
+                hasFile: false,
+                route: { users: '' },
+                cache: false
+            };
+
+            ModalService
+                .form_modal(request, modal, 'hubSupportForm')
+                .then(
+                    function(response) {
+                        if (response) { 
+                            vm.option_table.data[vm.option_table.data.indexOf(data)] = response;
+                            vm.option_table.data = handleNames(vm.option_table.data);
+                        }
+                    },
+                    function(error) {
+                        logger.error(error.data.message || catchError(request.route));
+                    }
+                );
+        }
 
         function handleNames(data) {
             for (let i = 0; i < data.length; i++)

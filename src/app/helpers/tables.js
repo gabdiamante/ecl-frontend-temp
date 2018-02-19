@@ -105,6 +105,7 @@ const TABLES = {
             },
             {
                 name: 'action',
+                width: 50,
                 displayName: '',
                 cellTemplate: `<div ng-include="'template-user-management-hub-support-action'"></div>`
             }
