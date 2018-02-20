@@ -27,8 +27,16 @@ const TABLES = {
                 cellTemplate: `<a ui-sref="app.courier-details({ id:row.entity.user_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
-            { name: 'contact_number', displayName: 'Contact', cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>` },
-            { name: 'zone', displayName: 'Zone', cellTemplate: `<span ng-bind-html="COL_FIELD | displaynone"></span>` },
+            {
+                name: 'contact_number',
+                displayName: 'Contact',
+                cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
+            },
+            {
+                name: 'zone',
+                displayName: 'Zone',
+                cellTemplate: `<span ng-bind-html="COL_FIELD | displaynone"></span>`
+            },
             { name: 'email', displayName: 'Email' },
             {
                 name: 'updated',
@@ -36,7 +44,7 @@ const TABLES = {
                 cellTemplate: `{{ COL_FIELD | date:short }}`
             }
         ]
-    }, 
+    },
     merchants: {
         columnDefs: [
             {
@@ -45,15 +53,19 @@ const TABLES = {
                 cellTemplate: `<a ui-sref="app.merchant-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
             },
             // { name: 'username', displayName:'Username' },
-            { name: 'contact', displayName: 'Contact', cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>` },
-            { name: 'status', displayName: 'Status' } 
+            {
+                name: 'contact',
+                displayName: 'Contact',
+                cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
+            },
+            { name: 'status', displayName: 'Status' }
         ]
     },
     dispatchers: {
         columnDefs: [
             {
                 name: 'name',
-                cellTemplate: `<a ui-sref="app.dispatcher-details({ id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+                cellTemplate: `<a ui-sref="app.dispatcher-details({ site_id: row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
             },
             { name: 'username' },
             { name: 'email' },

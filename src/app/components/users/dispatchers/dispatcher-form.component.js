@@ -1,6 +1,7 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import DUMMY from 'Helpers/dummy';
+import CONSTANTS from 'Helpers/constants';
 
 (function() {
     'use strict';
@@ -41,6 +42,9 @@ import DUMMY from 'Helpers/dummy';
         // methods
         vm.save = save;
         vm.cancel = cancel;
+        vm.passwordValidError = passwordValidError;
+
+        vm.changeSiteType = changeSiteType;
 
         vm.$onInit = function() {
             vm.Request = vm.resolve.Request;
@@ -50,9 +54,16 @@ import DUMMY from 'Helpers/dummy';
             vm.data = angular.copy(vm.Request.body);
             vm.storeData = [];
 
+            getSiteTypes();
+
             getSites();
             //console.log(Modal);
         };
+
+        function getSiteTypes() {
+            vm.site_types = CONSTANTS.site_types;
+            vm.site_type = vm.site_type || vm.site_types[0].code;
+        }
 
         function getSites() {
             vm.loading = true;
@@ -62,7 +73,8 @@ import DUMMY from 'Helpers/dummy';
                 params: {
                     limit: '9999999999',
                     page: '1',
-                    is_active: 1
+                    is_active: 1,
+                    type: vm.site_type
                 },
                 hasFile: false,
                 route: { site: '' },
@@ -93,6 +105,7 @@ import DUMMY from 'Helpers/dummy';
             vm.loading = true;
 
             vm.Request.body = vm.data;
+            vm.Request.body.role = 'DISPATCHER';
 
             if (vm.Modal.method == 'add') {
                 console.log(vm.Modal.method);
@@ -118,6 +131,7 @@ import DUMMY from 'Helpers/dummy';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
+                            console.log('edit dis', response);
                             var response_data =
                                 response.data.data.items[0] || {};
                             logger.success(vm.Modal.title + ' updated.');
@@ -134,12 +148,22 @@ import DUMMY from 'Helpers/dummy';
             }
         }
 
+        function changeSiteType(item) {
+            // vm.data.site_id = null;
+            getSites();
+        }
+
         function close(data, action) {
             vm.modalInstance.close(data);
         }
 
         function cancel(data) {
             vm.modalInstance.close();
+        }
+
+        //validation function
+        function passwordValidError() {
+            return vm.data.password != vm.confirm_password;
         }
     }
 })();

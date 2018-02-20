@@ -72,7 +72,29 @@
                 
             </div>
         </div>
-        <div class="col-md-12">
+
+        <div class="text-uppercase" align="center">
+            <div class="btn-group" uib-dropdown is-open="status.isopen">
+                <button type  = "button" 
+                        class = "btn btn-primary btn-block btn-fixed-width"  uib-dropdown-toggle >
+                        <span class="tab-md navbar-filter" ng-cloak>
+                            <i class="fa fa-caret-down fa-1x pull-right btn-role-caret"></i>
+                            {{ vm.role.name }}
+                        </span>
+                </button> 
+                <ul class = "nav dropdown-menu animated fadeIn" 
+                    aria-labelledby = "simple-dropdown"
+                    uib-dropdown-menu>
+                        <li ng-repeat="role in vm.roles">
+                        <a ng-click="vm.selectRole(role)" ng-cloak>
+                            {{role.name}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-12 margin-top">
             <input type="text" class="form-control" name="username" ng-model="user.username" placeholder=" " required>
             <label for="username" class="md-label">Username</label>
         </div>

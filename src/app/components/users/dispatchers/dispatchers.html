@@ -18,7 +18,7 @@
         </a>
         <ul ng-if="vm.deleted != 'true'" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
             <li role="menuitem">
-                <a ui-sref="app.dispatcher-details({ id: row.entity.user_id })">
+                <a ui-sref="app.dispatcher-details({ site_id: row.entity.site_id, user_id: row.entity.user_id })">
                     <i class="fa fa-info-circle"></i> &nbsp;Details
                 </a>
             </li>

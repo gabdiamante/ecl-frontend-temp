@@ -33,16 +33,16 @@ import { GoogleCharts } from 'google-charts';
         QueryService,
         logger
     ) {
-        var vm          = this;
-        vm.titleHeader  = 'Courier Details';
-        vm.route_name   = 'user';
-        vm.courier_id   = $stateParams.id;
-        vm.per_page     = ['10', '20', '50', '100', '200'];
-        vm.loading      = false;
+        var vm = this;
+        vm.titleHeader = 'Courier Details';
+        vm.route_name = 'user';
+        vm.courier_id = $stateParams.id;
+        vm.per_page = ['10', '20', '50', '100', '200'];
+        vm.loading = false;
 
-        vm.pagination           = {};
+        vm.pagination = {};
         vm.pagination.pagestate = $stateParams.page || '1';
-        vm.pagination.limit     = $stateParams.limit || '10';
+        vm.pagination.limit = $stateParams.limit || '10';
 
         vm.option_table = {
             emptyColumn: true,
@@ -65,14 +65,14 @@ import { GoogleCharts } from 'google-charts';
             ['Successful', 30]
         ];
 
-        vm.courier_deliveries       = DUMMY.users.courier_deliveries;
-        vm.courier_pickups          = DUMMY.users.courier_pickups;
-        vm.option_table.columnDefs  = TABLES.courier_deliveries.columnDefs;
-        vm.option_table.data        = vm.courier_deliveries;
+        vm.courier_deliveries = DUMMY.users.courier_deliveries;
+        vm.courier_pickups = DUMMY.users.courier_pickups;
+        vm.option_table.columnDefs = TABLES.courier_deliveries.columnDefs;
+        vm.option_table.data = vm.courier_deliveries;
 
-        vm.selectTab                = selectTab;
-        vm.getCourier               = getCourier;
-        vm.updateCourier            = updateCourier;
+        vm.selectTab = selectTab;
+        vm.getCourier = getCourier;
+        vm.updateCourier = updateCourier;
 
         GoogleCharts.load(drawCharts);
 
@@ -88,9 +88,9 @@ import { GoogleCharts } from 'google-charts';
 
         function selectTab(str) {
             getCourier(str);
-        } 
+        }
 
-        function getCourier (courier_id) {
+        function getCourier(courier_id) {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -102,11 +102,10 @@ import { GoogleCharts } from 'google-charts';
                 cache_string: vm.route_name
             };
 
-            QueryService
-                .query(request)
+            QueryService.query(request)
                 .then(
-                    function(response) { 
-                        vm.courier = response.data.data; 
+                    function(response) {
+                        vm.courier = response.data.data;
                         console.log(vm.courier);
                     },
                     function(err) {
@@ -128,17 +127,24 @@ import { GoogleCharts } from 'google-charts';
                 route: { [vm.route_name]: data.user_id },
                 cache_string: vm.route_name
             };
-            
-            ModalService
-                .form_modal(request, modal, 'courierForm', 'md', '')
-                .then(function(response) {
+
+            ModalService.form_modal(
+                request,
+                modal,
+                'courierForm',
+                'md',
+                ''
+            ).then(
+                function(response) {
                     if (response) {
                         vm.courier = response;
                     }
-                }, function(error) {
+                },
+                function(error) {
                     console.log(error);
                     // logger.error(error.data.message);
-                });
+                }
+            );
         }
 
         window.onresize = function() {

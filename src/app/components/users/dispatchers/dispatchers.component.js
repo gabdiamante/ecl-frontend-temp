@@ -126,7 +126,7 @@ import DUMMY from 'Helpers/dummy';
                 body: {},
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: '' }
+                route: { ['user']: '' }
             };
 
             formModal(request, modal, vm.TPLS).then(
@@ -156,7 +156,7 @@ import DUMMY from 'Helpers/dummy';
                 body: item,
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: item.id }
+                route: { ['user']: item.user_id }
             };
 
             formModal(request, modal, vm.TPLS).then(
@@ -277,7 +277,10 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function trClick(data) {
-            $state.go('app.dispatcher-details', { id: data.id });
+            $state.go('app.dispatcher-details', {
+                site_id: data.site_id,
+                user_id: data.id
+            });
         }
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {

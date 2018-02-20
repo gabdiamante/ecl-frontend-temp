@@ -47,7 +47,7 @@ a {
 }
 .theme-d2 {
     color: #fff !important;
-    background-color: #00766a !important;
+    background-color: #1464b1 !important;
 }
 .theme-d3 {
     color: #fff !important;
@@ -111,6 +111,24 @@ a {
     border-radius: 0 !important;
     border: 0 !important;
     text-transform: uppercase;
+}
+
+.btn-fixed-width {
+    width: 200px;
+}
+
+.btn-role-caret {
+    margin-top: 3px;
+}
+
+.btn-custom.disabled,
+.btn-custom[disabled],
+fieldset[disabled] .btn-custom {
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: 0.65;
 }
 
 .materialize {
@@ -612,6 +630,10 @@ body.scroll::-webkit-scrollbar {
     min-width: 200px;
 }
 
+.select-min-dd {
+    min-width: 95px;
+}
+
 .caret-right {
     float: right;
     margin-top: 10px;
@@ -820,5 +842,24 @@ body.scroll::-webkit-scrollbar {
     -webkit-box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
 }
+
+/* select, select.form-control {
+    border: 0;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-left: 0;
+    padding-right: 0\9;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAMAAACelLz8AAAAJ1BMV…3X6xt0QL6JpZWq30pdvdadme+0PMdzvHm8YThHcT1H7K0BtOMDniZhWOgAAAAASUVORK5CYII=);
+    -webkit-background-size: 13px 13px;
+    background-size: 13px;
+    background-repeat: no-repeat;
+    background-position: right center;
+    -webkit-box-shadow: inset 0 -1px 0 #ddd;
+    box-shadow: inset 0 -1px 0 #ddd;
+    font-size: 16px;
+    line-height: 1.5;
+} */
 
 /******************************************************/

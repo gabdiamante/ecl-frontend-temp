@@ -38,7 +38,7 @@ import DUMMY from 'Helpers/dummy';
 
         init();
 
-        function init () { 
+        function init() {
             getDetails($stateParams.id);
         }
 
@@ -56,10 +56,12 @@ import DUMMY from 'Helpers/dummy';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.data = $filter('filter')(DUMMY.users.hub_supports, { id:hs_id })[0];
+                        vm.data = $filter('filter')(DUMMY.users.hub_supports, {
+                            id: hs_id
+                        })[0];
                     },
                     function(err) {
-                        vm.data = {}; 
+                        vm.data = {};
                     }
                 )
                 .finally(function() {
@@ -67,7 +69,7 @@ import DUMMY from 'Helpers/dummy';
                 });
         }
 
-        function handleUpdateItem (data) {
+        function handleUpdateItem(data) {
             var modal = { header: 'Update Hub Support' };
             var request = {
                 method: 'GET', // PUT
@@ -78,20 +80,19 @@ import DUMMY from 'Helpers/dummy';
                 cache: false
             };
 
-            ModalService
-                .form_modal(request, modal, 'hubSupportForm')
-                .then(
-                    function(response) {
-                        if (response) { 
-                            console.log(response);
-                            vm.data = response;
-                        }
-                    },
-                    function(error) {
-                        logger.error(error.data.message || catchError(request.route));
+            ModalService.form_modal(request, modal, 'hubSupportForm').then(
+                function(response) {
+                    if (response) {
+                        console.log(response);
+                        vm.data = response;
                     }
-                );
+                },
+                function(error) {
+                    logger.error(
+                        error.data.message || catchError(request.route)
+                    );
+                }
+            );
         }
-
     }
 })();
