@@ -2,6 +2,7 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
 import DUMMY from 'Helpers/dummy';
+import MESSAGE from 'Helpers/message';
 
 (function() {
     'use strict';
@@ -15,6 +16,7 @@ import DUMMY from 'Helpers/dummy';
     CouriersCtrl.$inject = [
         '$scope',
         '$state',
+        '$filter',
         '$stateParams',
         'ModalService',
         'QueryService',
@@ -24,13 +26,15 @@ import DUMMY from 'Helpers/dummy';
     function CouriersCtrl(
         $scope,
         $state,
+        $filter,
         $stateParams,
         ModalService,
         QueryService,
         logger
     ) {
         var vm                  = this;
-        vm.titleHeader          = 'Couriers';
+        vm.title                = 'Courier';
+        vm.titleHeader          = vm.title+'s';
         vm.route_name           = 'couriers';
         vm.per_page             = ['10', '20', '50', '100', '200'];
         vm.total_page           = '1';
@@ -55,7 +59,8 @@ import DUMMY from 'Helpers/dummy';
         vm.zones                = [];
 
         vm.goTo                 = goTo; 
-        vm.changeListView       = changeListView;   
+        vm.changeListView       = changeListView; 
+        vm.handleHSActivation   = handleHSActivation; 
 
         init();
 
@@ -157,7 +162,6 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function changeListView (status) { 
-            console.log(status);
             $state.go($state.current.name, {
                 page: '1',
                 limit: '10',
@@ -172,7 +176,57 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function goTo(data) {
-            $state.go('app.couriers', data);
+            $state.go($state.current.name, data);
+        } 
+
+        function handleHSActivation (data, action) {
+            var content = {
+                header: action+' '+vm.title,
+                message: MESSAGE.confirmMsg(action, vm.title.toLowerCase()),
+                prop: data.first_name+' '+data.last_name
+            };
+
+            ModalService
+                .confirm_modal(content)
+                .then(
+                    function (response) {
+                        if (!response) return; 
+                        data.is_active = (action=='reactivate') ? 1 : (action=='deactivate') ? 0 : 0;
+                        vm.option_table.data.splice(
+                            vm.option_table.data.indexOf(
+                                $filter('filter')(vm.option_table.data, { id:data.id })[0]
+                            ), 1);
+                        // activateDeactivateCourier(data);
+                    },
+                    function (err) {
+                        console.log(err);
+                    }
+                );
+        }
+
+        function activateDeactivateCourier (data) {
+            var request = {
+                method: 'PUT',
+                body: false,
+                params: false,
+                hasFile: false,
+                route: { [vm.route_name]: item.id, deactivate: '' },
+                cache: false
+            };
+
+            QueryService
+                .query(request)
+                .then( 
+                    function (response) {
+                        vm.option_table.data.splice(
+                            vm.option_table.data.indexOf(
+                                $filter('filter')(vm.option_table.data, { id:data.id })[0]
+                            ), 1);
+                    },
+                    function (err) {
+                        console.log(err);
+                    }
+                );
         } 
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {
