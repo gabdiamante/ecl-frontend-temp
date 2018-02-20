@@ -57,15 +57,9 @@ import MESSAGE from 'Helpers/message';
         vm.option_table.columnDefs = TABLES.hub_supports.columnDefs;
         vm.option_table.data = [];
 
-<<<<<<< HEAD
         vm.goTo                 = goTo; 
         vm.handleUpdateItem     = handleUpdateItem; 
         vm.handleHSActivation   = handleHSActivation; 
-=======
-        vm.goTo = goTo;
-        vm.handleUpdateItem = handleUpdateItem;
-        vm.handleHSActivation = handleHSActivation;
->>>>>>> master
 
         init();
 
