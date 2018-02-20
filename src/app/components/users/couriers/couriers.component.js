@@ -47,13 +47,13 @@ import MESSAGE from 'Helpers/message';
         vm.loading              = false; 
 
         vm.option_table         = { 
-            defaultPagination   : true,
-            hideSearchByKey     : true,
+            defaultPagination   : true, 
+            hideSearchByKey     : true, 
             searchTemplate      : true, 
             tableDeactivate     : true
         };
 
-        vm.option_table.columnDefs  = TABLES.couriers.columnDefs;
+        vm.option_table.columnDefs = TABLES.couriers.columnDefs;
         vm.option_table.data    = [];
         vm.hubs                 = [];
         vm.zones                = [];
@@ -61,6 +61,7 @@ import MESSAGE from 'Helpers/message';
         vm.goTo                 = goTo; 
         vm.changeListView       = changeListView; 
         vm.handleHSActivation   = handleHSActivation; 
+        vm.updateCourier        = updateCourier;
 
         init();
 
@@ -161,23 +162,29 @@ import MESSAGE from 'Helpers/message';
                 });
         }
 
-        function changeListView (status) { 
-            $state.go($state.current.name, {
-                page: '1',
-                limit: '10',
-                deactivated: status
-            });
+        function updateCourier(data) {
+            var modal = { header: 'Update '+vm.title };
+            var request = {
+                method: 'PUT',
+                body: data,
+                params: false,
+                hasFile: false,
+                route: { user: data.user_id },
+                cache_string: 'user'
+            };
+            
+            ModalService
+                .form_modal(request, modal, 'courierForm', 'md', '')
+                .then(function(response) { 
+                    if (response) {
+                        vm.option_table.data[vm.option_table.data.indexOf(data)] = response; 
+                        vm.option_table.data = handleNames(vm.option_table.data);
+                    }
+                }, function(error) {
+                    console.log(error);
+                    // logger.error(error.data.message);
+                });
         }
-
-        function handleNames(data) {
-            for (let i = 0; i < data.length; i++)
-                data[i].fullname = data[i].first_name+' '+((data[i].middle_name+' ')||'')+data[i].last_name;
-            return data;
-        }
-
-        function goTo(data) {
-            $state.go($state.current.name, data);
-        } 
 
         function handleHSActivation (data, action) {
             var content = {
@@ -227,6 +234,24 @@ import MESSAGE from 'Helpers/message';
                         console.log(err);
                     }
                 );
+        } 
+
+        function changeListView (status) { 
+            $state.go($state.current.name, {
+                page: '1',
+                limit: '10',
+                deactivated: status
+            });
+        }
+
+        function handleNames(data) {
+            for (let i = 0; i < data.length; i++)
+                data[i].fullname = data[i].first_name+' '+((data[i].middle_name+' ')||'')+data[i].last_name;
+            return data;
+        }
+
+        function goTo(data) {
+            $state.go($state.current.name, data);
         } 
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {
