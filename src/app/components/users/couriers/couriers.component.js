@@ -37,6 +37,8 @@ import DUMMY from 'Helpers/dummy';
         vm.total_items  = '0';
         vm.items        = { roleUserCheck: [] };
         vm.loading      = false;
+        vm.view         = $stateParams.view || 'active';
+        vm.deleted      = (vm.view == 'active') ? false : true;
 
         vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
@@ -48,15 +50,73 @@ import DUMMY from 'Helpers/dummy';
             searchTemplate: true 
         };
 
-        vm.option_table.columnDefs = TABLES.couriers.columnDefs;
-        vm.option_table.data = [];
+        vm.option_table.columnDefs  = TABLES.couriers.columnDefs;
+        vm.option_table.data        = [];
+        vm.hubs                     = [];
+        vm.zones                    = [];
 
         vm.goTo = goTo; 
 
         init();
 
         function init () {
-            getCouriers();
+            getCouriers();  
+            getHubs();
+            getZones();
+        }
+
+        function getHubs() {
+            vm.loading = true;
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '999999',
+                    page: '1',
+                    type: 'HUB',
+                    is_active: 1
+                },
+                hasFile: false,
+                route: { 'site': '' },
+                cache: true,
+                cache_string: 'site'
+            }; 
+
+            QueryService.query(request)
+                .then(
+                    function(response) {
+                        vm.hubs = response.data.data.items; 
+                    },
+                    function(err) { 
+                        console.log(err);
+                    }
+                );
+        }
+
+        function getZones(key, update_view_center_latlng) { 
+            var request = {
+                method: 'GET',
+                body: false, 
+                params: { page: 1, limit: 999999 },
+                hasFile: false,
+                route: { zone: '' },
+                cache: true,
+                cache_string: 'zone'
+            };
+
+            QueryService.query(request)
+                .then(
+                    function(response) { 
+                        vm.zones = response.data.data.items || [];  
+                    },
+                    function(error) {
+                        logger.log(
+                            error.data.errors[0].context,
+                            error,
+                            error.data.errors[0].message
+                        );
+                    }
+                );
         }
 
         function getCouriers() {
@@ -76,8 +136,8 @@ import DUMMY from 'Helpers/dummy';
 
             QueryService.query(request)
                 .then(
-                    function(response) {
-                        console.log('couriers: ', response);
+                    function(response) { 
+                        console.log(response);
                         vm.option_table.data = handleNames(response.data.data.items);
 
                         // vm.option_table.data    = handleNames(response.data.data);

@@ -58,8 +58,8 @@ import MESSAGE from 'Helpers/message';
         vm.option_table.data = [];
 
         vm.goTo                 = goTo; 
-        vm.handleUpdateItem     = handleUpdateItem;
-        vm.handleHSActivation   = handleHSActivation;
+        vm.handleUpdateItem     = handleUpdateItem; 
+        vm.handleHSActivation   = handleHSActivation; 
 
         init();
 
