@@ -30,16 +30,7 @@
             </div> 
             <div class="col-md-8 col-sm-8 col-xs-12"></div>
         </div>
-    </div>
-    <div class="col-md-6 col-sm-6 col-md-offset-6 col-sm-offset-6 col-sm-6 col-xs-12" align="right">
-        <a title="View Deactivated Couriers" class="btn btn-sm btn-default top-margin-sm" ng-if="vm.view=='active'" ui-sref="app.hub-supports({ view:'deactivated' })">
-            View Deactivated Couriers
-        </a>
-        <a title="View Active Couriers" class="btn btn-sm btn-default top-margin-sm" ng-if="vm.view=='deactivated'" ui-sref="app.hub-supports({ view:'active' })">
-            View Active Couriers
-        </a>
-    </div>
-    <div class="clearfix"></div>
+    </div> 
     <div class="col-md-12">
         <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
     </div>

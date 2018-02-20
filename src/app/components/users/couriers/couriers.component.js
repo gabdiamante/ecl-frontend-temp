@@ -29,33 +29,33 @@ import DUMMY from 'Helpers/dummy';
         QueryService,
         logger
     ) {
-        var vm = this;
-        vm.titleHeader  = 'Couriers';
-        vm.route_name   = 'couriers';
-        vm.per_page     = ['10', '20', '50', '100', '200'];
-        vm.total_page   = '1';
-        vm.total_items  = '0';
-        vm.items        = { roleUserCheck: [] };
-        vm.loading      = false;
-        vm.view         = $stateParams.view || 'active';
-        vm.deleted      = (vm.view == 'active') ? false : true;
-
+        var vm                  = this;
+        vm.titleHeader          = 'Couriers';
+        vm.route_name           = 'couriers';
+        vm.per_page             = ['10', '20', '50', '100', '200'];
+        vm.total_page           = '1';
+        vm.total_items          = '0';
+        vm.items                = { roleUserCheck: [] };
+        vm.deactivated          = ($stateParams.deactivated == 'true') ? 1 : 0;
         vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
         vm.pagination.limit     = $stateParams.limit || '10';
+        vm.loading              = false; 
 
-        vm.option_table = { 
-            defaultPagination: true,
-            hideSearchByKey: true,
-            searchTemplate: true 
+        vm.option_table         = { 
+            defaultPagination   : true,
+            hideSearchByKey     : true,
+            searchTemplate      : true, 
+            tableDeactivate     : true
         };
 
         vm.option_table.columnDefs  = TABLES.couriers.columnDefs;
-        vm.option_table.data        = [];
-        vm.hubs                     = [];
-        vm.zones                    = [];
+        vm.option_table.data    = [];
+        vm.hubs                 = [];
+        vm.zones                = [];
 
-        vm.goTo = goTo; 
+        vm.goTo                 = goTo; 
+        vm.changeListView       = changeListView;   
 
         init();
 
@@ -126,7 +126,8 @@ import DUMMY from 'Helpers/dummy';
                 body: false,
                 params: {
                     per_page: vm.pagination.limit,
-                    page: vm.pagination.pagestate
+                    page: vm.pagination.pagestate,
+                    is_active:vm.deactivated
                 },
                 hasFile: false,
                 route: { [vm.route_name]: '' },
@@ -155,9 +156,18 @@ import DUMMY from 'Helpers/dummy';
                 });
         }
 
+        function changeListView (status) { 
+            console.log(status);
+            $state.go($state.current.name, {
+                page: '1',
+                limit: '10',
+                deactivated: status
+            });
+        }
+
         function handleNames(data) {
             for (let i = 0; i < data.length; i++)
-                data[i].fullname = data[i].first_name + ' ' + ((data[i].middle_name+' ') || '') + data[i].last_name;
+                data[i].fullname = data[i].first_name+' '+((data[i].middle_name+' ')||'')+data[i].last_name;
             return data;
         }
 

@@ -175,7 +175,7 @@ import angular from 'angular';
 
             // USERS
             .state('app.couriers', {
-                url: 'couriers?page&limit&search',
+                url: 'couriers?page&limit&search&deactivated',
                 component: 'couriers'
             })
 
