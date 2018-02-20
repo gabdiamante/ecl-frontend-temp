@@ -33,16 +33,16 @@ import { GoogleCharts } from 'google-charts';
         QueryService,
         logger
     ) {
-        var vm          = this;
-        vm.titleHeader  = 'Courier Details';
-        vm.route_name   = 'user';
-        vm.courier_id   = $stateParams.id;
-        vm.per_page     = ['10', '20', '50', '100', '200'];
-        vm.loading      = false;
+        var vm = this;
+        vm.titleHeader = 'Courier Details';
+        vm.route_name = 'user';
+        vm.courier_id = $stateParams.id;
+        vm.per_page = ['10', '20', '50', '100', '200'];
+        vm.loading = false;
 
-        vm.pagination           = {};
+        vm.pagination = {};
         vm.pagination.pagestate = $stateParams.page || '1';
-        vm.pagination.limit     = $stateParams.limit || '10';
+        vm.pagination.limit = $stateParams.limit || '10';
 
         vm.option_table = {
             emptyColumn: true,
@@ -74,6 +74,8 @@ import { GoogleCharts } from 'google-charts';
         vm.getCourier = getCourier;
         vm.updateCourier = updateCourier;
 
+        GoogleCharts.load(drawCharts);
+
         init();
 
         function init() {
@@ -84,7 +86,11 @@ import { GoogleCharts } from 'google-charts';
             getCourier(vm.courier_id);
         }
 
-        function getCourier (courier_id) {
+        function selectTab(str) {
+            getCourier(str);
+        }
+
+        function getCourier(courier_id) {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -96,11 +102,10 @@ import { GoogleCharts } from 'google-charts';
                 cache_string: vm.route_name
             };
 
-            QueryService
-                .query(request)
+            QueryService.query(request)
                 .then(
-                    function(response) { 
-                        vm.courier = response.data.data; 
+                    function(response) {
+                        vm.courier = response.data.data;
                         console.log(vm.courier);
                     },
                     function(err) {
@@ -112,17 +117,6 @@ import { GoogleCharts } from 'google-charts';
                 });
         }
 
-        GoogleCharts.load(drawCharts);
-
-        function drawCharts() {
-            GLOBAL.drawChart(vm.delivery_data, 'delivery_chart');
-            GLOBAL.drawChart(vm.pickup_data, 'pickup_chart');
-        }
-
-        function selectTab(str) {
-            getCourier(str);
-        } 
-
         function updateCourier(data) {
             var modal = { header: 'Update Courier' };
             var request = {
@@ -133,21 +127,33 @@ import { GoogleCharts } from 'google-charts';
                 route: { [vm.route_name]: data.user_id },
                 cache_string: vm.route_name
             };
-            
-            ModalService
-                .form_modal(request, modal, 'courierForm', 'md', '')
-                .then(function(response) {
+
+            ModalService.form_modal(
+                request,
+                modal,
+                'courierForm',
+                'md',
+                ''
+            ).then(
+                function(response) {
                     if (response) {
                         vm.courier = response;
                     }
-                }, function(error) {
+                },
+                function(error) {
                     console.log(error);
                     // logger.error(error.data.message);
-                });
+                }
+            );
         }
 
         window.onresize = function() {
             GoogleCharts.load(drawCharts);
         };
+
+        function drawCharts() {
+            GLOBAL.drawChart(vm.delivery_data, 'delivery_chart');
+            GLOBAL.drawChart(vm.pickup_data, 'pickup_chart');
+        }
     }
 })();

@@ -69,9 +69,9 @@ import angular from 'angular';
             var modalInstance = $uibModal.open({
                 component: 'confirmationModal',
                 size: 'sm',
-                backdrop: false,
+                backdrop: 'static',
                 resolve: {
-                    props: function() {
+                    content: function() {
                         return options;
                     }
                 }

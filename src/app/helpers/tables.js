@@ -50,10 +50,14 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.courier-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.merchant-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
             },
-            { name: 'username', displayName: 'Username' },
-            { name: 'contact', displayName: 'Contact' },
+            // { name: 'username', displayName:'Username' },
+            {
+                name: 'contact',
+                displayName: 'Contact',
+                cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
+            },
             { name: 'status', displayName: 'Status' }
         ]
     },
@@ -94,6 +98,28 @@ const TABLES = {
                 name: 'action',
                 displayName: ' ',
                 cellTemplate: `<div ng-include="'template-user-personnel-action'"></div>`
+            }
+        ]
+    },
+    hub_supports: {
+        columnDefs: [
+            {
+                name: 'fullname',
+                displayName: 'Name',
+                cellTemplate: `<a ui-sref="app.hub-support-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'username', displayName: 'Username' },
+            { name: 'email', displayName: 'Email' },
+            {
+                name: 'updated',
+                displayName: 'Date Updated',
+                cellTemplate: `{{ COL_FIELD | date:short }}`
+            },
+            {
+                name: 'action',
+                width: 50,
+                displayName: '',
+                cellTemplate: `<div ng-include="'template-user-management-hub-support-action'"></div>`
             }
         ]
     },

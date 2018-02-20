@@ -29,8 +29,8 @@ import angular from 'angular';
         vm.cancel = cancel;
 
         vm.$onInit = function() {
-            ids = angular.copy(vm.resolve.props.keys);
-            vm.content = angular.copy(vm.resolve.props);
+            ids = angular.copy(vm.resolve.content.keys);
+            vm.content = angular.copy(vm.resolve.content);
         };
 
         function approve() {
