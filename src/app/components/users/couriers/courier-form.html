@@ -8,29 +8,44 @@
         <div class="col-md-12 ">
             <form action="" name="courierForm" class="materialize" novalidate > 
                 <div class="col-md-12">
-                    <input  class="form-control text-uppercase" type="text" placeholder="" ng-model="vm.data.first_name" name="first_name" required="" />
+                    <span class="control-label text-theme small">Select Site</span>
+                    <select class="form-control text-uppercase" id="site" name="site" ng-model="vm.data.site_id" ng-options="site.id as site.name for site in vm.sites" ></select>
+                    <span class="text-red small" ng-show="courierForm.site.$invalid && vm.submitted">* Required</span>
+                </div>
+                <div class="col-md-12" ng-if="vm.method=='POST'">
+                    <input  class="form-control" type="text" name="username" placeholder="" ng-model="vm.data.username" required="" />
+                    <label class="md-label">Username</label>
+                    <span class="text-red small" ng-show="courierForm.username.$invalid && vm.submitted">* Required</span>
+                </div>
+                <div class="col-md-12">
+                    <input  class="form-control" type="text" placeholder="" ng-model="vm.data.first_name" name="first_name" required="" />
                     <label class="md-label">First Name </label>
                     <span class="text-red small" ng-show="courierForm.first_name.$invalid && vm.submitted">* Required</span>
                 </div>
                 <div class="col-md-12">
-                    <input  class="form-control text-uppercase" type="text" placeholder="" ng-model="vm.data.middle_name" name="middle_name" />
+                    <input  class="form-control" type="text" placeholder="" ng-model="vm.data.middle_name" name="middle_name" />
                     <label class="md-label">Middle Name </label> 
                 </div>
                 <div class="col-md-12">
-                    <input  class="form-control text-uppercase" type="text" placeholder="" ng-model="vm.data.last_name" name="last_name" required="" />
+                    <input  class="form-control" type="text" placeholder="" ng-model="vm.data.last_name" name="last_name" required="" />
                     <label class="md-label">Last Name </label>
                     <span class="text-red small" ng-show="courierForm.last_name.$invalid && vm.submitted">* Required</span>
+                </div>
+                <div class="col-md-12">
+                    <input  class="form-control" type="email" placeholder="" ng-model="vm.data.email" name="email" required="" />
+                    <label class="md-label">Email </label>
+                    <span class="text-red small" ng-show="courierForm.email.$invalid && vm.submitted">* Required</span>
+                </div>
+                <div class="col-md-12" ng-if="vm.method=='POST'">
+                    <input  class="form-control" type="password" placeholder="" ng-model="vm.data.password" name="password" required="" />
+                    <label class="md-label">Password </label>
+                    <span class="text-red small" ng-show="courierForm.password.$invalid && vm.submitted">* Required</span>
                 </div>
                 <div class="col-md-12">
                     <label class="control-label small text-theme">Contact Number</label>
                     <input type="text" name="contact_number" placeholder="" class="form-control" required="" ng-model="vm.data.contact_number" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_" required="" />
                     <span class="small">(+63) 921-123-4567</span><br />
                     <span class="text-red small" ng-show="courierForm.contact_number.$invalid && vm.submitted">* Required</span>
-               </div>
-                <div class="col-md-12" ng-if = "!vm.data.id">
-                    <input  class="form-control text-uppercase" type="text" name="username" placeholder="" ng-model="vm.data.username" required="" />
-                    <label class="md-label">Username</label>
-                    <span class="text-red small" ng-show="courierForm.username.$invalid && vm.submitted">* Required</span>
                 </div>
             </form>
         </div>    

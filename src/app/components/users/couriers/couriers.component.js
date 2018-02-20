@@ -3,6 +3,7 @@ import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
 import DUMMY from 'Helpers/dummy';
 import MESSAGE from 'Helpers/message';
+import CONSTANTS from 'Helpers/constants';
 
 (function() {
     'use strict';
@@ -40,11 +41,15 @@ import MESSAGE from 'Helpers/message';
         vm.total_page           = '1';
         vm.total_items          = '0';
         vm.items                = { roleUserCheck: [] };
+        vm.params               = angular.copy($stateParams);
         vm.deactivated          = ($stateParams.deactivated == 'true') ? 1 : 0;
+        vm.site_types           = CONSTANTS.site_types;
+        vm.site_type            = $stateParams.site_type || vm.site_types[0].code;
+        vm.loading              = false;
+
         vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
         vm.pagination.limit     = $stateParams.limit || '10';
-        vm.loading              = false; 
 
         vm.option_table         = { 
             defaultPagination   : true, 
@@ -55,50 +60,53 @@ import MESSAGE from 'Helpers/message';
 
         vm.option_table.columnDefs = TABLES.couriers.columnDefs;
         vm.option_table.data    = [];
-        vm.hubs                 = [];
+        vm.sites                = [];
         vm.zones                = [];
 
         vm.goTo                 = goTo; 
         vm.changeListView       = changeListView; 
         vm.handleHSActivation   = handleHSActivation; 
+        vm.createCourier        = createCourier;
         vm.updateCourier        = updateCourier;
+        vm.selectSiteType       = selectSiteType;
 
         init();
 
         function init () {
             getCouriers();  
-            getHubs();
+            getSites(vm.site_type);
             getZones();
         }
 
-        function getHubs() {
-            vm.loading = true;
+        function getSites(site_type) {
             var request = {
                 method: 'GET',
                 body: false,
                 params: {
-                    limit: '999999',
+                    limit: '99999',
                     page: '1',
-                    type: 'HUB',
+                    type: site_type,
                     is_active: 1
                 },
                 hasFile: false,
-                route: { 'site': '' },
+                route: { site: '' },
                 cache: true,
-                cache_string: 'site'
+                cache_string: 'sites'
             }; 
 
-            QueryService.query(request)
+            QueryService
+                .query(request)
                 .then(
-                    function(response) {
-                        vm.hubs = response.data.data.items; 
+                    function(response) { 
+                        vm.sites = response.data.data.items; 
                     },
-                    function(err) { 
-                        console.log(err);
+                    function(error) {
+                        logger.error(error.data.message);
+                        //logger.error(MESSAGE.error, err, '');
                     }
                 );
         }
-
+        
         function getZones(key, update_view_center_latlng) { 
             var request = {
                 method: 'GET',
@@ -109,8 +117,9 @@ import MESSAGE from 'Helpers/message';
                 cache: true,
                 cache_string: 'zone'
             };
-
-            QueryService.query(request)
+            
+            QueryService
+                .query(request)
                 .then(
                     function(response) { 
                         vm.zones = response.data.data.items || [];  
@@ -123,6 +132,44 @@ import MESSAGE from 'Helpers/message';
                         );
                     }
                 );
+        }
+        
+        function createCourier () {
+            var modal = { header: 'Create '+vm.title };
+            var request = {
+                method: 'POST',
+                body: {},
+                params: {},
+                hasFile: false,
+                route: { courier: '' },
+                cache: true,
+                cache_string: vm.route_name
+            };
+
+            ModalService
+                .form_modal(request, modal, 'courierForm', 'md', '')
+                .then(function(response) { 
+                    if (response) {
+                        vm.option_table.data.unshift(response); 
+                        vm.option_table.data = handleNames(vm.option_table.data);
+                    }
+                }, function(error) {
+                    console.log(error); 
+                });
+
+            // QueryService.query(request)
+            //     .then(
+            //         function(response) { 
+            //             console.log(response);
+            //             vm.option_table.data = handleNames(response.data.data.items); 
+            //         },
+            //         function(err) {
+            //             logger.error(MESSAGE.error, err, '');
+            //         }
+            //     )
+            //     .finally(function() {
+            //         vm.loading = false;
+            //     });
         }
 
         function getCouriers() {
@@ -141,7 +188,8 @@ import MESSAGE from 'Helpers/message';
                 cache_string: vm.route_name
             };
 
-            QueryService.query(request)
+            QueryService
+                .query(request)
                 .then(
                     function(response) { 
                         console.log(response);
@@ -184,6 +232,10 @@ import MESSAGE from 'Helpers/message';
                     console.log(error);
                     // logger.error(error.data.message);
                 });
+        }
+
+        function handleCreateCourier () {
+            
         }
 
         function handleHSActivation (data, action) {
@@ -242,6 +294,10 @@ import MESSAGE from 'Helpers/message';
                 limit: '10',
                 deactivated: status
             });
+        }
+
+        function selectSiteType (site_type) {
+            getSites(site_type);
         }
 
         function handleNames(data) {
