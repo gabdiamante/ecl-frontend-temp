@@ -66,7 +66,6 @@ import GLOBAL from 'Helpers/global';
                         function(response) {
                             var response_data =
                                 response.data.data.items[0] || {};
-                            console.log('hubsss', response);
                             logger.success(vm.Modal.title + ' added.');
                             close(response_data, action);
                         },
@@ -86,7 +85,6 @@ import GLOBAL from 'Helpers/global';
                         function(response) {
                             var response_data =
                                 response.data.data.items[0] || {};
-                            console.log('hub', response);
                             logger.success(vm.Modal.title + ' updated.');
                             close(response_data, action);
                         },

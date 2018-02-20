@@ -1,6 +1,7 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import DUMMY from 'Helpers/dummy';
+import CONSTANTS from 'Helpers/constants';
 
 (function() {
     'use strict';
@@ -42,6 +43,8 @@ import DUMMY from 'Helpers/dummy';
         vm.save = save;
         vm.cancel = cancel;
 
+        vm.changeSiteType = changeSiteType;
+
         vm.$onInit = function() {
             vm.Request = vm.resolve.Request;
             vm.Modal = vm.resolve.Modal;
@@ -50,10 +53,17 @@ import DUMMY from 'Helpers/dummy';
             vm.data = angular.copy(vm.Request.body);
             vm.storeData = [];
 
+            getSiteTypes();
+
             getSites();
             getZones();
             //console.log(Modal);
         };
+
+        function getSiteTypes() {
+            vm.site_types = CONSTANTS.site_types;
+            vm.site_type = vm.site_type || vm.site_types[0].code;
+        }
 
         function getSites() {
             vm.loading = true;
@@ -63,7 +73,8 @@ import DUMMY from 'Helpers/dummy';
                 params: {
                     limit: '9999999999',
                     page: '1',
-                    is_active: 1
+                    is_active: 1,
+                    type: vm.site_type
                 },
                 hasFile: false,
                 route: { site: '' },
@@ -168,6 +179,11 @@ import DUMMY from 'Helpers/dummy';
                         vm.disable = false;
                     });
             }
+        }
+
+        function changeSiteType(item) {
+            //vm.data.site_id = null; //temporary
+            getSites();
         }
 
         function close(data, action) {

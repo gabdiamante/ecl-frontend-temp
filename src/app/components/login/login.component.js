@@ -34,6 +34,14 @@ import angular from 'angular';
         vm.header = 'Login';
         vm.logo = require('Images/main-logo.png');
 
+        vm.roles = [
+            { name: 'ADMIN', value: 'ADMINISTRATOR' },
+            { name: 'DISPATCHER', value: 'DISPATCHER' },
+            { name: 'HUB SUPPORTS', value: 'HUB_SUPPORTS' }
+        ];
+
+        vm.role = vm.roles[0];
+
         // Whether the login button is clickable or not
         vm.loginButtonDisabled = false;
 
@@ -48,9 +56,10 @@ import angular from 'angular';
 
         vm.login = login;
         vm.forgot = forgot;
+        vm.selectRole = selectRole;
 
         function login(user) {
-            user.type = 'ADMINISTRATOR';
+            user.type = vm.role.value || 'ADMINISTRATOR';
 
             var req = {
                 method: 'POST', // POST, GET, PUT, DELETE
@@ -143,6 +152,10 @@ import angular from 'angular';
                 message: 'Enter registered email'
             };
             ModalService.prompt_modal(content);
+        }
+
+        function selectRole(role) {
+            vm.role = role;
         }
     }
 })();

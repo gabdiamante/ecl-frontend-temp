@@ -738,7 +738,7 @@ const DUMMY = {
                 updated: new Date()
             },
             {
-                id:3,
+                id: 3,
                 username: 'rmamante',
                 first_name: 'Ariel',
                 middle_name: '',

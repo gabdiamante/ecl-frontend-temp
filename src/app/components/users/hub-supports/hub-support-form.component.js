@@ -38,23 +38,23 @@ import MESSAGE from 'Helpers/message';
         ModalService,
         logger
     ) {
-        var vm              = this;
-        var Modal           = null;
-        var Request         = null;
-        vm.user             = {}; 
+        var vm = this;
+        var Modal = null;
+        var Request = null;
+        vm.user = {};
         vm.selected_accoutn = '';
-        vm.submitted        = false;
-        vm.route_name       = 'site';
+        vm.submitted = false;
+        vm.route_name = 'site';
 
         vm.$onInit = function() {
-            Modal           = vm.resolve.Modal;
-            Request         = vm.resolve.Request;
-            vm.titleHeader  = Modal.header;
-            vm.data         = angular.copy(Request.body);
+            Modal = vm.resolve.Modal;
+            Request = vm.resolve.Request;
+            vm.titleHeader = Modal.header;
+            vm.data = angular.copy(Request.body);
         };
 
-        vm.save             = save;
-        vm.cancel           = cancel;
+        vm.save = save;
+        vm.cancel = cancel;
 
         init();
 
@@ -77,13 +77,12 @@ import MESSAGE from 'Helpers/message';
                 route: { [vm.route_name]: '' },
                 cache: true,
                 cache_string: vm.route_name
-            }; 
+            };
 
-            QueryService
-                .query(request)
+            QueryService.query(request)
                 .then(
-                    function(response) { 
-                        vm.hubs = response.data.data.items; 
+                    function(response) {
+                        vm.hubs = response.data.data.items;
                         vm.data.hub_id = vm.hubs[0].id; // temporary
                     },
                     function(err) {
@@ -96,13 +95,12 @@ import MESSAGE from 'Helpers/message';
                 });
         }
 
-        function save(data) { 
+        function save(data) {
             vm.disable = true;
             Request.body = angular.copy(data);
-            QueryService
-                .query(Request)
+            QueryService.query(Request)
                 .then(
-                    function(response) { 
+                    function(response) {
                         console.log(response);
                         vm.modalInstance.close(data);
                     },
@@ -111,9 +109,9 @@ import MESSAGE from 'Helpers/message';
                         // logger.error(MESSAGE.error, err, '');
                     }
                 )
-                .finally(function() { 
-                    vm.loading = false; 
-                    vm.disable = false; 
+                .finally(function() {
+                    vm.loading = false;
+                    vm.disable = false;
                 });
         }
 

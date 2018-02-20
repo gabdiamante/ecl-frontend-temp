@@ -1,5 +1,5 @@
 const MESSAGE = {
-    CATEGORIES : {
+    CATEGORIES: {
         alerts: {
             save_success: 'You saved the category.',
             delete_success: 'You deleted the category.',
@@ -7,17 +7,18 @@ const MESSAGE = {
         },
         modals: {
             confirm_delete_header: 'Delete Category',
-            confirm_delete_message: 'Are you sure you want to delete this category?'
+            confirm_delete_message:
+                'Are you sure you want to delete this category?'
         }
     },
-    ATTRIBUTES : {
+    ATTRIBUTES: {
         alerts: {
             save_success: 'You saved the attribute set.',
             save_failed: 'Failed to save attribute set.',
             delete_success: 'You deleted the attribute set'
         }
     },
-    PERMISSIONS : {
+    PERMISSIONS: {
         alerts: str => {
             return {
                 save_success: 'You saved the ' + str + '.',
@@ -28,7 +29,7 @@ const MESSAGE = {
             };
         }
     },
-    NOTIFICATIONS : {
+    NOTIFICATIONS: {
         alerts: {
             marked_success: 'The message has been marked as Read.',
             delete_success: 'The message has been removed.'
@@ -38,7 +39,7 @@ const MESSAGE = {
             confirm_delete_message: 'Are you sure?'
         }
     },
-    PASSWORD : {
+    PASSWORD: {
         minlength: 'Your password should contain at least 6 characters.',
         passwordChars: [
             'at least 6 characters long',
@@ -47,7 +48,7 @@ const MESSAGE = {
             'at least one special character ($,@,*,etc)'
         ]
     },
-    MSG : {
+    MSG: {
         SUCCESS: {
             address: 'Successfully added address.',
             editAddress: 'Successfully udpated address',
@@ -60,8 +61,8 @@ const MESSAGE = {
             errorUpdate: 'Unable to update '
         }
     },
-    confirmMsg : function (action, str) {
-        return 'Are you you want to '+action +' this '+ str +'?';
+    confirmMsg: function(action, str) {
+        return 'Are you you want to ' + action + ' this ' + str + '?';
     }
 };
 

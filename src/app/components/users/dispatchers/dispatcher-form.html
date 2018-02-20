@@ -6,6 +6,12 @@
     <form name="nameForm" class="materialize">
         <div class="clearfix">
             <div class="form-group">
+                <label for="site_type" class="control-label small text-theme">Site Type </label>
+                <select ng-change="vm.changeSiteType(item)" class="form-control" ng-options="item.code as item.name for item in vm.site_types" ng-model="vm.site_type" name="site_type">
+                </select>
+                <span class="text-red small" ng-show="zoneForm.site_type.$invalid && vm.submitted">* Required</span>
+            </div>
+            <div class="form-group">
                 <label class="control-label small text-theme" for="zone_name">Site:</label>
                 <select class="form-control" ng-options="item.id as item.code for item in vm.sites" ng-model="vm.data.site_id" name="site_id" required>
                 </select>
@@ -18,7 +24,7 @@
             </div>
             <div class="form-group" >
                 <label class="control-label small text-theme" for="middle_name">Middle Name: </label>
-                <input type="text" ng-model="vm.data.middle_name" class="form-control" placeholder="Middle Name" id="middle_name" name="middle_name" ng-required="true" >
+                <input type="text" ng-model="vm.data.middle_name" class="form-control" placeholder="Middle Name" id="middle_name" name="middle_name" >
                 <span class="text-red font-10" ng-show="nameForm.middle_name.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group" >
@@ -26,10 +32,25 @@
                 <input type="text" ng-model="vm.data.last_name" class="form-control" placeholder="Plate Number" id="last_name" name="last_name" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.last_name.$invalid && vm.submitted">*Required</span>
             </div>
-            <div class="form-group" ng-if="vm.Modal.method == 'add'">
-                <label class="control-label small text-theme" for="user_name">User Name: </label>
-                <input type="text" ng-model="vm.data.user_name" class="form-control" placeholder="User Name" id="user_name" name="last_name" ng-required="true" >
-                <span class="text-red font-10" ng-show="nameForm.user_name.$invalid && vm.submitted">*Required</span>
+            <div ng-if="vm.Modal.method == 'add'">
+                <div class="form-group" >
+                    <label class="control-label small text-theme" for="username">User Name: </label>
+                    <input type="text" ng-model="vm.data.username" class="form-control" placeholder="User Name" id="username" name="username" ng-required="true" >
+                    <span class="text-red font-10" ng-show="nameForm.username.$invalid && vm.submitted">*Required</span>
+                </div>
+                <div class="form-group" >
+                    <label class="control-label small text-theme" for="password">Password: </label>
+                    <input type="password" ng-model="vm.data.password" class="form-control" placeholder="Password" id="password" name="password" ng-required="true" >
+                    <span class="text-red font-10" ng-show="nameForm.password.$invalid && vm.submitted">*Required</span>
+                </div>
+                <div class="form-group" >
+                    <label class="control-label small text-theme" for="password">Confirm Password: </label>
+                    <input type="password" ng-model="vm.confirm_password" class="form-control" placeholder="Confirm Password" id="confirm_password" name="confirm_password" ng-required="true"
+                                custom-validation-function="vm.passwordValidError()" custom-valid-error="true"
+                    >
+                    <span class="text-red font-10" ng-if="nameForm.confirm_password.$error.required && vm.submitted">*Required</span> <br />
+                    <span class="text-red font-10" ng-if="vm.data.password!= vm.confirm_password && vm.submitted"> Password do not matched! </span>
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label small text-theme" for="email">Email:</label>
@@ -47,7 +68,7 @@
         </div>
         <div class="text-center top-margin-sm clearfix">
             <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>
-            <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; nameForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
+            <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; (nameForm.$valid) && vm.save(vm.data)" >Save &amp; Close</button>
         </div>
     </form>
 </div>
