@@ -231,7 +231,7 @@
 
 <div style="clear:both;"></div>
 <div class="col-md-12 col-xs-12 top-margin-sm form-inline pad-0" ng-if="options.tableDeactivate">
-    <button type="button" ng-if="!vm.deactivated" title="View deactivated {{vm.titleHeader}}" class="btn btn-sm btn-default pull-right" ng-click="vm.changeListView(true)">
+    <button type="button" ng-if="!vm.deactivated" title="View deactivated {{vm.titleHeader}}" class="btn btn-sm btn-primary pull-right" ng-click="vm.changeListView(true)">
         <span ng-bind="'View Deactivated '+vm.titleHeader"></span>
     </button>
     <button type="button" ng-if="vm.deactivated" title="View active {{vm.titleHeader}}" class="btn btn-sm btn-primary pull-right" ng-click="vm.changeListView(false)">
