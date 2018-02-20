@@ -2,11 +2,34 @@
     <div class="col-md-12 sub-header">
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
+    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.createCourier()" >
+        <i  class="fa fa-plus fa-lg text-white" ></i>
+    </button>
+    <div class="col-md-12 top-margin-sm">
+        <div class="row"> 
+            <div class="col-md-1 col-sm-1 col-xs-3" style="padding-right:0px;">				
+                <span class="control-label text-theme small">Select Type</span>
+                <select class="form-control text-uppercase" id="select" ng-model="vm.site_type" ng-change="vm.selectSiteType(vm.site_type)" ng-options="hub.code as hub.name for hub in vm.site_types" ></select>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-9">				
+                <span class="control-label text-theme small" ng-bind="vm.site_type"></span>
+                <select class="form-control text-uppercase" id="select"ng-model="vm.params.site" ng-options="site.id as site.name for site in vm.sites" >
+                    <option value="" class="text-uppercase">All</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-12" >
+                <span class="control-label text-theme small">Select Zone</span>
+                <select class="form-control text-uppercase" id="select"ng-model="vm.params.zone" ng-options="zone.id as zone.name for zone in vm.zones" >
+                    <option value="" class="text-uppercase">All</option>
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="col-md-12 top-margin-sm">
         <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12" > 
                 <div class="input-group" >
-                    <input type="text" class="form-control" placeholder="Search Courier" ng-model="vm.courier" /> <!--ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.keyword)"-->
+                    <input type="text" class="form-control" placeholder="Search Courier" ng-model="vm.params.key" /> <!--ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.keyword)"-->
                     <span class="input-group-addon">
                         <i class="fa fa-search"></i>
                     </span>
@@ -14,8 +37,43 @@
             </div> 
             <div class="col-md-8 col-sm-8 col-xs-12"></div>
         </div>
-    </div>
+    </div> 
     <div class="col-md-12">
         <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
     </div>
 </div>
+
+<script type="text/ng-template" id="template-user-management-courier-action">
+    <div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
+        <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
+            <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul ng-if="!vm.deleted" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+            <li role="menuitem">
+                <a ui-sref="app.courier-details({ id: row.entity.user_id })">
+                    <i class="fa fa-info-circle"></i> &nbsp; Details
+                </a>
+            </li>
+            <li role="menuitem" >
+                <a ng-click="vm.updateCourier(row.entity)">
+                    <i class="fa fa-edit"></i> &nbsp; Update
+                </a>
+            </li> 
+            <li class="divider" ></li>
+            <li role="menuitem">
+                <a ng-click="vm.handleHSActivation(row.entity, 'deactivate')">
+                    <i class="fa fa-ban"></i>
+                    Deactivate
+                </a>
+            </li> 
+        </ul>
+        <ul ng-if="vm.deleted" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+            <li role="menuitem">
+                <a ng-click="vm.handleHSActivation(row.entity, 'reactivate')">
+                    <i class="fa fa-edit"></i>
+                    Reactivate
+                </a>
+            </li> 
+        </ul>
+    </div>
+</script>

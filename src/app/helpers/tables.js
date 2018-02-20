@@ -42,6 +42,12 @@ const TABLES = {
                 name: 'updated',
                 displayName: 'Date Updated',
                 cellTemplate: `{{ COL_FIELD | date:short }}`
+            },
+            {
+                name: 'action',
+                width: 50,
+                displayName: '',
+                cellTemplate: `<div ng-include="'template-user-management-courier-action'"></div>`
             }
         ]
     },

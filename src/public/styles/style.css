@@ -455,7 +455,7 @@ body.scroll::-webkit-scrollbar {
 .btn-fixed:hover {
     border: 0;
     position: absolute;
-    right: 35px;
+    right: 15px;
     top: 75px;
     background: #212121 !important;
 }
@@ -550,16 +550,7 @@ body.scroll::-webkit-scrollbar {
     -webkit-transition: all 0.4s;
     -o-transition: all 0.4s;
     transition: all 0.4s;
-}
-
-.btn-fixed,
-.btn-fixed:hover {
-    border: 0;
-    position: absolute;
-    right: 35px;
-    top: 75px;
-    background: #212121 !important;
-}
+} 
 
 .btn-trans,
 .btn-trans:focus,

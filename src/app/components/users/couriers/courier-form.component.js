@@ -41,9 +41,9 @@ import MESSAGE from 'Helpers/message';
         var vm              = this;
         var Modal           = null;
         var Request         = null;
+        vm.sites            = [];
         vm.user             = {};
-        vm.item             = {};
-        vm.selected_accoutn = '';
+        vm.item             = {}; 
         vm.submitted        = false;
 
         vm.$onInit = function() {
@@ -51,6 +51,7 @@ import MESSAGE from 'Helpers/message';
             Request         = vm.resolve.Request;
             vm.titleHeader  = Modal.header;
             vm.data         = angular.copy(Request.body);
+            vm.method       = angular.copy(Request.method);
         };
 
         vm.save             = save;
@@ -58,11 +59,43 @@ import MESSAGE from 'Helpers/message';
 
         init();
 
-        function init() {}
+        function init() {
+            getSites();
+        }
+
+        function getSites() {
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '99999',
+                    page: '1', 
+                    is_active: 1
+                },
+                hasFile: false,
+                route: { site: '' },
+                cache: true,
+                cache_string: 'sites'
+            }; 
+
+            QueryService
+                .query(request)
+                .then(
+                    function(response) { 
+                        console.log(response);
+                        vm.sites = response.data.data.items; 
+                    },
+                    function(error) {
+                        logger.error(error.data.message);
+                        //logger.error(MESSAGE.error, err, '');
+                    }
+                );
+        }
 
         function save(data) { 
-            vm.disable = true;
-            Request.body = GLOBAL.setToUpperCase(angular.copy(data));
+            Request.body = data;
+            console.log(data);
+            vm.disable = true; 
             QueryService
                 .query(Request)
                 .then(
@@ -71,8 +104,7 @@ import MESSAGE from 'Helpers/message';
                         vm.modalInstance.close(data);
                     },
                     function(err) {
-                        console.log(err);
-                        // logger.error(MESSAGE.error, err, '');
+                        console.log(err); 
                     }
                 )
                 .finally(function() {
