@@ -149,6 +149,7 @@ import DUMMY from 'Helpers/dummy';
                 function(response) {
                     if (response) {
                         response.updatedAt = new Date();
+                        $state.reload();
                         vm.option_table.data.unshift(response);
                     }
                 },
@@ -178,10 +179,11 @@ import DUMMY from 'Helpers/dummy';
             formModal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
-                        console.log(response);
-                        vm.option_table.data[
-                            vm.option_table.data.indexOf(item)
-                        ] = response;
+                        console.log('update res update item', response);
+                        // vm.option_table.data[
+                        //     vm.option_table.data.indexOf(item)
+                        // ] = response;
+                        $state.reload();
                     }
                 },
                 function(error) {

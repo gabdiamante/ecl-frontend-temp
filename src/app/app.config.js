@@ -246,7 +246,7 @@ import angular from 'angular';
             })
 
             .state('app.zones', {
-                url: 'zones?siteType&siteFront&hubId',
+                url: 'zones?siteType&siteFront&siteId',
                 component: 'zones'
             })
 

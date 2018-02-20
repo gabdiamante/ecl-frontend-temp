@@ -1,29 +1,3 @@
-<!-- <div class="modal-header bg-primary">
-    <span class="text-uppercase lead">{{ vm.titleHeader }}</span>
-    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
-</div>
-<div class="modal-body top-margin-sm">
-    <form name="nameForm">
-        <div class="clearfix">
-            <div class="form-group" >
-                <label for="uname">Code: </label>
-                <input type="text" ng-model="vm.data.zone_code" class="form-control" placeholder="Code" id="zone_code" name="zone_code" ng-required="true" >
-                <span class="text-red font-10" ng-show="nameForm.zone_code.$invalid && vm.submitted">*Required</span>
-            </div>
-            <div class="form-group">
-                <label for="zone_name">Name:</label>
-                <input type="text" ng-mouseleave="vm.alert();" ng-model="vm.data.zone_name"class="form-control" placeholder="Name" id="zone_name" name="zone_name" ng-required="true" >
-                <span class="text-red font-10" ng-show="nameForm.zone_name.$invalid && vm.submitted">*Required</span>
-            </div>
-       
-        </div>
-        <div class="text-center top-margin-sm clearfix">
-            <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>
-            <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; nameForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
-        </div>
-    </form>
-</div> -->
-
 <div class="modal-header bg-primary">
     <span class="text-uppercase lead" ng-cloak ng-bind="vm.titleHeader"></span>
     <button  type="button" 
@@ -39,22 +13,36 @@
               class="materialize"
               novalidate>       
             <div class="col-md-12">
-                <input  class="form-control text-uppercase" type="text" placeholder=" " ng-model="vm.data.code" name="code" required="">
+                <input  class="form-control" type="text" placeholder=" " ng-model="vm.data.code" name="code" required="">
                 <label class="md-label">Code</label>
                 <span class="text-red small" ng-show="zoneForm.code.$invalid && vm.submitted">* Required</span>
             </div>
             <div class="col-md-12">
-                <input  class="form-control text-uppercase" 
+                <input  class="form-control" 
                         type="text" placeholder=" " ng-model="vm.data.name" name="name" required="">
                 <label class="md-label">Name </label>
                 <span class="text-red small" ng-show="zoneForm.name.$invalid && vm.submitted">* Required</span>
+            </div>
+
+            <div class="form-group">
+                <label for="site_type" class="control-label small text-theme">Site Type </label>
+                <select ng-change="vm.changeSiteType(item)" class="form-control" ng-options="item.code as item.name for item in vm.site_types" ng-model="vm.site_type" name="site_type">
+                </select>
+                <span class="text-red small" ng-show="zoneForm.site_type.$invalid && vm.submitted">* Required</span>
+            </div>
+
+            <div class="form-group">
+                <label for="site_id" class="control-label small text-theme">Site (<span ng-bind="vm.site_type"></span>): <span ng-if="vm.loadingSites"> <i class="fa fa-spinner fa-pulse"></i> </span> </label>
+                <select class="form-control" ng-options="item.id as item.code for item in vm.sites" ng-model="vm.data.site_id" name="site_id">
+                </select>
+                <span class="text-red font-10" ng-show="nameForm.site_id.$invalid && vm.submitted">*Required</span>
             </div>
         </form>
     </div>
 
     <div class="text-center top-margin-sm clearfix">
-        <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>
-        <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; zoneForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
+        <button type="button" class="btn btn-default" ng-disabled="vm.disable || vm.loadingSites" ng-click="vm.cancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-disabled="vm.disable || vm.loadingSites" ng-click="vm.submitted=true; zoneForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
     </div>
 </div>
 

@@ -79,7 +79,7 @@ import DUMMY from 'Helpers/dummy';
                     function(response) {
                         console.log('hubs', response);
                         vm.hubs = response.data.data.items;
-                        vm.hubs.unshift({ code: 'Select Hub' });
+                        vm.hubs.unshift({ code: 'Unassign Hub' });
                         vm.data.hub_id = vm.data.hub_id || vm.hubs[0].id;
                         // vm.total_items          = response.data.data.total;
                     },
@@ -121,7 +121,7 @@ import DUMMY from 'Helpers/dummy';
                     function(response) {
                         console.log('zones', response);
                         vm.zones = response.data.data.items;
-                        vm.zones.unshift({ code: 'Select Zone' });
+                        vm.zones.unshift({ code: 'Unassign Zone' });
                         vm.data.zone_id = vm.data.zone_id || vm.zones[0].id;
                         // vm.total_items          = response.data.data.total;
                     },
@@ -222,7 +222,7 @@ import DUMMY from 'Helpers/dummy';
                         vm.total_items = response.data.data.total;
                         if (vm.Modal.method == 'add') {
                             logger.success(vm.Modal.title + ' added.');
-                        } else if (vm.Modal.method == 'add') {
+                        } else if (vm.Modal.method == 'edit') {
                             logger.success(vm.Modal.title + ' updated.');
                         }
 
