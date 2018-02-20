@@ -37,8 +37,7 @@ import CONSTANTS from 'Helpers/constants';
         vm.title                = 'Courier';
         vm.titleHeader          = vm.title+'s';
         vm.route_name           = 'couriers';
-        vm.per_page             = ['10', '20', '50', '100', '200'];
-        vm.total_page           = '1';
+        vm.per_page             = ['10', '20', '50', '100', '200']; 
         vm.total_items          = '0';
         vm.items                = { roleUserCheck: [] };
         vm.params               = angular.copy($stateParams);
@@ -178,7 +177,7 @@ import CONSTANTS from 'Helpers/constants';
                 method: 'GET',
                 body: false,
                 params: {
-                    per_page: vm.pagination.limit,
+                    limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
                     is_active:vm.deactivated
                 },
@@ -192,14 +191,10 @@ import CONSTANTS from 'Helpers/constants';
                 .query(request)
                 .then(
                     function(response) { 
-                        console.log(response);
-                        vm.option_table.data = handleNames(response.data.data.items);
-
-                        // vm.option_table.data    = handleNames(response.data.data);
-                        // vm.pagination.page      = $stateParams.page || '1';
-                        // vm.pagination.limit     = $stateParams.limit || '10';
-                        // vm.total_page           = response.data.total_pages;
-                        // vm.total_items          = response.data.total;
+                        vm.option_table.data = handleNames(response.data.data.items); 
+                        vm.pagination.total = response.data.data.total;
+                        vm.pagination.page  = $stateParams.page || '1';
+                        vm.pagination.limit = $stateParams.limit || '10';
                     },
                     function(err) {
                         logger.error(MESSAGE.error, err, '');
