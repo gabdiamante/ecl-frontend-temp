@@ -5,13 +5,13 @@ import DUMMY from 'Helpers/dummy';
 (function() {
     'use strict';
 
-    angular.module('app').component('hubDetails', {
-        template: require('./hub-details.html'),
-        controller: HubDetailsCtrl,
+    angular.module('app').component('packagingCodeDetails', {
+        template: require('./packaging-code-details.html'),
+        controller: PackagingCodeDetailsCtrl,
         controllerAs: 'vm'
     });
 
-    HubDetailsCtrl.$inject = [
+    PackagingCodeDetailsCtrl.$inject = [
         '$scope',
         '$state',
         '$filter',
@@ -20,7 +20,7 @@ import DUMMY from 'Helpers/dummy';
         'logger'
     ];
 
-    function HubDetailsCtrl(
+    function PackagingCodeDetailsCtrl(
         $scope,
         $state,
         $filter,
@@ -29,12 +29,12 @@ import DUMMY from 'Helpers/dummy';
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Hub Details';
-        vm.route_name = 'site';
+        vm.titleHeader = 'Packaging Code Details';
+        vm.route_name = 'packaging_code';
         vm.handleUpdateItem = handleUpdateItem;
 
         vm.$onInit = function() {
-            vm.TPLS = 'hubFormModal';
+            vm.TPLS = 'packagingCodeFormModal';
             getDetails();
         };
 
@@ -52,7 +52,7 @@ import DUMMY from 'Helpers/dummy';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        console.log('hub', response);
+                        console.log('packaging code', response);
                         vm.item_details = response.data.data.items[0];
                     },
                     function(error) {
@@ -66,8 +66,8 @@ import DUMMY from 'Helpers/dummy';
 
         function handleUpdateItem(item) {
             var modal = {
-                title: 'Hub',
-                titleHeader: 'Edit Hub',
+                title: 'Packaging Code',
+                titleHeader: 'Edit Packaging Code',
                 method: 'edit'
             };
 
