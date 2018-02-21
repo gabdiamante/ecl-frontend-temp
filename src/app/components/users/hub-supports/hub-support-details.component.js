@@ -39,26 +39,24 @@ import DUMMY from 'Helpers/dummy';
         init();
 
         function init() {
-            getDetails($stateParams.id);
+            getDetails($stateParams.user_id, $stateParams.site_id);
         }
 
-        function getDetails(hs_id) {
+        function getDetails(hs_id, site_id) {
             vm.loading = true;
             var request = {
                 method: 'GET',
                 body: false,
                 params: false,
                 hasFile: false,
-                route: { users: '' },
+                route: { site: site_id, 'hub-support':hs_id }, 
                 cache: false
             };
 
             QueryService.query(request)
                 .then(
-                    function(response) {
-                        vm.data = $filter('filter')(DUMMY.users.hub_supports, {
-                            id: hs_id
-                        })[0];
+                    function(response) { 
+                        vm.data = response.data.data;
                     },
                     function(err) {
                         vm.data = {};
@@ -72,11 +70,11 @@ import DUMMY from 'Helpers/dummy';
         function handleUpdateItem(data) {
             var modal = { header: 'Update Hub Support' };
             var request = {
-                method: 'GET', // PUT
+                method: 'PUT', 
                 body: data,
                 params: false,
                 hasFile: false,
-                route: { users: '' },
+                route: { site: data.site_id, 'hub-support':data.user_id },
                 cache: false
             };
 

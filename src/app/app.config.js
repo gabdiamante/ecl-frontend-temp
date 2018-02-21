@@ -200,7 +200,7 @@ import angular from 'angular';
             })
 
             .state('app.hub-support-details', {
-                url: 'hub-support-details?id',
+                url: 'hub-support-details?&user_id&site_id',
                 component: 'hubSupportDetails'
             })
 

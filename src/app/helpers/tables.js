@@ -112,7 +112,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.hub-support-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.hub-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             { name: 'email', displayName: 'Email' },

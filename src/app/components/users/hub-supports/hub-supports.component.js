@@ -160,11 +160,11 @@ import MESSAGE from 'Helpers/message';
         function handleUpdateItem(data) {
             var modal = { header: 'Update ' + vm.title };
             var request = {
-                method: 'GET', // PUT
+                method: 'PUT', 
                 body: data,
                 params: false,
                 hasFile: false,
-                route: { users: '' },
+                route: { site: data.site_id, 'hub-support':data.user_id },
                 cache: false
             };
 
