@@ -5,9 +5,9 @@ import MESSAGE from 'Helpers/message';
 (function() {
     // 'use strict';
 
-    angular.module('app').component('hubSupportForm', {
-        template: require('./hub-support-form.html'),
-        controller: hubSupportFormCtrl,
+    angular.module('app').component('customerSupportForm', {
+        template: require('./customer-support-form.html'),
+        controller: customerSupportFormCtrl,
         controllerAs: 'vm',
         bindings: {
             modalInstance: '<',
@@ -15,7 +15,7 @@ import MESSAGE from 'Helpers/message';
         }
     });
 
-    hubSupportFormCtrl.$inject = [
+    customerSupportFormCtrl.$inject = [
         '$rootScope',
         '$state',
         '$cookies',
@@ -27,7 +27,7 @@ import MESSAGE from 'Helpers/message';
         'logger'
     ];
 
-    function hubSupportFormCtrl(
+    function customerSupportFormCtrl(
         $rootScope,
         $state,
         $cookies,
@@ -45,7 +45,7 @@ import MESSAGE from 'Helpers/message';
         vm.selected_accoutn = '';
         vm.submitted        = false;
         vm.route_name       = 'site';
-        vm.hubs             = [];
+        vm.sites            = [];
 
         vm.$onInit = function() {
             Modal           = vm.resolve.Modal;
@@ -61,10 +61,10 @@ import MESSAGE from 'Helpers/message';
         init();
 
         function init() {
-            getHubs();
+            getSites();
         }
 
-        function getHubs() {
+        function getSites() {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -72,7 +72,6 @@ import MESSAGE from 'Helpers/message';
                 params: {
                     limit: '99999',
                     page: '1', 
-                    type: 'HUB',
                     is_active: vm.deleted == 'true' ? 0 : 1
                 },
                 hasFile: false,
@@ -84,8 +83,8 @@ import MESSAGE from 'Helpers/message';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.hubs = response.data.data.items; 
-                        vm.data.site_id = (vm.method=='POST') ? vm.hubs[0].id : vm.data.site_id;
+                        vm.sites = response.data.data.items; 
+                        vm.data.site_id = (vm.method=='POST') ? vm.sites[0].id : vm.data.site_id;
                     },
                     function(err) {
                         console.log(err); 
@@ -103,11 +102,11 @@ import MESSAGE from 'Helpers/message';
                 .query(Request)
                 .then(
                     function(response) { 
-                        logger.success(MESSAGE.loggerSuccess('Hub Support', Request.method));
+                        logger.success(MESSAGE.loggerSuccess('Customer Support', Request.method));
                         vm.modalInstance.close(data);
                     },
                     function(err) {
-                        logger.error(MESSAGE.loggerFailed('Hub Support', Request.method));
+                        logger.error(MESSAGE.loggerFailed('Customer Support', Request.method));
                     }
                 )
                 .finally(function() {

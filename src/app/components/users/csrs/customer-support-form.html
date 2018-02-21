@@ -6,18 +6,18 @@
 </div>
 <div class="modal-body margin-top">
     <div class="col-md-12 ">
-        <form action="" name="hubSupportForm" class="materialize" novalidate > 
+        <form action="" name="customerSupportForm" class="materialize" novalidate > 
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label small text-theme" for="zone_name">Site:</label>
-                        <select class="form-control" ng-options="hub.id as hub.name for hub in vm.hubs" ng-model="vm.data.site_id" name="site_id" required></select>
+                        <select class="form-control" ng-options="site.id as site.name for site in vm.sites" ng-model="vm.data.site_id" name="site_id" required></select>
                     <span class="text-red font-10" ng-show="nameForm.site_id.$invalid && vm.submitted">*Required</span>
                 </div>
             </div>
             <div class="col-md-12">
                 <input  class="form-control" type="text" placeholder="" ng-model="vm.data.first_name" name="first_name" required="" />
                 <label class="md-label">First Name </label>
-                <span class="text-red small" ng-show="hubSupportForm.first_name.$invalid && vm.submitted">* Required</span>
+                <span class="text-red small" ng-show="customerSupportForm.first_name.$invalid && vm.submitted">* Required</span>
             </div>
             <div class="col-md-12">
                 <input  class="form-control" type="text" placeholder="" ng-model="vm.data.middle_name" name="middle_name" />
@@ -26,33 +26,33 @@
             <div class="col-md-12">
                 <input  class="form-control" type="text" placeholder="" ng-model="vm.data.last_name" name="last_name" required="" />
                 <label class="md-label">Last Name </label>
-                <span class="text-red small" ng-show="hubSupportForm.last_name.$invalid && vm.submitted">* Required</span>
+                <span class="text-red small" ng-show="customerSupportForm.last_name.$invalid && vm.submitted">* Required</span>
             </div>
             <div class="col-md-12" ng-if="vm.method=='POST'">
                 <input  class="form-control" type="text" name="username" placeholder="" ng-model="vm.data.username" required="" />
                 <label class="md-label">Username</label>
-                <span class="text-red small" ng-show="hubSupportForm.username.$invalid && vm.submitted">* Required</span>
+                <span class="text-red small" ng-show="customerSupportForm.username.$invalid && vm.submitted">* Required</span>
             </div>
             <div class="col-md-12">
                 <input  class="form-control" type="email" placeholder="" ng-model="vm.data.email" name="email" required="" />
                 <label class="md-label">Email </label>
-                <span class="text-red small" ng-show="hubSupportForm.email.$invalid && vm.submitted">* Required</span>
+                <span class="text-red small" ng-show="customerSupportForm.email.$invalid && vm.submitted">* Required</span>
             </div>
             <div class="col-md-12" ng-if="vm.method=='POST'">
                     <input  class="form-control" type="password" placeholder="" ng-model="vm.data.password" name="password" required="" />
                     <label class="md-label">Password </label>
-                    <span class="text-red small" ng-show="hubSupportForm.password.$invalid && vm.submitted">* Required</span>
+                    <span class="text-red small" ng-show="customerSupportForm.password.$invalid && vm.submitted">* Required</span>
                 </div>
             <div class="col-md-12">
                 <label class="control-label small text-theme">Contact Number</label>
                 <input type="text" name="contact_number" placeholder="" class="form-control" required="" ng-model="vm.data.contact_number" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_" required="" />
                 <span class="small">(+63) 921-123-4567</span><br />
-                <span class="text-red small" ng-show="hubSupportForm.contact_number.$invalid && vm.submitted">* Invalid Email</span>
+                <span class="text-red small" ng-show="customerSupportForm.contact_number.$invalid && vm.submitted">* Invalid Email</span>
             </div>
         </form>
     </div>    
     <div class="text-center top-margin-sm clearfix">
         <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>
-        <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; hubSupportForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
+        <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; customerSupportForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
     </div>
 </div>

@@ -180,7 +180,7 @@ import angular from 'angular';
             })
 
             .state('app.courier-details', {
-                url: 'courier-details?id',
+                url: 'courier-details?user_id&site_id',
                 component: 'courierDetails'
             })
 
@@ -200,8 +200,18 @@ import angular from 'angular';
             })
 
             .state('app.hub-support-details', {
-                url: 'hub-support-details?id',
+                url: 'hub-support-details?&user_id&site_id',
                 component: 'hubSupportDetails'
+            })
+
+            .state('app.customer-supports', {
+                url: 'customer-supports?page&limit&view',
+                component: 'customerSupports'
+            })
+
+            .state('app.customer-support-details', {
+                url: 'customer-support-details?&user_id&site_id',
+                component: 'customerSupportDetails'
             })
 
             .state('app.merchants', {

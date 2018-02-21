@@ -42,6 +42,7 @@ import CONSTANTS from 'Helpers/constants';
         vm.items                = { roleUserCheck: [] };
         vm.params               = angular.copy($stateParams);
         vm.deactivated          = ($stateParams.deactivated == 'true') ? 1 : 0;
+        vm.activated            = +!vm.deactivated;
         vm.site_types           = CONSTANTS.site_types;
         vm.site_type            = $stateParams.site_type || vm.site_types[0].code;
         vm.loading              = false;
@@ -54,13 +55,13 @@ import CONSTANTS from 'Helpers/constants';
             defaultPagination   : true, 
             hideSearchByKey     : true, 
             searchTemplate      : true, 
-            tableDeactivate     : true
+            tableDeactivate     : true 
         };
 
-        vm.option_table.columnDefs = TABLES.couriers.columnDefs;
-        vm.option_table.data    = [];
-        vm.sites                = [];
-        vm.zones                = [];
+        vm.option_table.columnDefs  = TABLES.couriers.columnDefs;
+        vm.option_table.data        = [];
+        vm.sites                    = [];
+        vm.zones                    = [];
 
         vm.goTo                 = goTo; 
         vm.changeListView       = changeListView; 
@@ -69,7 +70,7 @@ import CONSTANTS from 'Helpers/constants';
         vm.updateCourier        = updateCourier;
         vm.selectSiteType       = selectSiteType;
 
-        init();
+        init ();
 
         function init () {
             getCouriers();  
@@ -77,7 +78,7 @@ import CONSTANTS from 'Helpers/constants';
             getZones();
         }
 
-        function getSites(site_type) {
+        function getSites (site_type) {
             var request = {
                 method: 'GET',
                 body: false,
@@ -106,7 +107,7 @@ import CONSTANTS from 'Helpers/constants';
                 );
         }
         
-        function getZones(key, update_view_center_latlng) { 
+        function getZones (key, update_view_center_latlng) { 
             var request = {
                 method: 'GET',
                 body: false, 
@@ -148,30 +149,15 @@ import CONSTANTS from 'Helpers/constants';
             ModalService
                 .form_modal(request, modal, 'courierForm', 'md', '')
                 .then(function(response) { 
-                    if (response) {
-                        vm.option_table.data.unshift(response); 
-                        vm.option_table.data = handleNames(vm.option_table.data);
-                    }
+                    if (!response) return;
+                    vm.option_table.data.unshift(response); 
+                    vm.option_table.data = handleNames(vm.option_table.data);
                 }, function(error) {
                     console.log(error); 
-                });
-
-            // QueryService.query(request)
-            //     .then(
-            //         function(response) { 
-            //             console.log(response);
-            //             vm.option_table.data = handleNames(response.data.data.items); 
-            //         },
-            //         function(err) {
-            //             logger.error(MESSAGE.error, err, '');
-            //         }
-            //     )
-            //     .finally(function() {
-            //         vm.loading = false;
-            //     });
+                }); 
         }
 
-        function getCouriers() {
+        function getCouriers () {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -179,11 +165,11 @@ import CONSTANTS from 'Helpers/constants';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
-                    is_active:vm.deactivated
+                    is_active:vm.activated
                 },
                 hasFile: false,
                 route: { [vm.route_name]: '' },
-                cache: true,
+                // cache: true, will be implemented later
                 cache_string: vm.route_name
             };
 
@@ -192,9 +178,9 @@ import CONSTANTS from 'Helpers/constants';
                 .then(
                     function(response) { 
                         vm.option_table.data = handleNames(response.data.data.items); 
-                        vm.pagination.total = response.data.data.total;
-                        vm.pagination.page  = $stateParams.page || '1';
-                        vm.pagination.limit = $stateParams.limit || '10';
+                        vm.pagination.total  = response.data.data.total;
+                        vm.pagination.page   = $stateParams.page || '1';
+                        vm.pagination.limit  = $stateParams.limit || '10';
                     },
                     function(err) {
                         logger.error(MESSAGE.error, err, '');
@@ -205,39 +191,34 @@ import CONSTANTS from 'Helpers/constants';
                 });
         }
 
-        function updateCourier(data) {
+        function updateCourier (data) {
             var modal = { header: 'Update '+vm.title };
             var request = {
                 method: 'PUT',
                 body: data,
                 params: false,
                 hasFile: false,
-                route: { user: data.user_id },
+                route: { site:data.site_id, courier:data.user_id },
                 cache_string: 'user'
             };
             
             ModalService
                 .form_modal(request, modal, 'courierForm', 'md', '')
                 .then(function(response) { 
-                    if (response) {
-                        vm.option_table.data[vm.option_table.data.indexOf(data)] = response; 
-                        vm.option_table.data = handleNames(vm.option_table.data);
-                    }
+                    if (!response) return;
+                    vm.option_table.data[vm.option_table.data.indexOf(data)] = response; 
+                    vm.option_table.data = handleNames(vm.option_table.data);
                 }, function(error) {
                     console.log(error);
                     // logger.error(error.data.message);
                 });
-        }
-
-        function handleCreateCourier () {
-            
-        }
+        } 
 
         function handleHSActivation (data, action) {
             var content = {
                 header: action+' '+vm.title,
                 message: MESSAGE.confirmMsg(action, vm.title.toLowerCase()),
-                prop: data.first_name+' '+data.last_name
+                prop: data.first_name+' '+(data.middle_name+' '||'')+data.last_name
             };
 
             ModalService
@@ -245,12 +226,7 @@ import CONSTANTS from 'Helpers/constants';
                 .then(
                     function (response) {
                         if (!response) return; 
-                        data.is_active = (action=='reactivate') ? 1 : (action=='deactivate') ? 0 : 0;
-                        vm.option_table.data.splice(
-                            vm.option_table.data.indexOf(
-                                $filter('filter')(vm.option_table.data, { id:data.id })[0]
-                            ), 1);
-                        // activateDeactivateCourier(data);
+                        activateDeactivateCourier(data, action);
                     },
                     function (err) {
                         console.log(err);
@@ -258,26 +234,27 @@ import CONSTANTS from 'Helpers/constants';
                 );
         }
 
-        function activateDeactivateCourier (data) {
+        function activateDeactivateCourier (data, action) {
             var request = {
                 method: 'PUT',
-                body: false,
+                body: {},
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: item.id, deactivate: '' },
-                cache: false
+                route: { site:data.site_id, courier:data.user_id, [action]:'' } 
             };
 
             QueryService
                 .query(request)
                 .then( 
-                    function (response) {
+                    function (response) { 
+                        logger.success(MESSAGE.loggerSuccess('Courier', '', 'deactivated'));
                         vm.option_table.data.splice(
                             vm.option_table.data.indexOf(
-                                $filter('filter')(vm.option_table.data, { id:data.id })[0]
+                                $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
                             ), 1);
                     },
                     function (err) {
+                        logger.error(MESSAGE.loggerFailed('Courier', '', 'deactivate'));
                         console.log(err);
                     }
                 );
@@ -295,13 +272,13 @@ import CONSTANTS from 'Helpers/constants';
             getSites(site_type);
         }
 
-        function handleNames(data) {
+        function handleNames (data) {
             for (let i = 0; i < data.length; i++)
                 data[i].fullname = data[i].first_name+' '+((data[i].middle_name+' ')||'')+data[i].last_name;
             return data;
         }
 
-        function goTo(data) {
+        function goTo (data) {
             $state.go($state.current.name, data);
         } 
 

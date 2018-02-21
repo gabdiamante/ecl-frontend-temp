@@ -7,13 +7,13 @@ import MESSAGE from 'Helpers/message';
 (function() {
     'use strict';
 
-    angular.module('app').component('hubSupports', {
-        template: require('./hub-supports.html'),
-        controller: HubSupportsCtrl,
+    angular.module('app').component('customerSupports', {
+        template: require('./customer-supports.html'),
+        controller: CustomerSupportsCtrl,
         controllerAs: 'vm'
     });
 
-    HubSupportsCtrl.$inject = [
+    CustomerSupportsCtrl.$inject = [
         '$scope',
         '$state',
         '$filter',
@@ -23,7 +23,7 @@ import MESSAGE from 'Helpers/message';
         'logger'
     ];
 
-    function HubSupportsCtrl(
+    function CustomerSupportsCtrl(
         $scope,
         $state,
         $filter,
@@ -33,9 +33,9 @@ import MESSAGE from 'Helpers/message';
         logger
     ) {
         var vm                  = this;
-        vm.title                = 'Hub Support';
+        vm.title                = 'Customer Support';
         vm.titleHeader          = vm.title + 's';
-        vm.route_name           = 'hub-supports';
+        vm.route_name           = 'csrs';
         vm.per_page             = ['10', '20', '50', '100', '200']; 
         vm.total_items          = '0';
         vm.params               = angular.copy($stateParams);
@@ -53,67 +53,32 @@ import MESSAGE from 'Helpers/message';
             searchTemplate      : true
         };
 
-        vm.option_table.columnDefs = TABLES.hub_supports.columnDefs;
-        vm.option_table.data    = [];
+        vm.option_table.columnDefs  = TABLES.customer_supports.columnDefs;
+        vm.option_table.data        = [];
 
-        vm.goTo                 = goTo; 
-        vm.handleUpdateItem     = handleUpdateItem; 
-        vm.handleHSActivation   = handleHSActivation; 
-        vm.createHubSupport     = createHubSupport;
+        vm.goTo                     = goTo; 
+        vm.handleUpdateItem         = handleUpdateItem; 
+        vm.handleHSActivation       = handleHSActivation; 
+        vm.createCustomerSupport    = createCustomerSupport;
 
         init();
 
         function init() {
-            getHubSupports();
-        }
+            getCustomerSupports();
+        } 
 
-        getHubs();
-
-        function getHubs() {
-            vm.loading = true;
-            var request = {
-                method: 'GET',
-                body: false,
-                params: {
-                    limit: '99999',
-                    page: '1',
-                    type: 'HUB',
-                    is_active: 1
-                },
-                hasFile: false,
-                route: { site: '' },
-                cache: true,
-                cache_string: 'site'
-            }; 
-
-            QueryService.query(request)
-                .then(
-                    function(response) { 
-                        vm.hubs = handleNames(response.data.data.items); 
-                    },
-                    function(err) {
-                        //logger.error(MESSAGE.error, err, '');
-                    }
-                )
-                .finally(function() {
-                    vm.loading = false;
-                });
-        }
-
-        function createHubSupport () {
+        function createCustomerSupport () {
             var modal = { header: 'Create '+vm.title };
             var request = {
                 method: 'POST',
                 body: {},
                 params: {},
                 hasFile: false,
-                route: { 'hub-support': '' },
-                cache: true,
-                cache_string: vm.route_name
+                route: { csr: '' } 
             };
 
             ModalService
-                .form_modal(request, modal, 'hubSupportForm', 'md', '')
+                .form_modal(request, modal, 'customerSupportForm', 'md', '')
                 .then(function(response) { 
                     if (response) {
                         vm.option_table.data.unshift(response); 
@@ -124,7 +89,7 @@ import MESSAGE from 'Helpers/message';
                 }); 
         }
 
-        function getHubSupports() {
+        function getCustomerSupports() {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -143,10 +108,11 @@ import MESSAGE from 'Helpers/message';
             QueryService.query(request)
                 .then(
                     function(response) { 
+                        console.log(response);
                         vm.option_table.data    = handleNames(response.data.data.items); 
-                        vm.pagination.page      = $stateParams.page || '1';
+                        vm.pagination.page      = $stateParams.page || '1'; 
                         vm.pagination.limit     = $stateParams.limit || '10'; 
-                        vm.pagination.total     = response.data.data.total;
+                        vm.pagination.total     = response.data.data.total; 
                     },
                     function(err) {
                         console.log(err);
@@ -164,12 +130,12 @@ import MESSAGE from 'Helpers/message';
                 body: data,
                 params: false,
                 hasFile: false,
-                route: { site: data.site_id, 'hub-support':data.user_id },
+                route: { site: data.site_id, csr:data.user_id }, 
                 cache: false
             };
 
             ModalService
-                .form_modal(request, modal, 'hubSupportForm')
+                .form_modal(request, modal, 'customerSupportForm')
                 .then(
                     function(response) {
                         if (response) {
@@ -237,7 +203,7 @@ import MESSAGE from 'Helpers/message';
         }
 
         function goTo(data) {
-            $state.go('app.hub-supports', data);
+            $state.go($state.current.name, data);
         }
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {

@@ -24,7 +24,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.courier-details({ id:row.entity.user_id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.courier-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             {
@@ -112,7 +112,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.hub-support-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.hub-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             { name: 'email', displayName: 'Email' },
@@ -126,6 +126,33 @@ const TABLES = {
                 width: 50,
                 displayName: '',
                 cellTemplate: `<div ng-include="'template-user-management-hub-support-action'"></div>`
+            }
+        ]
+    },
+    customer_supports: {
+        columnDefs: [
+            {
+                name: 'fullname',
+                displayName: 'Name',
+                cellTemplate: `<a ui-sref="app.customer-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'username', displayName: 'Username' },
+            { name: 'email', displayName: 'Email' },
+            { 
+                name: 'contact_number', 
+                displayName: 'Contact', 
+                cellTemplate:`<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>` 
+            },
+            {
+                name: 'updated',
+                displayName: 'Date Updated',
+                cellTemplate: `{{ COL_FIELD | date:short }}`
+            },
+            {
+                name: 'action',
+                width: 50,
+                displayName: '',
+                cellTemplate: `<div ng-include="'template-user-management-customer-support-action'"></div>`
             }
         ]
     },
