@@ -1,0 +1,47 @@
+<div class="content-view">
+    <div class="col-md-12 sub-header">
+        <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
+    </div> 
+    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handlePostItem()" >
+            <i  class="fa fa-plus fa-lg text-white" ></i>
+    </button>
+
+    <div class="col-md-12">
+            <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="template-data-management-packaging-code-action">
+    <div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
+        <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
+            <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul ng-if="vm.activated" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+            <li role="menuitem">
+                <a ui-sref="app.packaging-code-details({ id: row.entity.id })">
+                    <i class="fa fa-info-circle"></i> &nbsp;Details
+                </a>
+            </li>
+            <li role="menuitem" >
+                <a ng-click="vm.handleUpdateItem(row.entity)">
+                    <i class="fa fa-edit"></i> &nbsp;Update
+                </a>
+            </li> 
+            <li class="divider" ></li>
+            <li role="menuitem">
+                <a ng-click="vm.handleHSActivation(row.entity, 'deactivate')">
+                    <i class="fa fa-ban"></i>
+                    Deactivate
+                </a>
+            </li> 
+        </ul>
+        <ul ng-if="!vm.activated" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+            <li role="menuitem">
+                <a ng-click="vm.handleHSActivation(row.entity, 'reactivate')">
+                    <i class="fa fa-edit"></i>
+                    Reactivate
+                </a>
+            </li> 
+        </ul>
+    </div>
+</script>
