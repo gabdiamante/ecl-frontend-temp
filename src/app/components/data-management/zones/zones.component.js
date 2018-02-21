@@ -49,14 +49,15 @@ var jsts = require('jsts');
         var httpCache = $cacheFactory.get('$http');
 
         vm.user = GLOBAL.user($cookies, $state);
-
         //vm.center_map_lat_lng = GLOBAL.map_default_position[0] + ',' + GLOBAL.map_default_position[1];
-        vm.center_map_lat_lng = '14.599512, 120.984222';
+        vm.center_map_lat_lng =
+            $stateParams.center_map_lat_lng || '14.599512, 120.984222';
         //vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
 
         vm.route_name = 'zone';
         vm.current_state = $state.current.name;
         vm.search_key = $stateParams.search_value || '';
+        vm.zoom = angular.copy(parseInt($stateParams.zoom) || 11);
         vm.TPLS = 'zonesFormModal';
 
         vm.title = 'Zone';
@@ -77,7 +78,6 @@ var jsts = require('jsts');
         vm.shapes = [];
         vm.zones = [];
 
-        vm.zoom = 11;
         vm.minZoom = false;
         vm.maxZoom = false;
 
@@ -119,26 +119,37 @@ var jsts = require('jsts');
 
         init();
 
-        NgMap.getMap({ id: 'geofencing' }).then(function(map) {
-            google.maps.event.trigger(map, 'resize');
-        });
-
         function init() {
             google.maps.Polygon.prototype.my_getBounds =
                 GMAP.prototype.my_getBounds;
+
             vm[vm.user.app] = true;
 
+            getMap();
             getTypes(); // not async
             getSiteFront(); //not async
             getSites(); //async
-
-            // getZones(vm.search_key, true);
         }
 
         function getMap() {
             NgMap.getMap({ id: 'geofencing' }).then(function(map) {
                 vm.geofenceMap = map;
                 google.maps.event.trigger(vm.geofenceMap, 'resize');
+
+                google.maps.event.addListener(map, 'zoom_changed', function() {
+                    vm.zoom = map.getZoom();
+                    console.log(vm.zoom);
+                });
+
+                google.maps.event.addListener(
+                    map,
+                    'center_changed',
+                    function() {
+                        var center_map = map.getCenter();
+                        vm.center_map_lat_lng =
+                            center_map.lat() + ', ' + center_map.lng();
+                    }
+                );
             });
         }
 
@@ -201,6 +212,27 @@ var jsts = require('jsts');
                 });
         }
 
+        function checkSiteType(siteTypeCode, siteTypes) {
+            var siteType = siteTypes.filter(function(sT) {
+                return sT.code == siteTypeCode;
+            })[0];
+            vm.site_type = siteType;
+        }
+
+        function checkSiteFront(siteFrontCode, siteFronts) {
+            var siteFront = siteFronts.filter(function(sT) {
+                return sT.code == siteFrontCode;
+            })[0];
+            vm.site_front = siteFront;
+        }
+
+        function checkSiteId(siteId, sites) {
+            var site = sites.filter(function(site) {
+                return site.id == siteId;
+            })[0];
+            vm.site = site;
+        }
+
         function getZones(key, update_view_center_latlng) {
             vm.isLoading = true;
             vm.zones = [];
@@ -232,7 +264,6 @@ var jsts = require('jsts');
                 .then(
                     function(response) {
                         getMap();
-
                         var zones = response.data.data.items || [];
 
                         vm.zones = $filter('orderBy')(
@@ -275,32 +306,13 @@ var jsts = require('jsts');
                 });
         }
 
-        function checkSiteType(siteTypeCode, siteTypes) {
-            var siteType = siteTypes.filter(function(sT) {
-                return sT.code == siteTypeCode;
-            })[0];
-            vm.site_type = siteType;
-        }
-
-        function checkSiteFront(siteFrontCode, siteFronts) {
-            var siteFront = siteFronts.filter(function(sT) {
-                return sT.code == siteFrontCode;
-            })[0];
-            vm.site_front = siteFront;
-        }
-
-        function checkSiteId(siteId, sites) {
-            var site = sites.filter(function(site) {
-                return site.id == siteId;
-            })[0];
-            vm.site = site;
-        }
-
         function selectType(type) {
             $state.go($state.current.name, {
                 siteType: type.code,
                 siteFront: '',
-                siteId: ''
+                siteId: '',
+                zoom: vm.zoom,
+                center_map_lat_lng: vm.center_map_lat_lng
             });
             getZones();
         }
@@ -309,7 +321,9 @@ var jsts = require('jsts');
             $state.go($state.current.name, {
                 siteType: vm.site_type.code,
                 siteFront: type.code,
-                siteId: ''
+                siteId: '',
+                zoom: vm.zoom,
+                center_map_lat_lng: vm.center_map_lat_lng
             });
             getZones();
         }
@@ -319,7 +333,9 @@ var jsts = require('jsts');
             vm.siteId = site.id;
             $state.go($state.current.name, {
                 siteType: vm.site_type.code,
-                siteId: vm.siteId
+                siteId: vm.siteId,
+                zoom: vm.zoom,
+                center_map_lat_lng: vm.center_map_lat_lng
             });
             vm.buttonName = site.name;
             getZones();
@@ -435,7 +451,9 @@ var jsts = require('jsts');
                     if (res) {
                         vm.intersect_count++;
                         logger.info(
-                            'Zone overlaps with other existing zone. Please remove overlap to continue.'
+                            'Zone overlaps with other existing zone at ' +
+                                vm.zones[vm.shapeIndex].type +
+                                '. Please remove overlap to continue.'
                         );
                     }
                 });
@@ -496,18 +514,11 @@ var jsts = require('jsts');
             }
         }
 
-        // function convertArrayToLatlngObject(polygon) {
-        //     var polygon_lat_lng = [];
-        //     for (var i=0; i< polygon.length; i++)
-        //         polygon_lat_lng.push({lat: polygon[i][0], lng: polygon[i][1]});
-        //     return polygon_lat_lng;
-        // }
-
         function onMouseUp(e, shape, index) {
             if (typeof vm.shapeIndex != 'undefined' && shape.editable) {
                 console.log(index, 'index');
                 var data = angular.copy(vm.updated_shape);
-                var shape = {
+                shape = {
                     type: 'polygon'
                 };
 
@@ -707,15 +718,15 @@ var jsts = require('jsts');
             }
         }
 
-        function makeEditable(index) {
-            for (var i = vm.zones.length - 1; i >= 0; i--) {
-                if (i == index) {
-                    vm.zones[i].editable = true;
-                } else {
-                    vm.zones[i].editable = false;
-                }
-            }
-        }
+        // function makeEditable(index) {
+        //     for (var i = vm.zones.length - 1; i >= 0; i--) {
+        //         if (i == index) {
+        //             vm.zones[i].editable = true;
+        //         } else {
+        //             vm.zones[i].editable = false;
+        //         }
+        //     }
+        // }
 
         function clearPolygon(e) {
             vm.shapePath.setMap(null);
@@ -770,12 +781,20 @@ var jsts = require('jsts');
         }
 
         function search(key) {
-            $state.go(vm.current_state, { search_value: key });
+            $state.go(vm.current_state, {
+                search_value: key,
+                zoom: vm.zoom,
+                center_map_lat_lng: vm.center_map_lat_lng
+            });
         }
 
         function clearField() {
             vm.search_key = '';
-            $state.go(vm.current_state, { search_value: '' });
+            $state.go(vm.current_state, {
+                search_value: '',
+                zoom: vm.zoom,
+                center_map_lat_lng: vm.center_map_lat_lng
+            });
         }
 
         function zoomIn() {

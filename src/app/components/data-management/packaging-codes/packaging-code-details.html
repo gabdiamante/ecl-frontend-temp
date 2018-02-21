@@ -1,0 +1,47 @@
+<div class="content-view">
+    <div class="col-md-12 sub-header">
+        <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
+    </div> 
+    
+    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handleUpdateItem(vm.item_details)" >
+        <i  class="fa fa-pencil fa-lg text-white" ></i>
+    </button>
+    <br />
+
+    <div style="clear:both;"></div>
+
+    <div class="top-margin-sm">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+                <button class="btn btn-primary" ng-click="$root.$back()">
+                    <i class="fa fa-chevron-circle-left"></i> Back
+                </button>
+        </div>
+        <div style="clear:both;"></div>
+        <br />
+        <div  class="col-md-12">
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Code:</span>
+                <span class="text-bold " ng-cloak ng-bind="vm.item_details.code">  </span>
+            </li>
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Name:</span>
+                <span class="text-bold " ng-cloak ng-bind="vm.item_details.name">  </span>
+            </li>
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Address:</span>
+                <span class="text-bold" ng-bind-html="vm.item_details.address | titlecase | displaynone"></span>
+            </li>
+            <li class="list-group-item clearfix">
+                    <span class="col-md-3">Date Updated:</span>
+                    <span class="text-bold" ng-bind-html="vm.item_details.updated | date:short"></span>
+                </li>
+        </div>
+    </div>
+
+   
+    
+
+
+
+
+</div>

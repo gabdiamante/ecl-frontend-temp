@@ -2,6 +2,7 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
 import DUMMY from 'Helpers/dummy';
+import MESSAGE from 'Helpers/message';
 
 (function() {
     'use strict';
@@ -34,12 +35,13 @@ import DUMMY from 'Helpers/dummy';
         var vm = this;
         vm.title = 'Personnel';
         vm.titleHeader = vm.title + 's';
-        vm.view = 'personnel';
         vm.route_name = 'personnel';
 
         vm.TPLS = 'personnelFormModal';
 
-        vm.deleted = $stateParams.deleted;
+        vm.deactivated = $stateParams.deactivated == 'true' ? 1 : 0;
+        vm.activated = +!vm.deactivated;
+
         vm.pagination = {};
         vm.pagination.pagestate = $stateParams.page || '1';
         vm.pagination.limit = $stateParams.limit || '10';
@@ -64,13 +66,9 @@ import DUMMY from 'Helpers/dummy';
         vm.goTo = goTo;
         vm.trClick = trClick;
 
-        vm.changeSize = changeSize;
-        vm.changeListView = changeListView;
-
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
-        vm.handleDeactivateItem = handleDeactivateItem;
-        vm.handleReactivateItem = handleReactivateItem;
+        vm.handleHSActivation = handleHSActivation;
 
         getData();
 
@@ -82,7 +80,7 @@ import DUMMY from 'Helpers/dummy';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
-                    is_active: vm.deleted == 'true' ? 0 : 1
+                    is_active: vm.activated
                 },
                 hasFile: false,
                 route: { [vm.route_name + 's']: '' },
@@ -90,23 +88,18 @@ import DUMMY from 'Helpers/dummy';
                 cache_string: vm.route_name
             };
 
-            console.log('vehcilesr', request);
-
+            console.log('personnels r', request);
             QueryService.query(request)
                 .then(
                     function(response) {
                         console.log('personnel', response);
-                        // vm.option_table.data = DUMMY.vehicles;
                         vm.option_table.data = response.data.data.items;
-
-                        // vm.option_table.data    = handleNames(response.data.data);
-                        // vm.pagination.page      = $stateParams.page || '1';
-                        // vm.pagination.limit     = $stateParams.limit || '10';
-                        // vm.total_page           = response.data.total_pages;
-                        vm.total_items = response.data.data.total;
+                        vm.pagination.total = response.data.data.total;
+                        vm.pagination.page = $stateParams.page || '1';
+                        vm.pagination.limit = $stateParams.limit || '10';
                     },
-                    function(err) {
-                        //logger.error(MESSAGE.error, err, '');
+                    function(error) {
+                        logger.error(error.data.message);
                     }
                 )
                 .finally(function() {
@@ -129,7 +122,7 @@ import DUMMY from 'Helpers/dummy';
                 route: { [vm.route_name]: '' }
             };
 
-            formModal(request, modal, vm.TPLS).then(
+            ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
                         response.updatedAt = new Date();
@@ -137,9 +130,7 @@ import DUMMY from 'Helpers/dummy';
                     }
                 },
                 function(error) {
-                    logger.error(
-                        error.data.message || catchError(request.route)
-                    );
+                    logger.error(error.data.message);
                 }
             );
         }
@@ -159,117 +150,64 @@ import DUMMY from 'Helpers/dummy';
                 route: { [vm.route_name]: item.id }
             };
 
-            formModal(request, modal, vm.TPLS).then(
+            ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
-                        console.log(response);
                         vm.option_table.data[
                             vm.option_table.data.indexOf(item)
                         ] = response;
                     }
                 },
                 function(error) {
-                    logger.error(
-                        error.data.message || catchError(request.route)
-                    );
+                    logger.error(error.data.message);
                 }
             );
         }
 
-        function handleDeactivateItem(item) {
+        function handleHSActivation(data, action) {
+            var content = {
+                header: action + ' ' + vm.title,
+                message: MESSAGE.confirmMsg(action, vm.title.toLowerCase()),
+                prop: data.first_name + ' ' + data.last_name
+            };
+
+            ModalService.confirm_modal(content).then(
+                function(response) {
+                    if (!response) return;
+                    executeActivateDeactivate(data, action);
+                },
+                function(error) {
+                    logger.error(error.data.message);
+                }
+            );
+        }
+
+        function executeActivateDeactivate(data, action) {
             var request = {
                 method: 'PUT',
                 body: false,
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: item.id, deactivate: '' },
+                route: { [vm.route_name]: data.id, [action]: '' },
                 cache: false
             };
 
-            var content = {
-                header: 'Deactivate ' + vm.title,
-                message:
-                    'Are you sure you want to deactivate ' +
-                    vm.title.toLowerCase() +
-                    ' ',
-                prop: item.first_name + ' ' + item.last_name
-            };
-
-            confirmation(content).then(function(response) {
-                if (response) {
-                    QueryService.query(request).then(
-                        function(response) {
-                            vm.option_table.data.splice(
-                                vm.option_table.data.indexOf(item),
-                                1
-                            );
-                            logger.success(vm.title + ' deactivated!');
-                        },
-                        function(error) {
-                            logger.error(
-                                error.data.message || catchError(request.route)
-                            );
-                        }
+            QueryService.query(request).then(
+                function(response) {
+                    vm.option_table.data.splice(
+                        vm.option_table.data.indexOf(
+                            $filter('filter')(vm.option_table.data, {
+                                id: data.id
+                            })[0]
+                        ),
+                        1
                     );
+                    logger.success(vm.title + ' ' + action + 'd!');
+                },
+                function(err) {
+                    console.log(err);
                 }
-            });
-        }
-
-        function handleReactivateItem(item) {
-            var request = {
-                method: 'PUT',
-                body: false,
-                params: false,
-                hasFile: false,
-                route: { [vm.route_name]: item.id, reactivate: '' },
-                cache: false
-            };
-
-            var content = {
-                header: 'Reactivate ' + vm.title,
-                message:
-                    'Are you sure you want to reactivate ' +
-                    vm.title.toLowerCase() +
-                    ' ',
-                prop: item.first_name + ' ' + item.last_name
-            };
-
-            confirmation(content).then(function(response) {
-                if (response) {
-                    QueryService.query(request).then(
-                        function(response) {
-                            vm.option_table.data.splice(
-                                vm.option_table.data.indexOf(item),
-                                1
-                            );
-                            logger.success(vm.title + ' deactivated!');
-                        },
-                        function(error) {
-                            logger.error(
-                                error.data.message || catchError(request.route)
-                            );
-                        }
-                    );
-                }
-            });
-        }
-
-        function changeSize(size) {
-            $state.go($state.current.name, { page: 1, size: size });
-        }
-
-        function changeListView(status) {
-            $state.go($state.current.name, {
-                page: 1,
-                size: $stateParams.size,
-                deleted: status
-            });
-        }
-
-        function handleNames(data) {
-            for (let i = 0; i < data.length; i++)
-                data[i].fullname = data[i].first_name + ' ' + data[i].last_name;
-            return data;
+            );
         }
 
         function goTo(data) {
@@ -278,25 +216,6 @@ import DUMMY from 'Helpers/dummy';
 
         function trClick(data) {
             $state.go('app.dispatcher-details', { id: data.id });
-        }
-
-        vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {
-            // var values_of_id = _.pluck(vm.option_table.data, propertyName);
-            if (checkbox)
-                GLOBAL.getModel(
-                    vm.items,
-                    model_name,
-                    angular.copy(vm.option_table.data)
-                );
-            else GLOBAL.getModel(vm.items, model_name, []);
-        };
-
-        function formModal(request, modal, template, size) {
-            return ModalService.form_modal(request, modal, template, size);
-        }
-
-        function confirmation(content) {
-            return ModalService.confirm_modal(content);
         }
     }
 })();

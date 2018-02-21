@@ -53,7 +53,6 @@ import DUMMY from 'Helpers/dummy';
 
             getHubs();
             getZones();
-            //console.log(Modal);
         };
 
         function getHubs() {
@@ -90,13 +89,6 @@ import DUMMY from 'Helpers/dummy';
                 .finally(function() {
                     vm.loading = false;
                 });
-
-            // vm.hubs =
-            //     $filter('filter')(
-            //         angular.copy(DUMMY.sites),
-            //         { type: 'HUB' },
-            //         true
-            //     ) || [];
         }
 
         function getZones() {
@@ -107,7 +99,8 @@ import DUMMY from 'Helpers/dummy';
                 params: {
                     limit: '9999999999',
                     page: '1',
-                    is_active: 1
+                    is_active: 1,
+                    site_type: 'DC'
                 },
                 hasFile: false,
                 route: { zone: '' },
@@ -123,7 +116,6 @@ import DUMMY from 'Helpers/dummy';
                         vm.zones = response.data.data.items;
                         vm.zones.unshift({ code: 'Unassign Zone' });
                         vm.data.zone_id = vm.data.zone_id || vm.zones[0].id;
-                        // vm.total_items          = response.data.data.total;
                     },
                     function(error) {
                         logger.error(error.data.message);
@@ -132,13 +124,10 @@ import DUMMY from 'Helpers/dummy';
                 .finally(function() {
                     vm.loading = false;
                 });
-
-            // vm.zones = angular.copy(DUMMY.zones) || [];
-            // vm.zones.unshift({ code: 'Select Zones' });
-            // vm.data.zone_id = vm.data.zone_id || vm.zones[0].id;
         }
 
-        function save(data, action) {
+        function save(data) {
+            vm.oldZoneId = angular.copy(vm.Request.body.zone_id);
             vm.disable = true;
             vm.loading = true;
 
@@ -159,9 +148,11 @@ import DUMMY from 'Helpers/dummy';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
-                            updateZone(response);
-                            // logger.success(vm.Modal.title + ' added.');
-                            // close(vm.data, action);
+                            if (vm.data.zone_id) updateZone(response);
+                            else
+                                executeClosing(
+                                    response.data.data.items[0] || {}
+                                );
                         },
                         function(error) {
                             logger.error(error.data.message);
@@ -175,9 +166,8 @@ import DUMMY from 'Helpers/dummy';
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
-                            updateZone(response);
-                            // logger.success(vm.Modal.title + ' updated.');
-                            // close(vm.data, action);
+                            if (vm.data.zone_id) updateZone(response);
+                            else unassignZone(response);
                         },
                         function(err) {
                             logger.error(error.data.message);
@@ -188,19 +178,40 @@ import DUMMY from 'Helpers/dummy';
                         vm.disable = false;
                     });
             }
-
-            // QueryService
-            //     .query(Request)
-            //     .then( function (response) {
-
-            //     }, function (error) {
-            //         logger.error(error.data.message || 'Cannot established URL:' + GLOBAL.set_url(Request.route));
-            //     }).finally( function () {
-            //         vm.disable = false;
-            //     });
         }
 
-        function updateZone(response, action) {
+        function unassignZone(response) {
+            var item = response.data.data.items[0] || {};
+            console.log('update_zone', item);
+
+            vm.loading = true;
+            var request = {
+                method: 'PUT',
+                body: { site_id: null },
+                params: false,
+                hasFile: false,
+                route: { zone: vm.oldZoneId },
+                cache: false,
+                cache_string: vm.route_name
+            };
+
+            QueryService.query(request)
+                .then(
+                    function(response) {
+                        console.log('dcs', response);
+                        vm.total_items = response.data.data.total;
+                        executeClosing(item, response);
+                    },
+                    function(error) {
+                        logger.error(error.data.message);
+                    }
+                )
+                .finally(function() {
+                    vm.loading = false;
+                });
+        }
+
+        function updateZone(response) {
             var item = response.data.data.items[0] || {};
             console.log('update_zone', item);
 
@@ -220,23 +231,10 @@ import DUMMY from 'Helpers/dummy';
                     function(response) {
                         console.log('dcs', response);
                         vm.total_items = response.data.data.total;
-                        if (vm.Modal.method == 'add') {
-                            logger.success(vm.Modal.title + ' added.');
-                        } else if (vm.Modal.method == 'edit') {
-                            logger.success(vm.Modal.title + ' updated.');
-                        }
-
-                        vm.response_data = item;
-                        var response_zone_data =
-                            response.data.data.items[0] || {};
-                        vm.response_data.zone_id = response_zone_data.id;
-                        vm.response_data.zone_code = response_zone_data.code;
-
-                        close(vm.response_data, action);
+                        executeClosing(item, response);
                     },
                     function(error) {
-                        console.log(error.data.message);
-                        //logger.error(MESSAGE.error, err, '');
+                        logger.error(error.data.message);
                     }
                 )
                 .finally(function() {
@@ -244,7 +242,25 @@ import DUMMY from 'Helpers/dummy';
                 });
         }
 
-        function close(data, action) {
+        function executeClosing(item, response_zone) {
+            if (vm.Modal.method == 'add') {
+                logger.success(vm.Modal.title + ' added.');
+            } else if (vm.Modal.method == 'edit') {
+                logger.success(vm.Modal.title + ' updated.');
+            }
+
+            vm.response_data = item;
+
+            if (response_zone) {
+                var response_zone_data = response_zone.data.data.items[0] || {};
+                vm.response_data.zone_id = response_zone_data.id;
+                vm.response_data.zone_code = response_zone_data.code;
+            }
+
+            close(vm.response_data);
+        }
+
+        function close(data) {
             vm.modalInstance.close(data);
         }
 

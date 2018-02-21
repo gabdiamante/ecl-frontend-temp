@@ -7,37 +7,39 @@ import MESSAGE from 'Helpers/message';
 (function() {
     'use strict';
 
-    angular.module('app').component('dcs', {
-        template: require('./dcs.html'),
-        controller: DistributionCentersCtrl,
+    angular.module('app').component('packagingCodes', {
+        template: require('./packaging-codes.html'),
+        controller: PackagingCodesCtrl,
         controllerAs: 'vm'
     });
 
-    DistributionCentersCtrl.$inject = [
+    PackagingCodesCtrl.$inject = [
         '$scope',
         '$state',
         '$stateParams',
         '$filter',
         'ModalService',
         'QueryService',
-        'logger'
+        'logger',
+        '$localStorage'
     ];
 
-    function DistributionCentersCtrl(
+    function PackagingCodesCtrl(
         $scope,
         $state,
         $stateParams,
         $filter,
         ModalService,
         QueryService,
-        logger
+        logger,
+        $localStorage
     ) {
         var vm = this;
-        vm.title = 'Distribution Center';
+        vm.title = 'Packaging Code';
         vm.titleHeader = vm.title + 's';
 
-        vm.TPLS = 'distributionCenterFormModal';
-        vm.route_name = 'site';
+        vm.TPLS = 'packagingCodeFormModal';
+        vm.route_name = 'packaging_code';
 
         vm.deactivated = $stateParams.deactivated == 'true' ? 1 : 0;
         vm.activated = +!vm.deactivated;
@@ -59,7 +61,7 @@ import MESSAGE from 'Helpers/message';
             tableDeactivate: true
         };
 
-        vm.option_table.columnDefs = TABLES.distribution_centers.columnDefs;
+        vm.option_table.columnDefs = TABLES.packaging_codes.columnDefs;
         vm.option_table.data = [];
 
         vm.goTo = goTo;
@@ -67,7 +69,6 @@ import MESSAGE from 'Helpers/message';
 
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
-
         vm.handleHSActivation = handleHSActivation;
 
         getData();
@@ -80,7 +81,7 @@ import MESSAGE from 'Helpers/message';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
-                    type: 'DC',
+                    type: 'HUB',
                     is_active: vm.activated
                 },
                 hasFile: false,
@@ -89,10 +90,11 @@ import MESSAGE from 'Helpers/message';
                 cache_string: vm.route_name
             };
 
+            console.log('packaging code r', request);
             QueryService.query(request)
                 .then(
                     function(response) {
-                        console.log('dcs', response);
+                        console.log('packagings', response);
                         vm.option_table.data = response.data.data.items;
                         vm.pagination.total = response.data.data.total;
                         vm.pagination.page = $stateParams.page || '1';
@@ -126,7 +128,6 @@ import MESSAGE from 'Helpers/message';
                 function(response) {
                     if (response) {
                         response.updatedAt = new Date();
-                        $state.reload();
                         vm.option_table.data.unshift(response);
                     }
                 },
@@ -154,8 +155,10 @@ import MESSAGE from 'Helpers/message';
             ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
-                        console.log('update res update item', response);
-                        $state.reload();
+                        console.log(response);
+                        vm.option_table.data[
+                            vm.option_table.data.indexOf(item)
+                        ] = response;
                     }
                 },
                 function(error) {
@@ -210,12 +213,18 @@ import MESSAGE from 'Helpers/message';
             );
         }
 
+        function handleNames(data) {
+            for (let i = 0; i < data.length; i++)
+                data[i].fullname = data[i].first_name + ' ' + data[i].last_name;
+            return data;
+        }
+
         function goTo(data) {
             $state.go($state.current.name, data);
         }
 
         function trClick(data) {
-            $state.go('app.distribution-center-details', { id: data.id });
+            $state.go('app.packaging-code-details', { id: data.id });
         }
     }
 })();

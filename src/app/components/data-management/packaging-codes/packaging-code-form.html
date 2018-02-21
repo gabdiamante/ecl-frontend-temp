@@ -6,35 +6,32 @@
     <form name="nameForm" class="materialize">
         <div class="clearfix">
             <div class="form-group" >
-                <label for="uname" class="control-label small text-theme">Code: </label>
+                <label for="code" class="control-label small text-theme">Code: </label>
                 <input type="text" ng-model="vm.data.code" class="form-control" placeholder="Code" id="code" name="code" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.code.$invalid && vm.submitted">*Required</span>
             </div>
-            <div class="form-group">
-                <label for="zone_name" class="control-label small text-theme">Name:</label>
+            <div class="form-group" >
+                <label for="name" class="control-label small text-theme">Name:</label>
                 <input type="text"  ng-model="vm.data.name" class="form-control" placeholder="Name" id="name" name="name" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.name.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group">
-                <label for="zone_name" class="control-label small text-theme">Address:</label>
-                <textarea type="text" ng-model="vm.data.address" class="form-control" placeholder="Address" id="address" name="address" ng-required="true" >
-                </textarea>
-                <span class="text-red font-10" ng-show="nameForm.address.$invalid && vm.submitted">*Required</span>
+                <label for="weight" class="control-label small text-theme">Weight:</label>
+                <input type="text" numbers-only ng-model="vm.data.weight" class="form-control" placeholder="Weight (kg)" id="weight" name="weight" >
+                <span class="text-red font-10" ng-show="nameForm.weight.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group">
-                <label for="zone_name" class="control-label small text-theme">Hub:</label>
-                <select class="form-control" ng-options="item.id as item.code for item in vm.hubs" ng-model="vm.data.hub_id" name="hub_id" ng-required="true">
-				</select>
-                <span class="text-red font-10" ng-show="nameForm.hub_id.$invalid && vm.submitted">*Required</span>
+                <label for="volume" class="control-label small text-theme">Volume:</label>
+                <input type="text" numbers-only ng-model="vm.data.volume" class="form-control" placeholder="Volume" id="volume" name="volume"  >
+                <span class="text-red font-10" ng-show="nameForm.volume.$invalid && vm.submitted">*Required</span>
             </div>
-            <div class="form-group">
-                <label for="zone_name" class="control-label small text-theme">Zones:</label>
-                <select class="form-control" ng-options="item.id as item.code for item in vm.zones" ng-model="vm.data.zone_id" name="zone_id" >
-                </select>
-                <span class="text-red font-10" ng-show="nameForm.zone_id.$invalid && vm.submitted">*Required</span>
+            <div class="form-group" >
+                <label for="dimension" class="control-label small text-theme">Dimension: </label>
+                <input type="text" ng-model="vm.data.dimension" class="form-control" placeholder="Dimension" id="dimension" name="dimension"  >
+                <span class="text-red font-10" ng-show="nameForm.dimension.$invalid && vm.submitted">*Required</span>
             </div>
             
-
+            
         </div>
         <div class="text-center top-margin-sm clearfix">
             <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>

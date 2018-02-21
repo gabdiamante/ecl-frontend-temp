@@ -185,7 +185,7 @@ import angular from 'angular';
             })
 
             .state('app.dispatchers', {
-                url: 'dispatchers?size&deleted&page&limit&search',
+                url: 'dispatchers?deactivated&page&limit&search',
                 component: 'dispatchers'
             })
 
@@ -210,7 +210,7 @@ import angular from 'angular';
             })
 
             .state('app.personnels', {
-                url: 'personnels?size&deleted&page&limit&search',
+                url: 'personnels?deactivated&page&limit&search',
                 component: 'personnels'
             })
 
@@ -221,7 +221,7 @@ import angular from 'angular';
 
             //DATA-MANAGEMENT
             .state('app.hubs', {
-                url: 'hubs?size&deleted&page&limit&search',
+                url: 'hubs?deactivated&page&limit&search',
                 component: 'hubs'
             })
 
@@ -231,7 +231,7 @@ import angular from 'angular';
             })
 
             .state('app.distribution-centers', {
-                url: 'distribution-centers?size&deleted&page&limit&search',
+                url: 'distribution-centers?deactivated&page&limit&search',
                 component: 'dcs'
             })
 
@@ -241,7 +241,7 @@ import angular from 'angular';
             })
 
             .state('app.vehicles', {
-                url: 'vehicles?size&deleted&page&limit&search',
+                url: 'vehicles?deactivated&page&limit&search',
                 component: 'vehicles'
             })
 
@@ -251,18 +251,28 @@ import angular from 'angular';
             })
 
             .state('app.zones', {
-                url: 'zones?siteType&siteFront&siteId',
+                url: 'zones?siteType&siteFront&siteId&zoom&center_map_lat_lng',
                 component: 'zones'
             })
 
             .state('app.bins', {
-                url: 'bins?size&deleted&page&limit&search',
+                url: 'bins?deactivated&page&limit&search',
                 component: 'bins'
             })
 
             .state('app.bin-details', {
                 url: 'bin-details?id',
                 component: 'binDetails'
+            })
+
+            .state('app.packaging-codes', {
+                url: 'packaging-codes?deactivated&page&limit&search',
+                component: 'packagingCodes'
+            })
+
+            .state('app.packaging-code-details', {
+                url: 'packaging-code-details?id',
+                component: 'packagingCodeDetails'
             })
 
             .state('app.import-export', {
