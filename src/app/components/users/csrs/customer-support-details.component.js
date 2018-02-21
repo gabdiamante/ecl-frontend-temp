@@ -5,13 +5,13 @@ import DUMMY from 'Helpers/dummy';
 (function() {
     'use strict';
 
-    angular.module('app').component('hubSupportDetails', {
-        template: require('./hub-support-details.html'),
-        controller: HubSupportDetailsCtrl,
+    angular.module('app').component('customerSupportDetails', {
+        template: require('./customer-support-details.html'),
+        controller: CustomerSupportDetailsCtrl,
         controllerAs: 'vm'
     });
 
-    HubSupportDetailsCtrl.$inject = [
+    CustomerSupportDetailsCtrl.$inject = [
         '$scope',
         '$state',
         '$filter',
@@ -21,7 +21,7 @@ import DUMMY from 'Helpers/dummy';
         'logger'
     ];
 
-    function HubSupportDetailsCtrl(
+    function CustomerSupportDetailsCtrl(
         $scope,
         $state,
         $filter,
@@ -30,9 +30,9 @@ import DUMMY from 'Helpers/dummy';
         QueryService,
         logger
     ) {
-        var vm = this;
-        vm.titleHeader = 'Hub Support Details';
-        vm.route_name = 'hub-support';
+        var vm              = this;
+        vm.titleHeader      = 'Customer Support Details';
+        vm.route_name       = 'csr';
 
         vm.handleUpdateItem = handleUpdateItem;
 
@@ -49,7 +49,7 @@ import DUMMY from 'Helpers/dummy';
                 body: false,
                 params: false,
                 hasFile: false,
-                route: { site: site_id, 'hub-support':hs_id }, 
+                route: { site: site_id, csr:hs_id }, 
                 cache: false
             };
 
@@ -68,17 +68,17 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function handleUpdateItem(data) {
-            var modal = { header: 'Update Hub Support' };
+            var modal = { header: 'Update Customer Support' };
             var request = {
                 method: 'PUT', 
                 body: data,
                 params: false,
                 hasFile: false,
-                route: { site: data.site_id, 'hub-support':data.user_id },
+                route: { site: data.site_id, 'csr':data.user_id },
                 cache: false
             };
 
-            ModalService.form_modal(request, modal, 'hubSupportForm').then(
+            ModalService.form_modal(request, modal, 'customerSupportForm').then(
                 function(response) {
                     if (response) 
                         vm.data = response; 

@@ -102,7 +102,7 @@ import MESSAGE from 'Helpers/message';
                         vm.modalInstance.close(data);
                     },
                     function(err) {
-                        logger.error(MESSAGE.loggerSuccess('Courier', Request.method));
+                        logger.error(MESSAGE.loggerFailed('Courier', Request.method));
                     }
                 )
                 .finally(function() {

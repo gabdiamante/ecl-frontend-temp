@@ -178,6 +178,7 @@ import CONSTANTS from 'Helpers/constants';
                 .query(request)
                 .then(
                     function(response) { 
+                        console.log(response);
                         vm.option_table.data = handleNames(response.data.data.items); 
                         vm.pagination.total = response.data.data.total;
                         vm.pagination.page  = $stateParams.page || '1';
@@ -199,7 +200,7 @@ import CONSTANTS from 'Helpers/constants';
                 body: data,
                 params: false,
                 hasFile: false,
-                route: { user: data.user_id },
+                route: { site:data.site_id, courier:data.user_id },
                 cache_string: 'user'
             };
             

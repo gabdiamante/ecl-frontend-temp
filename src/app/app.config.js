@@ -204,6 +204,16 @@ import angular from 'angular';
                 component: 'hubSupportDetails'
             })
 
+            .state('app.customer-supports', {
+                url: 'customer-supports?page&limit&view',
+                component: 'customerSupports'
+            })
+
+            .state('app.customer-support-details', {
+                url: 'customer-support-details?&user_id&site_id',
+                component: 'customerSupportDetails'
+            })
+
             .state('app.merchants', {
                 url: 'merchants',
                 component: 'merchants'
