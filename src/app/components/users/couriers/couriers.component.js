@@ -55,13 +55,13 @@ import CONSTANTS from 'Helpers/constants';
             defaultPagination   : true, 
             hideSearchByKey     : true, 
             searchTemplate      : true, 
-            tableDeactivate     : true
+            tableDeactivate     : true 
         };
 
-        vm.option_table.columnDefs = TABLES.couriers.columnDefs;
-        vm.option_table.data    = [];
-        vm.sites                = [];
-        vm.zones                = [];
+        vm.option_table.columnDefs  = TABLES.couriers.columnDefs;
+        vm.option_table.data        = [];
+        vm.sites                    = [];
+        vm.zones                    = [];
 
         vm.goTo                 = goTo; 
         vm.changeListView       = changeListView; 
@@ -70,7 +70,7 @@ import CONSTANTS from 'Helpers/constants';
         vm.updateCourier        = updateCourier;
         vm.selectSiteType       = selectSiteType;
 
-        init();
+        init ();
 
         function init () {
             getCouriers();  
@@ -78,7 +78,7 @@ import CONSTANTS from 'Helpers/constants';
             getZones();
         }
 
-        function getSites(site_type) {
+        function getSites (site_type) {
             var request = {
                 method: 'GET',
                 body: false,
@@ -107,7 +107,7 @@ import CONSTANTS from 'Helpers/constants';
                 );
         }
         
-        function getZones(key, update_view_center_latlng) { 
+        function getZones (key, update_view_center_latlng) { 
             var request = {
                 method: 'GET',
                 body: false, 
@@ -158,7 +158,7 @@ import CONSTANTS from 'Helpers/constants';
                 }); 
         }
 
-        function getCouriers() {
+        function getCouriers () {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -178,11 +178,10 @@ import CONSTANTS from 'Helpers/constants';
                 .query(request)
                 .then(
                     function(response) { 
-                        console.log(response);
                         vm.option_table.data = handleNames(response.data.data.items); 
-                        vm.pagination.total = response.data.data.total;
-                        vm.pagination.page  = $stateParams.page || '1';
-                        vm.pagination.limit = $stateParams.limit || '10';
+                        vm.pagination.total  = response.data.data.total;
+                        vm.pagination.page   = $stateParams.page || '1';
+                        vm.pagination.limit  = $stateParams.limit || '10';
                     },
                     function(err) {
                         logger.error(MESSAGE.error, err, '');
@@ -193,7 +192,7 @@ import CONSTANTS from 'Helpers/constants';
                 });
         }
 
-        function updateCourier(data) {
+        function updateCourier (data) {
             var modal = { header: 'Update '+vm.title };
             var request = {
                 method: 'PUT',
@@ -221,7 +220,7 @@ import CONSTANTS from 'Helpers/constants';
             var content = {
                 header: action+' '+vm.title,
                 message: MESSAGE.confirmMsg(action, vm.title.toLowerCase()),
-                prop: data.first_name+' '+data.last_name
+                prop: data.first_name+' '+(data.middle_name+' '||'')+data.last_name
             };
 
             ModalService
@@ -229,12 +228,7 @@ import CONSTANTS from 'Helpers/constants';
                 .then(
                     function (response) {
                         if (!response) return; 
-                        data.is_active = (action=='reactivate') ? 1 : (action=='deactivate') ? 0 : 0;
-                        vm.option_table.data.splice(
-                            vm.option_table.data.indexOf(
-                                $filter('filter')(vm.option_table.data, { id:data.id })[0]
-                            ), 1);
-                        // activateDeactivateCourier(data);
+                        activateDeactivateCourier(data, action);
                     },
                     function (err) {
                         console.log(err);
@@ -242,14 +236,13 @@ import CONSTANTS from 'Helpers/constants';
                 );
         }
 
-        function activateDeactivateCourier (data) {
+        function activateDeactivateCourier (data, action) {
             var request = {
                 method: 'PUT',
-                body: false,
+                body: {},
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: item.id, deactivate: '' },
-                cache: false
+                route: { site:data.site_id, courier:data.user_id, [action]:'' } 
             };
 
             QueryService
@@ -258,7 +251,7 @@ import CONSTANTS from 'Helpers/constants';
                     function (response) {
                         vm.option_table.data.splice(
                             vm.option_table.data.indexOf(
-                                $filter('filter')(vm.option_table.data, { id:data.id })[0]
+                                $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
                             ), 1);
                     },
                     function (err) {
@@ -279,13 +272,13 @@ import CONSTANTS from 'Helpers/constants';
             getSites(site_type);
         }
 
-        function handleNames(data) {
+        function handleNames (data) {
             for (let i = 0; i < data.length; i++)
                 data[i].fullname = data[i].first_name+' '+((data[i].middle_name+' ')||'')+data[i].last_name;
             return data;
         }
 
-        function goTo(data) {
+        function goTo (data) {
             $state.go($state.current.name, data);
         } 
 
