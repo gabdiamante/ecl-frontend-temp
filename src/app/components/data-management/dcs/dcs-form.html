@@ -23,13 +23,13 @@
             </div>
             <div class="form-group">
                 <label for="zone_name" class="control-label small text-theme">Hub:</label>
-                <select class="form-control" ng-options="item.id as item.code for item in vm.hubs" ng-model="vm.data.hub_id" name="hub_id" required>
+                <select class="form-control" ng-options="item.id as item.code for item in vm.hubs" ng-model="vm.data.hub_id" name="hub_id" ng-required="true">
 				</select>
                 <span class="text-red font-10" ng-show="nameForm.hub_id.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group">
                 <label for="zone_name" class="control-label small text-theme">Zones:</label>
-                <select class="form-control" ng-options="item.id as item.code for item in vm.zones" ng-model="vm.data.zone_id" name="zone_id" required>
+                <select class="form-control" ng-options="item.id as item.code for item in vm.zones" ng-model="vm.data.zone_id" name="zone_id" >
                 </select>
                 <span class="text-red font-10" ng-show="nameForm.zone_id.$invalid && vm.submitted">*Required</span>
             </div>

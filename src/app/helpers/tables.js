@@ -220,6 +220,28 @@ const TABLES = {
             }
         ]
     },
+    packaging_codes: {
+        columnDefs: [
+            {
+                name: 'code',
+                cellTemplate: `<a ui-sref="app.packaging-code-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'name' },
+            { name: 'volume' },
+            { name: 'weight' },
+            { name: 'dimension' },
+            {
+                name: 'updated',
+                displayName: 'Date',
+                cellTemplate: `{{ COL_FIELD | date:short}}`
+            },
+            {
+                name: 'action',
+                displayName: ' ',
+                cellTemplate: `<div ng-include="'template-data-management-packaging-code-action'"></div>`
+            }
+        ]
+    },
     //
     courier_deliveries: {
         columnDefs: [

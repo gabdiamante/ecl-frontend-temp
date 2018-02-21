@@ -49,7 +49,6 @@ var jsts = require('jsts');
         var httpCache = $cacheFactory.get('$http');
 
         vm.user = GLOBAL.user($cookies, $state);
-
         //vm.center_map_lat_lng = GLOBAL.map_default_position[0] + ',' + GLOBAL.map_default_position[1];
         vm.center_map_lat_lng =
             $stateParams.center_map_lat_lng || '14.599512, 120.984222';
@@ -265,7 +264,6 @@ var jsts = require('jsts');
                 .then(
                     function(response) {
                         getMap();
-
                         var zones = response.data.data.items || [];
 
                         vm.zones = $filter('orderBy')(
@@ -453,7 +451,9 @@ var jsts = require('jsts');
                     if (res) {
                         vm.intersect_count++;
                         logger.info(
-                            'Zone overlaps with other existing zone. Please remove overlap to continue.'
+                            'Zone overlaps with other existing zone at ' +
+                                vm.zones[vm.shapeIndex].type +
+                                '. Please remove overlap to continue.'
                         );
                     }
                 });

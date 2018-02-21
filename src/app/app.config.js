@@ -265,6 +265,16 @@ import angular from 'angular';
                 component: 'binDetails'
             })
 
+            .state('app.packaging-codes', {
+                url: 'packaging-codes?deactivated&page&limit&search',
+                component: 'packagingCodes'
+            })
+
+            .state('app.packaging-code-details', {
+                url: 'packaging-code-details?id',
+                component: 'packagingCodeDetails'
+            })
+
             .state('app.import-export', {
                 url: 'import-export',
                 component: 'importExport'
