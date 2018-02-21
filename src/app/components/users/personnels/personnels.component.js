@@ -94,9 +94,6 @@ import MESSAGE from 'Helpers/message';
                     function(response) {
                         console.log('personnel', response);
                         vm.option_table.data = response.data.data.items;
-                        vm.option_table.data = handleNames(
-                            vm.option_table.data
-                        );
                         vm.pagination.total = response.data.data.total;
                         vm.pagination.page = $stateParams.page || '1';
                         vm.pagination.limit = $stateParams.limit || '10';
