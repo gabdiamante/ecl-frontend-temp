@@ -48,7 +48,7 @@
         <a id="btn-append-to-body" type="button" class="text-grey btn btn-trans pd-0-10" uib-dropdown-toggle>
             <i class="fa fa-ellipsis-v"></i>
         </a>
-        <ul ng-if="!vm.deleted" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+        <ul ng-if="!vm.deactivated" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
             <li role="menuitem">
                 <a ui-sref="app.courier-details({ user_id: row.entity.user_id, site_id:row.entity.site_id })">
                     <i class="fa fa-info-circle"></i> &nbsp; Details
@@ -67,7 +67,7 @@
                 </a>
             </li> 
         </ul>
-        <ul ng-if="vm.deleted" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
+        <ul ng-if="vm.deactivated" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
             <li role="menuitem">
                 <a ng-click="vm.handleHSActivation(row.entity, 'reactivate')">
                     <i class="fa fa-edit"></i>

@@ -149,10 +149,9 @@ import CONSTANTS from 'Helpers/constants';
             ModalService
                 .form_modal(request, modal, 'courierForm', 'md', '')
                 .then(function(response) { 
-                    if (response) {
-                        vm.option_table.data.unshift(response); 
-                        vm.option_table.data = handleNames(vm.option_table.data);
-                    }
+                    if (!response) return;
+                    vm.option_table.data.unshift(response); 
+                    vm.option_table.data = handleNames(vm.option_table.data);
                 }, function(error) {
                     console.log(error); 
                 }); 
@@ -170,7 +169,7 @@ import CONSTANTS from 'Helpers/constants';
                 },
                 hasFile: false,
                 route: { [vm.route_name]: '' },
-                cache: true,
+                // cache: true, will be implemented later
                 cache_string: vm.route_name
             };
 
@@ -206,10 +205,9 @@ import CONSTANTS from 'Helpers/constants';
             ModalService
                 .form_modal(request, modal, 'courierForm', 'md', '')
                 .then(function(response) { 
-                    if (response) {
-                        vm.option_table.data[vm.option_table.data.indexOf(data)] = response; 
-                        vm.option_table.data = handleNames(vm.option_table.data);
-                    }
+                    if (!response) return;
+                    vm.option_table.data[vm.option_table.data.indexOf(data)] = response; 
+                    vm.option_table.data = handleNames(vm.option_table.data);
                 }, function(error) {
                     console.log(error);
                     // logger.error(error.data.message);
@@ -248,13 +246,15 @@ import CONSTANTS from 'Helpers/constants';
             QueryService
                 .query(request)
                 .then( 
-                    function (response) {
+                    function (response) { 
+                        logger.success(MESSAGE.loggerSuccess('Courier', '', 'deactivated'));
                         vm.option_table.data.splice(
                             vm.option_table.data.indexOf(
                                 $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
                             ), 1);
                     },
                     function (err) {
+                        logger.error(MESSAGE.loggerFailed('Courier', '', 'deactivate'));
                         console.log(err);
                     }
                 );
