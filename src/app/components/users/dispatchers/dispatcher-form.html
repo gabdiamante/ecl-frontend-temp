@@ -40,16 +40,17 @@
                 </div>
                 <div class="form-group" >
                     <label class="control-label small text-theme" for="password">Password: </label>
-                    <input type="password" ng-model="vm.data.password" class="form-control" placeholder="Password" id="password" name="password" ng-required="true" >
-                    <span class="text-red font-10" ng-show="nameForm.password.$invalid && vm.submitted">*Required</span>
+                    <input type="password" ng-model="vm.data.password" class="form-control" placeholder="Password" id="password" name="password" ng-required="true"
+                            custom-validation-function="vm.passwordValidError(nameForm)" custom-valid-error="true" custom-error-name="passworderror"  >
+                    <span class="text-red font-10" ng-show="nameForm.password.$error.required && vm.submitted">*Required</span>
                 </div>
                 <div class="form-group" >
                     <label class="control-label small text-theme" for="password">Confirm Password: </label>
                     <input type="password" ng-model="vm.confirm_password" class="form-control" placeholder="Confirm Password" id="confirm_password" name="confirm_password" ng-required="true"
-                                custom-validation-function="vm.passwordValidError()" custom-valid-error="true"
+                                custom-validation-function="vm.passwordValidError(nameForm)" custom-valid-error="true" custom-error-name="passworderror"
                     >
                     <span class="text-red font-10" ng-if="nameForm.confirm_password.$error.required && vm.submitted">*Required</span> <br />
-                    <span class="text-red font-10" ng-if="vm.data.password!= vm.confirm_password && vm.submitted"> Password do not matched! </span>
+                    <span class="text-red font-10" ng-if="nameForm.$error.passworderror[0].$invalid && vm.submitted"> Password do not matched! </span>
                 </div>
             </div>
             <div class="form-group">
@@ -59,12 +60,9 @@
             </div>
             <div class="form-group">
                 <label class="control-label small text-theme" for="contact_number">Contact Number:</label>
-                <input type="text" name="contact_number" id="contact_number"  placeholder=" " class="form-control" required="" ng-model="vm.data.contact_number" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_"	required/>
+                <input type="text" name="contact_number" id="contact_number"  placeholder=" " class="form-control"  ng-model="vm.data.contact_number" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_" />
                 <span class="small">(+63) 921-123-4567</span>
-                <span class="text-red small" ng-show="courierForm.contact_number.$invalid && vm.submitted">* Required</span>
             </div>
-             
-            
         </div>
         <div class="text-center top-margin-sm clearfix">
             <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>

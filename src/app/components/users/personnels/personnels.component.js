@@ -125,7 +125,7 @@ import MESSAGE from 'Helpers/message';
             ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
-                        response.updatedAt = new Date();
+                        response.updated = new Date();
                         vm.option_table.data.unshift(response);
                     }
                 },
@@ -139,7 +139,8 @@ import MESSAGE from 'Helpers/message';
             var modal = {
                 title: vm.title,
                 titleHeader: 'Edit ' + vm.title,
-                method: 'edit'
+                method: 'edit',
+                route_name: vm.route_name
             };
 
             var request = {

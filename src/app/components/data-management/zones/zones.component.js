@@ -154,10 +154,11 @@ var jsts = require('jsts');
         }
 
         function getTypes() {
-            vm.site_types = CONSTANTS.site_types;
-            // vm.site_types.unshift({ name: 'ALL' });
-            //vm.site_type = vm.site_type || vm.site_types[0];
-            checkSiteType(vm.siteType || 'HUB', vm.site_types);
+            vm.site_types = [];
+            vm.site_types = angular.copy(CONSTANTS.site_types);
+            vm.site_types.unshift({ name: 'HUB w/ DC' });
+            vm.site_type = vm.site_type || vm.site_types[0];
+            checkSiteType(vm.siteType, vm.site_types);
         }
 
         function getSiteFront() {
@@ -342,6 +343,7 @@ var jsts = require('jsts');
         }
 
         function overlayClickListener(overlay, method) {
+            delete vm.zones[vm.shapeIndex].general_overlap;
             if (!method) return;
 
             google.maps.event.addListener(overlay, 'mouseup', function(event) {
@@ -365,6 +367,7 @@ var jsts = require('jsts');
         }
 
         function onMapOverlayCompleted(e, method) {
+            delete vm.zones[vm.shapeIndex].general_overlap;
             overlayClickListener(e.overlay, method);
 
             for (var key in vm.geofenceMap.shapes) {
@@ -439,38 +442,48 @@ var jsts = require('jsts');
             vm.zones[vm.shapeIndex] = vm.zones[vm.shapeIndex] || {};
             vm.zones[key] = vm.zones[key] || {};
 
-            if (
-                shape.overlay !== vm.geofenceMap.shapes[key] &&
-                vm.zones[vm.shapeIndex].type == vm.zones[key].type &&
-                typeof vm.zones[vm.shapeIndex].type != 'undefined' &&
-                typeof vm.zones[key].type != 'undefined' &&
-                vm.zones[vm.shapeIndex].type != null &&
-                vm.zones[key].type != null
-            ) {
-                detectOverlap(wkt[0], wkt[1], function(res) {
+            if (shape.overlay !== vm.geofenceMap.shapes[key]) {
+                detectOverlap(wkt[0], wkt[1], true, function(res) {
                     if (res) {
-                        vm.intersect_count++;
-                        logger.info(
-                            'Zone overlaps with other existing zone at ' +
-                                vm.zones[vm.shapeIndex].type +
-                                '. Please remove overlap to continue.'
-                        );
+                        vm.zones[vm.shapeIndex].general_overlap = true;
                     }
                 });
+
+                if (
+                    vm.zones[vm.shapeIndex].type == vm.zones[key].type &&
+                    typeof vm.zones[vm.shapeIndex].type != 'undefined' &&
+                    typeof vm.zones[key].type != 'undefined' &&
+                    vm.zones[vm.shapeIndex].type != null &&
+                    vm.zones[key].type != null
+                ) {
+                    detectOverlap(wkt[0], wkt[1], false, function(res) {
+                        if (res) {
+                            vm.intersect_count++;
+                            logger.info(
+                                'Zone overlaps with other existing zone at ' +
+                                    vm.zones[vm.shapeIndex].type +
+                                    '. Please remove overlap to continue.'
+                            );
+                        }
+                    });
+                }
+            } else {
+                vm.zones[vm.shapeIndex].general_overlap =
+                    vm.zones[vm.shapeIndex].general_overlap || false;
             }
         }
 
-        function detectOverlap(wkt1, wkt2, callback) {
+        function detectOverlap(wkt1, wkt2, modalExecuteCond, callback) {
             var wktReader = new jsts.io.WKTReader();
             var geom1 = wktReader.read(wkt1);
             var geom2 = wktReader.read(wkt2);
 
             if (geom2.intersects(geom1)) {
                 callback(true);
-                vm.showModal = false;
+                if (!modalExecuteCond) vm.showModal = false;
             } else {
                 callback(false);
-                vm.showModal = true;
+                if (!modalExecuteCond) vm.showModal = true;
             }
         }
 
@@ -515,6 +528,7 @@ var jsts = require('jsts');
         }
 
         function onMouseUp(e, shape, index) {
+            delete vm.zones[index].general_overlap;
             if (typeof vm.shapeIndex != 'undefined' && shape.editable) {
                 console.log(index, 'index');
                 var data = angular.copy(vm.updated_shape);
@@ -604,7 +618,7 @@ var jsts = require('jsts');
             var modal = {
                 titleHeader: 'Update ' + vm.title,
                 title: vm.title,
-                site_type: vm.site_front.code || vm.site_type.code
+                site_type: vm.site_front.code || vm.site_type.code || 'HUB'
             };
 
             var request = {

@@ -43,6 +43,7 @@ import CONSTANTS from 'Helpers/constants';
         vm.save = save;
         vm.cancel = cancel;
         vm.changeSiteType = changeSiteType;
+        vm.passwordValidError = passwordValidError;
 
         vm.$onInit = function() {
             vm.Request = vm.resolve.Request;
@@ -50,6 +51,7 @@ import CONSTANTS from 'Helpers/constants';
 
             vm.titleHeader = vm.Modal.titleHeader;
             vm.data = angular.copy(vm.Request.body);
+            vm.site_type = angular.copy(vm.data.site_type);
             vm.storeData = [];
 
             getSiteTypes();
@@ -110,12 +112,16 @@ import CONSTANTS from 'Helpers/constants';
                     .then(
                         function(response) {
                             var response_data =
-                                response.data.data.items[0] || {};
+                                response.data.data.details || {};
                             logger.success(vm.Modal.title + ' added.');
                             close(response_data, action);
                         },
                         function(error) {
-                            logger.error(error.data.message);
+                            logger.error(
+                                error.data.errors[0].message,
+                                {},
+                                error.data.errors[0].code
+                            );
                         }
                     )
                     .finally(function() {
@@ -123,18 +129,24 @@ import CONSTANTS from 'Helpers/constants';
                         vm.disable = false;
                     });
             } else if (vm.Modal.method == 'edit') {
-                console.log(vm.Request);
-
+                vm.Request.route = {
+                    site: vm.data.site_id,
+                    [vm.Modal.route_name]: vm.data.user_id
+                };
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
                             var response_data =
-                                response.data.data.items[0] || {};
+                                response.data.data.details || {};
                             logger.success(vm.Modal.title + ' updated.');
-                            close(response_data, action);
+                            close(vm.Request.body, action);
                         },
-                        function(err) {
-                            logger.error(error.data.message);
+                        function(error) {
+                            logger.error(
+                                error.data.errors[0].message,
+                                {},
+                                error.data.errors[0].code
+                            );
                         }
                     )
                     .finally(function() {
@@ -155,6 +167,11 @@ import CONSTANTS from 'Helpers/constants';
 
         function cancel(data) {
             vm.modalInstance.close();
+        }
+
+        //validation function
+        function passwordValidError() {
+            return vm.data.password != vm.confirm_password;
         }
     }
 })();

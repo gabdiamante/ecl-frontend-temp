@@ -24,7 +24,7 @@
             </div>
             <div class="form-group" >
                 <label class="control-label small text-theme" for="middle_name">Middle Name: </label>
-                <input type="text" ng-model="vm.data.middle_name" class="form-control" placeholder="Middle Name" id="middle_name" name="middle_name" ng-required="true" >
+                <input type="text" ng-model="vm.data.middle_name" class="form-control" placeholder="Middle Name" id="middle_name" name="middle_name"  >
                 <span class="text-red font-10" ng-show="nameForm.middle_name.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group" >
@@ -32,10 +32,25 @@
                 <input type="text" ng-model="vm.data.last_name" class="form-control" placeholder="Plate Number" id="last_name" name="last_name" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.last_name.$invalid && vm.submitted">*Required</span>
             </div>
-            <div class="form-group" ng-if="vm.Modal.method == 'add'">
-                <label class="control-label small text-theme" for="user_name">User Name: </label>
-                <input type="text" ng-model="vm.data.user_name" class="form-control" placeholder="User Name" id="user_name" name="last_name" ng-required="true" >
-                <span class="text-red font-10" ng-show="nameForm.user_name.$invalid && vm.submitted">*Required</span>
+            <div ng-if="vm.Modal.method == 'add'">
+                <div class="form-group" >
+                    <label class="control-label small text-theme" for="username">User Name: </label>
+                    <input type="text" ng-model="vm.data.username" class="form-control" placeholder="User Name" id="username" name="username" ng-required="true" >
+                    <span class="text-red font-10" ng-show="nameForm.username.$invalid && vm.submitted">*Required</span>
+                </div>
+                <div class="form-group" >
+                    <label class="control-label small text-theme" for="password">Password: </label>
+                    <input type="password" ng-model="vm.data.password" class="form-control" placeholder="Password" id="password" name="password" ng-required="true" >
+                    <span class="text-red font-10" ng-show="nameForm.password.$invalid && vm.submitted">*Required</span>
+                </div>
+                <div class="form-group" >
+                    <label class="control-label small text-theme" for="password">Confirm Password: </label>
+                    <input type="password" ng-model="vm.confirm_password" class="form-control" placeholder="Confirm Password" id="confirm_password" name="confirm_password" ng-required="true"
+                                custom-validation-function="vm.passwordValidError()"  
+                    >
+                    <span class="text-red font-10" ng-if="nameForm.confirm_password.$error.required && vm.submitted">*Required</span> <br />
+                    <span class="text-red font-10" ng-if="vm.data.password!= vm.confirm_password && vm.submitted"> Password do not matched! </span>
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label small text-theme" for="email">Email:</label>
@@ -44,7 +59,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label small text-theme" for="contact_number">Contact Number:</label>
-                <input type="text" name="contact_number" id="contact_number"  placeholder=" " class="form-control" required="" ng-model="vm.data.contact_number" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_"	required/>
+                <input type="text" name="contact_number" id="contact_number"  placeholder=" " class="form-control" ng-model="vm.data.contact_number" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_"	/>
                 <span class="small">(+63) 921-123-4567</span>
                 <span class="text-red small" ng-show="courierForm.contact_number.$invalid && vm.submitted">* Required</span>
             </div>
