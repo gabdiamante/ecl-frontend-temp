@@ -215,11 +215,7 @@ import CONSTANTS from 'Helpers/constants';
                     console.log(error);
                     // logger.error(error.data.message);
                 });
-        }
-
-        function handleCreateCourier () {
-            
-        }
+        } 
 
         function handleHSActivation (data, action) {
             var content = {

@@ -180,7 +180,7 @@ import angular from 'angular';
             })
 
             .state('app.courier-details', {
-                url: 'courier-details?id',
+                url: 'courier-details?user_id&site_id',
                 component: 'courierDetails'
             })
 

@@ -57,9 +57,10 @@ import DUMMY from 'Helpers/dummy';
                 .then(
                     function(response) { 
                         vm.data = response.data.data;
+                        vm.data.fullname = ((vm.data.last_name) ? vm.data.last_name + ', ' : '') + vm.data.first_name + ' ' + vm.data.middle_name;
                     },
                     function(err) {
-                        vm.data = {};
+                        console.log(err);
                     }
                 )
                 .finally(function() {
@@ -81,7 +82,8 @@ import DUMMY from 'Helpers/dummy';
             ModalService.form_modal(request, modal, 'customerSupportForm').then(
                 function(response) {
                     if (response) 
-                        vm.data = response; 
+                        vm.data = response;
+                        vm.data.fullname = ((vm.data.last_name) ? vm.data.last_name + ', ' : '') + vm.data.first_name + ' ' + vm.data.middle_name; 
                 },
                 function(error) {
                     logger.error(

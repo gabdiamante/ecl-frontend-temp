@@ -24,7 +24,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.courier-details({ id:row.entity.user_id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.courier-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             {

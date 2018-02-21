@@ -56,7 +56,9 @@ import DUMMY from 'Helpers/dummy';
             QueryService.query(request)
                 .then(
                     function(response) { 
+                        console.log(response);
                         vm.data = response.data.data;
+                        vm.data.fullname = ((vm.data.last_name) ? vm.data.last_name + ', ' : '') + vm.data.first_name + ' ' + vm.data.middle_name;
                     },
                     function(err) {
                         vm.data = {};
@@ -80,8 +82,10 @@ import DUMMY from 'Helpers/dummy';
 
             ModalService.form_modal(request, modal, 'hubSupportForm').then(
                 function(response) {
-                    if (response) 
+                    if (response) {
                         vm.data = response; 
+                        vm.data.fullname = ((vm.data.last_name) ? vm.data.last_name + ', ' : '') + vm.data.first_name + ' ' + vm.data.middle_name;
+                    }
                 },
                 function(error) {
                     logger.error(

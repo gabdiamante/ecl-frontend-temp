@@ -33,71 +33,67 @@ import { GoogleCharts } from 'google-charts';
         QueryService,
         logger
     ) {
-        var vm = this;
-        vm.titleHeader = 'Courier Details';
-        vm.route_name = 'user';
-        vm.courier_id = $stateParams.id;
-        vm.per_page = ['10', '20', '50', '100', '200'];
-        vm.loading = false;
+        var vm                  = this;
+        vm.titleHeader          = 'Courier Details';
+        vm.route_name           = 'couriers';
+        vm.courier_id           = $stateParams.id;
+        vm.per_page             = ['10', '20', '50', '100', '200'];
+        vm.loading              = false;
 
-        vm.pagination = {};
+        vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
-        vm.pagination.limit = $stateParams.limit || '10';
+        vm.pagination.limit     = $stateParams.limit || '10';
 
-        vm.option_table = {
-            emptyColumn: true,
-            defaultPagination: true,
-            hideSearchByKey: true,
-            searchTemplate: true,
-            tableSearch: true
+        vm.option_table         = {
+            emptyColumn         : true,
+            defaultPagination   : true,
+            hideSearchByKey     : true,
+            searchTemplate      : true,
+            tableSearch         : true
         };
 
-        vm.delivery_data = [
+        vm.delivery_data        = [
             ['Delivery', 'Percentage'],
             ['No Attempt', 60],
             ['Unsuccessful', 22],
             ['Successful', 18]
         ];
-        vm.pickup_data = [
+        vm.pickup_data          = [
             ['Pickup', 'Percentage'],
             ['No Attempt', 48],
             ['Unsuccessful', 22],
             ['Successful', 30]
         ];
 
-        vm.courier_deliveries = DUMMY.users.courier_deliveries;
-        vm.courier_pickups = DUMMY.users.courier_pickups;
-        vm.option_table.columnDefs = TABLES.courier_deliveries.columnDefs;
-        vm.option_table.data = vm.courier_deliveries;
+        vm.courier_deliveries       = DUMMY.users.courier_deliveries;
+        vm.courier_pickups          = DUMMY.users.courier_pickups;
+        vm.option_table.columnDefs  = TABLES.courier_deliveries.columnDefs;
+        vm.option_table.data        = vm.courier_deliveries;
 
-        vm.selectTab = selectTab;
-        vm.getCourier = getCourier;
-        vm.updateCourier = updateCourier;
+        vm.selectTab            = selectTab;
+        vm.getCourier           = getCourier;
+        vm.updateCourier        = updateCourier;
 
         GoogleCharts.load(drawCharts);
 
         init();
 
-        function init() {
-            // vm.courier = $filter('filter')(DUMMY.users.couriers, {
-            //     id: $stateParams.id
-            // })[0];
-            // console.log(vm.courier);
-            getCourier(vm.courier_id);
+        function init() { 
+            getCourier($stateParams.site_id, $stateParams.user_id);
         }
 
         function selectTab(str) {
             getCourier(str);
         }
 
-        function getCourier(courier_id) {
+        function getCourier(site_id, user_id) {
             vm.loading = true;
             var request = {
                 method: 'GET',
                 body: false,
                 params: {},
                 hasFile: false,
-                route: { [vm.route_name]: courier_id },
+                route: { site:site_id, courier:user_id }, 
                 cache: true,
                 cache_string: vm.route_name
             };
@@ -106,7 +102,7 @@ import { GoogleCharts } from 'google-charts';
                 .then(
                     function(response) {
                         vm.courier = response.data.data;
-                        console.log(vm.courier);
+                        vm.courier.fullname = ((vm.courier.last_name) ? vm.courier.last_name + ', ' : '') + vm.courier.first_name + ' ' + vm.courier.middle_name;
                     },
                     function(err) {
                         logger.error(MESSAGE.error, err, '');
@@ -124,7 +120,7 @@ import { GoogleCharts } from 'google-charts';
                 body: data,
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: data.user_id },
+                route: { site:data.site_id, courier:data.user_id },
                 cache_string: vm.route_name
             };
 
@@ -138,6 +134,7 @@ import { GoogleCharts } from 'google-charts';
                 function(response) {
                     if (response) {
                         vm.courier = response;
+                        vm.courier.fullname = ((vm.courier.last_name) ? vm.courier.last_name + ', ' : '') + vm.courier.first_name + ' ' + vm.courier.middle_name;
                     }
                 },
                 function(error) {
