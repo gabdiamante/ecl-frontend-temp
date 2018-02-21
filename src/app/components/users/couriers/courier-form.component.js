@@ -51,7 +51,7 @@ import MESSAGE from 'Helpers/message';
             Request         = vm.resolve.Request;
             vm.titleHeader  = Modal.header;
             vm.data         = angular.copy(Request.body);
-            vm.method       = angular.copy(Request.method);
+            vm.method       = angular.copy(Request.method); 
         };
 
         vm.save             = save;
@@ -82,7 +82,6 @@ import MESSAGE from 'Helpers/message';
                 .query(request)
                 .then(
                     function(response) { 
-                        console.log(response);
                         vm.sites = response.data.data.items; 
                     },
                     function(error) {
@@ -93,18 +92,17 @@ import MESSAGE from 'Helpers/message';
         }
 
         function save(data) { 
-            Request.body = data;
-            console.log(data);
+            Request.body = data; 
             vm.disable = true; 
             QueryService
                 .query(Request)
                 .then(
                     function(response) { 
-                        console.log(response);
+                        logger.success(MESSAGE.loggerSuccess('Courier', Request.method));
                         vm.modalInstance.close(data);
                     },
                     function(err) {
-                        console.log(err); 
+                        logger.error(MESSAGE.loggerSuccess('Courier', Request.method));
                     }
                 )
                 .finally(function() {

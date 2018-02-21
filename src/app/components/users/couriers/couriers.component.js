@@ -42,6 +42,7 @@ import CONSTANTS from 'Helpers/constants';
         vm.items                = { roleUserCheck: [] };
         vm.params               = angular.copy($stateParams);
         vm.deactivated          = ($stateParams.deactivated == 'true') ? 1 : 0;
+        vm.activated            = +!vm.deactivated;
         vm.site_types           = CONSTANTS.site_types;
         vm.site_type            = $stateParams.site_type || vm.site_types[0].code;
         vm.loading              = false;
@@ -154,21 +155,7 @@ import CONSTANTS from 'Helpers/constants';
                     }
                 }, function(error) {
                     console.log(error); 
-                });
-
-            // QueryService.query(request)
-            //     .then(
-            //         function(response) { 
-            //             console.log(response);
-            //             vm.option_table.data = handleNames(response.data.data.items); 
-            //         },
-            //         function(err) {
-            //             logger.error(MESSAGE.error, err, '');
-            //         }
-            //     )
-            //     .finally(function() {
-            //         vm.loading = false;
-            //     });
+                }); 
         }
 
         function getCouriers() {
@@ -179,7 +166,7 @@ import CONSTANTS from 'Helpers/constants';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
-                    is_active:vm.deactivated
+                    is_active:vm.activated
                 },
                 hasFile: false,
                 route: { [vm.route_name]: '' },

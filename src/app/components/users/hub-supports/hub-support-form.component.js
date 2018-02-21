@@ -38,38 +38,40 @@ import MESSAGE from 'Helpers/message';
         ModalService,
         logger
     ) {
-        var vm = this;
-        var Modal = null;
-        var Request = null;
-        vm.user = {};
+        var vm              = this;
+        var Modal           = null;
+        var Request         = null;
+        vm.user             = {};
         vm.selected_accoutn = '';
-        vm.submitted = false;
-        vm.route_name = 'site';
+        vm.submitted        = false;
+        vm.route_name       = 'site';
+        vm.hubs             = [];
 
         vm.$onInit = function() {
-            Modal = vm.resolve.Modal;
-            Request = vm.resolve.Request;
-            vm.titleHeader = Modal.header;
-            vm.data = angular.copy(Request.body);
+            Modal           = vm.resolve.Modal;
+            Request         = vm.resolve.Request;
+            vm.titleHeader  = Modal.header;
+            vm.data         = angular.copy(Request.body) || {};
+            vm.method       = angular.copy(Request.method);
         };
 
-        vm.save = save;
-        vm.cancel = cancel;
+        vm.save             = save;
+        vm.cancel           = cancel;
 
         init();
 
         function init() {
-            getData();
+            getHubs();
         }
 
-        function getData() {
+        function getHubs() {
             vm.loading = true;
             var request = {
                 method: 'GET',
                 body: false,
                 params: {
                     limit: '99999',
-                    page: '1',
+                    page: '1', 
                     type: 'HUB',
                     is_active: vm.deleted == 'true' ? 0 : 1
                 },
@@ -82,12 +84,11 @@ import MESSAGE from 'Helpers/message';
             QueryService.query(request)
                 .then(
                     function(response) {
-                        vm.hubs = response.data.data.items;
-                        vm.data.hub_id = vm.hubs[0].id; // temporary
+                        vm.hubs = response.data.data.items; 
+                        vm.data.site_id = (vm.method=='POST') ? vm.hubs[0].id : vm.data.site_id;
                     },
                     function(err) {
-                        console.log(err);
-                        //logger.error(MESSAGE.error, err, '');
+                        console.log(err); 
                     }
                 )
                 .finally(function() {
@@ -102,6 +103,7 @@ import MESSAGE from 'Helpers/message';
                 .then(
                     function(response) {
                         console.log(response);
+
                         vm.modalInstance.close(data);
                     },
                     function(err) {

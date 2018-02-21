@@ -12,11 +12,6 @@
                     <select class="form-control text-uppercase" id="site" name="site" ng-model="vm.data.site_id" ng-options="site.id as site.name for site in vm.sites" ></select>
                     <span class="text-red small" ng-show="courierForm.site.$invalid && vm.submitted">* Required</span>
                 </div>
-                <div class="col-md-12" ng-if="vm.method=='POST'">
-                    <input  class="form-control" type="text" name="username" placeholder="" ng-model="vm.data.username" required="" />
-                    <label class="md-label">Username</label>
-                    <span class="text-red small" ng-show="courierForm.username.$invalid && vm.submitted">* Required</span>
-                </div>
                 <div class="col-md-12">
                     <input  class="form-control" type="text" placeholder="" ng-model="vm.data.first_name" name="first_name" required="" />
                     <label class="md-label">First Name </label>
@@ -30,6 +25,11 @@
                     <input  class="form-control" type="text" placeholder="" ng-model="vm.data.last_name" name="last_name" required="" />
                     <label class="md-label">Last Name </label>
                     <span class="text-red small" ng-show="courierForm.last_name.$invalid && vm.submitted">* Required</span>
+                </div>
+                <div class="col-md-12" ng-if="vm.method=='POST'">
+                    <input  class="form-control" type="text" name="username" placeholder="" ng-model="vm.data.username" required="" />
+                    <label class="md-label">Username</label>
+                    <span class="text-red small" ng-show="courierForm.username.$invalid && vm.submitted">* Required</span>
                 </div>
                 <div class="col-md-12">
                     <input  class="form-control" type="email" placeholder="" ng-model="vm.data.email" name="email" required="" />
