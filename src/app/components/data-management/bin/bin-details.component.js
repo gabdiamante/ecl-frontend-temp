@@ -34,26 +34,9 @@ import DUMMY from 'Helpers/dummy';
 
         vm.handleUpdateItem = handleUpdateItem;
 
-        //temporary
-        // $scope.$watch(
-        //     'vm.item_details',
-        //     function(new_val, old_val) {
-        //         joinHubs(new_val);
-        //     },
-        //     true
-        // );
-
         vm.$onInit = function() {
             vm.TPLS = 'binFormModal';
-
             getDetails();
-
-            // vm.item_details =
-            //     $filter('filter')(
-            //         DUMMY.vehicles,
-            //         { id: $state.params.id },
-            //         true
-            //     )[0] || {};
         };
 
         function getDetails() {
@@ -73,8 +56,8 @@ import DUMMY from 'Helpers/dummy';
                         console.log('bin response', response);
                         vm.item_details = response.data.data.items[0];
                     },
-                    function(err) {
-                        //logger.error(MESSAGE.error, err, '');
+                    function(error) {
+                        logger.error(error.data.message);
                     }
                 )
                 .finally(function() {
@@ -98,7 +81,7 @@ import DUMMY from 'Helpers/dummy';
                 cache: false
             };
 
-            formModal(request, modal, vm.TPLS).then(
+            ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
                         console.log(response);
@@ -106,23 +89,9 @@ import DUMMY from 'Helpers/dummy';
                     }
                 },
                 function(error) {
-                    logger.error(
-                        error.data.message || catchError(request.route)
-                    );
+                    logger.error(error.data.message);
                 }
             );
         }
-
-        function formModal(request, modal, template, size) {
-            return ModalService.form_modal(request, modal, template, size);
-        }
-
-        // function joinHubs(item) {
-        //     item.hub_name = $filter('filter')(
-        //         DUMMY.sites,
-        //         { id: item.hub_id, type: 'HUB' },
-        //         true
-        //     )[0].name;
-        // }
     }
 })();

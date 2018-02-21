@@ -185,7 +185,7 @@ import angular from 'angular';
             })
 
             .state('app.dispatchers', {
-                url: 'dispatchers?size&deleted&page&limit&search',
+                url: 'dispatchers?deactivated&page&limit&search',
                 component: 'dispatchers'
             })
 
@@ -210,7 +210,7 @@ import angular from 'angular';
             })
 
             .state('app.personnels', {
-                url: 'personnels?size&deleted&page&limit&search',
+                url: 'personnels?deactivated&page&limit&search',
                 component: 'personnels'
             })
 
@@ -221,7 +221,7 @@ import angular from 'angular';
 
             //DATA-MANAGEMENT
             .state('app.hubs', {
-                url: 'hubs?size&deleted&page&limit&search',
+                url: 'hubs?deactivated&page&limit&search',
                 component: 'hubs'
             })
 
@@ -231,7 +231,7 @@ import angular from 'angular';
             })
 
             .state('app.distribution-centers', {
-                url: 'distribution-centers?size&deleted&page&limit&search',
+                url: 'distribution-centers?deactivated&page&limit&search',
                 component: 'dcs'
             })
 
@@ -241,7 +241,7 @@ import angular from 'angular';
             })
 
             .state('app.vehicles', {
-                url: 'vehicles?size&deleted&page&limit&search',
+                url: 'vehicles?deactivated&page&limit&search',
                 component: 'vehicles'
             })
 
@@ -256,7 +256,7 @@ import angular from 'angular';
             })
 
             .state('app.bins', {
-                url: 'bins?size&deleted&page&limit&search',
+                url: 'bins?deactivated&page&limit&search',
                 component: 'bins'
             })
 

@@ -34,18 +34,8 @@ import DUMMY from 'Helpers/dummy';
         vm.handleUpdateItem = handleUpdateItem;
 
         vm.$onInit = function() {
-            console.log($scope);
             vm.TPLS = 'hubFormModal';
-
             getDetails();
-
-            // vm.item_details =
-            //     $filter('filter')(
-            //         DUMMY.sites,
-            //         { id: parseInt($state.params.id), type: 'HUB' },
-            //         true
-            //     )[0] || {};
-            console.log($state.params.id, vm.item_details);
         };
 
         function getDetails() {
@@ -65,8 +55,8 @@ import DUMMY from 'Helpers/dummy';
                         console.log('hub', response);
                         vm.item_details = response.data.data.items[0];
                     },
-                    function(err) {
-                        //logger.error(MESSAGE.error, err, '');
+                    function(error) {
+                        logger.error(error.data.message);
                     }
                 )
                 .finally(function() {
@@ -90,7 +80,7 @@ import DUMMY from 'Helpers/dummy';
                 cache: false
             };
 
-            formModal(request, modal, vm.TPLS).then(
+            ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
                         console.log(response);
@@ -98,15 +88,9 @@ import DUMMY from 'Helpers/dummy';
                     }
                 },
                 function(error) {
-                    logger.error(
-                        error.data.message || catchError(request.route)
-                    );
+                    logger.error(error.data.message);
                 }
             );
-        }
-
-        function formModal(request, modal, template, size) {
-            return ModalService.form_modal(request, modal, template, size);
         }
     }
 })();
