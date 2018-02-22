@@ -156,7 +156,8 @@
 												<i class="fa fa-trash"></i>
 											</button>
 										</div> -->
-										<a href="" ng-click="vm.updatePolygon($event, zone, $index)" class="text-blue-grey text-bold" ng-bind="zone.code"></a>
+										<i ng-style="{ color: vm.colors[vm.zones.indexOf(zone)] }" class="fa fa-fw fa-map-marker" aria-hidden="true" ></i>
+										<a href="" ng-click="vm.updatePolygon($event, zone, vm.zones.indexOf(zone))" class="text-blue-grey text-bold" ng-bind="zone.code"></a>
 									</li>
 									<div class="text-center" ng-if="!vm.filteredZones.length">
 										<span class="center" ng-bind-html="vm.isLoading | handlefetch : 'zones'"></span>
