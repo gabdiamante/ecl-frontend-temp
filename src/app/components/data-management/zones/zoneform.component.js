@@ -55,16 +55,15 @@ import CONSTANTS from 'Helpers/constants';
             console.log('data', vm.data);
             vm.storeData = [];
 
-            getTypes();
             vm.site_type = angular.copy(vm.data.type || vm.Modal.site_type);
 
-            console.log('site_type', vm.Modal.site_type);
+            getTypes();
             getSites();
         };
 
         function getTypes() {
-            vm.site_types = CONSTANTS.site_types;
-            vm.site_type = vm.site_type || vm.site_types[0].code;
+            vm.site_types = angular.copy(CONSTANTS.site_types);
+            vm.site_type = angular.copy(vm.site_type || vm.site_types[0].code);
         }
 
         function getSites() {
@@ -126,11 +125,7 @@ import CONSTANTS from 'Helpers/constants';
                         close(response.data.data);
                     },
                     function(error) {
-                        logger.error(
-                            error.data.errors[0].context,
-                            '',
-                            error.data.errors[0].message
-                        );
+                        logger.error(error.data.message);
                     }
                 )
                 .finally(function() {
