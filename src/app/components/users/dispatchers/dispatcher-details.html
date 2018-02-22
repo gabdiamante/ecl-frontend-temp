@@ -21,7 +21,7 @@
         <div  class="col-md-12">
             <li class="list-group-item clearfix">
                 <span class="col-md-3">Name:</span>
-                <span class="text-bold " ng-cloak ng-bind-html="(vm.item_details.last_name + ', ' + vm.item_details.first_name + ' ' + vm.item_details.middle_name ) | displaynone">  </span>
+                <span class="text-bold " ng-cloak ng-bind-html="vm.item_details.fullname | displaynone">  </span>
             </li>
             <li class="list-group-item clearfix">
                 <span class="col-md-3">Username:</span>
@@ -33,7 +33,7 @@
             </li>
             <li class="list-group-item clearfix">
                     <span class="col-md-3">Contact:</span>
-                    <span class="text-bold" ng-bind-html="vm.item_details.contact | handlePccDisplay : '+63'"></span>
+                    <span class="text-bold" ng-bind-html="vm.item_details.contact_number | handlePccDisplay : '+63'"></span>
             </li>
             <li class="list-group-item clearfix">
                 <span class="col-md-3">Site:</span>
@@ -41,7 +41,7 @@
             </li>
             <li class="list-group-item clearfix">
                     <span class="col-md-3">Date Updated:</span>
-                    <span class="text-bold" ng-bind-html="vm.item_details.updated | date:short"></span>
+                    <span class="text-bold" ng-bind-html="vm.item_details.updated | date:short | displaynone"></span>
             </li>
         </div>
     </div>

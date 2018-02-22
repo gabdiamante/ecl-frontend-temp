@@ -32,43 +32,39 @@ import MESSAGE from 'Helpers/message';
         QueryService,
         logger
     ) {
-        var vm = this;
-        vm.title = 'Dispatcher';
-        vm.titleHeader = vm.title + 's';
-        vm.route_name = 'dispatcher';
+        var vm              = this;
+        vm.title            = 'Dispatcher';
+        vm.titleHeader      = vm.title + 's';
+        vm.route_name       = 'dispatcher';
 
-        vm.TPLS = 'dispatcherFormModal';
+        vm.TPLS             = 'dispatcherFormModal';
 
-        vm.deactivated = $stateParams.deactivated == 'true' ? 1 : 0;
-        vm.activated = +!vm.deactivated;
+        vm.deactivated      = $stateParams.deactivated == 'true' ? 1 : 0;
+        vm.activated        = +!vm.deactivated;
 
-        vm.pagination = {};
+        vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
-        vm.pagination.limit = $stateParams.limit || '10';
-        vm.per_page = ['10', '20', '50', '100', '200'];
-        vm.total_page = '1';
-        vm.total_items = '0';
-        vm.items = { roleUserCheck: [] };
-        vm.loading = false;
+        vm.pagination.limit     = $stateParams.limit || '10';
+        vm.per_page         = ['10', '20', '50', '100', '200'];
+        vm.total_page       = '1';
+        vm.total_items      = '0';
+        vm.items            = { roleUserCheck: [] };
+        vm.loading          = false;
 
-        vm.option_table = {
-            emptyColumn: true,
-            defaultPagination: true,
-            hideSearchByKey: true,
-            searchTemplate: true,
-            tableSearch: true,
-            tableDeactivate: true
+        vm.option_table         = { 
+            defaultPagination   : true,
+            hideSearchByKey     : true,
+            searchTemplate      : true, 
+            tableDeactivate     : true
         };
 
-        vm.option_table.columnDefs = TABLES.dispatchers.columnDefs;
-        vm.option_table.data = [];
+        vm.option_table.columnDefs  = TABLES.dispatchers.columnDefs;
+        vm.option_table.data        = [];
 
-        vm.goTo = goTo;
-        vm.trClick = trClick;
-
-        vm.handlePostItem = handlePostItem;
-        vm.handleUpdateItem = handleUpdateItem;
-        vm.handleHSActivation = handleHSActivation;
+        vm.goTo                 = goTo; 
+        vm.handlePostItem       = handlePostItem;
+        vm.handleUpdateItem     = handleUpdateItem;
+        vm.handleHSActivation   = handleHSActivation;
 
         getData();
 
@@ -125,10 +121,9 @@ import MESSAGE from 'Helpers/message';
 
             ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
-                    if (response) {
-                        response.updated = new Date();
-                        vm.option_table.data.unshift(response);
-                    }
+                    if (!response) return;
+                    response.updated = new Date();
+                    vm.option_table.data.unshift(response);
                 },
                 function(error) {
                     logger.error(error.data.message);
@@ -136,29 +131,23 @@ import MESSAGE from 'Helpers/message';
             );
         }
 
-        function handleUpdateItem(item) {
-            var modal = {
-                title: vm.title,
-                titleHeader: 'Edit ' + vm.title,
-                method: 'edit',
-                route_name: vm.route_name
-            };
-
+        function handleUpdateItem(data) {
+            var modal = { header: 'Update '+vm.title };
             var request = {
                 method: 'PUT',
-                body: item,
+                body: data,
                 params: false,
                 hasFile: false,
-                route: {}
+                route: { site: data.site_id, [vm.route_name]:data.user_id } 
             };
 
             ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
-                    if (response) {
-                        vm.option_table.data[
-                            vm.option_table.data.indexOf(item)
-                        ] = response;
-                    }
+                    if (!response) return;
+                    response.updated = new Date();
+                    vm.option_table.data[
+                        vm.option_table.data.indexOf(data)
+                    ] = response; 
                 },
                 function(error) {
                     logger.error(error.data.message);
@@ -194,8 +183,7 @@ import MESSAGE from 'Helpers/message';
                     site: data.site_id,
                     [vm.route_name]: data.user_id,
                     [action]: ''
-                },
-                //route: { [vm.route_name]: data.id, [action]: '' },
+                }, 
                 cache: false
             };
 
@@ -209,7 +197,7 @@ import MESSAGE from 'Helpers/message';
                         ),
                         1
                     );
-                    logger.success(vm.title + ' ' + action + 'd!');
+                    logger.success(vm.title + ' ' + action + 'd');
                 },
                 function(err) {
                     console.log(err);
@@ -219,13 +207,6 @@ import MESSAGE from 'Helpers/message';
 
         function goTo(data) {
             $state.go($state.current.name, data);
-        }
-
-        function trClick(data) {
-            $state.go('app.dispatcher-details', {
-                site_id: data.site_id,
-                user_id: data.id
-            });
-        }
+        } 
     }
 })();

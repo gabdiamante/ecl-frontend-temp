@@ -5,13 +5,13 @@
 <div class="modal-body top-margin-sm">
     <form name="nameForm" class="materialize">
         <div class="clearfix">
-            <div class="form-group">
+            <div class="form-group" ng-if="vm.method=='POST'">
                 <label for="site_type" class="control-label small text-theme">Site Type </label>
                 <select ng-change="vm.changeSiteType(item)" class="form-control" ng-options="item.code as item.name for item in vm.site_types" ng-model="vm.site_type" name="site_type">
                 </select>
                 <span class="text-red small" ng-show="zoneForm.site_type.$invalid && vm.submitted">* Required</span>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-if="vm.method=='POST'">
                 <label class="control-label small text-theme" for="zone_name">Site:</label>
                 <select class="form-control" ng-options="item.id as item.code for item in vm.sites" ng-model="vm.data.site_id" name="site_id" required>
                 </select>
@@ -32,11 +32,16 @@
                 <input type="text" ng-model="vm.data.last_name" class="form-control" placeholder="Plate Number" id="last_name" name="last_name" ng-required="true" >
                 <span class="text-red font-10" ng-show="nameForm.last_name.$invalid && vm.submitted">*Required</span>
             </div>
-            <div ng-if="vm.Modal.method == 'add'">
+            <div ng-if="vm.method=='POST'">
                 <div class="form-group" >
                     <label class="control-label small text-theme" for="username">User Name: </label>
                     <input type="text" ng-model="vm.data.username" class="form-control" placeholder="User Name" id="username" name="username" ng-required="true" >
                     <span class="text-red font-10" ng-show="nameForm.username.$invalid && vm.submitted">*Required</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label small text-theme" for="email">Email:</label>
+                    <input type="email" ng-model="vm.data.email" class="form-control" placeholder="Email" id="email" name="email" ng-required="true" >
+                    <span class="text-red font-10" ng-show="nameForm.email.$invalid && vm.submitted">*Required</span>
                 </div>
                 <div class="form-group" >
                     <label class="control-label small text-theme" for="password">Password: </label>
@@ -51,11 +56,6 @@
                     <span class="text-red font-10" ng-if="nameForm.confirm_password.$error.required && vm.submitted">*Required</span> <br />
                     <span class="text-red font-10" ng-if="nameForm.$error.passworderror[0].$invalid && vm.submitted"> Password do not matched! </span>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label small text-theme" for="email">Email:</label>
-                <input type="email" ng-model="vm.data.email" class="form-control" placeholder="Email" id="email" name="email" ng-required="true" >
-                <span class="text-red font-10" ng-show="nameForm.email.$invalid && vm.submitted">*Required</span>
             </div>
             <div class="form-group">
                 <label class="control-label small text-theme" for="contact_number">Contact Number:</label>

@@ -50,7 +50,8 @@ import MESSAGE from 'Helpers/message';
         vm.option_table         = {
             defaultPagination   : true,
             hideSearchByKey     : true,
-            searchTemplate      : true
+            searchTemplate      : true, 
+            tableDeactivate     : true
         };
 
         vm.option_table.columnDefs  = TABLES.customer_supports.columnDefs;
@@ -58,7 +59,7 @@ import MESSAGE from 'Helpers/message';
 
         vm.goTo                     = goTo; 
         vm.handleUpdateItem         = handleUpdateItem; 
-        vm.handleHSActivation       = handleHSActivation; 
+        vm.handleCSActivation       = handleCSActivation; 
         vm.createCustomerSupport    = createCustomerSupport;
 
         init();
@@ -80,10 +81,10 @@ import MESSAGE from 'Helpers/message';
             ModalService
                 .form_modal(request, modal, 'customerSupportForm', 'md', '')
                 .then(function(response) { 
-                    if (response) {
-                        vm.option_table.data.unshift(response); 
-                        vm.option_table.data = handleNames(vm.option_table.data);
-                    }
+                    if (!response) return;
+                    response.updated = new Date();
+                    vm.option_table.data.unshift(response); 
+                    vm.option_table.data = handleNames(vm.option_table.data); 
                 }, function(error) {
                     console.log(error); 
                 }); 
@@ -101,14 +102,13 @@ import MESSAGE from 'Helpers/message';
                 },
                 hasFile: false,
                 route: { [vm.route_name]: '' },
-                cache: true,
+                // cache: true, temporarily removed
                 cache_string: vm.route_name
             };
 
             QueryService.query(request)
                 .then(
                     function(response) { 
-                        console.log(response);
                         vm.option_table.data    = handleNames(response.data.data.items); 
                         vm.pagination.page      = $stateParams.page || '1'; 
                         vm.pagination.limit     = $stateParams.limit || '10'; 
@@ -138,14 +138,14 @@ import MESSAGE from 'Helpers/message';
                 .form_modal(request, modal, 'customerSupportForm')
                 .then(
                     function(response) {
-                        if (response) {
-                            vm.option_table.data[
-                                vm.option_table.data.indexOf(data)
-                            ] = response;
-                            vm.option_table.data = handleNames(
-                                angular.copy(vm.option_table.data)
-                            );
-                        }
+                        if (!response) return;
+                        response.updated = new Date();
+                        vm.option_table.data[
+                            vm.option_table.data.indexOf(data)
+                        ] = response;
+                        vm.option_table.data = handleNames(
+                            angular.copy(vm.option_table.data)
+                        ); 
                     },
                     function(error) {
                         logger.error(
@@ -155,42 +155,51 @@ import MESSAGE from 'Helpers/message';
                 );
         }
 
-        function handleHSActivation(data, action) {
-            // var request = {
-            //     method: 'PUT',
-            //     body: false,
-            //     params: false,
-            //     hasFile: false,
-            //     route: { [vm.route_name]: item.id, deactivate: '' },
-            //     cache: false
-            // };
-
+        function handleCSActivation (data, action) {
             var content = {
-                header: action + ' ' + vm.title,
-                message: MESSAGE.confirmMsg(action, vm.title),
-                prop: data.first_name + ' ' + data.last_name
+                header: action+' '+vm.title,
+                message: MESSAGE.confirmMsg(action, vm.title.toLowerCase()),
+                prop: data.first_name+' '+(data.middle_name+' '||'')+data.last_name
             };
 
-            ModalService.confirm_modal(content).then(
-                function(response) {
-                    if (!response) return;
-                    data.status =
-                        (action == 'reactivate') ? 'active' : 
-                        (action == 'deactivate') ? 'deactivated' : 'deactivated';
-                    vm.option_table.data.splice(
-                        vm.option_table.data.indexOf(
-                            $filter('filter')(vm.option_table.data, {
-                                id: data.id
-                            })[0]
-                        ),
-                        1
-                    );
-                },
-                function(err) {
-                    console.log(err);
-                }
-            );
+            ModalService
+                .confirm_modal(content)
+                .then(
+                    function (response) {
+                        if (!response) return; 
+                        activateDeactivateCsr(data, action);
+                    },
+                    function (err) {
+                        console.log(err);
+                    }
+                );
         }
+
+        function activateDeactivateCsr (data, action) {
+            var request = {
+                method: 'PUT',
+                body: {},
+                params: false,
+                hasFile: false,
+                route: { site:data.site_id, csr:data.user_id, [action]:'' } 
+            };
+
+            QueryService
+                .query(request)
+                .then( 
+                    function (response) { 
+                        logger.success(MESSAGE.loggerSuccess('CSR', '', action+'d'));
+                        vm.option_table.data.splice(
+                            vm.option_table.data.indexOf(
+                                $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
+                            ), 1);
+                    },
+                    function (err) {
+                        logger.error(MESSAGE.loggerFailed('CSR', '', action));
+                        console.log(err);
+                    }
+                );
+        } 
 
         function handleNames(data) {
             for (let i = 0; i < data.length; i++)
