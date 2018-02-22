@@ -225,7 +225,7 @@ import angular from 'angular';
             })
 
             .state('app.personnel-details', {
-                url: 'personnel-details?id',
+                url: 'personnel-details?site_id&user_id',
                 component: 'personnelDetails'
             })
 

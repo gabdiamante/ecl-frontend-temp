@@ -38,11 +38,11 @@ import MESSAGE from 'Helpers/message';
         QueryService,
         logger
     ) {
-        var vm              = this; 
-        vm.save             = save;
-        vm.cancel           = cancel;
-        var Modal           = null;
-        var Request         = null;
+        var vm      = this; 
+        vm.save     = save;
+        vm.cancel   = cancel;
+        var Modal   = null;
+        var Request = null;
 
         vm.passwordValidError   = passwordValidError;
         vm.changeSiteType       = changeSiteType;

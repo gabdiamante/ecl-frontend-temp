@@ -2,6 +2,7 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import DUMMY from 'Helpers/dummy';
 import CONSTANTS from 'Helpers/constants';
+import MESSAGE from 'Helpers/message';
 
 (function() {
     'use strict';
@@ -37,27 +38,25 @@ import CONSTANTS from 'Helpers/constants';
         QueryService,
         logger
     ) {
-        var vm = this;
+        var vm      = this;
+        vm.save     = save;
+        vm.cancel   = cancel;
+        var Modal   = null;
+        var Request = null;
 
-        // methods
-        vm.save = save;
-        vm.cancel = cancel;
-        vm.changeSiteType = changeSiteType;
-        vm.passwordValidError = passwordValidError;
+        vm.changeSiteType       = changeSiteType;
+        vm.passwordValidError   = passwordValidError;
 
         vm.$onInit = function() {
-            vm.Request = vm.resolve.Request;
-            vm.Modal = vm.resolve.Modal;
-
-            vm.titleHeader = vm.Modal.titleHeader;
-            vm.data = angular.copy(vm.Request.body);
-            vm.site_type = angular.copy(vm.data.site_type);
-            vm.storeData = [];
+            Modal           = vm.resolve.Modal;
+            Request         = vm.resolve.Request;
+            vm.titleHeader  = Modal.header;
+            vm.data         = angular.copy(Request.body) || {};
+            vm.method       = angular.copy(Request.method);
+            vm.storeData    = [];
 
             getSiteTypes();
-
-            getSites();
-            //console.log(Modal);
+            getSites(); 
         };
 
         function getSiteTypes() {
@@ -71,7 +70,7 @@ import CONSTANTS from 'Helpers/constants';
                 method: 'GET',
                 body: false,
                 params: {
-                    limit: '9999999999',
+                    limit: '99999',
                     page: '1',
                     is_active: 1,
                     type: vm.site_type
@@ -79,9 +78,7 @@ import CONSTANTS from 'Helpers/constants';
                 hasFile: false,
                 route: { site: '' },
                 cache: false
-            };
-
-            console.log('sites r', request);
+            }; 
 
             QueryService.query(request)
                 .then(
@@ -89,7 +86,6 @@ import CONSTANTS from 'Helpers/constants';
                         vm.sites = response.data.data.items;
                         vm.sites.unshift({ code: 'Select Sites' });
                         vm.data.site_id = vm.data.site_id || vm.sites[0].id;
-                        // vm.total_items          = response.data.data.total;
                     },
                     function(error) {
                         logger.error(error.data.message);
@@ -100,60 +96,25 @@ import CONSTANTS from 'Helpers/constants';
                 });
         }
 
-        function save(data, action) {
+        function save(data) {
             vm.disable = true;
-            vm.loading = true;
-
-            vm.Request.body = vm.data;
-
-            if (vm.Modal.method == 'add') {
-                console.log(vm.Modal.method);
-                QueryService.query(vm.Request)
-                    .then(
-                        function(response) {
-                            var response_data =
-                                response.data.data.details || {};
-                            logger.success(vm.Modal.title + ' added.');
-                            close(response_data, action);
-                        },
-                        function(error) {
-                            logger.error(
-                                error.data.errors[0].message,
-                                {},
-                                error.data.errors[0].code
-                            );
-                        }
-                    )
-                    .finally(function() {
-                        vm.loading = false;
-                        vm.disable = false;
-                    });
-            } else if (vm.Modal.method == 'edit') {
-                vm.Request.route = {
-                    site: vm.data.site_id,
-                    [vm.Modal.route_name]: vm.data.user_id
-                };
-                QueryService.query(vm.Request)
-                    .then(
-                        function(response) {
-                            var response_data =
-                                response.data.data.details || {};
-                            logger.success(vm.Modal.title + ' updated.');
-                            close(vm.Request.body, action);
-                        },
-                        function(error) {
-                            logger.error(
-                                error.data.errors[0].message,
-                                {},
-                                error.data.errors[0].code
-                            );
-                        }
-                    )
-                    .finally(function() {
-                        vm.loading = false;
-                        vm.disable = false;
-                    });
-            }
+            Request.body = angular.copy(data);
+            // if (Request.method=='PUT') Request.route.site = data.site_id;
+            QueryService
+                .query(Request)
+                .then(
+                    function(response) { 
+                        logger.success(MESSAGE.loggerSuccess('Personnel', Request.method));
+                        vm.modalInstance.close(data);
+                    },
+                    function(err) {
+                        logger.error(MESSAGE.loggerFailed('Personnel', Request.method));
+                    }
+                )
+                .finally(function() {
+                    vm.loading = false;
+                    vm.disable = false;
+                });
         }
 
         function changeSiteType(item) {

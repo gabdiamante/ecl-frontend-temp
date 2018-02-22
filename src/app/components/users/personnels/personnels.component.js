@@ -68,7 +68,7 @@ import MESSAGE from 'Helpers/message';
 
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
-        vm.handleHSActivation = handleHSActivation;
+        vm.handleActivation = handleActivation;
 
         getData();
 
@@ -88,11 +88,9 @@ import MESSAGE from 'Helpers/message';
                 cache_string: vm.route_name
             };
 
-            console.log('personnels r', request);
             QueryService.query(request)
                 .then(
-                    function(response) {
-                        console.log('personnel', response);
+                    function(response) { 
                         vm.option_table.data = response.data.data.items;
                         vm.pagination.total = response.data.data.total;
                         vm.pagination.page = $stateParams.page || '1';
@@ -124,10 +122,9 @@ import MESSAGE from 'Helpers/message';
 
             ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
-                    if (response) {
-                        response.updated = new Date();
-                        vm.option_table.data.unshift(response);
-                    }
+                    if (!response) return;
+                    response.updated = new Date();
+                    vm.option_table.data.unshift(response);
                 },
                 function(error) {
                     logger.error(error.data.message);
@@ -135,7 +132,7 @@ import MESSAGE from 'Helpers/message';
             );
         }
 
-        function handleUpdateItem(item) {
+        function handleUpdateItem(data) {
             var modal = {
                 title: vm.title,
                 titleHeader: 'Edit ' + vm.title,
@@ -145,19 +142,19 @@ import MESSAGE from 'Helpers/message';
 
             var request = {
                 method: 'PUT',
-                body: item,
+                body: data,
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: item.id }
+                route: { site:data.site_id, [vm.route_name]:data.user_id }
             };
 
             ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
-                    if (response) {
-                        vm.option_table.data[
-                            vm.option_table.data.indexOf(item)
-                        ] = response;
-                    }
+                    if (!response) return;
+                    response.updated = new Date();
+                    vm.option_table.data[
+                        vm.option_table.data.indexOf(data)
+                    ] = response; 
                 },
                 function(error) {
                     logger.error(error.data.message);
@@ -165,51 +162,51 @@ import MESSAGE from 'Helpers/message';
             );
         }
 
-        function handleHSActivation(data, action) {
+        function handleActivation (data, action) {
             var content = {
-                header: action + ' ' + vm.title,
+                header: action+' '+vm.title,
                 message: MESSAGE.confirmMsg(action, vm.title.toLowerCase()),
-                prop: data.first_name + ' ' + data.last_name
+                prop: data.first_name+' '+(data.middle_name+' '||'')+data.last_name
             };
 
-            ModalService.confirm_modal(content).then(
-                function(response) {
-                    if (!response) return;
-                    executeActivateDeactivate(data, action);
-                },
-                function(error) {
-                    logger.error(error.data.message);
-                }
-            );
+            ModalService
+                .confirm_modal(content)
+                .then(
+                    function (response) {
+                        if (!response) return; 
+                        activateDeactivatePersonnel(data, action);
+                    },
+                    function (err) {
+                        console.log(err);
+                    }
+                );
         }
 
-        function executeActivateDeactivate(data, action) {
+        function activateDeactivatePersonnel (data, action) {
             var request = {
                 method: 'PUT',
-                body: false,
+                body: {},
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: data.id, [action]: '' },
-                cache: false
+                route: { site:data.site_id, [vm.route_name]:data.user_id, [action]:'' } 
             };
 
-            QueryService.query(request).then(
-                function(response) {
-                    vm.option_table.data.splice(
-                        vm.option_table.data.indexOf(
-                            $filter('filter')(vm.option_table.data, {
-                                id: data.id
-                            })[0]
-                        ),
-                        1
-                    );
-                    logger.success(vm.title + ' ' + action + 'd!');
-                },
-                function(err) {
-                    console.log(err);
-                }
-            );
-        }
+            QueryService
+                .query(request)
+                .then( 
+                    function (response) { 
+                        logger.success(MESSAGE.loggerSuccess(vm.title, '', action+'d'));
+                        vm.option_table.data.splice(
+                            vm.option_table.data.indexOf(
+                                $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
+                            ), 1);
+                    },
+                    function (err) {
+                        logger.error(MESSAGE.loggerFailed(vm.title, '', action));
+                        console.log(err);
+                    }
+                );
+        } 
 
         function goTo(data) {
             $state.go($state.current.name, data);
