@@ -255,7 +255,7 @@ const TABLES = {
             },
             { name: 'name' },
             { name: 'volume' },
-            { name: 'weight' },
+            { name: 'weight', displayName: 'Weight (kg)' },
             { name: 'dimension' },
             {
                 name: 'updated',

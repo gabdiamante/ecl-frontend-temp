@@ -154,16 +154,17 @@ var jsts = require('jsts');
         }
 
         function getTypes() {
-            vm.site_types = CONSTANTS.site_types;
-            // vm.site_types.unshift({ name: 'ALL' });
-            //vm.site_type = vm.site_type || vm.site_types[0];
-            checkSiteType(vm.siteType || 'HUB', vm.site_types);
+            vm.site_types = [];
+            vm.site_types = angular.copy(CONSTANTS.site_types);
+            vm.site_types.unshift({ name: 'HUB w/ DC' });
+            vm.site_type = vm.site_type || vm.site_types[0];
+            checkSiteType(vm.siteType, vm.site_types);
         }
 
         function getSiteFront() {
             vm.site_fronts = [{ code: 'DC', name: 'DC' }];
 
-            if (vm.site_type.code == 'HUB')
+            if (vm.site_type.code != 'DC')
                 vm.site_fronts.unshift({ code: 'HUB', name: 'HUB' });
 
             vm.site_fronts.unshift({ name: 'UNASSIGNED' });
@@ -342,8 +343,8 @@ var jsts = require('jsts');
         }
 
         function overlayClickListener(overlay, method) {
+            resetOverlapData();
             if (!method) return;
-
             google.maps.event.addListener(overlay, 'mouseup', function(event) {
                 var shape = {
                     type: 'polygon'
@@ -365,13 +366,12 @@ var jsts = require('jsts');
         }
 
         function onMapOverlayCompleted(e, method) {
+            resetOverlapData();
             overlayClickListener(e.overlay, method);
-
             for (var key in vm.geofenceMap.shapes) {
                 var wkt = checkPolygon(e.overlay, vm.geofenceMap.shapes[key]);
                 detectLap(e, key, wkt);
             }
-
             handleOverlap();
 
             vm.showDrawingManager = false;
@@ -403,6 +403,12 @@ var jsts = require('jsts');
             }
             vm.completedPolygon = JSON.stringify(polygon[0]);
             return vm.completedPolygon;
+        }
+
+        function resetOverlapData() {
+            vm.zones[vm.shapeIndex] = vm.zones[vm.shapeIndex] || {};
+            vm.zones[vm.shapeIndex].general_overlap = {};
+            vm.zones['new'] = {};
         }
 
         function addZone() {
@@ -438,39 +444,67 @@ var jsts = require('jsts');
         function detectLap(shape, key, wkt) {
             vm.zones[vm.shapeIndex] = vm.zones[vm.shapeIndex] || {};
             vm.zones[key] = vm.zones[key] || {};
+            vm.zones['new'] = vm.zones['new'] || {};
+            vm.zones['new'].general_overlap =
+                vm.zones['new'].general_overlap || {};
 
-            if (
-                shape.overlay !== vm.geofenceMap.shapes[key] &&
-                vm.zones[vm.shapeIndex].type == vm.zones[key].type &&
-                typeof vm.zones[vm.shapeIndex].type != 'undefined' &&
-                typeof vm.zones[key].type != 'undefined' &&
-                vm.zones[vm.shapeIndex].type != null &&
-                vm.zones[key].type != null
-            ) {
-                detectOverlap(wkt[0], wkt[1], function(res) {
+            if (shape.overlay !== vm.geofenceMap.shapes[key]) {
+                detectOverlap(wkt[0], wkt[1], true, function(res) {
                     if (res) {
-                        vm.intersect_count++;
-                        logger.info(
-                            'Zone overlaps with other existing zone at ' +
-                                vm.zones[vm.shapeIndex].type +
-                                '. Please remove overlap to continue.'
-                        );
+                        var general_overlap =
+                            vm.zones[vm.shapeIndex || 'new'].general_overlap;
+                        general_overlap.zone = general_overlap.zone || [];
+                        var overlap_zone_shape_key =
+                            angular.copy(vm.zones[key]) || {};
+                        general_overlap.zone.push(overlap_zone_shape_key);
+
+                        var overlapcondfilter =
+                            $filter('filterWithOr')(
+                                angular.copy(general_overlap.zone),
+                                { type: ['DC', 'HUB'] }
+                            ) || []; // filter with DC or hub
+                        vm.zones[
+                            vm.shapeIndex || 'new'
+                        ].general_overlap.overlap =
+                            overlapcondfilter.length > 0; // detect if zone overlap with dc or hub
                     }
                 });
+
+                if (
+                    vm.zones[vm.shapeIndex].type == vm.zones[key].type &&
+                    typeof vm.zones[vm.shapeIndex].type != 'undefined' &&
+                    typeof vm.zones[key].type != 'undefined' &&
+                    vm.zones[vm.shapeIndex].type != null &&
+                    vm.zones[key].type != null
+                ) {
+                    detectOverlap(wkt[0], wkt[1], false, function(res) {
+                        if (res) {
+                            vm.intersect_count++;
+                            logger.info(
+                                'Zone overlaps with other existing zone at ' +
+                                    vm.zones[vm.shapeIndex].type +
+                                    '. Please remove overlap to continue.'
+                            );
+                        }
+                    });
+                }
+            } else {
+                vm.zones[vm.shapeIndex].general_overlap =
+                    vm.zones[vm.shapeIndex].general_overlap || {};
             }
         }
 
-        function detectOverlap(wkt1, wkt2, callback) {
+        function detectOverlap(wkt1, wkt2, modalExecuteCond, callback) {
             var wktReader = new jsts.io.WKTReader();
             var geom1 = wktReader.read(wkt1);
             var geom2 = wktReader.read(wkt2);
 
             if (geom2.intersects(geom1)) {
                 callback(true);
-                vm.showModal = false;
+                if (!modalExecuteCond) vm.showModal = false;
             } else {
                 callback(false);
-                vm.showModal = true;
+                if (!modalExecuteCond) vm.showModal = true;
             }
         }
 
@@ -482,12 +516,15 @@ var jsts = require('jsts');
             var modal = {
                 titleHeader: 'Add ' + vm.title,
                 title: vm.title,
-                site_type: vm.site_front.code || vm.site_type.code
+                site_type: vm.site_front.code || vm.site_type.code || 'HUB'
             };
 
             var request = {
                 method: 'POST',
-                body: { polygon: data.polygon },
+                body: {
+                    polygon: data.polygon,
+                    general_overlap: vm.zones['new'].general_overlap
+                },
                 params: false,
                 hasFile: false,
                 route: { [vm.route_name]: '' },
@@ -515,6 +552,10 @@ var jsts = require('jsts');
         }
 
         function onMouseUp(e, shape, index) {
+            vm.zones[index] = vm.zones[index] || {};
+            vm.zones[index].general_overlap = {};
+            vm.zones['new'] = vm.zones['new'] || {};
+
             if (typeof vm.shapeIndex != 'undefined' && shape.editable) {
                 console.log(index, 'index');
                 var data = angular.copy(vm.updated_shape);
@@ -604,7 +645,7 @@ var jsts = require('jsts');
             var modal = {
                 titleHeader: 'Update ' + vm.title,
                 title: vm.title,
-                site_type: vm.site_front.code || vm.site_type.code
+                site_type: vm.site_front.code || vm.site_type.code || 'HUB'
             };
 
             var request = {
@@ -641,6 +682,7 @@ var jsts = require('jsts');
         }
 
         function cancel() {
+            delete vm.shapeIndex;
             vm.selectedZone = {};
             vm.zones = [];
             vm.showName = false;
@@ -729,6 +771,7 @@ var jsts = require('jsts');
         // }
 
         function clearPolygon(e) {
+            delete vm.shapeIndex;
             vm.shapePath.setMap(null);
             vm.shapePath = null;
             vm.notCompleted = true;

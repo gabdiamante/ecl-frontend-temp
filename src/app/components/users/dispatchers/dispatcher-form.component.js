@@ -52,6 +52,7 @@ import CONSTANTS from 'Helpers/constants';
 
             vm.titleHeader = vm.Modal.titleHeader;
             vm.data = angular.copy(vm.Request.body);
+            vm.site_type = angular.copy(vm.data.site_type);
             vm.storeData = [];
 
             getSiteTypes();
@@ -105,7 +106,7 @@ import CONSTANTS from 'Helpers/constants';
             vm.loading = true;
 
             vm.Request.body = vm.data;
-            vm.Request.body.role = 'DISPATCHER';
+            // vm.Request.body.role = 'DISPATCHER';
 
             if (vm.Modal.method == 'add') {
                 console.log(vm.Modal.method);
@@ -113,12 +114,17 @@ import CONSTANTS from 'Helpers/constants';
                     .then(
                         function(response) {
                             var response_data =
-                                response.data.data.items[0] || {};
+                                response.data.data.details || {};
                             logger.success(vm.Modal.title + ' added.');
                             close(response_data, action);
                         },
                         function(error) {
-                            logger.error(error.data.message);
+                            console.log(error);
+                            logger.error(
+                                error.data.errors[0].message,
+                                {},
+                                error.data.errors[0].code
+                            );
                         }
                     )
                     .finally(function() {
@@ -126,19 +132,27 @@ import CONSTANTS from 'Helpers/constants';
                         vm.disable = false;
                     });
             } else if (vm.Modal.method == 'edit') {
-                console.log(vm.Request);
+                vm.Request.route = {
+                    site: vm.data.site_id,
+                    [vm.Modal.route_name]: vm.data.user_id
+                };
 
                 QueryService.query(vm.Request)
                     .then(
                         function(response) {
                             console.log('edit dis', response);
                             var response_data =
-                                response.data.data.items[0] || {};
+                                response.data.data.details || {};
+
                             logger.success(vm.Modal.title + ' updated.');
-                            close(response_data, action);
+                            close(vm.Request.body, action);
                         },
-                        function(err) {
-                            logger.error(error.data.message);
+                        function(error) {
+                            logger.error(
+                                error.data.errors[0].message,
+                                {},
+                                error.data.errors[0].code
+                            );
                         }
                     )
                     .finally(function() {
@@ -162,8 +176,11 @@ import CONSTANTS from 'Helpers/constants';
         }
 
         //validation function
-        function passwordValidError() {
-            return vm.data.password != vm.confirm_password;
+        function passwordValidError(nameForm) {
+            return (
+                nameForm.password.$viewValue !==
+                nameForm.confirm_password.$viewValue
+            );
         }
     }
 })();

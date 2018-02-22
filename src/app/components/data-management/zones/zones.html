@@ -14,8 +14,9 @@
 				<shape ng-repeat="shape in vm.zones"  on-click="vm.updatePolygon(shape, $index)" id="{{$index}}" 
 
 					z-index="{{ shape.type == vm.site_front.code ? 99 : shape.type == null ? 50 : shape.type == 'HUB' ? 4 : shape.type == 'DC' ? 3 : 1 }}"
-
-					name="polygon" editable="{{shape.editable}}" stroke-color="{{vm.colors[$index]}}" stroke-opacity="1" path="{{shape.polygon}}"  paths="{{shape.polygon}}" center="{{shape.center}}"  stroke-weight="2" fill-color="{{vm.colors[$index]}}" 
+					name="polygon" editable="{{shape.editable}}" stroke-color="{{vm.colors[$index]}}" stroke-opacity="1" path="{{shape.polygon}}"  paths="{{shape.polygon}}" center="{{shape.center}}"  
+					stroke-weight="{{ shape.type == 'HUB' ? 5 : shape.type == 'DC' ? 1 : 0 }}" 
+					fill-color="{{ (shape.type == 'HUB' || shape.type == 'DC') ? vm.colors[$index] : ''}}" 
 				on-mouseup="vm.onMouseUp(shape,$index)"></shape>
 			</map>	
 			<div class="map-toolbar">

@@ -20,6 +20,9 @@ a {
 .text-red {
     color: red;
 }
+.text-orange {
+    color: orange;
+}
 /*theme*/
 .theme-l5 {
     color: #000 !important;
@@ -550,7 +553,7 @@ body.scroll::-webkit-scrollbar {
     -webkit-transition: all 0.4s;
     -o-transition: all 0.4s;
     transition: all 0.4s;
-} 
+}
 
 .btn-trans,
 .btn-trans:focus,

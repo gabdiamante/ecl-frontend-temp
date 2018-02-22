@@ -1019,7 +1019,8 @@ import angular from 'angular';
             require: 'ngModel',
             scope: {
                 valFunc: '&customValidationFunction',
-                customValidError: '='
+                customValidError: '=',
+                customErrorName: '@'
             },
             link: (scope, element, attrs, controller) => {
                 const normalizedFunc = (modelValue, viewValue) => {
@@ -1028,8 +1029,23 @@ import angular from 'angular';
                         $value
                     });
 
-                    if (scope.customValidError) return valF;
-                    else return !valF;
+                    var cond_value;
+                    if (scope.customValidError) {
+                        cond_value = angular.copy(!valF);
+                        console.log(cond_value);
+                        controller.$setValidity(
+                            scope.customErrorName || 'customError',
+                            cond_value
+                        );
+                        return cond_value;
+                    } else {
+                        cond_value = angular.copy(valF);
+                        controller.$setValidity(
+                            scope.customErrorName || 'customError',
+                            cond_value
+                        );
+                        return cond_value;
+                    }
                 };
                 controller.$validators.customValidationFunction = normalizedFunc;
             }
