@@ -343,7 +343,8 @@ var jsts = require('jsts');
         }
 
         function overlayClickListener(overlay, method) {
-            delete vm.zones[vm.shapeIndex].general_overlap;
+            vm.zones[vm.shapeIndex] = vm.zones[vm.shapeIndex] || {};
+            vm.zones[vm.shapeIndex].general_overlap = {};
             if (!method) return;
 
             google.maps.event.addListener(overlay, 'mouseup', function(event) {
@@ -367,7 +368,8 @@ var jsts = require('jsts');
         }
 
         function onMapOverlayCompleted(e, method) {
-            delete vm.zones[vm.shapeIndex].general_overlap;
+            vm.zones[vm.shapeIndex] = vm.zones[vm.shapeIndex] || {};
+            vm.zones[vm.shapeIndex].general_overlap = {};
             overlayClickListener(e.overlay, method);
 
             for (var key in vm.geofenceMap.shapes) {
@@ -445,7 +447,20 @@ var jsts = require('jsts');
             if (shape.overlay !== vm.geofenceMap.shapes[key]) {
                 detectOverlap(wkt[0], wkt[1], true, function(res) {
                     if (res) {
-                        vm.zones[vm.shapeIndex].general_overlap = true;
+                        var general_overlap =
+                            vm.zones[vm.shapeIndex].general_overlap;
+                        general_overlap.zone = general_overlap.zone || [];
+                        var overlap_zone_shape_key =
+                            angular.copy(vm.zones[key]) || {};
+                        general_overlap.zone.push(overlap_zone_shape_key);
+
+                        var overlapcondfilter =
+                            $filter('filterWithOr')(
+                                angular.copy(general_overlap.zone),
+                                { type: ['DC', 'HUB'] }
+                            ) || []; // filter with DC or hub
+                        vm.zones[vm.shapeIndex].general_overlap.overlap =
+                            overlapcondfilter.length > 0; // detect if zone overlap with dc or hub
                     }
                 });
 
@@ -469,7 +484,7 @@ var jsts = require('jsts');
                 }
             } else {
                 vm.zones[vm.shapeIndex].general_overlap =
-                    vm.zones[vm.shapeIndex].general_overlap || false;
+                    vm.zones[vm.shapeIndex].general_overlap || {};
             }
         }
 
@@ -495,7 +510,7 @@ var jsts = require('jsts');
             var modal = {
                 titleHeader: 'Add ' + vm.title,
                 title: vm.title,
-                site_type: vm.site_front.code || vm.site_type.code
+                site_type: vm.site_front.code || vm.site_type.code || 'HUB'
             };
 
             var request = {
@@ -528,7 +543,8 @@ var jsts = require('jsts');
         }
 
         function onMouseUp(e, shape, index) {
-            delete vm.zones[index].general_overlap;
+            vm.zones[index] = vm.zones[index] || {};
+            vm.zones[index].general_overlap = {};
             if (typeof vm.shapeIndex != 'undefined' && shape.editable) {
                 console.log(index, 'index');
                 var data = angular.copy(vm.updated_shape);
@@ -655,6 +671,7 @@ var jsts = require('jsts');
         }
 
         function cancel() {
+            delete vm.shapeIndex;
             vm.selectedZone = {};
             vm.zones = [];
             vm.showName = false;
@@ -743,6 +760,7 @@ var jsts = require('jsts');
         // }
 
         function clearPolygon(e) {
+            delete vm.shapeIndex;
             vm.shapePath.setMap(null);
             vm.shapePath = null;
             vm.notCompleted = true;

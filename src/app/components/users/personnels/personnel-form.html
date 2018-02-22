@@ -43,10 +43,10 @@
                     <input type="password" ng-model="vm.data.password" class="form-control" placeholder="Password" id="password" name="password" ng-required="true" >
                     <span class="text-red font-10" ng-show="nameForm.password.$invalid && vm.submitted">*Required</span>
                 </div>
-                <div class="form-group" >
+                <div class="form-group" ng-if="false">
                     <label class="control-label small text-theme" for="password">Confirm Password: </label>
                     <input type="password" ng-model="vm.confirm_password" class="form-control" placeholder="Confirm Password" id="confirm_password" name="confirm_password" ng-required="true"
-                                custom-validation-function="vm.passwordValidError()"  
+                                custom-validation-function="vm.passwordValidError()" custom-valid-error="true"
                     >
                     <span class="text-red font-10" ng-if="nameForm.confirm_password.$error.required && vm.submitted">*Required</span> <br />
                     <span class="text-red font-10" ng-if="vm.data.password!= vm.confirm_password && vm.submitted"> Password do not matched! </span>
