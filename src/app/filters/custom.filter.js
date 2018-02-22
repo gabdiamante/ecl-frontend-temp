@@ -623,8 +623,8 @@ import angular from 'angular';
             if (angular.isArray(expected)) {
                 var match = false;
                 expected.forEach(function(e) {
-                    console.log('forEach');
-                    console.log(e);
+                    //console.log('forEach');
+                    //console.log(e);
                     e = angular.lowercase('' + e);
                     if (actual.indexOf(e) !== -1) {
                         match = true;
