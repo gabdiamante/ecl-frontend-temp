@@ -230,15 +230,17 @@
 </div>
 
 <div style="clear:both;"></div>
+<!-- temporary for ecl only -->
 <div class="col-md-12 col-xs-12 top-margin-sm form-inline pad-0" ng-if="options.tableDeactivate">
-    <button type="button" ng-if="!vm.deactivated" title="View deactivated {{vm.titleHeader}}" class="btn btn-sm btn-primary pull-right" ng-click="goTo({data:{page:1, limit:'', deactivated: true}})">
+    <button type="button" ng-if="!vm.deactivated" title="View deactivated {{vm.titleHeader}}" class="btn btn-sm btn-primary pull-right" ng-click="goTo({data:{page:1, limit:10, deactivated: true}})">
         <span ng-bind="'View Deactivated '+vm.titleHeader"></span>
     </button>
-    <button type="button" ng-if="vm.deactivated" title="View active {{vm.titleHeader}}" class="btn btn-sm btn-primary pull-right" ng-click="goTo({data:{page:1, limit:'', deactivated: false}})">
+    <button type="button" ng-if="vm.deactivated" title="View active {{vm.titleHeader}}" class="btn btn-sm btn-primary pull-right" ng-click="goTo({data:{page:1, limit:10, deactivated: false}})">
         <span ng-bind="'View Active '+vm.titleHeader"></span>
     </button>
 </div>
 <div style="clear:both;"></div>
+<!-- temporary for ecl only -->
 
 <div class="table-responsive top-margin-sm">
     <table class="table table-hover" style="border: solid 1px #ddd;" >

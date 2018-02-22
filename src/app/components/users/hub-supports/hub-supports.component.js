@@ -50,7 +50,8 @@ import MESSAGE from 'Helpers/message';
         vm.option_table         = {
             defaultPagination   : true,
             hideSearchByKey     : true,
-            searchTemplate      : true
+            searchTemplate      : true,
+            tableDeactivate     : true 
         };
 
         vm.option_table.columnDefs = TABLES.hub_supports.columnDefs;
@@ -69,8 +70,7 @@ import MESSAGE from 'Helpers/message';
 
         getHubs();
 
-        function getHubs() {
-            vm.loading = true;
+        function getHubs() { 
             var request = {
                 method: 'GET',
                 body: false,
@@ -92,12 +92,10 @@ import MESSAGE from 'Helpers/message';
                         vm.hubs = handleNames(response.data.data.items); 
                     },
                     function(err) {
-                        //logger.error(MESSAGE.error, err, '');
+                        logger.error(MESSAGE.loggerFailed(vm.title, request.method));
+                        console.log(err);
                     }
-                )
-                .finally(function() {
-                    vm.loading = false;
-                });
+                );
         }
 
         function createHubSupport () {
@@ -114,14 +112,17 @@ import MESSAGE from 'Helpers/message';
 
             ModalService
                 .form_modal(request, modal, 'hubSupportForm', 'md', '')
-                .then(function(response) { 
-                    if (response) {
+                .then(
+                    function(response) { 
+                        if (!response) return;
+                        response.updated = new Date();
                         vm.option_table.data.unshift(response); 
-                        vm.option_table.data = handleNames(vm.option_table.data);
+                        vm.option_table.data = handleNames(vm.option_table.data); 
+                    }, 
+                    function(error) {
+                        console.log(error); 
                     }
-                }, function(error) {
-                    console.log(error); 
-                }); 
+                ); 
         }
 
         function getHubSupports() {
@@ -136,7 +137,7 @@ import MESSAGE from 'Helpers/message';
                 },
                 hasFile: false,
                 route: { [vm.route_name]: '' },
-                cache: true,
+                // cache: true, temporarily removed
                 cache_string: vm.route_name
             };
 
@@ -149,6 +150,7 @@ import MESSAGE from 'Helpers/message';
                         vm.pagination.total     = response.data.data.total;
                     },
                     function(err) {
+                        logger.error(MESSAGE.loggerFailed(vm.title, request.method));
                         console.log(err);
                     }
                 )
@@ -171,17 +173,17 @@ import MESSAGE from 'Helpers/message';
             ModalService
                 .form_modal(request, modal, 'hubSupportForm')
                 .then(
-                    function(response) {
-                        if (response) {
-                            vm.option_table.data[
-                                vm.option_table.data.indexOf(data)
-                            ] = response;
-                            vm.option_table.data = handleNames(
-                                angular.copy(vm.option_table.data)
-                            );
-                        }
+                    function(response) { 
+                        if (!response) return;
+                        response.updated = new Date();
+                        vm.option_table.data[
+                            vm.option_table.data.indexOf(data)
+                        ] = response;
+                        vm.option_table.data = handleNames(
+                            angular.copy(vm.option_table.data)
+                        ); 
                     },
-                    function(error) {
+                    function(error) { 
                         logger.error(
                             error.data.message || catchError(request.route)
                         );
@@ -189,42 +191,51 @@ import MESSAGE from 'Helpers/message';
                 );
         }
 
-        function handleHSActivation(data, action) {
-            // var request = {
-            //     method: 'PUT',
-            //     body: false,
-            //     params: false,
-            //     hasFile: false,
-            //     route: { [vm.route_name]: item.id, deactivate: '' },
-            //     cache: false
-            // };
-
+        function handleHSActivation (data, action) {
             var content = {
-                header: action + ' ' + vm.title,
-                message: MESSAGE.confirmMsg(action, vm.title),
-                prop: data.first_name + ' ' + data.last_name
+                header: action+' '+vm.title,
+                message: MESSAGE.confirmMsg(action, vm.title.toLowerCase()),
+                prop: data.first_name+' '+(data.middle_name+' '||'')+data.last_name
             };
 
-            ModalService.confirm_modal(content).then(
-                function(response) {
-                    if (!response) return;
-                    data.status =
-                        (action == 'reactivate') ? 'active' : 
-                        (action == 'deactivate') ? 'deactivated' : 'deactivated';
-                    vm.option_table.data.splice(
-                        vm.option_table.data.indexOf(
-                            $filter('filter')(vm.option_table.data, {
-                                id: data.id
-                            })[0]
-                        ),
-                        1
-                    );
-                },
-                function(err) {
-                    console.log(err);
-                }
-            );
+            ModalService
+                .confirm_modal(content)
+                .then(
+                    function (response) {
+                        if (!response) return; 
+                        activateDeactivateHs(data, action);
+                    },
+                    function (err) {
+                        console.log(err);
+                    }
+                );
         }
+
+        function activateDeactivateHs (data, action) {
+            var request = {
+                method: 'PUT',
+                body: {},
+                params: false,
+                hasFile: false,
+                route: { site:data.site_id, 'hub-support':data.user_id, [action]:'' } 
+            };
+
+            QueryService
+                .query(request)
+                .then( 
+                    function (response) { 
+                        logger.success(MESSAGE.loggerSuccess(vm.title, '', action+'d'));
+                        vm.option_table.data.splice(
+                            vm.option_table.data.indexOf(
+                                $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
+                            ), 1);
+                    },
+                    function (err) {
+                        logger.error(MESSAGE.loggerFailed(vm.title, '', action));
+                        console.log(err);
+                    }
+                );
+        } 
 
         function handleNames(data) {
             for (let i = 0; i < data.length; i++)
@@ -237,7 +248,7 @@ import MESSAGE from 'Helpers/message';
         }
 
         function goTo(data) {
-            $state.go('app.hub-supports', data);
+            $state.go($state.current.name, data);
         }
 
         vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {

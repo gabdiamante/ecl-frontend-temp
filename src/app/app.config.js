@@ -195,7 +195,7 @@ import angular from 'angular';
             })
 
             .state('app.hub-supports', {
-                url: 'hub-supports?page&limit&view',
+                url: 'hub-supports?page&limit&deactivated',
                 component: 'hubSupports'
             })
 
@@ -205,7 +205,7 @@ import angular from 'angular';
             })
 
             .state('app.customer-supports', {
-                url: 'customer-supports?page&limit&view',
+                url: 'customer-supports?page&limit&deactivated',
                 component: 'customerSupports'
             })
 
