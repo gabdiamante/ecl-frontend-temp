@@ -190,7 +190,12 @@ import MESSAGE from 'Helpers/message';
                 body: false,
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: data.id, [action]: '' },
+                route: {
+                    site: data.site_id,
+                    [vm.route_name]: data.user_id,
+                    [action]: ''
+                },
+                //route: { [vm.route_name]: data.id, [action]: '' },
                 cache: false
             };
 

@@ -164,7 +164,7 @@ var jsts = require('jsts');
         function getSiteFront() {
             vm.site_fronts = [{ code: 'DC', name: 'DC' }];
 
-            if (vm.site_type.code == 'HUB')
+            if (vm.site_type.code != 'DC')
                 vm.site_fronts.unshift({ code: 'HUB', name: 'HUB' });
 
             vm.site_fronts.unshift({ name: 'UNASSIGNED' });
