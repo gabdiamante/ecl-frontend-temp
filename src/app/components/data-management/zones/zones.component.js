@@ -266,10 +266,10 @@ var jsts = require('jsts');
                         getMap();
                         var zones = response.data.data.items || [];
 
-                        vm.zones = $filter('orderBy')(
-                            angular.copy(zones),
+                        vm.zones = $filter('orderBy')(angular.copy(zones), [
                             'created'
-                        );
+                        ]);
+
                         console.log('z res', vm.zones);
 
                         filterStringPolygon(vm.zones);
@@ -293,11 +293,7 @@ var jsts = require('jsts');
                         //     vm.center_map_lat_lng = response.data.data.center.lat + ', ' + response.data.data.center.lng;
                     },
                     function(error) {
-                        logger.log(
-                            error.data.errors[0].context,
-                            error,
-                            error.data.errors[0].message
-                        );
+                        logger.error(error.data.message);
                     }
                 )
                 .finally(function() {

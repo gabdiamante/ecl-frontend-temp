@@ -146,19 +146,24 @@
 										</div>		
 									</div>
 								</form>
-								<ul class="list-group clearfix">											
-									<li class="list-group-item" ng-repeat="zone in vm.filteredZones = (vm.zones | filter:zone)">
-									<!-- 	<div class="pull-right">													
-											<button class="btn-warning btn-xs" title="Update"  ng-show="zone.editable" ng-click="vm.saveChanges(false)">
-												<i class="fa fa-edit"></i>
-											</button>
-											<button class="btn-danger btn-xs" title="Deactivate"  ng-show="zone.editable" ng-click="vm.deleteZone(zone, $index)">
-												<i class="fa fa-trash"></i>
-											</button>
-										</div> -->
-										<i ng-style="{ color: vm.colors[vm.zones.indexOf(zone)] }" class="fa fa-fw fa-map-marker" aria-hidden="true" ></i>
-										<a href="" ng-click="vm.updatePolygon($event, zone, vm.zones.indexOf(zone))" class="text-blue-grey text-bold" ng-bind="zone.code"></a>
-									</li>
+								<ul class="list-group clearfix">	
+									<div ng-show="vm.filteredZones.length" ng-repeat="type in [{ name: 'HUB', code: 'HUB'}, { name: 'DC', code: 'DC'}, { name: 'UNASSIGNED', code: null}]">
+										<div ng-bind="type.name" style="margin-top: 12px; margin-bottom: 12px;"></div> 
+										<div ng-repeat="zone in vm.filteredZones = (vm.zones | filter:zone | filter: { type: type.code } )">
+											<li class="list-group-item" >
+												<!-- 	<div class="pull-right">													
+													<button class="btn-warning btn-xs" title="Update"  ng-show="zone.editable" ng-click="vm.saveChanges(false)">
+														<i class="fa fa-edit"></i>
+													</button>
+													<button class="btn-danger btn-xs" title="Deactivate"  ng-show="zone.editable" ng-click="vm.deleteZone(zone, $index)">
+														<i class="fa fa-trash"></i>
+													</button>
+												</div> -->
+												<i ng-style="{ color: vm.colors[vm.zones.indexOf(zone)] }" class="fa fa-fw fa-map-marker" aria-hidden="true" ></i>
+												<a href="" ng-click="vm.updatePolygon($event, zone, vm.zones.indexOf(zone))" class="text-blue-grey text-bold" ng-bind="zone.code"></a>
+											</li>
+										</div>
+									</div>
 									<div class="text-center" ng-if="!vm.filteredZones.length">
 										<span class="center" ng-bind-html="vm.isLoading | handlefetch : 'zones'"></span>
 									</div>
