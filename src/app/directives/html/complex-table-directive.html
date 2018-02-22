@@ -264,7 +264,7 @@
         </thead>
         <tbody>
             <tr ng-init="parentIndex=$index" ng-repeat="(dataKey, dataVal) in options.data" ng-click="trClick({data: dataVal})">
-                <td ng-hide="columnDefsval.hidden" ng-click="(columnDefsval.cellTemplate.indexOf('check') !=-1 && columnDefsval.cellTemplate.indexOf('check') != null ) && $event.stopPropagation()" ng-init="COL_FIELD=dataVal[columnDefsval.name]; row.columns=columnDefsval; row.entity= dataVal; lastIndex=options.columnDefs.length-1; propertyIndex= $index + (parentIndex * lastIndex) + parentIndex" style="cursor: pointer;" ng-repeat="(columnDefskey, columnDefsval) in options.columnDefs" >
+                <td ng-hide="columnDefsval.hidden" ng-click="(columnDefsval.cellTemplate.indexOf('check') !=-1 && columnDefsval.cellTemplate.indexOf('check') != null ) && $event.stopPropagation()" ng-init="COL_FIELD=dataVal[columnDefsval.name]; row.columns=columnDefsval; row.entity= dataVal; lastIndex=options.columnDefs.length-1; propertyIndex= $index + (parentIndex * lastIndex) + parentIndex" style="cursor: default;" ng-repeat="(columnDefskey, columnDefsval) in options.columnDefs" >
                     <span ng-if="columnDefsval.cellTemplate" compile-html="columnDefsval.cellTemplate"></span>
                     <span ng-if="!columnDefsval.cellTemplate" ng-bind-html="dataVal[columnDefsval.name] | displaynone"></span>
                 </td> 

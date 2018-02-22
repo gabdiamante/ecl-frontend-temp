@@ -3,11 +3,23 @@
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
     <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handlePostItem()" >
-            <i  class="fa fa-plus fa-lg text-white" ></i>
+        <i class="fa fa-plus fa-lg text-white" ></i>
     </button>
-
+    <div class="col-md-12 top-margin-sm">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12" > 
+                <div class="input-group" >
+                    <input type="text" class="form-control" placeholder="Search Courier" ng-model="vm.params.key" /> <!--ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.keyword)"-->
+                    <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                </div> 
+            </div> 
+            <div class="col-md-8 col-sm-8 col-xs-12"></div>
+        </div>
+    </div> 
     <div class="col-md-12">
-            <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
+        <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
     </div>
 </div>
 
@@ -17,7 +29,7 @@
             <i class="fa fa-ellipsis-v"></i>
         </a>
         <ul ng-if="vm.activated" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
-            <li role="menuitem">
+            <li role="menuitem" >
                 <a ui-sref="app.dispatcher-details({ site_id: row.entity.site_id, user_id: row.entity.user_id })">
                     <i class="fa fa-info-circle"></i> &nbsp;Details
                 </a>
