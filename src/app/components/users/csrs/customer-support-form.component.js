@@ -98,7 +98,7 @@ import MESSAGE from 'Helpers/message';
         function save(data) {
             vm.disable = true;
             Request.body = angular.copy(data);
-            if (Request.route.site) Request.route.site = data.site_id;
+            // if (Request.method=='PUT') Request.route.site = data.site_id;
             QueryService
                 .query(Request)
                 .then(
