@@ -64,7 +64,6 @@ import CONSTANTS from 'Helpers/constants';
         vm.zones                    = [];
 
         vm.goTo                 = goTo; 
-        vm.changeListView       = changeListView; 
         vm.handleHSActivation   = handleHSActivation; 
         vm.createCourier        = createCourier;
         vm.updateCourier        = updateCourier;
@@ -247,26 +246,18 @@ import CONSTANTS from 'Helpers/constants';
                 .query(request)
                 .then( 
                     function (response) { 
-                        logger.success(MESSAGE.loggerSuccess('Courier', '', 'deactivated'));
+                        logger.success(MESSAGE.loggerSuccess('Courier', '', action+'d'));
                         vm.option_table.data.splice(
                             vm.option_table.data.indexOf(
                                 $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
                             ), 1);
                     },
                     function (err) {
-                        logger.error(MESSAGE.loggerFailed('Courier', '', 'deactivate'));
+                        logger.error(MESSAGE.loggerFailed('Courier', '', action));
                         console.log(err);
                     }
                 );
         } 
-
-        function changeListView (status) { 
-            $state.go($state.current.name, {
-                page: '1',
-                limit: '10',
-                deactivated: status
-            });
-        }
 
         function selectSiteType (site_type) {
             getSites(site_type);

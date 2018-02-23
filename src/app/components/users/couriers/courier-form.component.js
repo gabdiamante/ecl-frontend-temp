@@ -92,8 +92,9 @@ import MESSAGE from 'Helpers/message';
         }
 
         function save(data) { 
-            Request.body = data; 
             vm.disable = true; 
+            Request.body = data; 
+            // if (Request.method=='PUT') Request.route.site = data.site_id;
             QueryService
                 .query(Request)
                 .then(
