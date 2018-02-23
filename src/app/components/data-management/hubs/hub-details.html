@@ -3,7 +3,7 @@
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
     
-    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handleUpdateItem(vm.item_details)" >
+    <button ng-if="vm.item_details" class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handleUpdateItem(vm.item_details)" >
         <i  class="fa fa-pencil fa-lg text-white" ></i>
     </button>
     <br />

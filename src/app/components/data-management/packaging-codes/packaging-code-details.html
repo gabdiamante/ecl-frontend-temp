@@ -3,7 +3,7 @@
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
     
-    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handleUpdateItem(vm.item_details)" >
+    <button ng-if="vm.item_details" class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handleUpdateItem(vm.item_details)" >
         <i  class="fa fa-pencil fa-lg text-white" ></i>
     </button>
     <br />
@@ -21,16 +21,25 @@
         <div  class="col-md-12">
             <li class="list-group-item clearfix">
                 <span class="col-md-3">Code:</span>
-                <span class="text-bold " ng-cloak ng-bind="vm.item_details.code">  </span>
+                <span class="text-bold " ng-cloak ng-bind-html="vm.item_details.code | displaynone">  </span>
             </li>
             <li class="list-group-item clearfix">
                 <span class="col-md-3">Name:</span>
-                <span class="text-bold " ng-cloak ng-bind="vm.item_details.name">  </span>
+                <span class="text-bold " ng-cloak ng-bind-html="vm.item_details.name | displaynone">  </span>
             </li>
             <li class="list-group-item clearfix">
-                <span class="col-md-3">Address:</span>
-                <span class="text-bold" ng-bind-html="vm.item_details.address | titlecase | displaynone"></span>
+                <span class="col-md-3">Volume:</span>
+                <span class="text-bold " ng-cloak ng-bind-html="vm.item_details.volume | displaynone">  </span>
             </li>
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Weight:</span>
+                <span class="text-bold " ng-cloak ng-bind-html="vm.item_details.weight | displaynone">  </span>
+            </li>
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Dimension:</span>
+                <span class="text-bold " ng-cloak ng-bind-html="vm.item_details.dimension | displaynone">  </span>
+            </li>
+            
             <li class="list-group-item clearfix">
                     <span class="col-md-3">Date Updated:</span>
                     <span class="text-bold" ng-bind-html="vm.item_details.updated | date:short"></span>

@@ -133,18 +133,21 @@
 							</button>
 							<div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box  drop-list" role="menu" >
 								<form class="materialize margin-top" ng-submit="vm.search(vm.key)">
-									<div class="col-md-12">
+									<div class="col-md-12 pad-0" style="margin-bottom:0px;">
 										<div class="col-md-11">
 											<div class="inner-addon left-addon">
 												<i class="fa fa-search"></i>
-												<input type="text" class="form-control input-sm" name="Search" ng-change="vm.resetSearch()" ng-model="zone" placeholder=" " required>
+												<input type="text" class="form-control input-sm" name="Search" ng-disabled="vm.showButton || vm.showSaveChanges" ng-change="vm.resetSearch()" ng-model="zone" placeholder=" " required>
 												<label for="Search" class="md-label" ng-click="vm.cancel()">Search</label>
 											</div>
+											<span class="text-red small" ng-if="vm.showButton || vm.showSaveChanges">Please click the cancel button (green) to enable search!</span>
 											<span class="btn-reset" ng-show="vm.key" ng-click="vm.key='';vm.reset()">
 												&times;
 											</span>
 										</div>		
+										<div style="clear:both;"></div>
 									</div>
+									<div style="clear:both;"></div>
 								</form>
 								<ul class="list-group clearfix">	
 									<div ng-show="vm.filteredZones[type.name].length > 0" ng-repeat="type in [{ name: 'HUB', code: 'HUB'}, { name: 'DC', code: 'DC'}, { name: 'UNASSIGNED', code: null}]">
@@ -168,6 +171,7 @@
 										</div>
 									</div>
 									
+									
 									<div class="text-center" ng-show="vm.filteredZones['HUB'].length == 0 && vm.filteredZones['DC'].length == 0 && vm.filteredZones['UNASSIGNED'].length == 0">
 										<span class="center" ng-bind-html="vm.isLoading | handlefetch : 'zones'"></span>
 									</div>
@@ -180,7 +184,7 @@
 			</div>
 			<div class="map-toolbar-bottom clearfix">
 				<div class="">
-					<div class="col-md-4" >						
+					<div class="col-md-4" >				
 						<div class="col-md-4 btn-group text-white">
 							<div ng-show="vm.showName">
 								<span>Code: <span class="text-bold" ng-bind="vm.selectedZone.code"></span></span> <br>
@@ -197,6 +201,7 @@
 					</div>
 					<div class="col-md-4">
 						<div class="btn-group padding" ng-show="vm.showName">
+							<i ng-style="{ color: (vm.selectedZone.type == 'HUB' || vm.selectedZone.type == 'DC') ?  vm.colors[vm.shapeIndex] : 'black' }"  class="fa fa-fw fa-1x fa-map-marker shadow-white-color"></i>
 							<button class="btn-success btn-xs" title="Cancel" ng-click="vm.cancel()">
 								<i class="fa fa-chevron-circle-left"></i>
 							</button>

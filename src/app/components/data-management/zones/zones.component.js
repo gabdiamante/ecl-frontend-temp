@@ -408,8 +408,8 @@ var jsts = require('jsts');
                 handleOverlap();
 
                 vm.completedPolygon = JSON.stringify(polygon[0]);
-                return vm.completedPolygon;
                 vm.showPolygonCreate = true;
+                return vm.completedPolygon;
             } else {
                 logger.error('Polygon Sides should be greater than 2');
                 clearPolygon();
@@ -466,15 +466,18 @@ var jsts = require('jsts');
         }
 
         function checkPolygon(poly1, poly2) {
-            var wicket = new Wkt.Wkt();
+            try {
+                var wicket = new Wkt.Wkt();
 
-            wicket.fromObject(poly1);
-            var wkt1 = wicket.write();
+                wicket.fromObject(poly1);
+                var wkt1 = wicket.write();
 
-            wicket.fromObject(poly2);
-            var wkt2 = wicket.write();
-
-            return [wkt1, wkt2];
+                wicket.fromObject(poly2);
+                var wkt2 = wicket.write();
+                return [wkt1, wkt2];
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         function handleOverlap() {
@@ -615,6 +618,7 @@ var jsts = require('jsts');
                             vm.shapePath = null;
                             GLOBAL.removeCache('zones', httpCache);
                             vm.showButton = false;
+                            vm.showPolygonCreate = false;
                             getZones(vm.search_key);
                         }
                     },
@@ -668,6 +672,7 @@ var jsts = require('jsts');
                         vm.showButton = false;
                         vm.showSaveChanges = false;
                         vm.pending_update = 0;
+                        vm.showPolygonCreate = false;
                         logger.success('Zone area updated');
                         getZones(vm.search_key);
                     },
@@ -689,9 +694,9 @@ var jsts = require('jsts');
                 titleHeader: 'Update ' + vm.title,
                 title: vm.title,
                 site_type:
+                    resOverlap.type_cond ||
                     vm.site_front.code ||
                     vm.site_type.code ||
-                    resOverlap.type_cond ||
                     'HUB'
             };
 
@@ -716,6 +721,7 @@ var jsts = require('jsts');
                         vm.showButton = false;
                         vm.showSaveChanges = false;
                         vm.pending_update = 0;
+                        vm.showPolygonCreate = false;
                         getZones(vm.search_key);
                     }
                 },
@@ -793,12 +799,7 @@ var jsts = require('jsts');
                 // }
             }
 
-            if (
-                (!vm.showPolygonCreate &&
-                    !vm.shapePath &&
-                    vm.pending_update <= 0) ||
-                forceTransition
-            ) {
+            if ((!vm.shapePath && vm.pending_update <= 0) || forceTransition) {
                 vm.selectedZone = shape || {};
                 vm.selectedZone.index = index;
                 vm.notCompleted = true;
@@ -963,9 +964,9 @@ var jsts = require('jsts');
                 $timeout.cancel(vm.zoneSearchTimeOut);
             }
             vm.zoneSearchTimeOut = $timeout(function() {
-                vm.saveChanges(true);
+                // vm.saveChanges(true); // function to execute after 2 seconds
                 vm.zoneSearchTimeOut = null;
-            }, 1000);
+            }, 2000);
         }
 
         function confirmation(content) {

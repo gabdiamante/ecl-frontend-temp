@@ -857,3 +857,16 @@ body.scroll::-webkit-scrollbar {
 } */
 
 /******************************************************/
+
+/***************Stroke CSS **************/
+.shadow-white-color {
+    /* -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgba(255,255,255,0.2); */
+
+    /* -webkit-text-stroke: 1px black; */
+    /* color: white; */
+    text-shadow: 0px 3px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff,
+        -1px 1px 0 #fff, 1px 1px 0 #fff;
+}
+
+/******************************************************/

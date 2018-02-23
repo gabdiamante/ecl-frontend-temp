@@ -94,7 +94,11 @@ import CONSTANTS from 'Helpers/constants';
                         // vm.total_items          = response.data.data.total;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.error(
+                            error.data.errors[0].message,
+                            {},
+                            error.data.errors[0].code
+                        );
                     }
                 )
                 .finally(function() {
