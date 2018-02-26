@@ -793,10 +793,7 @@ import angular from 'angular';
 
                 function maxSizeChange() {
                     // Get window width
-                    $scope.windowWidth =
-                        'innerWidth' in window
-                            ? window.innerWidth
-                            : document.documentElement.offsetWidth;
+                    $scope.windowWidth = 'innerWidth' in window ? window.innerWidth : document.documentElement.offsetWidth;
 
                     // Change maxSize based on window width
                     if ($scope.windowWidth > 1000) {

@@ -754,9 +754,7 @@ var jsts = require('jsts');
             } else {
                 return {
                     type_cond:
-                        overlapcondfilter_hub.length > 0
-                            ? 'DC'
-                            : overlapcondfilter_dc.length > 0 ? 'HUB' : 'HUB',
+                        overlapcondfilter_hub.length > 0 ? 'DC' : overlapcondfilter_dc.length > 0 ? 'HUB' : 'HUB',
                     general_overlap: general_overlap
                 };
             }
