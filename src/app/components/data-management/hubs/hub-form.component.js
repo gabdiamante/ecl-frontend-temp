@@ -1,5 +1,6 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
+import MESSAGE from 'Helpers/message';
 
 (function() {
     'use strict';
@@ -41,15 +42,17 @@ import GLOBAL from 'Helpers/global';
         vm.save = save;
         vm.cancel = cancel;
 
+        var Modal = null;
+        var Request = null;
+
         vm.$onInit = function() {
-            vm.Request = vm.resolve.Request;
-            vm.Modal = vm.resolve.Modal;
+            Modal = vm.resolve.Modal;
+            Request = vm.resolve.Request;
 
-            vm.titleHeader = vm.Modal.titleHeader;
-            vm.data = angular.copy(vm.Request.body);
+            vm.titleHeader = Modal.titleHeader;
+            vm.title = Modal.title;
+            vm.data = angular.copy(Request.body);
             vm.storeData = [];
-
-            //console.log(Modal);
         };
 
         function save(data, action) {
@@ -57,50 +60,29 @@ import GLOBAL from 'Helpers/global';
             vm.loading = true;
 
             vm.data.type = 'HUB';
-            vm.Request.body = vm.data;
+            Request.body = vm.data;
 
-            if (vm.Modal.method == 'add') {
-                console.log(vm.Modal.method);
-                QueryService.query(vm.Request)
-                    .then(
-                        function(response) {
-                            var response_data =
-                                response.data.data.items[0] || {};
-                            logger.success(vm.Modal.title + ' added.');
-                            close(response_data, action);
-                        },
-                        function(error) {
-                            logger.error(error.data.message);
-                        }
-                    )
-                    .finally(function() {
-                        vm.loading = false;
-                        vm.disable = false;
-                    });
-            } else if (vm.Modal.method == 'edit') {
-                console.log(vm.Request);
-
-                QueryService.query(vm.Request)
-                    .then(
-                        function(response) {
-                            var response_data =
-                                response.data.data.items[0] || {};
-                            logger.success(vm.Modal.title + ' updated.');
-                            close(response_data, action);
-                        },
-                        function(err) {
-                            logger.error(error.data.message);
-                        }
-                    )
-                    .finally(function() {
-                        vm.loading = false;
-                        vm.disable = false;
-                    });
-            }
-        }
-
-        function close(data, action) {
-            vm.modalInstance.close(data);
+            QueryService.query(Request)
+                .then(
+                    function(response) {
+                        var response_data = response.data.data.items[0] || {};
+                        logger.success(
+                            MESSAGE.loggerSuccess(vm.title, Request.method)
+                        );
+                        vm.modalInstance.close(response_data);
+                    },
+                    function(error) {
+                        console.log(err);
+                        logger.error(
+                            MESSAGE.loggerFailed(vm.title, Request.method)
+                        );
+                        logger.error(error.data.message);
+                    }
+                )
+                .finally(function() {
+                    vm.loading = false;
+                    vm.disable = false;
+                });
         }
 
         function cancel(data) {

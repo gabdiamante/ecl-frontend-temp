@@ -1,6 +1,7 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import DUMMY from 'Helpers/dummy';
+import MESSAGE from 'Helpers/message';
 
 (function() {
     'use strict';
@@ -42,12 +43,16 @@ import DUMMY from 'Helpers/dummy';
         vm.save = save;
         vm.cancel = cancel;
 
-        vm.$onInit = function() {
-            vm.Request = vm.resolve.Request;
-            vm.Modal = vm.resolve.Modal;
+        var Modal = null;
+        var Request = null;
 
-            vm.titleHeader = vm.Modal.titleHeader;
-            vm.data = angular.copy(vm.Request.body);
+        vm.$onInit = function() {
+            Modal = vm.resolve.Modal;
+            Request = vm.resolve.Request;
+
+            vm.titleHeader = Modal.titleHeader;
+            vm.title = Modal.title;
+            vm.data = angular.copy(Request.body);
             console.log(vm.data);
             vm.storeData = [];
 
@@ -56,7 +61,7 @@ import DUMMY from 'Helpers/dummy';
         };
 
         function getHubs() {
-            vm.loading = true;
+            vm.loadingHubs = true;
             var request = {
                 method: 'GET',
                 body: false,
@@ -80,27 +85,26 @@ import DUMMY from 'Helpers/dummy';
                         vm.hubs = response.data.data.items;
                         vm.hubs.unshift({ code: 'Unassign Hub' });
                         vm.data.hub_id = vm.data.hub_id || vm.hubs[0].id;
-                        // vm.total_items          = response.data.data.total;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
-                    vm.loading = false;
+                    vm.loadingHubs = false;
                 });
         }
 
         function getZones() {
-            vm.loading = true;
+            vm.loadingZones = true;
             var request = {
                 method: 'GET',
                 body: false,
                 params: {
                     limit: '9999999999',
                     page: '1',
-                    is_active: 1,
-                    site_type: 'DC'
+                    is_active: 1
+                    // site_type: 'DC'
                 },
                 hasFile: false,
                 route: { zone: '' },
@@ -118,21 +122,21 @@ import DUMMY from 'Helpers/dummy';
                         vm.data.zone_id = vm.data.zone_id || vm.zones[0].id;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
-                    vm.loading = false;
+                    vm.loadingZones = false;
                 });
         }
 
-        function save(data) {
-            vm.oldZoneId = angular.copy(vm.Request.body.zone_id);
+        function save(data, action) {
+            vm.oldZoneId = angular.copy(Request.body.zone_id);
             vm.disable = true;
             vm.loading = true;
 
             vm.data.type = 'DC';
-            vm.Request.body = {
+            Request.body = {
                 name: vm.data.name,
                 code: vm.data.code,
                 hub_id: vm.data.hub_id,
@@ -142,42 +146,28 @@ import DUMMY from 'Helpers/dummy';
                 lng: vm.data.lng
             };
 
-            console.log('req', vm.Request);
-
-            if (vm.Modal.method == 'add') {
-                QueryService.query(vm.Request)
-                    .then(
-                        function(response) {
-                            if (vm.data.zone_id) updateZone(response);
-                            else
-                                executeClosing(
-                                    response.data.data.items[0] || {}
-                                );
-                        },
-                        function(error) {
-                            logger.error(error.data.message);
-                        }
-                    )
-                    .finally(function() {
-                        vm.loading = false;
-                        vm.disable = false;
-                    });
-            } else if (vm.Modal.method == 'edit') {
-                QueryService.query(vm.Request)
-                    .then(
-                        function(response) {
-                            if (vm.data.zone_id) updateZone(response);
-                            else unassignZone(response);
-                        },
-                        function(err) {
-                            logger.error(error.data.message);
-                        }
-                    )
-                    .finally(function() {
-                        vm.loading = false;
-                        vm.disable = false;
-                    });
-            }
+            QueryService.query(Request)
+                .then(
+                    function(response) {
+                        var response_data = response.data.data.items[0] || {};
+                        if (vm.data.zone_id) updateZone(response);
+                        else if (Request.method == 'POST')
+                            executeClosing(response.data.data.items[0] || {});
+                        else if (Request.method == 'PUT')
+                            unassignZone(response);
+                    },
+                    function(error) {
+                        console.log(error);
+                        logger.error(
+                            MESSAGE.loggerFailed(vm.title, Request.method)
+                        );
+                        logger.errorFormatResponse(error);
+                    }
+                )
+                .finally(function() {
+                    vm.loading = false;
+                    vm.disable = false;
+                });
         }
 
         function unassignZone(response) {
@@ -203,7 +193,7 @@ import DUMMY from 'Helpers/dummy';
                         executeClosing(item, response);
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -234,7 +224,7 @@ import DUMMY from 'Helpers/dummy';
                         executeClosing(item, response);
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -243,25 +233,14 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function executeClosing(item, response_zone) {
-            if (vm.Modal.method == 'add') {
-                logger.success(vm.Modal.title + ' added.');
-            } else if (vm.Modal.method == 'edit') {
-                logger.success(vm.Modal.title + ' updated.');
-            }
-
+            logger.success(MESSAGE.loggerSuccess(vm.title, Request.method));
             vm.response_data = item;
-
             if (response_zone) {
                 var response_zone_data = response_zone.data.data.items[0] || {};
                 vm.response_data.zone_id = response_zone_data.id;
                 vm.response_data.zone_code = response_zone_data.code;
             }
-
-            close(vm.response_data);
-        }
-
-        function close(data) {
-            vm.modalInstance.close(data);
+            vm.modalInstance.close(vm.response_data);
         }
 
         function cancel(data) {

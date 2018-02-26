@@ -15,6 +15,7 @@ import 'angular-animate';
 import 'google-charts';
 import 'ngmap';
 import 'ngstorage';
+import 'ng-file-upload';
 
 (function() {
     'use strict';
@@ -36,6 +37,7 @@ import 'ngstorage';
         require('checklist-model'),
         require('angular-ui-mask'),
         'ngAnimate',
-        'ngStorage'
+        'ngStorage',
+        'ngFileUpload'
     ]);
 })();

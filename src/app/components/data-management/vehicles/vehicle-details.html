@@ -3,7 +3,7 @@
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
     
-    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handleUpdateItem(vm.item_details)" >
+    <button ng-if="vm.item_details" class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handleUpdateItem(vm.item_details)" >
         <i  class="fa fa-pencil fa-lg text-white" ></i>
     </button>
     <br />
@@ -37,8 +37,8 @@
             </li>
             
             <li class="list-group-item clearfix">
-                <span class="col-md-3">Hub:</span>
-                <span class="text-bold" ng-bind-html="vm.item_details.hub_name | displaynone"></span>
+                <span class="col-md-3">Site <span ng-if="vm.item_details.site_type" ng-bind="'(' + vm.item_details.site_type + ')'"></span> :</span>
+                <span class="text-bold" ng-bind-html="vm.item_details.site_code | displaynone"></span>
             </li>
             <li class="list-group-item clearfix">
                     <span class="col-md-3">Date Updated:</span>

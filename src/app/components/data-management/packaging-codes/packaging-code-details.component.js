@@ -29,8 +29,10 @@ import DUMMY from 'Helpers/dummy';
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Packaging Code Details';
         vm.route_name = 'packaging_code';
+        vm.title = 'Packaging Code';
+        vm.titleHeader = vm.title + ' Details';
+
         vm.handleUpdateItem = handleUpdateItem;
 
         vm.$onInit = function() {
@@ -56,7 +58,7 @@ import DUMMY from 'Helpers/dummy';
                         vm.item_details = response.data.data.items[0];
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -66,9 +68,8 @@ import DUMMY from 'Helpers/dummy';
 
         function handleUpdateItem(item) {
             var modal = {
-                title: 'Packaging Code',
-                titleHeader: 'Edit Packaging Code',
-                method: 'edit'
+                title: vm.title,
+                titleHeader: 'Edit ' + vm.title
             };
 
             var request = {
@@ -88,7 +89,7 @@ import DUMMY from 'Helpers/dummy';
                     }
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    logger.errorFormatResponse(error);
                 }
             );
         }

@@ -29,7 +29,8 @@ import DUMMY from 'Helpers/dummy';
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Bin Details';
+        vm.title = 'Bin';
+        vm.titleHeader = vm.title + ' Details';
         vm.route_name = 'bin';
 
         vm.handleUpdateItem = handleUpdateItem;
@@ -57,7 +58,7 @@ import DUMMY from 'Helpers/dummy';
                         vm.item_details = response.data.data.items[0];
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -67,9 +68,8 @@ import DUMMY from 'Helpers/dummy';
 
         function handleUpdateItem(item) {
             var modal = {
-                title: 'Bin',
-                titleHeader: 'Edit Bin',
-                method: 'edit'
+                title: vm.title,
+                titleHeader: 'Edit ' + vm.title
             };
 
             var request = {
@@ -89,7 +89,7 @@ import DUMMY from 'Helpers/dummy';
                     }
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    logger.errorFormatResponse(error);
                 }
             );
         }

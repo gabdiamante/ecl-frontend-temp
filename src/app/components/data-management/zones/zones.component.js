@@ -91,6 +91,7 @@ var jsts = require('jsts');
         vm.overlapCopy = false;
         vm.zoneNotYetLoaded = true;
         vm.showName = false;
+        vm.showPolygonCreate = false;
 
         vm.updated_pol = null;
 
@@ -113,6 +114,7 @@ var jsts = require('jsts');
         vm.zoomIn = zoomIn;
         vm.zoomOut = zoomOut;
         vm.resetZoom = resetZoom;
+        vm.resetSearch = resetSearch;
         vm.selectType = selectType;
         vm.selectSiteFront = selectSiteFront;
         vm.selectSite = selectSite;
@@ -203,7 +205,7 @@ var jsts = require('jsts');
                         getZones(vm.search_key, true);
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                         //logger.error(MESSAGE.error, err, '');
                     }
                 )
@@ -293,7 +295,7 @@ var jsts = require('jsts');
                         //     vm.center_map_lat_lng = response.data.data.center.lat + ', ' + response.data.data.center.lng;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -406,6 +408,7 @@ var jsts = require('jsts');
                 handleOverlap();
 
                 vm.completedPolygon = JSON.stringify(polygon[0]);
+                vm.showPolygonCreate = true;
                 return vm.completedPolygon;
             } else {
                 logger.error('Polygon Sides should be greater than 2');
@@ -463,15 +466,18 @@ var jsts = require('jsts');
         }
 
         function checkPolygon(poly1, poly2) {
-            var wicket = new Wkt.Wkt();
+            try {
+                var wicket = new Wkt.Wkt();
 
-            wicket.fromObject(poly1);
-            var wkt1 = wicket.write();
+                wicket.fromObject(poly1);
+                var wkt1 = wicket.write();
 
-            wicket.fromObject(poly2);
-            var wkt2 = wicket.write();
-
-            return [wkt1, wkt2];
+                wicket.fromObject(poly2);
+                var wkt2 = wicket.write();
+                return [wkt1, wkt2];
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         function handleOverlap() {
@@ -575,6 +581,7 @@ var jsts = require('jsts');
 
         function savePolygon() {
             var resOverlap = preventOverlapUponSubmitHubDc('new');
+            // console.log('resOverlap',resOverlap);
             if (!resOverlap) return; // do not execute below
 
             var new_polygon = onMapOverlayCompleted(vm.shape);
@@ -604,18 +611,19 @@ var jsts = require('jsts');
             };
 
             if (vm.showModal) {
-                formModal(request, modal, vm.TPLS).then(
+                ModalService.form_modal(request, modal, vm.TPLS).then(
                     function(response) {
                         if (response) {
                             vm.shapePath.setMap(null);
                             vm.shapePath = null;
                             GLOBAL.removeCache('zones', httpCache);
                             vm.showButton = false;
+                            vm.showPolygonCreate = false;
                             getZones(vm.search_key);
                         }
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        console.log(error);
                     }
                 );
             }
@@ -664,11 +672,12 @@ var jsts = require('jsts');
                         vm.showButton = false;
                         vm.showSaveChanges = false;
                         vm.pending_update = 0;
+                        vm.showPolygonCreate = false;
                         logger.success('Zone area updated');
                         getZones(vm.search_key);
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -685,9 +694,9 @@ var jsts = require('jsts');
                 titleHeader: 'Update ' + vm.title,
                 title: vm.title,
                 site_type:
+                    resOverlap.type_cond ||
                     vm.site_front.code ||
                     vm.site_type.code ||
-                    resOverlap.type_cond ||
                     'HUB'
             };
 
@@ -702,24 +711,25 @@ var jsts = require('jsts');
 
             console.log('zone update r', request);
 
-            if (vm.showModal) {
-                formModal(request, modal, vm.TPLS).then(
-                    function(response) {
-                        if (response) {
-                            GLOBAL.removeCache('zones', httpCache);
-                            vm.showName = false;
-                            vm.shapePath = null;
-                            vm.showButton = false;
-                            vm.showSaveChanges = false;
-                            vm.pending_update = 0;
-                            getZones(vm.search_key);
-                        }
-                    },
-                    function(error) {
-                        logger.error(error.data.message);
+            // if (vm.showModal) {
+            ModalService.form_modal(request, modal, vm.TPLS).then(
+                function(response) {
+                    if (response) {
+                        GLOBAL.removeCache('zones', httpCache);
+                        vm.showName = false;
+                        vm.shapePath = null;
+                        vm.showButton = false;
+                        vm.showSaveChanges = false;
+                        vm.pending_update = 0;
+                        vm.showPolygonCreate = false;
+                        getZones(vm.search_key);
                     }
-                );
-            }
+                },
+                function(error) {
+                    console.log(error);
+                }
+            );
+            // }
         }
 
         function preventOverlapUponSubmitHubDc(indexValue) {
@@ -770,20 +780,29 @@ var jsts = require('jsts');
             }
         }
 
-        function formModal(request, modal, template, size) {
-            return ModalService.form_modal(request, modal, template, size);
-        }
+        function updatePolygon(e, shape, index, forceTransition) {
+            if (forceTransition) {
+                // vm.saveChanges(true);
+                // delete vm.shapeIndex;
+                // vm.selectedZone = {};
+                // vm.showName = false;
+                // vm.shapePath = null;
+                // vm.overlap = angular.copy(vm.overlapCopy);
+                // vm.showSaveChanges = false;
+                // vm.pending_update = 0;
+                // for (var i = vm.zones.length - 1; i >= 0; i--) {
+                //     vm.zones[i].editable = false;
+                // }
+            }
 
-        function updatePolygon(e, shape, index) {
-            vm.showName = true;
-
-            vm.cancelButton = true;
-            if (!vm.shapePath && vm.pending_update <= 0) {
+            if ((!vm.shapePath && vm.pending_update <= 0) || forceTransition) {
                 vm.selectedZone = shape || {};
                 vm.selectedZone.index = index;
                 vm.notCompleted = true;
                 vm.updated_shape = shape;
                 vm.shapeIndex = index;
+                vm.showName = true;
+                vm.cancelButton = true;
 
                 if (angular.equals(shape.polygon, [[0, 0]])) {
                     vm.showSaveChanges = false;
@@ -849,6 +868,7 @@ var jsts = require('jsts');
             vm.showButton = false;
             vm.showDrawingManager = false;
             vm.completedPolygon = [];
+            vm.showPolygonCreate = false;
         }
 
         function deleteZone(zone, index) {
@@ -872,26 +892,30 @@ var jsts = require('jsts');
                 prop: zone.code + ' - ' + zone.name
             };
 
-            confirmation(content).then(function(response) {
-                if (response) {
-                    QueryService.query(request).then(
-                        function(response) {
-                            vm.selectedZone = {};
-                            vm.showName = false;
-                            vm.shapePath = null;
-                            vm.showButton = false;
-                            vm.showSaveChanges = false;
-                            vm.pending_update = 0;
-                            getZones(vm.search_key);
-
-                            logger.success('Zone deleted');
-                        },
-                        function(error) {
-                            logger.error(error.data.message);
-                        }
-                    );
+            ModalService.confirm_modal(content).then(
+                function(response) {
+                    if (response) {
+                        QueryService.query(request).then(
+                            function(response) {
+                                vm.selectedZone = {};
+                                vm.showName = false;
+                                vm.shapePath = null;
+                                vm.showButton = false;
+                                vm.showSaveChanges = false;
+                                vm.pending_update = 0;
+                                getZones(vm.search_key);
+                                logger.success('Zone deleted');
+                            },
+                            function(error) {
+                                logger.errorFormatResponse(error);
+                            }
+                        );
+                    }
+                },
+                function(error) {
+                    console.log(error);
                 }
-            });
+            );
         }
 
         function search(key) {
@@ -933,8 +957,16 @@ var jsts = require('jsts');
             centerToPolygons(vm.geofenceMap.shapes);
         }
 
-        function confirmation(content) {
-            return ModalService.confirm_modal(content);
+        function resetSearch() {
+            if (vm.zoneSearchTimeOut) {
+                // if there is already a timeout in process cancel it
+                // vm.loadingGeo = true;
+                $timeout.cancel(vm.zoneSearchTimeOut);
+            }
+            vm.zoneSearchTimeOut = $timeout(function() {
+                // vm.saveChanges(true); // function to execute after 2 seconds
+                vm.zoneSearchTimeOut = null;
+            }, 2000);
         }
 
         function filterStringPolygon(zones) {
