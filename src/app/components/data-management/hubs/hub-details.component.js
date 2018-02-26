@@ -29,7 +29,8 @@ import DUMMY from 'Helpers/dummy';
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Hub Details';
+        vm.title = 'Hub';
+        vm.titleHeader = vm.title + ' Details';
         vm.route_name = 'site';
         vm.handleUpdateItem = handleUpdateItem;
 
@@ -66,9 +67,8 @@ import DUMMY from 'Helpers/dummy';
 
         function handleUpdateItem(item) {
             var modal = {
-                title: 'Hub',
-                titleHeader: 'Edit Hub',
-                method: 'edit'
+                title: vm.title,
+                titleHeader: 'Edit ' + vm.title
             };
 
             var request = {

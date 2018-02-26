@@ -2,6 +2,7 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import DUMMY from 'Helpers/dummy';
 import CONSTANTS from 'Helpers/constants';
+import MESSAGE from 'Helpers/message';
 
 (function() {
     'use strict';
@@ -42,22 +43,24 @@ import CONSTANTS from 'Helpers/constants';
         // methods
         vm.save = save;
         vm.cancel = cancel;
-
         vm.changeSiteType = changeSiteType;
 
-        vm.$onInit = function() {
-            vm.Request = vm.resolve.Request;
-            vm.Modal = vm.resolve.Modal;
+        var Modal = null;
+        var Request = null;
 
-            vm.titleHeader = vm.Modal.titleHeader;
-            vm.data = angular.copy(vm.Request.body);
+        vm.$onInit = function() {
+            Request = vm.resolve.Request;
+            Modal = vm.resolve.Modal;
+
+            vm.titleHeader = Modal.titleHeader;
+            vm.title = Modal.title;
+            vm.data = angular.copy(Request.body);
             vm.storeData = [];
 
             getSiteTypes();
 
             getSites();
             getVehicleType();
-            //console.log(Modal);
         };
 
         function getSiteTypes() {
@@ -90,10 +93,9 @@ import CONSTANTS from 'Helpers/constants';
                         vm.sites = response.data.data.items;
                         vm.sites.unshift({ code: 'Select Sites' });
                         vm.data.site_id = vm.data.site_id || vm.sites[0].id;
-                        // vm.total_items          = response.data.data.total;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -115,55 +117,34 @@ import CONSTANTS from 'Helpers/constants';
             vm.disable = true;
             vm.loading = true;
 
-            vm.Request.body = vm.data;
+            Request.body = vm.data;
 
-            if (vm.Modal.method == 'add') {
-                console.log(vm.Modal.method);
-                QueryService.query(vm.Request)
-                    .then(
-                        function(response) {
-                            var response_data =
-                                response.data.data.items[0] || {};
-                            logger.success(vm.Modal.title + ' added.');
-                            close(response_data, action);
-                        },
-                        function(error) {
-                            logger.error(error.data.message);
-                        }
-                    )
-                    .finally(function() {
-                        vm.loading = false;
-                        vm.disable = false;
-                    });
-            } else if (vm.Modal.method == 'edit') {
-                console.log(vm.Request);
-
-                QueryService.query(vm.Request)
-                    .then(
-                        function(response) {
-                            var response_data =
-                                response.data.data.items[0] || {};
-                            logger.success(vm.Modal.title + ' updated.');
-                            close(response_data, action);
-                        },
-                        function(err) {
-                            logger.error(error.data.message);
-                        }
-                    )
-                    .finally(function() {
-                        vm.loading = false;
-                        vm.disable = false;
-                    });
-            }
+            QueryService.query(Request)
+                .then(
+                    function(response) {
+                        var response_data = response.data.data.items[0] || {};
+                        logger.success(
+                            MESSAGE.loggerSuccess(vm.title, Request.method)
+                        );
+                        vm.modalInstance.close(response_data);
+                    },
+                    function(error) {
+                        console.log(error);
+                        logger.error(
+                            MESSAGE.loggerFailed(vm.title, Request.method)
+                        );
+                        logger.errorFormatResponse(error);
+                    }
+                )
+                .finally(function() {
+                    vm.loading = false;
+                    vm.disable = false;
+                });
         }
 
         function changeSiteType(item) {
             //vm.data.site_id = null; //temporary
             getSites();
-        }
-
-        function close(data, action) {
-            vm.modalInstance.close(data);
         }
 
         function cancel(data) {

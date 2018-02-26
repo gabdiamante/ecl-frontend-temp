@@ -29,7 +29,8 @@ import DUMMY from 'Helpers/dummy';
         logger
     ) {
         var vm = this;
-        vm.titleHeader = 'Distribution Centers Details';
+        vm.title = 'Distribution Center';
+        vm.titleHeader = vm.title + ' Details';
         vm.handleUpdateItem = handleUpdateItem;
         vm.route_name = 'site';
 
@@ -59,7 +60,7 @@ import DUMMY from 'Helpers/dummy';
                         );
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -69,9 +70,8 @@ import DUMMY from 'Helpers/dummy';
 
         function handleUpdateItem(item) {
             var modal = {
-                title: 'Distribution Center',
-                titleHeader: 'Edit Distribution Center',
-                method: 'edit'
+                title: vm.title,
+                titleHeader: 'Edit ' + vm.title
             };
 
             var request = {
@@ -91,7 +91,7 @@ import DUMMY from 'Helpers/dummy';
                     }
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    logger.errorFormatResponse(error);
                 }
             );
         }

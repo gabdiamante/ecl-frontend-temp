@@ -2,4 +2,86 @@
     <div class="col-md-12 sub-header">
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
+
+    <div class="col-md-12 margin-top">
+        <br/>
+        <div class="btn-group margin-top">
+            <label class="btn radio-btn" title="Import" ng-model="vm.action" uib-btn-radio="'import'" uib-uncheckable>
+                <i class="fa fa-upload"></i>
+                <br/>
+                Import
+            </label>
+            <label class="btn radio-btn" title="Export" ng-model="vm.action" uib-btn-radio="'export'" uib-uncheckable>
+                <i class="fa fa-download"></i>
+                <br/>
+                Export
+            </label>
+        </div>
+        <!-- <button class="btn btn-primary margin-top" ng-if="vm.action=='export'" ng-click="vm.calendarOnOpen()">
+            <i class="fa fa-calendar"></i> <br>
+            Select Date
+        </button>	
+        <span ng-if="vm.action=='export'" class="btn-trans padding medium">
+            <span class="text-bold"  ng-bind="vm.date.start| date:'MMM dd, yyyy'"></span>
+            <span> - </span><span class="text-bold" ng-bind="vm.date.end| date:'MMM dd, yyyy'"></span>
+        </span> -->
+        <calendar-picker
+            ng-if="vm.calendarActive"
+            start-date="vm.calendarStart"
+            end-date="vm.calendarEnd"
+            on-confirm="vm.calendarOnConfirm(startDate, endDate)"
+            on-cancel="vm.calendarOnCancel(state)" >
+        </calendar-picker>	
+
+    </div>
+
+    <div class="content-body clearfix" ng-repeat="(key,module) in vm.moduleItems">
+        <h3 class="col-md-12" ng-bind="key | titlecase"></h3>
+        <div class="col-md-2" ng-repeat="item in module">
+            <div class="card text-uppercase margin-top margin-bottom pointer">
+                <div 	class="padding btn-primary text-center" 
+                        ng-if="vm.action=='import'" 
+                        type="text" 
+                        aria-label="..." 
+                        ng-model= "vm.csv"
+                        name="file"  
+                        ngf-pattern="'.csv'" 
+                        accept=".csv"
+                        ngf-max-size = "5MB"
+                        title="{{vm.action+' '+  item.name}}" 
+                        ngf-select
+                        ng-change="vm.uploadFile(item, vm.csv, item.name)">
+                    <i class="fa {{item.icon}} fa-2x"></i> <br>
+                    <span ng-bind="item.name | removeUnderscores"></span>
+                </div>
+                <div class="padding btn-primary text-center" 
+                    title="{{vm.action+' '+  item.name}}"  
+                    ng-if="vm.action=='export'" 
+                    ng-click="vm.downloadFile(item, item.name)">
+                    <i class="fa {{item.icon}} fa-2x"></i> <br>
+                    <span ng-bind="item.name | removeUnderscores"></span>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+    <div class="col-md-12 margin-top" ng-if="vm.duplicates.length>0">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <span class="medium" ng-bind="vm.duplicates.length"></span>	
+                    <span class="medium" ng-bind="vm.errorMsg | removeUnderscores"> </span>
+                    <span class="close" ng-click="vm.hideDuplicates()">&times;</span>
+                </div>
+                <div class="panel-body ">
+                    <div class="padding list-scroll">
+                        <ul class="list-group ">
+                            <li class="list-group-item text-bold" ng-repeat="item in vm.duplicates">
+                            <span ng-bind="item"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+    </div>
 </div>

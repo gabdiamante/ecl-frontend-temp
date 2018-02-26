@@ -38,7 +38,8 @@ import angular from 'angular';
         .filter('handleThreshold', handleThreshold)
         .filter('handleStores', handleStores)
         .filter('handlePccDisplay', handlePccDisplay)
-        .filter('filterWithOr', filterWithOr);
+        .filter('filterWithOr', filterWithOr)
+        .filter('removeUnderscores', removeUnderscores);
 
     function handlefetch($sce) {
         return function(input, text, text_muted) {
@@ -638,6 +639,13 @@ import angular from 'angular';
         };
         return function(array, expression) {
             return $filter('filter')(array, expression, comparator);
+        };
+    }
+
+    function removeUnderscores() {
+        return function(text) {
+            var str = text.replace(/_/g, ' ');
+            return str;
         };
     }
 })();

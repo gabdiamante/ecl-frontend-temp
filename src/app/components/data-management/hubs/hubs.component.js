@@ -112,8 +112,7 @@ import MESSAGE from 'Helpers/message';
         function handlePostItem() {
             var modal = {
                 title: vm.title,
-                titleHeader: 'Add ' + vm.title,
-                method: 'add'
+                titleHeader: 'Add ' + vm.title
             };
 
             var request = {
@@ -127,7 +126,7 @@ import MESSAGE from 'Helpers/message';
             ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
-                        response.updatedAt = new Date();
+                        response.updated = new Date();
                         vm.option_table.data.unshift(response);
                     }
                 },
@@ -140,8 +139,7 @@ import MESSAGE from 'Helpers/message';
         function handleUpdateItem(item) {
             var modal = {
                 title: vm.title,
-                titleHeader: 'Edit ' + vm.title,
-                method: 'edit'
+                titleHeader: 'Edit ' + vm.title
             };
 
             var request = {

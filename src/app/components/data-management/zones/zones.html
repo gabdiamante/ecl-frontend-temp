@@ -133,38 +133,46 @@
 							</button>
 							<div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box  drop-list" role="menu" >
 								<form class="materialize margin-top" ng-submit="vm.search(vm.key)">
-									<div class="col-md-12">
+									<div class="col-md-12 pad-0" style="margin-bottom:0px;">
 										<div class="col-md-11">
 											<div class="inner-addon left-addon">
 												<i class="fa fa-search"></i>
-												<input type="text" class="form-control input-sm" name="Search" ng-change="vm.reset()" ng-model="zone" placeholder=" " required>
-												<label for="Search" class="md-label">Search</label>
+												<input type="text" class="form-control input-sm" name="Search" ng-disabled="vm.showButton || vm.showSaveChanges" ng-change="vm.resetSearch()" ng-model="zone" placeholder=" " required>
+												<label for="Search" class="md-label" ng-click="vm.cancel()">Search</label>
 											</div>
+											<span class="text-red small" ng-if="vm.showButton || vm.showSaveChanges">Please click the cancel button (green) to enable search!</span>
 											<span class="btn-reset" ng-show="vm.key" ng-click="vm.key='';vm.reset()">
 												&times;
 											</span>
 										</div>		
+										<div style="clear:both;"></div>
 									</div>
+									<div style="clear:both;"></div>
 								</form>
 								<ul class="list-group clearfix">	
-									<div ng-show="vm.filteredZones.length" ng-repeat="type in [{ name: 'HUB', code: 'HUB'}, { name: 'DC', code: 'DC'}, { name: 'UNASSIGNED', code: null}]">
+									<div ng-show="vm.filteredZones[type.name].length > 0" ng-repeat="type in [{ name: 'HUB', code: 'HUB'}, { name: 'DC', code: 'DC'}, { name: 'UNASSIGNED', code: null}]">
 										<div ng-bind="type.name" style="margin-top: 12px; margin-bottom: 12px;"></div> 
-										<div ng-repeat="zone in vm.filteredZones = (vm.zones | filter:zone | filter: { type: type.code } )">
+										<div ng-repeat="zone in vm.filteredZones[type.name] = (vm.zones | filter:zone | filter: { type: type.code } )">
 											<li class="list-group-item" >
-												<!-- 	<div class="pull-right">													
-													<button class="btn-warning btn-xs" title="Update"  ng-show="zone.editable" ng-click="vm.saveChanges(false)">
+												<div class="pull-right" ng-show="zone.editable">
+													<button class="btn-success btn-xs" title="Cancel" ng-click="vm.cancel()">
+															<i class="fa fa-chevron-circle-left"></i>
+													</button>													
+													<button class="btn-warning btn-xs" title="Update" ng-click="vm.saveChanges(false)">
 														<i class="fa fa-edit"></i>
 													</button>
-													<button class="btn-danger btn-xs" title="Deactivate"  ng-show="zone.editable" ng-click="vm.deleteZone(zone, $index)">
+													<button class="btn-danger btn-xs" title="Deactivate" ng-click="vm.deleteZone(zone, vm.zones.indexOf(zone))">
 														<i class="fa fa-trash"></i>
 													</button>
-												</div> -->
-												<i ng-style="{ color: vm.colors[vm.zones.indexOf(zone)] }" class="fa fa-fw fa-map-marker" aria-hidden="true" ></i>
-												<a href="" ng-click="vm.updatePolygon($event, zone, vm.zones.indexOf(zone))" class="text-blue-grey text-bold" ng-bind="zone.code"></a>
+												</div>
+												<i ng-style="{ color: (zone.type == 'HUB' || zone.type == 'DC') ?  vm.colors[vm.zones.indexOf(zone)] : 'black' }" class="fa fa-fw fa-map-marker" aria-hidden="true" ></i>
+												<a href="" ng-click="vm.updatePolygon($event, zone, vm.zones.indexOf(zone), true)" class="text-blue-grey text-bold" ng-bind="zone.code"></a>
 											</li>
 										</div>
 									</div>
-									<div class="text-center" ng-if="!vm.filteredZones.length">
+									
+									
+									<div class="text-center" ng-show="vm.filteredZones['HUB'].length == 0 && vm.filteredZones['DC'].length == 0 && vm.filteredZones['UNASSIGNED'].length == 0">
 										<span class="center" ng-bind-html="vm.isLoading | handlefetch : 'zones'"></span>
 									</div>
 								</ul>
@@ -176,7 +184,7 @@
 			</div>
 			<div class="map-toolbar-bottom clearfix">
 				<div class="">
-					<div class="col-md-4" >						
+					<div class="col-md-4" >				
 						<div class="col-md-4 btn-group text-white">
 							<div ng-show="vm.showName">
 								<span>Code: <span class="text-bold" ng-bind="vm.selectedZone.code"></span></span> <br>
@@ -193,6 +201,7 @@
 					</div>
 					<div class="col-md-4">
 						<div class="btn-group padding" ng-show="vm.showName">
+							<i ng-style="{ color: (vm.selectedZone.type == 'HUB' || vm.selectedZone.type == 'DC') ?  vm.colors[vm.shapeIndex] : 'black' }"  class="fa fa-fw fa-1x fa-map-marker shadow-white-color"></i>
 							<button class="btn-success btn-xs" title="Cancel" ng-click="vm.cancel()">
 								<i class="fa fa-chevron-circle-left"></i>
 							</button>

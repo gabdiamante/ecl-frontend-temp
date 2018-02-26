@@ -13,14 +13,14 @@
                 <span class="text-red small" ng-show="zoneForm.site_type.$invalid && vm.submitted">* Required</span>
             </div>
             <div class="form-group">
-                <label for="site_id" class="control-label small text-theme">Site:</label>
+                <label for="site_id" class="control-label small text-theme">Site: <span ng-if="vm.loadingSites"> <i class="fa fa-spinner fa-pulse"></i></span> </label>
                 <select class="form-control" ng-options="item.id as item.code for item in vm.sites" ng-model="vm.data.site_id" name="site_id" required>
                 </select>
                 <span class="text-red font-10" ng-show="nameForm.site_id.$invalid && vm.submitted">*Required</span>
             </div>
 
             <div class="form-group">
-                <label for="zone_name" class="control-label small text-theme">Zones:</label>
+                <label for="zone_name" class="control-label small text-theme">Zones: <span ng-if="vm.loadingZones"> <i class="fa fa-spinner fa-pulse"></i></span> </label>
                 <select class="form-control" ng-options="item.id as item.code for item in vm.zones" ng-model="vm.data.zone_id" name="zone_id" required>
                 </select>
                 <span class="text-red font-10" ng-show="nameForm.zone_id.$invalid && vm.submitted">*Required</span>
@@ -55,7 +55,7 @@
         </div>
         <div class="text-center top-margin-sm clearfix">
             <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>
-            <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; nameForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
+            <button type="button" class="btn btn-primary" ng-disabled="vm.disable || vm.loadingZones || vm.loadingSites" ng-click="vm.submitted=true; nameForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
         </div>
     </form>
 </div>
