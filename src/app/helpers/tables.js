@@ -91,7 +91,8 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'name',
-                cellTemplate: `<a ui-sref="app.personnel-details({ site_id:row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+                cellTemplate: `<a ng-if="!vm.deactivated" ui-sref="app.personnel-details({ site_id:row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>
+                                <span ng-if="vm.deactivated" ng-bind="row.entity.first_name + ' ' + row.entity.last_name">></span>`
             },
             { name: 'username' },
             { name: 'email' },
