@@ -94,11 +94,7 @@ import CONSTANTS from 'Helpers/constants';
                         // vm.total_items          = response.data.data.total;
                     },
                     function(error) {
-                        logger.error(
-                            error.data.errors[0].message,
-                            {},
-                            error.data.errors[0].code
-                        );
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -129,7 +125,7 @@ import CONSTANTS from 'Helpers/constants';
                         close(response.data.data);
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

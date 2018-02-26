@@ -94,10 +94,9 @@ import MESSAGE from 'Helpers/message';
                         vm.sites = response.data.data.items;
                         vm.sites.unshift({ code: 'Select Sites' });
                         vm.data.site_id = vm.data.site_id || vm.sites[0].id;
-                        // vm.total_items          = response.data.data.total;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -131,7 +130,7 @@ import MESSAGE from 'Helpers/message';
                         vm.data.zone_id = vm.data.zone_id || vm.zones[0].id;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -158,7 +157,7 @@ import MESSAGE from 'Helpers/message';
                         logger.error(
                             MESSAGE.loggerFailed(vm.title, Request.method)
                         );
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -167,60 +166,10 @@ import MESSAGE from 'Helpers/message';
                 });
         }
 
-        // function save(data, action) {
-        //     vm.disable = true;
-        //     vm.loading = true;
-
-        //     Request.body = vm.data;
-
-        //     if (Modal.method == 'add') {
-        //         console.log(Modal.method);
-        //         QueryService.query(Request)
-        //             .then(
-        //                 function(response) {
-        //                     var response_data =
-        //                         response.data.data.items[0] || {};
-        //                     logger.success(Modal.title + ' added.');
-        //                     close(response_data, action);
-        //                 },
-        //                 function(error) {
-        //                     logger.error(error.data.message);
-        //                 }
-        //             )
-        //             .finally(function() {
-        //                 vm.loading = false;
-        //                 vm.disable = false;
-        //             });
-        //     } else if (Modal.method == 'edit') {
-        //         console.log(Request);
-
-        //         QueryService.query(Request)
-        //             .then(
-        //                 function(response) {
-        //                     var response_data =
-        //                         response.data.data.items[0] || {};
-        //                     logger.success(Modal.title + ' updated.');
-        //                     close(response_data, action);
-        //                 },
-        //                 function(err) {
-        //                     logger.error(error.data.message);
-        //                 }
-        //             )
-        //             .finally(function() {
-        //                 vm.loading = false;
-        //                 vm.disable = false;
-        //             });
-        //     }
-        // }
-
         function changeSiteType(item) {
             //vm.data.site_id = null; //temporary
             getSites();
         }
-
-        // function close(data, action) {
-        //     vm.modalInstance.close(data);
-        // }
 
         function cancel(data) {
             vm.modalInstance.close();

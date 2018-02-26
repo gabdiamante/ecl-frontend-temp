@@ -101,7 +101,7 @@ import MESSAGE from 'Helpers/message';
                         vm.pagination.limit = $stateParams.limit || '10';
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -131,7 +131,7 @@ import MESSAGE from 'Helpers/message';
                     }
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -159,7 +159,7 @@ import MESSAGE from 'Helpers/message';
                     }
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -177,7 +177,7 @@ import MESSAGE from 'Helpers/message';
                     executeActivateDeactivate(data, action);
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }

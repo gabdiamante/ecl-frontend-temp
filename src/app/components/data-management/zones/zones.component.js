@@ -205,7 +205,7 @@ var jsts = require('jsts');
                         getZones(vm.search_key, true);
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                         //logger.error(MESSAGE.error, err, '');
                     }
                 )
@@ -295,7 +295,7 @@ var jsts = require('jsts');
                         //     vm.center_map_lat_lng = response.data.data.center.lat + ', ' + response.data.data.center.lng;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -623,7 +623,7 @@ var jsts = require('jsts');
                         }
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        console.log(error);
                     }
                 );
             }
@@ -677,7 +677,7 @@ var jsts = require('jsts');
                         getZones(vm.search_key);
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -726,7 +726,7 @@ var jsts = require('jsts');
                     }
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
             // }
@@ -911,7 +911,7 @@ var jsts = require('jsts');
                             logger.success('Zone deleted');
                         },
                         function(error) {
-                            logger.error(error.data.message);
+                            logger.errorFormatResponse(error);
                         }
                     );
                 }

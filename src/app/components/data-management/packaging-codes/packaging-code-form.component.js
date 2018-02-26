@@ -75,7 +75,7 @@ import MESSAGE from 'Helpers/message';
                         logger.error(
                             MESSAGE.loggerFailed(vm.title, Request.method)
                         );
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

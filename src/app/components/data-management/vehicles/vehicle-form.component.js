@@ -95,7 +95,7 @@ import MESSAGE from 'Helpers/message';
                         vm.data.site_id = vm.data.site_id || vm.sites[0].id;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -133,7 +133,7 @@ import MESSAGE from 'Helpers/message';
                         logger.error(
                             MESSAGE.loggerFailed(vm.title, Request.method)
                         );
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

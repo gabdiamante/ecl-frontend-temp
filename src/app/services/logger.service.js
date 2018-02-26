@@ -12,6 +12,7 @@ import angular from 'angular';
             showToasts: true,
 
             error: error,
+            errorFormatResponse: errorFormatResponse,
             info: info,
             success: success,
             warning: warning,
@@ -24,6 +25,14 @@ import angular from 'angular';
         function error(message, data, title) {
             toastr.error(message, title);
             $log.error('Error: ' + message, data);
+        }
+
+        function errorFormatResponse(error) {
+            service.error(
+                error.data.errors[0].message,
+                {},
+                error.data.errors[0].code
+            );
         }
 
         function info(message, data, title) {

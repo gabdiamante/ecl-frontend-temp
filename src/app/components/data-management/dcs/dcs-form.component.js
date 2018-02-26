@@ -87,7 +87,7 @@ import MESSAGE from 'Helpers/message';
                         vm.data.hub_id = vm.data.hub_id || vm.hubs[0].id;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -122,7 +122,7 @@ import MESSAGE from 'Helpers/message';
                         vm.data.zone_id = vm.data.zone_id || vm.zones[0].id;
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -161,7 +161,7 @@ import MESSAGE from 'Helpers/message';
                         logger.error(
                             MESSAGE.loggerFailed(vm.title, Request.method)
                         );
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -193,7 +193,7 @@ import MESSAGE from 'Helpers/message';
                         executeClosing(item, response);
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -224,7 +224,7 @@ import MESSAGE from 'Helpers/message';
                         executeClosing(item, response);
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

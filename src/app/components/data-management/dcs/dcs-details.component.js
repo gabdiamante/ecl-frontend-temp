@@ -60,7 +60,7 @@ import DUMMY from 'Helpers/dummy';
                         );
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -91,7 +91,7 @@ import DUMMY from 'Helpers/dummy';
                     }
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    logger.errorFormatResponse(error);
                 }
             );
         }
