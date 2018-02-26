@@ -24,7 +24,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.courier-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.courier-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             {
@@ -56,7 +56,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.merchant-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.merchant-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
             },
             // { name: 'username', displayName:'Username' },
             {
@@ -71,7 +71,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'name',
-                cellTemplate: `<a ui-sref="app.dispatcher-details({ site_id: row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.dispatcher-details({ site_id: row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
             },
             { name: 'username' },
             { name: 'email' },
@@ -91,7 +91,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'name',
-                cellTemplate: `<a ui-sref="app.personnel-details({ site_id:row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.personnel-details({ site_id:row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
             },
             { name: 'username' },
             { name: 'email' },
@@ -112,7 +112,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.hub-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.hub-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             { name: 'email', displayName: 'Email' },
@@ -134,7 +134,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.customer-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.customer-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             { name: 'email', displayName: 'Email' },
@@ -161,7 +161,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'code',
-                cellTemplate: `<a ui-sref="app.hub-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.hub-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'name' },
             {
@@ -183,7 +183,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'code',
-                cellTemplate: `<a ui-sref="app.dc-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.dc-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'name' },
             {
@@ -208,7 +208,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'plate_number',
-                cellTemplate: `<a ui-sref="app.vehicle-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.vehicle-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'model' },
             { name: 'max_weight' },
@@ -229,7 +229,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'code',
-                cellTemplate: `<a ui-sref="app.bin-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.bin-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'name' },
             { name: 'volume' },
@@ -251,7 +251,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'code',
-                cellTemplate: `<a ui-sref="app.packaging-code-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.packaging-code-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'name' },
             { name: 'volume' },

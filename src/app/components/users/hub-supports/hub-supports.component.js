@@ -203,7 +203,7 @@ import MESSAGE from 'Helpers/message';
                 .then(
                     function (response) {
                         if (!response) return; 
-                        activateDeactivateHs(data, action);
+                        activateDeactivateDeleteHs(data, action);
                     },
                     function (err) {
                         console.log(err);
@@ -211,14 +211,15 @@ import MESSAGE from 'Helpers/message';
                 );
         }
 
-        function activateDeactivateHs (data, action) {
+        function activateDeactivateDeleteHs (data, action) {
             var request = {
-                method: 'PUT',
+                method: action == 'delete' ? 'DELETE' : 'PUT',
                 body: {},
                 params: false,
                 hasFile: false,
-                route: { site:data.site_id, 'hub-support':data.user_id, [action]:'' } 
+                route: { site:data.site_id, 'hub-support':data.user_id } 
             };
+            if (action != 'delete') request.route[action] = '';
 
             QueryService
                 .query(request)
@@ -227,8 +228,10 @@ import MESSAGE from 'Helpers/message';
                         logger.success(MESSAGE.loggerSuccess(vm.title, '', action+'d'));
                         vm.option_table.data.splice(
                             vm.option_table.data.indexOf(
-                                $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
-                            ), 1);
+                                $filter('filter')(vm.option_table.data, {
+                                     user_id:data.user_id 
+                                })[0]
+                        ), 1);
                     },
                     function (err) {
                         logger.error(MESSAGE.loggerFailed(vm.title, '', action));

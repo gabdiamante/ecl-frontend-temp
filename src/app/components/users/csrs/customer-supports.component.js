@@ -167,7 +167,7 @@ import MESSAGE from 'Helpers/message';
                 .then(
                     function (response) {
                         if (!response) return; 
-                        activateDeactivateCsr(data, action);
+                        activateDeactivateDeleteCsr(data, action);
                     },
                     function (err) {
                         console.log(err);
@@ -175,14 +175,15 @@ import MESSAGE from 'Helpers/message';
                 );
         }
 
-        function activateDeactivateCsr (data, action) {
+        function activateDeactivateDeleteCsr (data, action) {
             var request = {
-                method: 'PUT',
+                method: action == 'delete' ? 'DELETE' : 'PUT',
                 body: {},
                 params: false,
                 hasFile: false,
-                route: { site:data.site_id, csr:data.user_id, [action]:'' } 
+                route: { site:data.site_id, csr:data.user_id } 
             };
+            if (action != 'delete') request.route[action] = '';
 
             QueryService
                 .query(request)

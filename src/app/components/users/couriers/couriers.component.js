@@ -225,7 +225,7 @@ import CONSTANTS from 'Helpers/constants';
                 .then(
                     function (response) {
                         if (!response) return; 
-                        activateDeactivateCourier(data, action);
+                        activateDeactivateDeleteCourier(data, action);
                     },
                     function (err) {
                         console.log(err);
@@ -233,24 +233,26 @@ import CONSTANTS from 'Helpers/constants';
                 );
         }
 
-        function activateDeactivateCourier (data, action) {
+        function activateDeactivateDeleteCourier (data, action) {
             var request = {
-                method: 'PUT',
+                method: action == 'delete' ? 'DELETE' : 'PUT',
                 body: {},
                 params: false,
                 hasFile: false,
-                route: { site:data.site_id, courier:data.user_id, [action]:'' } 
+                route: { site:data.site_id, courier:data.user_id } 
             };
+            if (action != 'delete') request.route[action] = '';
 
             QueryService
                 .query(request)
                 .then( 
                     function (response) { 
                         logger.success(MESSAGE.loggerSuccess('Courier', '', action+'d'));
-                        vm.option_table.data.splice(
-                            vm.option_table.data.indexOf(
-                                $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
-                            ), 1);
+                        vm.option_table.data.splice(vm.option_table.data.indexOf(
+                                $filter('filter')(vm.option_table.data, { 
+                                    user_id:data.user_id 
+                                })[0]
+                        ), 1);
                     },
                     function (err) {
                         logger.error(MESSAGE.loggerFailed('Courier', '', action));

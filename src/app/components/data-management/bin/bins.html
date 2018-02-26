@@ -2,7 +2,7 @@
     <div class="col-md-12 sub-header">
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
-    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handlePostItem()" >
+    <button ng-if="vm.activated" class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handlePostItem()" >
         <i  class="fa fa-plus fa-lg text-white" ></i>
     </button>
 
@@ -29,7 +29,7 @@
             </li> 
             <li class="divider" ></li>
             <li role="menuitem">
-                <a ng-click="vm.handleHSActivation(row.entity, 'deactivate')">
+                <a ng-click="vm.handleActivation(row.entity, 'deactivate')">
                     <i class="fa fa-ban"></i>
                     Deactivate
                 </a>
@@ -37,9 +37,15 @@
         </ul>
         <ul ng-if="!vm.activated" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
             <li role="menuitem">
-                <a ng-click="vm.handleHSActivation(row.entity, 'reactivate')">
-                    <i class="fa fa-edit"></i>
+                <a ng-click="vm.handleActivation(row.entity, 'reactivate')">
+                    <i class="fa fa-undo"></i>
                     Reactivate
+                </a>
+            </li> 
+            <li role="menuitem">
+                <a ng-click="vm.handleActivation(row.entity, 'delete')">
+                    <i class="fa fa-trash"></i>
+                    Delete
                 </a>
             </li> 
         </ul>
