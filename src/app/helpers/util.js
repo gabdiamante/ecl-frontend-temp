@@ -462,7 +462,167 @@ const UTIL = {
         url: 'assets/img/warehouse.svg', // url
         scaledSize: [35, 35]
     },
-    types: ['delivery', 'pickup']
+    types: ['delivery', 'pickup'],
+    moduleItems: {
+        users: [
+            {
+                name: 'couriers',
+                icon: 'fa-users',
+                import: {
+                    express: '',
+                    couriers: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    couriers: '',
+                    export: ''
+                }
+            },
+            {
+                name: 'csr',
+                icon: 'fa-address-card',
+                import: {
+                    express: '',
+                    csr: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    csr: '',
+                    export: ''
+                }
+            },
+            {
+                name: 'merchants',
+                icon: 'fa-cubes',
+                import: {
+                    express: '',
+                    merchants: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    merchants: '',
+                    export: ''
+                }
+            },
+            {
+                name: 'hub_supports',
+                icon: 'fa-address-book',
+                import: {
+                    express: '',
+                    hub_supports: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    hub_supports: '',
+                    export: ''
+                }
+            },
+            {
+                name: 'dispatchers',
+                icon: 'fa-clipboard',
+                import: {
+                    express: '',
+                    dispatchers: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    dispatchers: '',
+                    export: ''
+                }
+            },
+            {
+                name: 'personnels',
+                icon: 'fa-slideshare',
+                import: {
+                    express: '',
+                    personnels: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    personnels: '',
+                    export: ''
+                }
+            }
+        ],
+        data_management: [
+            {
+                name: 'hubs',
+                icon: 'fa-building',
+                import: {
+                    express: '',
+                    hubs: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    hubs: '',
+                    export: ''
+                }
+            },
+            {
+                name: 'distribution_centers',
+                icon: 'fa-building',
+                import: {
+                    express: '',
+                    hubs: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    hubs: '',
+                    export: ''
+                }
+            },
+            {
+                name: 'vehicles',
+                icon: 'fa-motorcycle',
+                import: {
+                    express: '',
+                    vehicles: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    vehicles: '',
+                    export: ''
+                }
+            },
+            {
+                name: 'bin',
+                icon: 'fa-codepen',
+                import: {
+                    express: '',
+                    bin: '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    bin: '',
+                    export: ''
+                }
+            },
+            {
+                name: 'packaging_codes',
+                icon: 'fa-codepen',
+                import: {
+                    express: '',
+                    'packaging-codes': '',
+                    import: ''
+                },
+                export: {
+                    express: '',
+                    'packaging-codes': '',
+                    export: ''
+                }
+            }
+        ]
+    }
 };
 
 UTIL.colors = UTIL.colors.concat(getRandomColors(200));

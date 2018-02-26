@@ -134,6 +134,11 @@ fieldset[disabled] .btn-custom {
     opacity: 0.65;
 }
 
+.radio-btn.active {
+    background: #3b6679 !important;
+    color: #fff !important;
+}
+
 .materialize {
     position: relative;
 }

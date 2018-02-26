@@ -48,6 +48,7 @@
     "lodash.map": "^4.6.0",
     "lodash.remove": "^4.7.0",
     "magic-check": "^1.0.3",
+    "moment": "^2.20.1",
     "ng-csv": "^0.3.6",
     "ng-file-upload": "^12.2.13",
     "ngmap": "^1.18.4",
