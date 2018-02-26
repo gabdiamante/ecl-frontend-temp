@@ -28,11 +28,15 @@ import angular from 'angular';
         }
 
         function errorFormatResponse(error) {
-            service.error(
-                error.data.errors[0].message,
-                {},
-                error.data.errors[0].code
-            );
+            //console.log(error);
+            if (error.status == -1) service.error('Connection refused!');
+            else if (error.status == 500) service.error(error.data.message);
+            else
+                service.error(
+                    error.data.errors[0].message,
+                    {},
+                    error.data.errors[0].code
+                );
         }
 
         function info(message, data, title) {

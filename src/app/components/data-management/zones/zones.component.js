@@ -611,7 +611,7 @@ var jsts = require('jsts');
             };
 
             if (vm.showModal) {
-                formModal(request, modal, vm.TPLS).then(
+                ModalService.form_modal(request, modal, vm.TPLS).then(
                     function(response) {
                         if (response) {
                             vm.shapePath.setMap(null);
@@ -712,7 +712,7 @@ var jsts = require('jsts');
             console.log('zone update r', request);
 
             // if (vm.showModal) {
-            formModal(request, modal, vm.TPLS).then(
+            ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
                         GLOBAL.removeCache('zones', httpCache);
@@ -778,10 +778,6 @@ var jsts = require('jsts');
             for (var i = vm.zones.length - 1; i >= 0; i--) {
                 vm.zones[i].editable = false;
             }
-        }
-
-        function formModal(request, modal, template, size) {
-            return ModalService.form_modal(request, modal, template, size);
         }
 
         function updatePolygon(e, shape, index, forceTransition) {
@@ -896,26 +892,30 @@ var jsts = require('jsts');
                 prop: zone.code + ' - ' + zone.name
             };
 
-            confirmation(content).then(function(response) {
-                if (response) {
-                    QueryService.query(request).then(
-                        function(response) {
-                            vm.selectedZone = {};
-                            vm.showName = false;
-                            vm.shapePath = null;
-                            vm.showButton = false;
-                            vm.showSaveChanges = false;
-                            vm.pending_update = 0;
-                            getZones(vm.search_key);
-
-                            logger.success('Zone deleted');
-                        },
-                        function(error) {
-                            logger.errorFormatResponse(error);
-                        }
-                    );
+            ModalService.confirm_modal(content).then(
+                function(response) {
+                    if (response) {
+                        QueryService.query(request).then(
+                            function(response) {
+                                vm.selectedZone = {};
+                                vm.showName = false;
+                                vm.shapePath = null;
+                                vm.showButton = false;
+                                vm.showSaveChanges = false;
+                                vm.pending_update = 0;
+                                getZones(vm.search_key);
+                                logger.success('Zone deleted');
+                            },
+                            function(error) {
+                                logger.errorFormatResponse(error);
+                            }
+                        );
+                    }
+                },
+                function(error) {
+                    console.log(error);
                 }
-            });
+            );
         }
 
         function search(key) {
@@ -967,10 +967,6 @@ var jsts = require('jsts');
                 // vm.saveChanges(true); // function to execute after 2 seconds
                 vm.zoneSearchTimeOut = null;
             }, 2000);
-        }
-
-        function confirmation(content) {
-            return ModalService.confirm_modal(content);
         }
 
         function filterStringPolygon(zones) {
