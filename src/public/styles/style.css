@@ -644,6 +644,10 @@ body.scroll::-webkit-scrollbar {
     height: 500px;
 }
 
+.drop-list-height-auto {
+    height: auto;
+}
+
 .drop-list-menu {
     list-style: none;
     overflow-y: scroll;
@@ -666,16 +670,23 @@ body.scroll::-webkit-scrollbar {
     padding: 10px;
 }
 
-.box:after,
-.box:before {
+.box:after, .box:before {
     bottom: 100%;
-    right: 20px;
     border: solid transparent;
     content: ' ';
     height: 0;
     width: 0;
     position: absolute;
     pointer-events: none;
+}
+
+.box-right:after,
+.box-right:before {
+    right: 20px;
+}
+
+.box-left:after, .box-left:before {
+    left: 19px;
 }
 
 .box:after {
@@ -686,10 +697,12 @@ body.scroll::-webkit-scrollbar {
 }
 .box:before {
     border-color: rgba(255, 255, 255, 0);
-    border-bottom-color: #ffffff;
-    border-width: 10px;
+    /* border-bottom-color: #ffffff;
+    border-width: 10px; */
     margin-left: -13px;
 }
+
+
 
 /* .open > .dropdown-menu-2,
 .open > .dropdown-menu-3 {
@@ -718,6 +731,10 @@ body.scroll::-webkit-scrollbar {
 .drop-list .list-group-item,
 .drop-list-2 .list-group-item {
     padding: 5px;
+}
+
+.dropdown-menu-force-left {
+    left: 0px!important;
 }
 
 /******************************************************/

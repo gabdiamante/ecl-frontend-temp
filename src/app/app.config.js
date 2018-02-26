@@ -261,7 +261,7 @@ import angular from 'angular';
             })
 
             .state('app.zones', {
-                url: 'zones?siteType&siteFront&siteId&zoom&center_map_lat_lng',
+                url: 'zones?siteType&siteFront&siteId&includeUnassigned&filterClose&zoom&center_map_lat_lng&deactivated',
                 component: 'zones'
             })
 

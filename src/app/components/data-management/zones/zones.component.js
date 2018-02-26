@@ -3,6 +3,7 @@ import GLOBAL from 'Helpers/global';
 import UTILS from 'Helpers/util';
 import GMAP from 'Helpers/map/gmap';
 import CONSTANTS from 'Helpers/constants';
+import MESSAGE from 'Helpers/message';
 var jsts = require('jsts');
 
 (function() {
@@ -55,6 +56,9 @@ var jsts = require('jsts');
         //vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
 
         vm.route_name = 'zone';
+        vm.deactivated = $stateParams.deactivated == 'true' ? 1 : 0;
+        vm.activated = +!vm.deactivated;
+
         vm.current_state = $state.current.name;
         vm.search_key = $stateParams.search_value || '';
         vm.zoom = angular.copy(parseInt($stateParams.zoom) || 11);
@@ -63,10 +67,15 @@ var jsts = require('jsts');
         vm.title = 'Zone';
         vm.titleHeader = vm.title + ' Areas';
 
+        vm.site = {};
         vm.siteType = $stateParams.siteType;
         vm.siteFront = $stateParams.siteFront;
         vm.siteId = $stateParams.siteId;
+        vm.includeUnassigned = ($stateParams.includeUnassigned === 'false') ? false : true;
 
+        vm.filterClose = ($stateParams.filterClose === 'false' || typeof $stateParams.filterClose == 'undefined') ? false : true;
+        vm.filterIsOpen =  !vm.filterClose; /*(vm.siteFront || vm.siteId || !vm.includeUnassigned) ? true : false; */
+                            
         vm.mapStyles = UTILS.mapStyles;
         vm.subTitleHeader = vm.titleHeader.slice(0, -1);
         vm.pending_update = 0;
@@ -94,6 +103,7 @@ var jsts = require('jsts');
         vm.showPolygonCreate = false;
 
         vm.updated_pol = null;
+        
 
         vm.selectedZone = {};
 
@@ -103,7 +113,8 @@ var jsts = require('jsts');
         vm.updatePolygon = updatePolygon;
         vm.clearPolygon = clearPolygon;
         vm.addZone = addZone;
-        vm.deleteZone = deleteZone;
+        vm.handleActivation = handleActivation;
+        // vm.deleteZone = deleteZone;
         vm.saveChanges = saveChanges;
         vm.cancel = cancel;
         vm.onMouseUp = onMouseUp;
@@ -118,6 +129,8 @@ var jsts = require('jsts');
         vm.selectType = selectType;
         vm.selectSiteFront = selectSiteFront;
         vm.selectSite = selectSite;
+        vm.selectIncludeUnassigned = selectIncludeUnassigned;
+        vm.viewDeactivate          = viewDeactivate;
 
         init();
 
@@ -249,7 +262,8 @@ var jsts = require('jsts');
                 params: {
                     page: 1,
                     limit: 999999999,
-                    is_active: 1
+                    is_active: vm.activated,
+                    include_unassigned: +vm.includeUnassigned
                 },
                 hasFile: false,
                 cache: false,
@@ -309,8 +323,25 @@ var jsts = require('jsts');
                 siteType: type.code,
                 siteFront: '',
                 siteId: '',
+                includeUnassigned: vm.includeUnassigned,
                 zoom: vm.zoom,
-                center_map_lat_lng: vm.center_map_lat_lng
+                center_map_lat_lng: vm.center_map_lat_lng,
+                filterClose: vm.filterClose,
+                deactivated: vm.deactivated
+            });
+            getZones();
+        }
+
+        function selectIncludeUnassigned(val) {
+            $state.go($state.current.name, {
+                siteType: vm.site_type.code,
+                siteFront: vm.site_front.code,
+                siteId: vm.siteId,
+                includeUnassigned: val,
+                zoom: vm.zoom,
+                center_map_lat_lng: vm.center_map_lat_lng,
+                filterClose: vm.filterClose,
+                deactivated: vm.deactivated
             });
             getZones();
         }
@@ -320,8 +351,11 @@ var jsts = require('jsts');
                 siteType: vm.site_type.code,
                 siteFront: type.code,
                 siteId: '',
+                includeUnassigned: vm.includeUnassigned,
                 zoom: vm.zoom,
-                center_map_lat_lng: vm.center_map_lat_lng
+                center_map_lat_lng: vm.center_map_lat_lng,
+                filterClose: vm.filterClose,
+                deactivated: vm.deactivated
             });
             getZones();
         }
@@ -332,10 +366,27 @@ var jsts = require('jsts');
             $state.go($state.current.name, {
                 siteType: vm.site_type.code,
                 siteId: vm.siteId,
+                includeUnassigned: vm.includeUnassigned,
                 zoom: vm.zoom,
-                center_map_lat_lng: vm.center_map_lat_lng
+                center_map_lat_lng: vm.center_map_lat_lng,
+                filterClose: vm.filterClose,
+                deactivated: vm.deactivated
             });
             vm.buttonName = site.name;
+            getZones();
+        }
+
+        function viewDeactivate(val) {
+            $state.go($state.current.name, {
+                siteType: vm.site_type.code,
+                siteFront: vm.site_front.code,
+                siteId: vm.siteId,
+                includeUnassigned: vm.includeUnassigned,
+                zoom: vm.zoom,
+                center_map_lat_lng: vm.center_map_lat_lng,
+                filterClose: vm.filterClose,
+                deactivated: val
+            });
             getZones();
         }
 
@@ -869,46 +920,17 @@ var jsts = require('jsts');
             vm.showPolygonCreate = false;
         }
 
-        function deleteZone(zone, index) {
-            vm.showButton = false;
-
-            var request = {
-                method: 'DELETE',
-                body: false,
-                params: false,
-                hasFile: false,
-                route: { [vm.route_name]: zone.id },
-                cache_string: vm.route_name
-            };
-
+        function handleActivation(data, action) {
             var content = {
-                header: 'Remove ' + vm.subTitleHeader,
-                message:
-                    'Are you sure you want to remove ' +
-                    vm.subTitleHeader.toLowerCase() +
-                    ' ',
-                prop: zone.code + ' - ' + zone.name
+                header: action + ' ' + vm.title,
+                message: MESSAGE.confirmMsg(action, vm.title.toLowerCase()),
+                prop: data.code + ' - ' + data.name
             };
 
             ModalService.confirm_modal(content).then(
                 function(response) {
-                    if (response) {
-                        QueryService.query(request).then(
-                            function(response) {
-                                vm.selectedZone = {};
-                                vm.showName = false;
-                                vm.shapePath = null;
-                                vm.showButton = false;
-                                vm.showSaveChanges = false;
-                                vm.pending_update = 0;
-                                getZones(vm.search_key);
-                                logger.success('Zone deleted');
-                            },
-                            function(error) {
-                                logger.errorFormatResponse(error);
-                            }
-                        );
-                    }
+                    if (!response) return;
+                    executeActivateDeactivateDelete(data, action);
                 },
                 function(error) {
                     console.log(error);
@@ -916,11 +938,87 @@ var jsts = require('jsts');
             );
         }
 
+        function executeActivateDeactivateDelete(data, action) {
+            var request = {
+                method: action == 'delete' ? 'DELETE' : 'PUT',
+                body: false,
+                params: false,
+                hasFile: false,
+                route: { [vm.route_name]: data.id },
+                cache: false
+            };
+            if (action != 'delete') request.route[action] = '';
+
+            QueryService.query(request).then(
+                function(response) {
+                    vm.selectedZone = {};
+                    vm.showName = false;
+                    vm.shapePath = null;
+                    vm.showButton = false;
+                    vm.showSaveChanges = false;
+                    vm.pending_update = 0;
+                    getZones(vm.search_key);
+                    logger.success(vm.title + ' ' + action + 'd!');
+                },
+                function(err) {
+                    console.log(err);
+                }
+            );
+        }
+
+        // function deleteZone(zone, index) {
+        //     vm.showButton = false;
+
+        //     var request = {
+        //         method: 'DELETE',
+        //         body: false,
+        //         params: false,
+        //         hasFile: false,
+        //         route: { [vm.route_name]: zone.id },
+        //         cache_string: vm.route_name
+        //     };
+
+        //     var content = {
+        //         header: 'Remove ' + vm.subTitleHeader,
+        //         message:
+        //             'Are you sure you want to remove ' +
+        //             vm.subTitleHeader.toLowerCase() +
+        //             ' ',
+        //         prop: zone.code + ' - ' + zone.name
+        //     };
+
+        //     ModalService.confirm_modal(content).then(
+        //         function(response) {
+        //             if (response) {
+        //                 QueryService.query(request).then(
+        //                     function(response) {
+        //                         vm.selectedZone = {};
+        //                         vm.showName = false;
+        //                         vm.shapePath = null;
+        //                         vm.showButton = false;
+        //                         vm.showSaveChanges = false;
+        //                         vm.pending_update = 0;
+        //                         getZones(vm.search_key);
+        //                         logger.success('Zone deleted');
+        //                     },
+        //                     function(error) {
+        //                         logger.errorFormatResponse(error);
+        //                     }
+        //                 );
+        //             }
+        //         },
+        //         function(error) {
+        //             console.log(error);
+        //         }
+        //     );
+        // }
+
         function search(key) {
             $state.go(vm.current_state, {
                 search_value: key,
                 zoom: vm.zoom,
-                center_map_lat_lng: vm.center_map_lat_lng
+                center_map_lat_lng: vm.center_map_lat_lng,
+                filterClose: vm.filterClose
             });
         }
 
@@ -929,7 +1027,8 @@ var jsts = require('jsts');
             $state.go(vm.current_state, {
                 search_value: '',
                 zoom: vm.zoom,
-                center_map_lat_lng: vm.center_map_lat_lng
+                center_map_lat_lng: vm.center_map_lat_lng,
+                filterClose: vm.filterClose
             });
         }
 
