@@ -56,7 +56,7 @@
 
 					<div class="pull-right">
 						<div class="btn-group">
-							<button class="btn-custom btn-default theme-d2" ng-show="!vm.showButton && !vm.showSaveChanges && !vm.zoneNotYetLoaded" ng-click="vm.addZone()">
+							<button ng-if="vm.activated" class="btn-custom btn-default theme-d2" ng-show="!vm.showButton && !vm.showSaveChanges && !vm.zoneNotYetLoaded" ng-click="vm.addZone()">
 								<i class="fa fa-plus"></i>
 								Add Zone
 							</button>

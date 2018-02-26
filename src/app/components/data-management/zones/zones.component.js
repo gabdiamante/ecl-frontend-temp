@@ -951,6 +951,8 @@ var jsts = require('jsts');
 
             QueryService.query(request).then(
                 function(response) {
+                    if (action =='deactivate') 
+                        unassignSite(data);
                     vm.selectedZone = {};
                     vm.showName = false;
                     vm.shapePath = null;
@@ -966,52 +968,30 @@ var jsts = require('jsts');
             );
         }
 
-        // function deleteZone(zone, index) {
-        //     vm.showButton = false;
-
-        //     var request = {
-        //         method: 'DELETE',
-        //         body: false,
-        //         params: false,
-        //         hasFile: false,
-        //         route: { [vm.route_name]: zone.id },
-        //         cache_string: vm.route_name
-        //     };
-
-        //     var content = {
-        //         header: 'Remove ' + vm.subTitleHeader,
-        //         message:
-        //             'Are you sure you want to remove ' +
-        //             vm.subTitleHeader.toLowerCase() +
-        //             ' ',
-        //         prop: zone.code + ' - ' + zone.name
-        //     };
-
-        //     ModalService.confirm_modal(content).then(
-        //         function(response) {
-        //             if (response) {
-        //                 QueryService.query(request).then(
-        //                     function(response) {
-        //                         vm.selectedZone = {};
-        //                         vm.showName = false;
-        //                         vm.shapePath = null;
-        //                         vm.showButton = false;
-        //                         vm.showSaveChanges = false;
-        //                         vm.pending_update = 0;
-        //                         getZones(vm.search_key);
-        //                         logger.success('Zone deleted');
-        //                     },
-        //                     function(error) {
-        //                         logger.errorFormatResponse(error);
-        //                     }
-        //                 );
-        //             }
-        //         },
-        //         function(error) {
-        //             console.log(error);
-        //         }
-        //     );
-        // }
+        function unassignSite(data) {
+            vm.loadingUnassignSite = true;
+            data.site_id = null;
+            var request = {
+                method: 'PUT',
+                body: data,
+                params: false,
+                hasFile: false,
+                route: { [vm.route_name]: data.id },
+                cache_string: vm.route_name
+            };
+            QueryService.query(request)
+                .then(
+                    function(response) {
+                        console.log(response);
+                    },
+                    function(error) {
+                        logger.errorFormatResponse(error);
+                    }
+                )
+                .finally(function() {
+                    vm.loadingUnassignSite = false;
+                });
+        }
 
         function search(key) {
             $state.go(vm.current_state, {
