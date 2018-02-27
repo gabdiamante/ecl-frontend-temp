@@ -23,6 +23,12 @@ a {
 .text-orange {
     color: orange;
 }
+.text-blue, .hover-text-blue:hover {
+    color: #2196F3!important;
+}
+.text-grey, .hover-text-grey:hover, .text-gray, .hover-text-gray:hover {
+    color: #757575!important;
+}
 /*theme*/
 .theme-l5 {
     color: #000 !important;
@@ -123,6 +129,14 @@ a {
 .btn-role-caret {
     margin-top: 3px;
 }
+
+/* .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: inherit;
+    box-shadow: inherit; 
+    opacity: .65;
+} */
 
 .btn-custom.disabled,
 .btn-custom[disabled],

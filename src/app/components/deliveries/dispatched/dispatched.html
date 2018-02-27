@@ -59,11 +59,11 @@
                 <uib-accordion-heading>
                     <div class="clearfix">
                         <div class="row">
-                            <div class="col-md-2 col-sm-2 col-xs-2" ng-click ="$event.preventDefault(); $event.stopPropagation();" > 
-                                <a href="" title="Vehicle" ng-bind="item.lastName +', '+ item.firstName"></a>
+                            <div class="col-md-2 col-sm-2 col-xs-2" > 
+                                <a href="" title="Vehicle" ng-bind="item.lastName +', '+ item.firstName" ng-click ="$event.preventDefault(); $event.stopPropagation();" ></a>
                             </div>
                             <div class="col-md-9 col-sm-9 col-xs-9" align="center">
-                                <span class="" ng-cloak>Assignments : {{ item.assignments || '0' }}</span>
+                                <span ng-class="{'text-blue': item.open}" ng-cloak>Assignments : {{ item.assignments || '0' }}</span>
                             </div>
                             <div class="col-md-1 col-sm-1 col-xs-1" align="right" ng-click ="$event.preventDefault(); $event.stopPropagation();">
                                 <a title="View vehicle details" ng-click="vm.viewVehicle(key.vehicleId)" >
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </uib-accordion-heading>
-                <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" prev="vm.prev()" next="vm.next()" export-data="vm.exportData(data)"></complex-table> 
+                <complex-table vm="vm" index="$index" options="vm.option_table" go-to="vm.goTo(data)" prev="vm.prev()" next="vm.next()" export-data="vm.exportData(data)"></complex-table> 
             </div> 
         </uib-accordion>
     </div>

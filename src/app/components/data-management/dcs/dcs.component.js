@@ -47,7 +47,6 @@ import MESSAGE from 'Helpers/message';
         vm.per_page = ['10', '20', '50', '100', '200'];
         vm.total_page = '1';
         vm.total_items = '0';
-        vm.items = { roleUserCheck: [] };
         vm.loading = false;
 
         vm.option_table = {

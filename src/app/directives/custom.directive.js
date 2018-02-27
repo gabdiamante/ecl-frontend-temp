@@ -1,4 +1,5 @@
 import angular from 'angular';
+import GLOBAL from 'Helpers/global';
 
 (function() {
     'use strict';
@@ -410,6 +411,7 @@ import angular from 'angular';
                 totalValue: '&',
                 exportData: '&',
                 options: '=options',
+                index: '=index',
                 vm: '=vm',
                 // calendar
                 disabled: '=disabled',
@@ -434,6 +436,21 @@ import angular from 'angular';
                         model,
                         angular.copy($scope.vm.search_old)
                     );
+                };
+
+                $scope.ct = {
+                    parseDate: function(date_val) {
+                        if (date_val)
+                            return new Date(date_val);
+                        else 
+                            return new Date();
+                    },
+                    toggleCheckBox: function(checkbox, model_name, propertyName) {
+                        if (checkbox) 
+                            GLOBAL.getModel($scope.vm.items, model_name, angular.copy($scope.vm.option_table.data));
+                        else 
+                            GLOBAL.getModel($scope.vm.items, model_name, []);
+                    }
                 };
             }
         };

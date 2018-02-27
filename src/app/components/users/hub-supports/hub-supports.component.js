@@ -253,16 +253,5 @@ import MESSAGE from 'Helpers/message';
         function goTo(data) {
             $state.go($state.current.name, data);
         }
-
-        vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {
-            // var values_of_id = _.pluck(vm.option_table.data, propertyName);
-            if (checkbox)
-                GLOBAL.getModel(
-                    vm.items,
-                    model_name,
-                    angular.copy(vm.option_table.data)
-                );
-            else GLOBAL.getModel(vm.items, model_name, []);
-        };
     }
 })();

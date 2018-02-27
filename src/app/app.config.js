@@ -285,16 +285,18 @@ import angular from 'angular';
                 component: 'packagingCodeDetails'
             })
 
+            //IMPORT/EXPORT
             .state('app.import-export', {
                 url: 'import-export',
                 component: 'importExport'
             })
 
+            //HISTORY
             .state('app.history', {
                 url: 'history',
                 component: 'history'
             })
-
+            //SETTINGS
             .state('app.settings', {
                 url: 'settings',
                 component: 'settings'

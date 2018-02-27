@@ -59,8 +59,8 @@
                 <uib-accordion-heading>
                     <div class="clearfix">
                         <div class="row">
-                            <div class="col-md-2 col-sm-2 col-xs-2" ng-click ="$event.preventDefault(); $event.stopPropagation();" > 
-                                <a href="" title="Vehicle" ng-bind="item.lastName +', '+ item.firstName"></a>
+                            <div class="col-md-2 col-sm-2 col-xs-2"  > 
+                                <a href="" title="Vehicle" ng-bind="item.lastName +', '+ item.firstName" ng-click ="$event.preventDefault(); $event.stopPropagation();"></a>
                             </div>
                             <div class="col-md-9 col-sm-9 col-xs-9" align="center">
                                 <span class="" ng-cloak>Assignments : {{ item.assignments || '0' }}</span>

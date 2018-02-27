@@ -43,11 +43,11 @@ import DUMMY from 'Helpers/dummy';
     ) {
         var vm = this;
         vm.view                 = $stateParams.view || 'bad_address';
-        vm.titleHeader          = (vm.view=='bad_adress')?'Bad Address':(vm.view=='staging')?'Staging':(vm.view=='dispatched')?'Dispatched':'Bad Address';
+        vm.titleHeader          = 'Pickups - ' + ( (vm.view=='bad_adress')?'Bad Address':(vm.view=='staging')?'Staging':(vm.view=='dispatched')?'Dispatched':'Bad Address' );
         vm.per_page             = ['10', '20', '50', '100', '200'];
         vm.total_page           = '1';
         vm.total_items          = '0';
-        vm.items                = { roleUserCheck: [] };
+        vm.items                = { checkItems: [] };
         vm.loading              = false;
         vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
@@ -112,16 +112,5 @@ import DUMMY from 'Helpers/dummy';
             data.view = vm.view; 
             $state.go('app.pickups-'+vm.view, data);
         }
-
-        vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {
-            // var values_of_id = _.pluck(vm.option_table.data, propertyName);
-            if (checkbox)
-                GLOBAL.getModel(
-                    vm.items,
-                    model_name,
-                    angular.copy(vm.option_table.data)
-                );
-            else GLOBAL.getModel(vm.items, model_name, []);
-        };
     }
 })();

@@ -269,7 +269,7 @@ const TABLES = {
             }
         ]
     },
-    //
+    //DELIVERIES
     courier_deliveries: {
         columnDefs: [
             {
@@ -296,6 +296,85 @@ const TABLES = {
             }
         ]
     },
+    delivery_bad_address: {
+        columnDefs: [
+            {
+                name: 'airway_bill',
+                displayName: 'CODE',
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'cneeName', displayName: 'CNEE' },
+            {
+                name: 'cneeAddress',
+                displayName: 'CNEE ADDRESS',
+                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;
+                                <div class="pull-right ng-scope">
+                                    <ul class="list list-inline">
+                                        <li title="Update Address">
+                                            <a href="" class="fa text-grey fa-lg fa-pencil" ng-class="{ 'fa-pencil': !isEdit, 'fa-times' : isEdit }" ng-click="vm.viewMap(data, $index)">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>`
+            },
+            {
+                name: 'reason',
+                displayName: 'REASON',
+                cellTemplate: `<span ng-bind="COL_FIELD"></span>`
+            },
+            {
+                name: 'datePickup',
+                displayName: 'PICKUP DATE',
+                cellTemplate: `<span ng-bind="ct.parseDate(datePickup) | date:short"></span>`
+            }
+        ]
+    },
+    delivery_staging: {
+        columnDefs: [
+            {
+                name: 'airway_bill',
+                displayName: 'CODE',
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'cneeName', displayName: 'CNEE' },
+            { name: 'cneeAddress', displayName: 'CNEE ADDRESS' },
+            {
+                name: 'datePickup',
+                displayName: 'PICKUP DATE',
+                cellTemplate: `<span ng-bind="ct.parseDate(datePickup) | date:short"></span>`
+            },
+            {
+                width: 50,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="ct.toggleCheckBox(vm.checkbox,'checkItems', '')">`,
+                cellTemplate:
+                    '<input checklist-model="vm.items.checkItems" checklist-value="row.entity" type="checkbox" />'
+            }
+        ]
+    },
+    delivery_dispatched: {
+        columnDefs: [
+            {
+                name: 'airway_bill',
+                displayName: 'AWB CODE',
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
+            {
+                name: 'status', displayName: 'STATUS',
+                cellTemplate: `<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD | titlecase"></span>`
+            },
+            {
+                width: 50,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox[index]" ng-change="ct.toggleCheckBox(vm.checkbox[index],'checkItems[{{index}}]', '')">`,
+                cellTemplate:
+                    '<input checklist-model="vm.items.checkItems[index]" checklist-value="row.entity" type="checkbox" />'
+            }
+        ]
+    },
+    //PICKUPS
     courier_pickups: {
         columnDefs: [
             {
@@ -319,73 +398,6 @@ const TABLES = {
                 name: 'checkout',
                 displayName: 'CHECK OUT',
                 cellTemplate: `{{ COL_FIELD | date:'hh:mm' }}`
-            }
-        ]
-    },
-    delivery_bad_address: {
-        columnDefs: [
-            {
-                name: 'airway_bill',
-                displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
-            },
-            { name: 'shipperName', displayName: 'SHPR' },
-            { name: 'cneeName', displayName: 'CNEE' },
-            {
-                name: 'cneeAddress',
-                displayName: 'CNEE ADDRESS',
-                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;<i class="fa fa-pencil"></i>`
-            },
-            {
-                name: 'reason',
-                displayName: 'REASON',
-                cellTemplate: `<span ng-bind="COL_FIELD | date:short"></span>`
-            }
-        ]
-    },
-    delivery_staging: {
-        columnDefs: [
-            {
-                name: 'airway_bill',
-                displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
-            },
-            { name: 'shipperName', displayName: 'SHPR' },
-            { name: 'cneeName', displayName: 'CNEE' },
-            { name: 'cneeAddress', displayName: 'CNEE ADDRESS' },
-            {
-                name: 'datePickup',
-                displayName: 'REASON',
-                cellTemplate: `<span ng-bind="datePickup || vm.date | date:short"></span>`
-            },
-            {
-                width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
-                cellTemplate:
-                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
-            }
-        ]
-    },
-    delivery_dispatched: {
-        columnDefs: [
-            {
-                name: 'airway_bill',
-                displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
-            },
-            { name: 'shipperName', displayName: 'SHPR' },
-            { name: 'cneeName', displayName: 'CNEE' },
-            { name: 'cneeAddress', displayName: 'CNEE ADDRESS' },
-            {
-                name: 'datePickup',
-                displayName: 'REASON',
-                cellTemplate: `<span ng-bind="datePickup || vm.date | date:short"></span>`
-            },
-            {
-                width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
-                cellTemplate:
-                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
             }
         ]
     },
@@ -430,9 +442,9 @@ const TABLES = {
             },
             {
                 width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="ct.toggleCheckBox(vm.checkbox,'checkItems', '')">`,
                 cellTemplate:
-                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                    '<input checklist-model="vm.items.checkItems" checklist-value="row.entity" type="checkbox" />'
             }
         ]
     },
@@ -448,13 +460,13 @@ const TABLES = {
             {
                 name: 'status',
                 displayName: 'STATUS',
-                cellTemplate: `<span ng-bind="COL_FIELD | displaynone"></span>`
+                cellTemplate: `<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>`
             },
             {
                 width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox[index]" ng-change="ct.toggleCheckBox(vm.checkbox[index],'checkItems[{{index}}]', '')">`,
                 cellTemplate:
-                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                    '<input checklist-model="vm.items.checkItems[index]" checklist-value="row.entity" type="checkbox" />'
             }
         ]
     },
