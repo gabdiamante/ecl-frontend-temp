@@ -44,6 +44,7 @@ import DUMMY from 'Helpers/dummy';
         var vm = this;
         vm.view                 = $stateParams.view || 'bad_address';
         vm.titleHeader          = 'Deliveries - ' + ( (vm.view=='bad_adress')?'Bad Address':(vm.view=='staging')?'Staging':(vm.view=='dispatched')?'Dispatched':'Bad Address');
+        vm.route_name           = 'booking';
         vm.per_page             = ['10', '20', '50', '100', '200'];
         vm.total_page           = '1';
         vm.total_items          = '0';
@@ -71,15 +72,69 @@ import DUMMY from 'Helpers/dummy';
         ];
         
         vm.goTo             = goTo;
-        // vm.viewMap          = viewMap;
+        vm.viewMap          = viewMap;
         
         init();
 
         function init () {
             getData();
+            getAssignments();
         }
 
         function getData() {
+            vm.loading = true;
+            var request = {
+                method: 'GET',
+                body: false,
+                params: { 
+                    type: vm.view,
+                    limit: vm.pagination.limit,
+                    page: vm.pagination.pagestate,
+                },
+                hasFile: false,
+                route: { [vm.route_name]: '' },
+                cache: false,
+            };
+
+            QueryService.query(request).then(
+                function(response) {
+                    console.log(response);
+                    vm.option_table.data = response.data.data.items;
+                },
+                function(error) {
+                    logger.errorFormatResponse(error);
+                }
+            ).finally(function(){
+                vm.loading = false;
+            });
+        }
+
+        // function getData() {
+        //     vm.loading = true;
+        //     var request = {
+        //         method: 'GET',
+        //         body: false,
+        //         params: { per_page: 10 },
+        //         hasFile: false,
+        //         route: { users: '' },
+        //         cache: true,
+        //         cache_string: 'user'
+        //     };
+
+        //     QueryService.query(request).then(
+        //         function(response) {
+        //             vm.option_table.data = DUMMY.users.deliveries;
+        //             // vm.option_table.data = handleNames(response.data.data);
+        //         },
+        //         function(err) {
+        //             logger.error(MESSAGE.error, err, '');
+        //         }
+        //     ).finally(function(){
+        //         vm.loading = false;
+        //     });
+        // }
+
+        function getAssignments() {
             var request = {
                 method: 'GET',
                 body: false,
@@ -92,7 +147,7 @@ import DUMMY from 'Helpers/dummy';
 
             QueryService.query(request).then(
                 function(response) {
-                    vm.option_table.data = DUMMY.users.courier_deliveries;
+                    vm.option_table.assignments = DUMMY.users.courier_deliveries;
                     // vm.option_table.data = handleNames(response.data.data);
                 },
                 function(err) {
@@ -111,6 +166,33 @@ import DUMMY from 'Helpers/dummy';
         function goTo(data) { 
             data.view = vm.view; 
             $state.go('app.deliveries-'+vm.view, data);
+        }
+
+        function viewMap (data, index) {
+            data.address = data.cneeAddress;
+            var request = {
+                method  : 'PUT',
+                body    : data,
+                params  : {},
+                hasFile : false,
+                route   : { express:'', address:'assignLatlng'},
+            }; 
+            
+            var modal = {
+                title   : 'delivery',
+                titleHeader: "Update Address",
+                
+            };
+            
+            ModalService.form_modal(request, modal, 'geocodeFormModal','lg').then(
+                function(response) {
+                    // vm.data.splice(index, 1);
+                },
+                function(error) {
+                    console.log(error);
+                }
+            );
+ 
         }
     }
 })();

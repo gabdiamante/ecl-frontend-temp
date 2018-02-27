@@ -1,0 +1,40 @@
+<div class="modal-header bg-primary">
+    <span class="text-uppercase lead" ng-cloak>
+        <span ng-bind="vm.titleHeader"></span>
+        <button  type="button" 
+                class="close"
+                ng-click="vm.cancel()" 
+                data-dismiss="modal" 
+                aria-hidden="true">&times;</button>
+    </span>
+
+</div>
+<div class="modal-body">
+    <div class="">
+        <!-- <p>Search:<input type="text" class="form-control input-sm" ng-model="vm.data.search"></p> -->
+        <p>Code: <span class="text-uppercase text-bold" ng-bind="vm.data.code"></span></p>
+        <p>Address: <span class="text-uppercase" ng-bind="vm.data.address"></span></p>
+        <br />
+        <form class="input-group ng-pristine ng-valid" ng-submit="vm.codeAddress(vm.address)">
+            <input class="form-control input-sm" placeholder="Search address" places-auto-complete size="60"  ng-model="vm.address"  component-restrictions="{country:'ph'}"/>
+            <a class="input-group-addon" href="" ng-click="vm.codeAddress(vm.address)">
+                <i class="fa fa-search"></i>
+            </a>
+        </form>
+        <span >Current Position: <span class="text-primary" ng-bind-html="vm.data.newAddress | displaynone"></span></span> <br>
+        <span>Coordinates: <span ng-bind-html="vm.data.position | displaynone"></span></span> <br>
+        <button class="btn btn-primary" ng-click="vm.save(vm.data)" ng-disabled="vm.incomplete">
+            <i class="fa fa-save"></i>
+            Save
+        </button>
+        <p>
+            
+        </p>
+        
+    </div>
+    <div class="geocode-map top-margin">
+        <map name="" id="geocode" center="{{vm.center || vm.manila}}" zoom="{{vm.zoom || 16 }}" on-click="vm.getLoc()">
+            <marker position="{{vm.data.position || vm.center}}" draggable="true" on-dragend="vm.getPosition()" title="{{vm.data.newAaddress}}"></marker>
+        </map>
+    </div>  
+</div>

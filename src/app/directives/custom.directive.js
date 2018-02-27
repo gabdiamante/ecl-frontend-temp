@@ -1,5 +1,6 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
+var _ = require('lodash');
 
 (function() {
     'use strict';
@@ -446,8 +447,14 @@ import GLOBAL from 'Helpers/global';
                             return new Date();
                     },
                     toggleCheckBox: function(checkbox, model_name, propertyName) {
+                        var val;
+                        if (propertyName) 
+                            val = _.map(angular.copy($scope.vm.option_table.data), propertyName);
+                        else 
+                            val = angular.copy($scope.vm.option_table.data)
+                    
                         if (checkbox) 
-                            GLOBAL.getModel($scope.vm.items, model_name, angular.copy($scope.vm.option_table.data));
+                            GLOBAL.getModel($scope.vm.items, model_name, val);
                         else 
                             GLOBAL.getModel($scope.vm.items, model_name, []);
                     }

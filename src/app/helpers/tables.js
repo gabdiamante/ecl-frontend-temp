@@ -273,7 +273,7 @@ const TABLES = {
     courier_deliveries: {
         columnDefs: [
             {
-                name: 'airway_bill',
+                name: 'code',
                 displayName: 'AWB CODE',
                 cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
@@ -299,7 +299,7 @@ const TABLES = {
     delivery_bad_address: {
         columnDefs: [
             {
-                name: 'airway_bill',
+                name: 'code',
                 displayName: 'CODE',
                 cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
@@ -312,8 +312,8 @@ const TABLES = {
                                 <div class="pull-right ng-scope">
                                     <ul class="list list-inline">
                                         <li title="Update Address">
-                                            <a href="" class="fa text-grey fa-lg fa-pencil" ng-class="{ 'fa-pencil': !isEdit, 'fa-times' : isEdit }" ng-click="vm.viewMap(data, $index)">
-                                            </a>
+                                            <i class="fa text-grey fa-lg fa-pencil" ng-class="{ 'fa-pencil': !isEdit, 'fa-times' : isEdit }" ng-click="vm.viewMap(row.entity, $index)">
+                                            </i>
                                         </li>
                                     </ul>
                                 </div>`
@@ -333,7 +333,7 @@ const TABLES = {
     delivery_staging: {
         columnDefs: [
             {
-                name: 'airway_bill',
+                name: 'code',
                 displayName: 'CODE',
                 cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
@@ -356,7 +356,7 @@ const TABLES = {
     delivery_dispatched: {
         columnDefs: [
             {
-                name: 'airway_bill',
+                name: 'code',
                 displayName: 'AWB CODE',
                 cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
@@ -378,7 +378,7 @@ const TABLES = {
     courier_pickups: {
         columnDefs: [
             {
-                name: 'booking_code',
+                name: 'code',
                 displayName: 'BOOKING CODE',
                 cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
@@ -404,23 +404,31 @@ const TABLES = {
     pickup_bad_address: {
         columnDefs: [
             {
-                name: 'booking_code',
+                name: 'code',
                 displayName: 'CODE',
                 cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
-            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'shipper_name', displayName: 'SHPR' },
             {
-                name: 'shipperAddress',
+                name: 'shipper_address',
                 displayName: 'SHPR ADDRESS',
-                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;<i class="fa fa-pencil"></i>`
+                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;
+                <div class="pull-right ng-scope">
+                    <ul class="list list-inline">
+                        <li title="Update Address">
+                            <i class="fa text-grey fa-lg fa-pencil" ng-class="{ 'fa-pencil': !isEdit, 'fa-times' : isEdit }" ng-click="vm.viewMap(row.entity, $index)">
+                            </i>
+                        </li>
+                    </ul>
+                </div>`
             },
             {
-                name: 'reason',
+                name: 'bad_address_reason',
                 displayName: 'REASON',
-                cellTemplate: `<span ng-bind="COL_FIELD | date:short"></span>`
+                cellTemplate: `<span ng-bind-html="COL_FIELD | displaynone"></span>`
             },
             {
-                name: 'shipperContactNumber',
+                name: 'shipper_contact_number',
                 displayName: 'CONTACT',
                 cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
             }
@@ -429,29 +437,29 @@ const TABLES = {
     pickup_staging: {
         columnDefs: [
             {
-                name: 'booking_code',
+                name: 'code',
                 displayName: 'CODE',
                 cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
-            { name: 'shipperName', displayName: 'SHPR' },
-            { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
+            { name: 'shipper_name', displayName: 'SHPR' },
+            { name: 'shipper_address', displayName: 'SHPR ADDRESS' },
             {
-                name: 'shipperContactNumber',
+                name: 'shipper_contact_number',
                 displayName: 'CONTACT',
                 cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
             },
             {
                 width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="ct.toggleCheckBox(vm.checkbox,'checkItems', '')">`,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="ct.toggleCheckBox(vm.checkbox,'checkItems', 'id')">`,
                 cellTemplate:
-                    '<input checklist-model="vm.items.checkItems" checklist-value="row.entity" type="checkbox" />'
+                    '<input checklist-model="vm.items.checkItems" checklist-value="row.entity.id" type="checkbox" />'
             }
         ]
     },
     pickup_dispatched: {
         columnDefs: [
             {
-                name: 'booking_code',
+                name: 'code',
                 displayName: 'CODE',
                 cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
             },
