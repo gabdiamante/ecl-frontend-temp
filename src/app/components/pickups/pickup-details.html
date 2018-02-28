@@ -12,38 +12,38 @@
                 <ul class="list-group margin-top">
                     <li class="list-group-item clearfix">
                         <span class="col-md-3">Account Number : </span> 
-                        <span class="text-bold" ng-bind-html="vm.data.accountNumber | displaynone"></span>
+                        <span class="text-bold" ng-bind-html="vm.data.account_number | displaynone"></span>
                     </li>
                     <li class="list-group-item clearfix">
                         <span class="col-md-3">Paymode : </span> 
-                        <span class="text-bold" ng-bind-html="vm.data.payMode | displaynone"></span>
+                        <span class="text-bold" ng-bind-html="vm.data.paymode | displaynone"></span>
                     </li>
                     <li class="list-group-item clearfix">
                         <span class="col-md-3">COD Amount : </span> 
-                        <span class="text-bold" ng-bind="vm.data.cod | currency:'&#x20B1;'"></span>
+                        <span class="text-bold" ng-bind-html="vm.data.cod | currency:'&#x20B1;' | displaynone"></span>
                     </li>
                     <li class="list-group-item clearfix">
                         <span class="col-md-3">Total Charges : </span> 
-                        <span class="text-bold" ng-bind="vm.data.totalCharge | currency:'&#x20B1;'"></span>
+                        <span class="text-bold" ng-bind-html="vm.data.total_charge | currency:'&#x20B1;' | displaynone"></span>
                     </li>
                 </ul>
                 <span class="large text-uppercase">Shipper</span>
                 <ul class="list-group margin-top">
                     <li class="list-group-item clearfix">
                         <span class="col-md-3">Name : </span> 
-                        <span class="text-bold" ng-bind-html="vm.data.shipperName | displaynone"></span>
+                        <span class="text-bold" ng-bind-html="vm.data.shipper_name | displaynone"></span>
                     </li>
                     <li class="list-group-item clearfix"> 
                         <span class="col-md-3">Address : </span> 
-                        <span class="text-bold no-padding" ng-bind-html="vm.data.shipperAddress | displaynone"></span> 
+                        <span class="text-bold no-padding" ng-bind-html="vm.data.shipper_address | displaynone"></span> 
                     </li>
                     <li class="list-group-item clearfix"> 
                         <span class="col-md-3">Contact : </span> 
-                        <span class="text-bold " ng-bind-html="vm.data.shipperContactNumber | handlePccDisplay : '+63'"></span>
+                        <span class="text-bold " ng-bind-html="vm.data.shipper_contact_number | handlePccDisplay : '+63'"></span>
                     </li>
                 </ul>
                 <ul class="list-group margin-top">
-                    <li class="list-group-item clearfix">
+                    <!-- <li class="list-group-item clearfix">
                         <span class="col-md-3">Name : </span> 
                         <span class="text-bold" ng-bind-html="vm.data.receiverName | displaynone" ng-class="{'text-light-grey text-italic':!vm.data.receiverName}"></span>
                     </li>
@@ -58,7 +58,7 @@
                     <li class="list-group-item clearfix">
                         <span class="col-md-3">Receiver ID Number : </span> 
                         <span class="text-bold" ng-bind-html="vm.data.receiverID_NUMBER | displaynone" ng-class="{'text-light-grey text-italic':!vm.data.receiverID_NUMBER}"></span>
-                    </li>
+                    </li> -->
                     <div class="col-md-12 clearfix margin-top">
                         <div class="col-md-6 clearfix" align="center">
                             <p class=" " ng-if="!vm.data.shipperSignature">Receiver Signature:</p>

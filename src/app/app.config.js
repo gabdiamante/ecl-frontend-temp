@@ -133,17 +133,17 @@ import angular from 'angular';
 
             //DELIVERIES
             .state('app.deliveries-bad_address', {
-                url: 'deliveries_v1?view&page&limit',
+                url: 'deliveries_v1?view&page&limit&siteId',
                 component: 'deliveriesBadAddress'
             })
 
             .state('app.deliveries-staging', {
-                url: 'deliveries_v2?view&page&limit',
+                url: 'deliveries_v2?view&page&limit&siteId&zoneId',
                 component: 'deliveriesStaging'
             })
 
             .state('app.deliveries-dispatched', {
-                url: 'deliveries_v3?view&page&limit',
+                url: 'deliveries_v3?view&page&limit&siteId&zoneId',
                 component: 'deliveriesDispatched'
             })
 
@@ -154,23 +154,40 @@ import angular from 'angular';
 
             //PICKUPS
             .state('app.pickups-bad_address', {
-                url: 'pickups_v1?view&page&limit',
+                url: 'pickups_v1?view&page&limit&siteId',
                 component: 'pickupsBadAddress'
             })
 
             .state('app.pickups-staging', {
-                url: 'pickups_v2?view&page&limit',
+                url: 'pickups_v2?view&page&limit&siteId&zoneId',
                 component: 'pickupsStaging'
             })
 
             .state('app.pickups-dispatched', {
-                url: 'pickups_v3?view&page&limit',
+                url: 'pickups_v3?view&page&limit&siteId&zoneId',
                 component: 'pickupsDispatched'
             })
 
             .state('app.pickup-details', {
                 url: 'pickup-details?id',
                 component: 'pickupDetails'
+            })
+
+            // .state('app_plain.pickup-sheet', {
+            //     url: 'pickup-sheet?date&hubId&courierId&vehicleId',  
+            //     component: 'pickupSheet'
+            //     // templateUrl     : 'app/views/pickups/pickup-sheet/pickup-sheet.html',
+            //     // controller      : 'PickupSheetCtrl',
+            //     // controllerAs    : 'vm'
+            // })
+
+            .state('pickup-sheet', {
+                url: '/pickup-sheet?date&hubId&courierId&vehicleId',
+                views: {
+                    content: {
+                        component: 'pickupSheet'
+                    }
+                }
             })
 
             // USERS

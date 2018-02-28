@@ -2,6 +2,11 @@ a {
     cursor: pointer !important;
     outline: none !important;
 }
+
+.logo-report{
+	height: 40px;
+    margin-top: 10px;
+}
 .center {
     text-align: center;
 }
@@ -914,3 +919,72 @@ body.scroll::-webkit-scrollbar {
     cursor: default;
 }
 /******************************************************/
+
+/***************print*************************/
+
+
+.printable {
+	padding: 20px;
+	font-size: 12px;
+	border-bottom: dashed 2px #ddd;
+	padding-bottom: 40px;
+}
+.printable table th {
+	width: 100px;
+	padding: 0 10px;
+	line-height: 1;
+    border-bottom: solid 1px #ddd;
+}
+
+.print-table-2>tbody>tr>td{
+	padding: 5px;
+}
+
+.print-container {
+	border-bottom: dashed 2px #ddd;
+}
+
+.blank section {
+	width: 200px;
+	border-bottom: 1px solid #444;
+	padding: 3px;
+}
+.right {
+	float:right;
+}
+.retDoc {width: 500px !important;}
+.table-sm td{
+	padding:5px;
+	color: #888888;
+}
+.blank-md {
+	border-bottom: solid 1px #dddddd;
+	width: 250px;
+	margin:20px auto 10px;
+}
+.print-container {
+	border-bottom: dashed 2px #ddd;
+}
+.width-300 {
+    width: 300
+}
+.light-text, .print-tables {
+    color: #888888;
+}
+
+@media print {
+
+	.printable {
+		font-size: 12px;
+	}
+	.retDoc {width: 500px !important;}
+	.printable,
+	.print-container  {
+ 		page-break-after: always;
+ 		border:0;
+	 }
+}
+@media all {
+ .page-break { display: none; }
+}
+/***********************************************/

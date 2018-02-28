@@ -446,13 +446,15 @@ var _ = require('lodash');
                         else 
                             return new Date();
                     },
-                    toggleCheckBox: function(checkbox, model_name, propertyName) {
+                    toggleCheckBox: function(checkbox, model_name, propertyName, merge) {
                         var val;
+                        var merge_val = [];
+
                         if (propertyName) 
                             val = _.map(angular.copy($scope.vm.option_table.data), propertyName);
                         else 
-                            val = angular.copy($scope.vm.option_table.data)
-                    
+                            val = angular.copy($scope.vm.option_table.data);
+
                         if (checkbox) 
                             GLOBAL.getModel($scope.vm.items, model_name, val);
                         else 

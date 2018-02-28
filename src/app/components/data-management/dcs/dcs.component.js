@@ -88,6 +88,8 @@ import MESSAGE from 'Helpers/message';
                 cache_string: vm.route_name
             };
 
+            console.log(request);
+            
             QueryService.query(request)
                 .then(
                     function(response) {

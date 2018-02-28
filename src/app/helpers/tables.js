@@ -275,7 +275,7 @@ const TABLES = {
             {
                 name: 'code',
                 displayName: 'AWB CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'cneeName', displayName: 'CNEE' },
@@ -301,7 +301,7 @@ const TABLES = {
             {
                 name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.delivery-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'cneeName', displayName: 'CNEE' },
@@ -335,7 +335,7 @@ const TABLES = {
             {
                 name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'cneeName', displayName: 'CNEE' },
@@ -358,7 +358,7 @@ const TABLES = {
             {
                 name: 'code',
                 displayName: 'AWB CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
@@ -380,7 +380,7 @@ const TABLES = {
             {
                 name: 'code',
                 displayName: 'BOOKING CODE',
-                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.pickup-details({ id:row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'cneeName', displayName: 'CNEE' },
@@ -406,7 +406,7 @@ const TABLES = {
             {
                 name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.pickup-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipper_name', displayName: 'SHPR' },
             {
@@ -439,7 +439,7 @@ const TABLES = {
             {
                 name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.pickup-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipper_name', displayName: 'SHPR' },
             { name: 'shipper_address', displayName: 'SHPR ADDRESS' },
@@ -461,7 +461,7 @@ const TABLES = {
             {
                 name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.pickup-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
@@ -472,9 +472,9 @@ const TABLES = {
             },
             {
                 width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox[index]" ng-change="ct.toggleCheckBox(vm.checkbox[index],'checkItems[{{index}}]', '')">`,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox[index]" ng-change="ct.toggleCheckBox(vm.checkbox[index],'checkItems[{{index}}]','id')">`,
                 cellTemplate:
-                    '<input checklist-model="vm.items.checkItems[index]" checklist-value="row.entity" type="checkbox" />'
+                    '<input checklist-model="vm.items.checkItems[index]" checklist-value="row.entity.id" type="checkbox" />'
             }
         ]
     },
@@ -484,7 +484,7 @@ const TABLES = {
             {
                 name: 'code',
                 width: 50,
-                cellTemplate: `<a ui-sref="app.hub-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.hub-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'Shpr' },
             {
