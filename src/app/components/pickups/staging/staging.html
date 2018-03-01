@@ -5,15 +5,13 @@
     <div class="col-md-12 top-margin-sm">
         <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12">				
-                <span class="control-label text-theme small">Select Hub</span>
-                <select class="form-control text-uppercase" id="select"ng-model="vm.hub" ng-options="hub.id as hub.name for hub in vm.hubs" >
-                    <option value="" class="text-uppercase">All</option>
+                <span class="control-label text-theme small">Select Site <span ng-if="vm.loadingSites"><i class="fa fa-spinner fa-pulse"></i></span> </span>
+                <select class="form-control text-uppercase" ng-change="vm.selectSite(vm.site)" ng-model="vm.site" ng-options="site as site.name group by site.type for site in vm.sites" > 
                 </select>
             </div>
             <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-12" >
-                <span class="control-label text-theme small">Select Zone</span>
-                <select class="form-control text-uppercase" id="select"ng-model="vm.hub" ng-options="hub.id as hub.name for hub in vm.hubs" >
-                    <option value="" class="text-uppercase">All</option>
+                <span class="control-label text-theme small">Select Zone <span ng-if="vm.loadingZones"><i class="fa fa-spinner fa-pulse"></i></span> </span>
+                <select class="form-control text-uppercase" ng-change="vm.selectZone(vm.zone)" id="select" ng-model="vm.zone" ng-options="zone as zone.name group by zone.type for zone in vm.zones" >
                 </select>
             </div>
         </div>
@@ -32,7 +30,7 @@
         </div>
     </div> 
     <div class="col-md-6 col-sm-6 col-md-offset-6 col-sm-offset-6 col-sm-6 col-xs-12 top-margin-sm" align="right">
-        <button type="button" class="btn btn-default" ng-disabled="vm.items.roleUserCheck.length == 0" >Dispatched</button>
+        <button type="button" class="btn btn-primary theme-d2" ng-disabled="vm.items.checkItems.length == 0" ng-click="vm.dispatch(vm.data)">Dispatched</button>
     </div>
     <div class="content col-md-12">
         <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" prev="vm.prev()" next="vm.next()" export-data="vm.exportData(data)"></complex-table> 

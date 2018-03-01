@@ -2,6 +2,11 @@ a {
     cursor: pointer !important;
     outline: none !important;
 }
+
+.logo-report{
+	height: 40px;
+    margin-top: 10px;
+}
 .center {
     text-align: center;
 }
@@ -22,6 +27,12 @@ a {
 }
 .text-orange {
     color: orange;
+}
+.text-blue, .hover-text-blue:hover {
+    color: #2196F3!important;
+}
+.text-grey, .hover-text-grey:hover, .text-gray, .hover-text-gray:hover {
+    color: #757575!important;
 }
 /*theme*/
 .theme-l5 {
@@ -123,6 +134,14 @@ a {
 .btn-role-caret {
     margin-top: 3px;
 }
+
+/* .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: inherit;
+    box-shadow: inherit; 
+    opacity: .65;
+} */
 
 .btn-custom.disabled,
 .btn-custom[disabled],
@@ -644,6 +663,10 @@ body.scroll::-webkit-scrollbar {
     height: 500px;
 }
 
+.drop-list-height-auto {
+    height: auto;
+}
+
 .drop-list-menu {
     list-style: none;
     overflow-y: scroll;
@@ -666,16 +689,23 @@ body.scroll::-webkit-scrollbar {
     padding: 10px;
 }
 
-.box:after,
-.box:before {
+.box:after, .box:before {
     bottom: 100%;
-    right: 20px;
     border: solid transparent;
     content: ' ';
     height: 0;
     width: 0;
     position: absolute;
     pointer-events: none;
+}
+
+.box-right:after,
+.box-right:before {
+    right: 20px;
+}
+
+.box-left:after, .box-left:before {
+    left: 19px;
 }
 
 .box:after {
@@ -686,10 +716,12 @@ body.scroll::-webkit-scrollbar {
 }
 .box:before {
     border-color: rgba(255, 255, 255, 0);
-    border-bottom-color: #ffffff;
-    border-width: 10px;
+    /* border-bottom-color: #ffffff;
+    border-width: 10px; */
     margin-left: -13px;
 }
+
+
 
 /* .open > .dropdown-menu-2,
 .open > .dropdown-menu-3 {
@@ -718,6 +750,10 @@ body.scroll::-webkit-scrollbar {
 .drop-list .list-group-item,
 .drop-list-2 .list-group-item {
     padding: 5px;
+}
+
+.dropdown-menu-force-left {
+    left: 0px!important;
 }
 
 /******************************************************/
@@ -875,3 +911,80 @@ body.scroll::-webkit-scrollbar {
 }
 
 /******************************************************/
+
+/***************UI SREF DIRECTIVE CSS CLASS **************/
+.no-link-decorate, .no-link-decorate:hover, .no-link-decorate:active, .no-link-decorate:visited  {
+    color: inherit;
+    text-decoration: none;
+    cursor: default;
+}
+/******************************************************/
+
+/***************print*************************/
+
+
+.printable {
+	padding: 20px;
+	font-size: 12px;
+	border-bottom: dashed 2px #ddd;
+	padding-bottom: 40px;
+}
+.printable table th {
+	width: 100px;
+	padding: 0 10px;
+	line-height: 1;
+    border-bottom: solid 1px #ddd;
+}
+
+.print-table-2>tbody>tr>td{
+	padding: 5px;
+}
+
+.print-container {
+	border-bottom: dashed 2px #ddd;
+}
+
+.blank section {
+	width: 200px;
+	border-bottom: 1px solid #444;
+	padding: 3px;
+}
+.right {
+	float:right;
+}
+.retDoc {width: 500px !important;}
+.table-sm td{
+	padding:5px;
+	color: #888888;
+}
+.blank-md {
+	border-bottom: solid 1px #dddddd;
+	width: 250px;
+	margin:20px auto 10px;
+}
+.print-container {
+	border-bottom: dashed 2px #ddd;
+}
+.width-300 {
+    width: 300
+}
+.light-text, .print-tables {
+    color: #888888;
+}
+
+@media print {
+
+	.printable {
+		font-size: 12px;
+	}
+	.retDoc {width: 500px !important;}
+	.printable,
+	.print-container  {
+ 		page-break-after: always;
+ 		border:0;
+	 }
+}
+@media all {
+ .page-break { display: none; }
+}
+/***********************************************/

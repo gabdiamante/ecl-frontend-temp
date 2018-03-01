@@ -1,4 +1,5 @@
 import angular from 'angular';
+import UTILS from 'Helpers/util';
 
 (function() {
     'use strict';
@@ -43,7 +44,7 @@ import angular from 'angular';
         vm.view_profile = view_profile;
         vm.toggleSidebar = toggleSidebar;
 
-        vm.logo = require('Images/abel-emoji.jpg');
+        vm.logo = UTILS.logo;
         vm.$onInit = function() {};
 
         function view_profile() {

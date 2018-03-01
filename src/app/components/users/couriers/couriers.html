@@ -2,7 +2,7 @@
     <div class="col-md-12 sub-header">
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
     </div> 
-    <button class="btn-circle-lg btn-fixed" type="button" ng-click="vm.createCourier()" >
+    <button ng-if="vm.activated" class="btn-circle-lg btn-fixed" type="button" ng-click="vm.createCourier()" >
         <i  class="fa fa-plus fa-lg text-white" ></i>
     </button>
     <div class="col-md-12 top-margin-sm">
@@ -70,8 +70,14 @@
         <ul ng-if="vm.deactivated" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" >
             <li role="menuitem">
                 <a ng-click="vm.handleHSActivation(row.entity, 'reactivate')">
-                    <i class="fa fa-edit"></i>
+                    <i class="fa fa-undo"></i>
                     Reactivate
+                </a>
+            </li> 
+            <li role="menuitem">
+                <a ng-click="vm.handleHSActivation(row.entity, 'delete')">
+                    <i class="fa fa-trash"></i>
+                    Delete
                 </a>
             </li> 
         </ul>

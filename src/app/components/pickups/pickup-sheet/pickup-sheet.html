@@ -1,0 +1,111 @@
+<div class="print-container  page col-md-12" ng-repeat="(key, data) in vm.manifests">
+	<div class="text-center">
+		<img class="logo-report" ng-src="{{vm.logo}}">
+	</div>
+	<div class="print-head  no-padding">
+		<p class="pull-right">
+			Date : 
+			<span ng-bind="vm.manifestDate | date:'MMM dd, yyyy'"></span>
+		</p>
+		<p>
+			Pick-up Sheet
+		</p>
+
+	</div>
+	<div class="">
+		<table class="table-sm no-border">
+			<tr>
+				<td>
+					Courier : 
+				</td>
+				<td>
+					<span class="text-uppercase" ng-bind="data[0].first_name+ ' '+ data[0].last_name"></span>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+					Vehicle : 
+				</td>
+				<td>
+					<span ng-bind="vm.vehicleId || data[0].vehicle_id"></span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="top-margin">
+		<table class="print-table-2 table print-tables text-uppercase" >
+			<thead>
+				<tr class="text-uppercase">
+					<th class="text-uppercase"
+						ng-class="{'width-300': key=='rem'}"
+		            	ng-repeat="(key,val) in vm.tableHead">
+		            	{{val}}
+		            </th>
+				</tr>
+			</thead>
+			<tbody ng-init="items.total = {}">
+				<tr ng-repeat="item in data">
+					<td>
+						<span ng-bind="item.code"></span>
+					</td>
+					<td>
+						<span ng-bind="item.shipper_name"></span>
+					</td>
+					<td >
+						<span ng-init="items.total.qty = items.total.qty + item.qty " ng-bind="item.qty"></span>
+					</td>
+					<td >
+						<span ng-init="items.total.total_weight = items.total.total_weight + item.total_weight " ng-bind="item.total_weight"></span>
+					</td>
+					<td>
+						<span ng-init="items.total.total_dimension = items.total.total_dimension + item.total_dimension " ng-bind="item.total_dimension"></span>
+					</td>
+					<td>
+						<span ng-bind="item.remarks"></span>
+					</td>
+				</tr>
+			</tbody>
+			<tr> 
+				<td colspan="2">
+					<span class="pull-right">Total
+						&nbsp; &nbsp; &nbsp; &nbsp;
+						&nbsp; &nbsp; &nbsp; &nbsp;
+					</span>
+
+				</td>
+				<td>
+					<span ng-bind="items.total.qty"></span>
+				</td>
+				<td>
+					<span ng-bind="items.total.total_weight"></span>
+				</td>
+				<td>
+					<span ng-bind="items.total.total_d+imension"></span>
+				</td>
+				<td></td>
+			</tr>
+		</table>		
+		<div class="top-margin-sm">
+			
+		</div>
+
+	</div>
+	<div class="top-margin pm-sign-footer">
+		<!-- <div class="print-footer clearfix text-center">
+			<span class="item-label">Scanned by </span>
+			<p class="blank-md text-center"></p>	
+			<p class="small footnote transform-none">Print Name and Sign</p>
+		</div> -->
+		 <div class="print-footer clearfix text-center">
+			<span>Received completely and in good condition </span> <br>
+			<p class="blank-md"></p>	
+			<p class="small text-center transform-none">Print Name and Sign</p>
+		</div> 
+		<!-- <div class="print-footer clearfix text-center">
+			<span class="item-label">Cleared by </span>
+			<p class="blank-md"></p>	
+			<p class="small footnote transform-none">Print Name and Sign</p>
+		</div> -->
+	</div>
+</div>
