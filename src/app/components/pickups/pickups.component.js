@@ -78,7 +78,7 @@ import DUMMY from 'Helpers/dummy';
         vm.option_table.data = [];
         vm.option_table.columnDefs = TABLES['pickup_'+vm.view].columnDefs;
 
-        vm.dispatched = [
+        vm.dispatched_data = [
             { firstName:'Gabriel', lastName:'Diamante', assignments:'4' },
             { firstName:'Ruru', lastName:'Magana', assignments:'4' },
             { firstName:'Abel', lastName:'Madrid', assignments:'4' },
@@ -365,31 +365,43 @@ import DUMMY from 'Helpers/dummy';
                     vm.assignmentCourier = response.data.data.courier;
                     vm.assignmentHub = response.data.data.hub;
                }, function (error) {
-                    logger.error(error.data.errors[0].message, error, error.data.errors[0].context);
+                    logger.errorFormatResponse(error);
                     vm.isLoading = false;
             });
         }
 
-        function transferAssignments (data, index) {
+        function transferAssignments () {
 
             var reqData = {
                 awbIds:{},
-                bookingIds : vm.selectedItems,
-                hubId:vm.assignmentHub.id,
-                courierId:vm.assignmentCourier.courierId
+                bookingIds : vm.checkedItems,
+                // hubId:vm.assignmentHub.id,
+                // courierId:vm.assignmentCourier.courierId
             };
-            var modal = { header: "Select Courier" };
+
+            var modal = { titleHeader: "Select Courier" };
             var request = {
                 method  : 'PUT',
                 body    : reqData,
                 params  : {all:true},
-                transfer:true,
+                transfer: true,
                 hasFile : false,
-                route   : {express:'',assignments:'', transfers:'',couriers:''},
-                cache_string : ['couriers','vehicles','courier'],
+                route :  { 'couriers': '' },
+                //route   : {express:'',assignments:'', transfers:'',couriers:''},
+                // cache_string : ['couriers','vehicles','courier'],
             };
-            
-            ModalService.form_modal(request, modal, TPLS.courierList).then( 
+
+            // var request = {
+            //     method  : 'PUT',
+            //     body    : reqData,
+            //     params  : {all:true},
+            //     transfer:true,
+            //     hasFile : false,
+            //     route   : {express:'',assignments:'', transfers:'',couriers:''},
+            //     // cache_string : ['couriers','vehicles','courier'],
+            // };
+
+            ModalService.form_modal(request, modal, 'courierListFormModal').then( 
                 function (response) {
                     vm.disable = true;
                     for (var i = vm.couriers.length - 1; i >= 0; i--) {
@@ -400,7 +412,7 @@ import DUMMY from 'Helpers/dummy';
                     }
                     removeSelected(vm.assignments);
                 }, function (error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
 

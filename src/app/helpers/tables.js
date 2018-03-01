@@ -368,9 +368,9 @@ const TABLES = {
             },
             {
                 width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox[index]" ng-change="ct.toggleCheckBox(vm.checkbox[index],'checkItems[{{index}}]', '')">`,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox[index]" ng-change="ct.toggleCheckBox(vm.checkbox[index],'checkItems[{{index}}]','id')">`,
                 cellTemplate:
-                    '<input checklist-model="vm.items.checkItems[index]" checklist-value="row.entity" type="checkbox" />'
+                    '<input checklist-model="vm.items.checkItems[index]" checklist-value="row.entity.id" type="checkbox" />'
             }
         ]
     },

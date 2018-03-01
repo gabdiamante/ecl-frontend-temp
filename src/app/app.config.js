@@ -152,6 +152,15 @@ import angular from 'angular';
                 component: 'deliveryDetails'
             })
 
+            .state('cmr-drs', {
+                url: '/print?date&hubId&courierId&vehicleId',
+                views: {
+                    content: {
+                        component: 'cmrDrsSheet'
+                    }
+                }
+            })
+
             //PICKUPS
             .state('app.pickups-bad_address', {
                 url: 'pickups_v1?view&page&limit&siteId',
@@ -172,14 +181,6 @@ import angular from 'angular';
                 url: 'pickup-details?id',
                 component: 'pickupDetails'
             })
-
-            // .state('app_plain.pickup-sheet', {
-            //     url: 'pickup-sheet?date&hubId&courierId&vehicleId',  
-            //     component: 'pickupSheet'
-            //     // templateUrl     : 'app/views/pickups/pickup-sheet/pickup-sheet.html',
-            //     // controller      : 'PickupSheetCtrl',
-            //     // controllerAs    : 'vm'
-            // })
 
             .state('pickup-sheet', {
                 url: '/pickup-sheet?date&hubId&courierId&vehicleId',

@@ -43,10 +43,10 @@
         </div>
     </div>
     <div class="col-md-6 col-sm-6 col-md-offset-6 col-sm-offset-6 col-sm-6 col-xs-12" align="right">
-        <button class="btn btn-sm btn-default top-margin-sm" >
+        <button class="btn btn-sm btn-default top-margin-sm" ng-click="vm.printAll()">
             <i class="fa fa-print"></i> Print CMR/DRS
         </button>
-        <button class="btn btn-warning btn-sm top-margin-sm">
+        <button class="btn btn-warning btn-sm top-margin-sm" ng-click="vm.transferAssignments()" ng-disabled="vm.checkItems.length == 0">
             <i class="fa fa-refresh"></i> Transfer Assignments
         </button>
     </div>
@@ -55,7 +55,7 @@
         <uib-accordion close-others="true">
             <div uib-accordion-group class="panel-default top-margin-sm accord" ng-repeat="item in vm.dispatched" is-open="item.open">
                 <uib-accordion-heading>
-                    <div class="clearfix">
+                    <div class="clearfix" ng-click="vm.getAssignments(item)">
                         <div class="row">
                             <div class="col-md-2 col-sm-2 col-xs-2" > 
                                 <a href="" title="Vehicle" ng-bind="item.lastName +', '+ item.firstName" ng-click ="$event.preventDefault(); $event.stopPropagation();" ></a>
@@ -67,7 +67,7 @@
                                 <a title="View vehicle details" ng-click="vm.viewVehicle(key.vehicleId)" >
                                     <i class="fa fa-info-circle fa-lg"></i>
                                 </a> 
-                                <a title="View CMR/DRS" >
+                                <a title="View CMR/DRS" ng-click="vm.printOne(item)">
                                     <i class="fa fa-list fa-lg"></i>
                                 </a> &nbsp;
                                 <i class="fa" ng-class="{'fa-caret-down': item.open, 'fa-caret-right': !item.open}"></i>

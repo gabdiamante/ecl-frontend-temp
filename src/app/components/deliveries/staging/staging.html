@@ -30,7 +30,7 @@
         </div>
     </div> 
     <div class="col-md-6 col-sm-6 col-md-offset-6 col-sm-offset-6 col-sm-6 col-xs-12 top-margin-sm" align="right">
-        <button type="button" class="btn btn-primary theme-d2" ng-disabled="vm.items.checkItems.length == 0" >Dispatched</button>
+        <button type="button" class="btn btn-primary theme-d2" ng-disabled="vm.items.checkItems.length == 0" ng-click="vm.dispatch(vm.data)">Dispatched</button>
     </div>
     <div class="content col-md-12">
         <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" prev="vm.prev()" next="vm.next()" export-data="vm.exportData(data)"></complex-table> 

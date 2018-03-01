@@ -91,6 +91,24 @@ import DUMMY from 'Helpers/dummy';
 
         //function for staging
         vm.dispatch         = dispatch;
+
+        //function for dispatched
+        vm.getAssignments   = getAssignments;
+        vm.transferAssignments = transferAssignments;
+        vm.printAll         = printAll;
+        vm.printOne         = printOne;
+
+        //scope watch
+        
+        $scope.$watch('vm.items.checkItems', function(new_value, old_value) {
+            vm.checkItems           = [];
+            for (let n in new_value) {
+                var newCheckItems = new_value[n];
+                vm.checkItems = vm.checkItems.concat(newCheckItems.filter(function(el) {
+                    return vm.checkItems.indexOf(el) === -1;
+                }));
+            }
+        }, true);
         
         init();
 
@@ -258,28 +276,6 @@ import DUMMY from 'Helpers/dummy';
         //     });
         // }
 
-        function getAssignments() {
-            var request = {
-                method: 'GET',
-                body: false,
-                params: { per_page: 10 },
-                hasFile: false,
-                route: { users: '' },
-                cache: true,
-                cache_string: 'user'
-            };
-
-            QueryService.query(request).then(
-                function(response) {
-                    vm.option_table.assignments = DUMMY.users.courier_deliveries;
-                    // vm.option_table.data = handleNames(response.data.data);
-                },
-                function(err) {
-                    logger.error(MESSAGE.error, err, '');
-                }
-            );
-        }
-
         function handleNames(data) {
             for (let i = 0; i < data.length; i++) {
                 data[i].fullname = data[i].first_name + ' ' + data[i].last_name;
@@ -351,5 +347,111 @@ import DUMMY from 'Helpers/dummy';
                 }
             );
         }
+
+        function getAssignments() {
+
+            vm.isLoading=true;
+            // var r = {
+            //     express:"",
+            //     assignments:"",
+            //     courier: courier.courierId
+            // };
+
+            // var params = {
+            //     code:$stateParams.search,
+            //     hubId: vm.hub
+            // };
+
+            var request = {
+                method: 'GET',
+                body: false,
+                params: { per_page: 10 },
+                hasFile: false,
+                route: { users: '' },
+                cache: true,
+                cache_string: 'user'
+            };
+
+            vm.option_table.data = DUMMY.users.courier_deliveries;
+            
+            QueryService.query(request).then(
+                function(response) {
+                   
+                    // vm.assignments  = response.data.data.assignments; 
+                    // vm.assignmentCourier = response.data.data.courier;
+                    // vm.assignmentHub = response.data.data.hub;
+                    // vm.option_table.data = handleNames(response.data.data);
+                },
+                function(err) {
+                    logger.errorFormatResponse(error);
+                    vm.isLoading = false;
+                }
+            );
+        }
+
+        function transferAssignments () {
+
+            var reqData = {
+                awbIds:{},
+                bookingIds : vm.checkedItems,
+                // hubId:vm.assignmentHub.id,
+                // courierId:vm.assignmentCourier.courierId
+            };
+
+            var modal = { titleHeader: "Select Courier" };
+            var request = {
+                method  : 'PUT',
+                body    : reqData,
+                params  : {all:true},
+                transfer: true,
+                hasFile : false,
+                route :  { 'couriers': '' },
+                //route   : {express:'',assignments:'', transfers:'',couriers:''},
+                // cache_string : ['couriers','vehicles','courier'],
+            };
+
+            // var request = {
+            //     method  : 'PUT',
+            //     body    : reqData,
+            //     params  : {all:true},
+            //     transfer:true,
+            //     hasFile : false,
+            //     route   : {express:'',assignments:'', transfers:'',couriers:''},
+            //     // cache_string : ['couriers','vehicles','courier'],
+            // };
+
+            ModalService.form_modal(request, modal, 'courierListFormModal').then( 
+                function (response) {
+                    vm.disable = true;
+                    for (var i = vm.couriers.length - 1; i >= 0; i--) {
+                        if(vm.couriers[i].courierId == vm.assignmentCourier.courierId) {
+                            vm.couriers[i].pickup = vm.couriers[i].pickup - reqData.bookingIds.length;
+                            break;
+                        }
+                    }
+                    removeSelected(vm.assignments);
+                }, function (error) {
+                    console.log(error);
+                }
+            );
+
+        }
+
+        function printAll () {
+            var url = $state.href('cmr-drs', {
+                date:vm.today,
+                hubId:vm.hub
+            });
+            var printPage = window.open(url,'_blank');
+        }
+
+        function printOne (data) {
+            var url = $state.href('cmr-drs', {
+                date:vm.today,
+                hubId:vm.hub
+            });
+            var printPage = window.open(url,'_blank');
+        }
+
     }
 })();

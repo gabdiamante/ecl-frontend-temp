@@ -3,16 +3,16 @@ import GLOBAL from 'Helpers/global';
 import DUMMY from 'Helpers/dummy';
 import UTILS from 'Helpers/util';
 
-(function (){
+;(function (){
     'use strict';
 
-    angular.module('app').component('pickupSheet', {
-        template: require('./pickup-sheet.html'),
-        controller: PickupSheetCtrl,
+    angular.module('app').component('cmrDrsSheet', {
+        template: require('./cmr-drs.html'),
+        controller: CmrDrsSheetCtrl,
         controllerAs: 'vm'
     });
 
-    PickupSheetCtrl.$inject = [
+    CmrDrsSheetCtrl.$inject = [
         '$scope', 
         '$state',
         '$stateParams',
@@ -24,13 +24,13 @@ import UTILS from 'Helpers/util';
         'logger'
     ];
 
-    function PickupSheetCtrl ($scope, $state, $stateParams, $cookies, $filter, $timeout, ModalService, QueryService,logger) {
+    function CmrDrsSheetCtrl ($scope, $state, $stateParams, $cookies, $filter, $timeout, ModalService, QueryService,logger) {
        
         var vm  = this;
+        // vm.user = GLOBAL.user($cookies, $state);
         vm.getManifest = getManifest;
-        vm.today = new Date();
+        vm.today = $filter('date')(new Date(), "yyyy-MM-dd");
         vm[$stateParams.vehicle] = true;
-        vm.allManifest = true;
         vm.courier = $stateParams.courier;
         vm.vehicleId = $stateParams.vehicleId;
         vm.round = window.Math.round;
@@ -38,30 +38,26 @@ import UTILS from 'Helpers/util';
         vm.totalD = 0;
         vm.totalW = 0;
         vm.logo = UTILS.logo;
-        vm.parseJSON = JSON.parse;
+        vm.parseJSON = angular.fromJson;
 
         init();
         function init () {
-            console.log('sss');
-            if($stateParams.courierId) {
-                getOneManifest ();
-                vm.allManifest = false;
+            if($stateParams.id) {
+                getOneManifest(); 
             } else {
-                getAllManifest();
-                vm.allManifest = true;
+                getAllManifests();
             }
+            
         }
-        
-        function getAllManifest () {
-            vm.isLoading = true;
-           
-            vm.route = {
-                express:"",
-                bookings:"",
-                couriers:"",
-                manifest:""
-            };
 
+        function getAllManifests () {
+            vm.isLoading = true;
+            // /express/assignments/manifest
+            var r = {
+                express:'',
+                assignments : '',
+                manifest : ''
+            };
             var params = {
                 date: $stateParams.date,
                 hubId:$stateParams.hubId
@@ -73,19 +69,20 @@ import UTILS from 'Helpers/util';
                 params  : params, 
                 hasFile : false, 
                 cache   : true,
-                route   : vm.route
+                route   : r,
+                cache_string:'print-all'
             };
 
-            console.log('sss');
             vm.manifests = DUMMY.manifests;
 
             QueryService
                 .query(req)
                 .then(function (response) { 
-                    
-                    //vm.manifests = response.data.data;
+                    console.log(response);
+                    vm.manifests = response.data.data;
                     vm.isLoading = false;
                 }, function (error) {
+                    console.log(error);
                     vm.isLoading = false;
                    if(error.status == -1) {
                         logger.error('', error, 'Cannot connect to server.');
@@ -95,17 +92,15 @@ import UTILS from 'Helpers/util';
                 });
         }
 
-        // express/bookings/couriers/manifest?date=2017-08-10
         function getOneManifest () {
             vm.isLoading = true;
-           
-            vm.route = {
-                express:"",
-                bookings:"",
-                courier:$stateParams.courierId,
-                manifest:""
+            // /express/assignments/courier/:id/manifest
+            var r = {
+                express:'',
+                assignments : '',
+                courier:$stateParams.id,
+                manifest : ''
             };
-
             var params = {
                 date: $stateParams.date,
                 hubId:$stateParams.hubId
@@ -117,7 +112,8 @@ import UTILS from 'Helpers/util';
                 params  : params, 
                 hasFile : false, 
                 cache   : true,
-                route   : vm.route
+                route   : r,
+                cache_string:'print'
             };
 
             QueryService
@@ -127,6 +123,7 @@ import UTILS from 'Helpers/util';
                     vm.manifests = response.data.data;
                     vm.isLoading = false;
                 }, function (error) {
+                    console.log(error);
                     vm.isLoading = false;
                    if(error.status == -1) {
                         logger.error('', error, 'Cannot connect to server.');
@@ -135,15 +132,6 @@ import UTILS from 'Helpers/util';
                     }
                 });
         }
-        
-        vm.tableHead = {
-            bkngNo   : "Booking No.",            
-            shpr     : "Shipper's Name",
-            pcs      : "Pcs",
-            weight   : "Weight (kg)",
-            cbm      : "CBM",
-            rem      : "Remarks"
-        };
     }
 
 })();
