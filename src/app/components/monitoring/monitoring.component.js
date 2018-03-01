@@ -182,10 +182,16 @@ import UTILS from 'Helpers/util';
             vm.list = [];
             vm.vehicles = [];
             vm.isLoading = true;
+
+            // var route = {
+            //     express: '',
+            //     vehicles: 'out-del'
+            // };
+
             var route = {
-                express: '',
-                vehicles: 'out-del'
+                couriers: ''
             };
+
             var params = {
                 all: true,
                 hubId: hub.id

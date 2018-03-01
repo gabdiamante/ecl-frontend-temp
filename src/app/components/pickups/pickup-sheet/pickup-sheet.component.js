@@ -77,7 +77,7 @@ import UTILS from 'Helpers/util';
             };
 
             console.log('sss');
-            vm.manifests = DUMMY.manifests;
+            vm.manifests = DUMMY.pickup_manifests;
 
             QueryService
                 .query(req)

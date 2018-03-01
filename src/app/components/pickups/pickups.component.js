@@ -104,16 +104,17 @@ import DUMMY from 'Helpers/dummy';
         vm.printOne         = printOne;
 
         //scope watch
-        
-        $scope.$watch('vm.items.checkItems', function(new_value, old_value) {
-            vm.checkItems           = [];
-            for (let n in new_value) {
-                var newCheckItems = new_value[n];
-                vm.checkItems = vm.checkItems.concat(newCheckItems.filter(function(el) {
+        if (vm.view=='dispatched')
+            $scope.$watch('vm.items.checkItems', function(new_value, old_value) {
+                vm.checkItems           = [];
+                for (let n in new_value) {
+                    var newCheckItems = new_value[n] || [];
+                    vm.checkItems = vm.checkItems.concat(newCheckItems.filter(checkUnique));
+                }
+                function checkUnique(el) {
                     return vm.checkItems.indexOf(el) === -1;
-                }));
-            }
-        }, true);
+                }
+            }, true);
 
         init();
 

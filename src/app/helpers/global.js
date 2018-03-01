@@ -324,6 +324,8 @@ const GLOBAL = {
     },
     sortOn: function(arr, prop) {
         arr.sort(function(a, b) {
+            a[prop] = a[prop] || '';
+            b[prop] = b[prop] || '';
             if (a[prop].toLowerCase() < b[prop].toLowerCase()) return -1;
             if (a[prop].toLowerCase() > b[prop].toLowerCase()) return 1;
             return 0;

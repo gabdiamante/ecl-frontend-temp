@@ -72,6 +72,7 @@ import angular from 'angular';
                 });
             }
         ])
+        .run(removeSocket)
         .config(router)
         .run([
             '$transitions',
@@ -101,6 +102,22 @@ import angular from 'angular';
         ]);
 
     router.$inject = ['$stateProvider', '$urlRouterProvider'];
+
+    function removeSocket ($rootScope, $state, SocketService) {
+        // $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            
+        //     if(fromParams.courier !== localStorage.courier) {
+        //         // unlistenToCourier
+        //         SocketService.emit('unlistenToCourier', {courierId:fromParams.courier}, function(data) {
+        //             logger.log(data);
+        //         });
+        //     }
+
+        //     if(fromState.url == 'monitoring?hub&courier' || fromState =='courier?id&view') { 
+        //         SocketService.removeAllListeners();
+        //     } 
+        // });
+    }
 
     function router($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/login');
