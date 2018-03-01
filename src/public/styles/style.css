@@ -614,14 +614,14 @@ body.scroll::-webkit-scrollbar {
 }
 
 .map-toolbar {
-    position: absolute;
+    /* position: absolute; */
     background: rgba(58, 56, 56, 0.89);
     top: 0;
     width: 100%;
     padding: 20px;
 }
 .map-toolbar-sm {
-    position: absolute;
+    /* position: absolute; */
     background: rgba(58, 56, 56, 0.89);
     padding: 10px;
     z-index: 2;
@@ -970,6 +970,42 @@ body.scroll::-webkit-scrollbar {
 }
 .light-text, .print-tables {
     color: #888888;
+}
+.font-md {
+    font-size: 18px;
+} 
+.font-mdl {
+    font-size: 24px;
+} 
+.font-lg {
+    font-size: 36px;
+}
+.dashboard-map {
+	height:600px;
+}
+
+.padding-tb-lg {
+    padding: 20px 0px;
+}
+
+.padding-tb-md {
+    padding: 15px 0px;
+}
+
+.divide {
+    border-right: solid 1px #ccc;
+}
+
+.padding-tb-sm {
+    padding: 8px 0px;
+}
+
+.padding-lrt-xs {
+    padding: 8px 8px 0px 8px;
+}
+
+.black-op {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 @media print {

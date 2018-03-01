@@ -1,9 +1,101 @@
 <div class="content-view">
     <div class="col-md-12 sub-header">
         <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
-    </div> 
-    <div class="clearfix"></div>
-    <div class="content col-md-12">
-         
+    </div>  
+    <div class="col-md-8 top-margin-sm"> 
+        <div class="col-md-12">
+            <div class="row">
+                <div class="margin-bottom text-uppercase">
+                    <map name="" id="dashboard-map" class="dashboard-map" center="{{vm.center || 'Philippines'}}" zoom="{{vm.zoom || 5}}" styles="{{vm.mapStyles}}" street-view-control="false" zoom-control="false" map-type-control="false">
+                        <info-window id="courier-info-window">
+                            <div ng-non-bindable>
+                                <span class="">Courier:</span><a href="" ui-sref="app.courier({id:vm.courier.courierId})" class="text-bold" ng-bind="vm.courier.firstName+' '+ vm.courier.lastName"></a><br>
+                                <span class="">Vehicle:</span><span class="text-bold" ng-bind="vm.courier.id"></span>
+                            </div>
+                        </info-window>
+                    </map>    
+                </div>
+            </div>
+        </div> 
+        <div class="map-toolbar-sm bottom col-md-12">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-4 col-md-offset-2">
+                    <span class="pull-left border-right text-bold">Couriers &nbsp; &nbsp;</span>					
+                    <span class="margin-left">Dispatched: </span> <span class="text-bold" ng-bind="vm.vehicles.length || 0"></span>
+                </div>
+                <div class="col-md-4">
+                    <a href="" ui-sref="app.monitoring" class="text-white"><span>Online: </span><span class="text-bold" ng-bind="vm.markerCount || 0"></span></a>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="col-md-4 no-padding info-tile-container">
+        <div class="col-md-12 col-sm-6 col-xs-12 top-margin-sm">
+            <div class="row">
+                <div class="card info-tile theme">
+                    <div class="padding-lrt-xs">
+                        <spanp> <i class="fa fa-exclamation-triangle"></i> Bad Address</span>
+                    </div>
+                    <div class="padding-tb-lg" align="center">
+                        <span class="font-lg" ng-bind="vm.dashboardData.badAddress.pickups + vm.dashboardData.badAddress.deliveries || 0"></span>             
+                    </div>
+                    <div class="clearfix widget">
+                        <div class="col-md-6 col-sm-6 col-xs-6 center divide padding-tb-sm black-op">
+                        <a href="" title="Pickups Bad Address" ng-click="vm.goToPickups('bad-address')" class="font-mdl text-white" ng-bind="vm.dashboardData.badAddress.pickups || 0"></a><br>
+                        <span>Pickups</span>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6 center padding-tb-sm black-op">
+                        <a href="" title="Deliveries Bad Address" ng-click="vm.goToDeliveries('bad-address')" class="font-mdl text-white" ng-bind="vm.dashboardData.badAddress.deliveries || 0"></a><br>
+                        <span>Deliveries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-6 col-xs-12 top-margin-sm">
+            <div class="row">
+                <div class="card clearfix info-tile theme">
+                    <div class="padding-lrt-xs">
+                        <span> <i class="fa fa-circle-o-notch"></i> Staging</span>
+                    </div>
+                    <div class="padding-tb-lg" align="center">
+                        <span class="font-lg" ng-bind="vm.dashboardData.staging.pickups + vm.dashboardData.staging.deliveries || 0"></span>             
+                    </div>
+                    <div class="widget clearfix">
+                        <div class="col-md-6 col-sm-6 col-xs-6 center divide padding-tb-sm black-op">
+                            <a href="" title="Pickups Staging" ng-click="vm.goToPickups('staging')" class="font-mdl text-white" ng-bind="vm.dashboardData.staging.pickups || 0"></a><br>
+                            <span>Pickups</span>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6 center padding-tb-sm black-op">
+                            <a href="" title="Deliveries Staging" ng-click="vm.goToDeliveries('staging')" class="font-mdl text-white" ng-bind="vm.dashboardData.staging.deliveries || 0"></a><br>
+                            <span>Deliveries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-6 col-xs-12 top-margin-sm">
+            <div class="row">
+                <div class="card clearfix info-tile theme">
+                    <div class="padding-lrt-xs">
+                        <spanp> <i class="fa fa-paper-plane"></i> Dispatched</span>
+                    </div>
+                    <div class="padding-tb-lg" align="center">
+                        <span class="font-lg" ng-bind="vm.dashboardData.dispatched.pickups + vm.dashboardData.dispatched.deliveries || 0"></span>             
+                    </div>
+                    <div class="widget clearfix">
+                        <div class="col-md-6 col-sm-6 col-xs-6 center divide padding-tb-sm black-op">
+                            <a href="" title="Pickups Dispatched" class="font-mdl text-white" ng-click="vm.goToPickups('dispatched')" ng-bind="vm.dashboardData.dispatched.pickups || 0"></a><br>
+                            <span>Pickups</span>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6 center padding-tb-sm black-op">
+                            <a href="" title="Deliveries Dispatched" class="font-mdl text-white" ng-click="vm.goToDeliveries('dispatched')" ng-bind="vm.dashboardData.dispatched.deliveries||0"></a><br>
+                            <span>Deliveries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>  
 </div>
