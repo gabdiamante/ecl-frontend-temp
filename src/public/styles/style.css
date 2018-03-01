@@ -34,6 +34,7 @@ a {
 .text-grey, .hover-text-grey:hover, .text-gray, .hover-text-gray:hover {
     color: #757575!important;
 }
+.text-green,.hover-text-green:hover{color:#4CAF50!important}
 /*theme*/
 .theme-l5 {
     color: #000 !important;
@@ -639,6 +640,51 @@ body.scroll::-webkit-scrollbar {
     margin-bottom: 0;
     background: rgba(58, 56, 56, 0.89);
 }
+
+.pulse {
+	display: block;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	background: #FF9800;
+	cursor: pointer;
+	box-shadow: 0 0 0 rgba(255, 193, 7, 0.92);
+	animation: pulse 2s infinite;
+	/* position: absolute; */
+	right: 0;
+	left: -8px;
+}
+.pulse-container {
+	position: relative;
+}
+
+/*animation pulse*/
+@-webkit-keyframes pulse {
+	0% {
+	-webkit-box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.85);
+	}
+	70% {
+		-webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+	}
+	100% {
+		-webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+	}
+}
+@keyframes pulse {
+	0% {
+	-moz-box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.85);
+	box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.85);
+	}
+	70% {
+		-moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+		box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+	}
+	100% {
+		-moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+		box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+	}
+}
+
 
 /******************************************************/
 

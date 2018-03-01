@@ -51,8 +51,7 @@ var jsts = require('jsts');
 
         vm.user = GLOBAL.user($cookies, $state);
         //vm.center_map_lat_lng = GLOBAL.map_default_position[0] + ',' + GLOBAL.map_default_position[1];
-        vm.center_map_lat_lng =
-            $stateParams.center_map_lat_lng || '14.599512, 120.984222';
+        vm.center_map_lat_lng = $stateParams.center_map_lat_lng || UTILS.latlngcenter;
         //vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
 
         vm.route_name = 'zone';

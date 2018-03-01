@@ -1,6 +1,7 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import UTILS from 'Helpers/util';
+import DUMMY from 'Helpers/dummy';
 
 (function() {
     'use strict';
@@ -41,6 +42,8 @@ import UTILS from 'Helpers/util';
         var vm = this;
         var socket = SocketService;
         var bounds = new google.maps.LatLngBounds();
+
+        vm.center_map_lat_lng = $stateParams.center_map_lat_lng || UTILS.latlngcenter;
         vm.isOpen = false;
         vm.visible = false;
         vm.viewOne = false;
@@ -48,7 +51,6 @@ import UTILS from 'Helpers/util';
         vm.path = [[0, 0]];
         vm.actualRoute = [[0, 0]];
         vm.curState = $state.current.name;
-        vm.user = GLOBAL.user($cookies, $state);
         vm.mapStyles = UTILS.mapStyles;
         vm.mapUrl = UTILS.mapUrl;
         vm.today = new Date();
@@ -65,6 +67,8 @@ import UTILS from 'Helpers/util';
         vm.viewAssignments = viewAssignments;
         vm.clickAssignment = clickAssignment;
         vm.viewItemDetails = viewItemDetails;
+
+        
 
         init();
 
@@ -200,7 +204,6 @@ import UTILS from 'Helpers/util';
             var req = {
                 method: 'GET',
                 body: false,
-                token: vm.user.token,
                 params: params,
                 hasFile: false,
                 cache: true,
@@ -209,7 +212,8 @@ import UTILS from 'Helpers/util';
 
             QueryService.query(req).then(
                 function(response) {
-                    vm.vehicles = response.data.data.items;
+                    // vm.vehicles = response.data.data.items;
+                    vm.vehicles = DUMMY.monitoring.courier_vehicle_out_for_del_list;
                     centerAllCouriers(vm.vehicles);
                     GLOBAL.sortOn(vm.vehicles, 'lastName');
                     vm.isLoading = false;
@@ -264,7 +268,6 @@ import UTILS from 'Helpers/util';
             var req = {
                 method: 'GET',
                 body: false,
-                token: vm.user.token,
                 params: false,
                 hasFile: false,
                 cache: false,
@@ -276,8 +279,7 @@ import UTILS from 'Helpers/util';
                 function(response) {
                     setIconColor(response.data.data.assignments);
                     vm.courier = response.data.data.courier;
-                    vm.courier.name =
-                        vm.courier.firstName + ' ' + vm.courier.lastName;
+                    vm.courier.name = vm.courier.firstName + ' ' + vm.courier.lastName;
                     vm.hub = response.data.data.hub;
                     listenToCourier(vm.courier);
                     changeBookingStatus();
@@ -315,11 +317,11 @@ import UTILS from 'Helpers/util';
             vm.onlineCount = 0;
             NgMap.getMap({ id: 'mntrng-map' }).then(function(map) {
                 for (var i = 0; i < vehicles.length; i++) {
-                    if (vehicles[i].latitude) {
+                    if (vehicles[i].lat) {
                         vm.onlineCount++;
                         var latLng = new google.maps.LatLng(
-                            vehicles[i].latitude,
-                            vehicles[i].longitude
+                            vehicles[i].lat,
+                            vehicles[i].lng
                         );
                         bounds.extend(latLng);
                     }

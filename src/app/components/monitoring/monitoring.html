@@ -9,15 +9,15 @@
 
     <div class="map-container">
         <map name="" map-lazy-load="vm.mapUrl" id="mntrng-map" class="dashboard-map" zoom="{{vm.zoom || 8}}" styles="{{vm.mapStyles}}" zoom-control="false" street-view-control="false" map-type-control="false">
-            <custom-marker position="{{vehicle.latitude}}, {{vehicle.longitude}}"
+            <custom-marker position="{{vehicle.lat}}, {{vehicle.lng}}"
                     ng-repeat="vehicle in vm.vehicles"
-                    ng-if="vehicle.latitude"
+                    ng-if="vehicle.lat"
                     on-click="vm.clickCourier(vehicle)">
                     <div class="pulse-container" >
                             <div class="pulse"></div>
                     </div>
             </custom-marker>
-            <custom-marker ng-if="vm.viewOne" position="{{vm.courier.latitude}}, {{vm.courier.longitude}}" on-click="vm.clickCourier(vm.courier)">
+            <custom-marker ng-if="vm.viewOne" position="{{vm.courier.lat}}, {{vm.courier.lng}}" on-click="vm.clickCourier(vm.courier)">
                 <div class="pulse-container" >
                         <div class="pulse"></div>
                     </div>
@@ -27,7 +27,7 @@
                     <marker position="{{vm.hub.lat}}, {{vm.hub.lng}}" id="hub-marker"  on-click="vm.showHubInfo(vm.hub)" icon={{vm.hubIcon}} title="{{vm.hub.name}}">		
                     </marker>
             </div>
-            <info-window id="assignInfo" position="{{vm.assign.lat}}, {{vm.assign.lng}}">
+            <info-window ng-show="vm.assign" id="assignInfo" position="{{vm.assign.lat}}, {{vm.assign.lng}}">
                 <div ng-non-bindable>
                         <span 	class="text-bold"
                                 ng-bind="vm.assign.assignmentType | uppercase">
@@ -55,7 +55,7 @@
                 </div>
             </info-window>
 
-            <info-window id="courierInfo" position="{{vm.courier.latitude}}, {{vm.courier.longitude}}">
+            <info-window ng-show="vm.courier" id="courierInfo" position="{{vm.courier.lat}}, {{vm.courier.lng}}">
                 <div ng-non-bindable>
                         <span>
                             Courier:
@@ -145,7 +145,7 @@
                                             </form>
                                             <ul class="list-group clearfix">
                                                 <li class="list-group-item" ng-repeat="vehicle in vm.filteredVehicles = (vm.vehicles | filter:vehicle)">
-                                                    <i class="fa small" ng-class="vehicle.latitude ? 'fa-circle text-green' : 'fa-circle-o text-grey'"></i> &nbsp;
+                                                    <i class="fa small" ng-class="vehicle.lat ? 'fa-circle text-green' : 'fa-circle-o text-grey'"></i> &nbsp;
                                                     <a href="" ng-click="vm.viewDetails(vehicle)" class="text-blue-grey text-bold" ng-bind="vehicle.last_name +', ' +vehicle.first_name"></a>
                                                 </li>
                                                 <div class="text-center text-grey" ng-if="!vm.filteredVehicles.length">
