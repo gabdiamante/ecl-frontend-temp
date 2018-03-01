@@ -59,7 +59,7 @@ const TABLES = {
                 cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.merchant-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
             },
             // { name: 'username', displayName:'Username' },
-            {
+            { 
                 name: 'contact',
                 displayName: 'Contact',
                 cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
