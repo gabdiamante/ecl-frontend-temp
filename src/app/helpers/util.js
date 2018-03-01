@@ -1,4 +1,5 @@
 const UTIL = {
+    logo: require('Images/nav-logo.png'),
     colors: [
         //
         '#f97000',

@@ -49,7 +49,6 @@ import MESSAGE from 'Helpers/message';
         vm.per_page = ['10', '20', '50', '100', '200'];
         vm.total_page = '1';
         vm.total_items = '0';
-        vm.items = { roleUserCheck: [] };
         vm.loading = false;
 
         vm.option_table = {
@@ -69,7 +68,7 @@ import MESSAGE from 'Helpers/message';
 
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
-        vm.handleHSActivation = handleHSActivation;
+        vm.handleActivation = handleActivation;
 
         getData();
 
@@ -165,7 +164,7 @@ import MESSAGE from 'Helpers/message';
             );
         }
 
-        function handleHSActivation(data, action) {
+        function handleActivation(data, action) {
             var content = {
                 header: action + ' ' + vm.title,
                 message: MESSAGE.confirmMsg(action, vm.title.toLowerCase()),
@@ -175,7 +174,7 @@ import MESSAGE from 'Helpers/message';
             ModalService.confirm_modal(content).then(
                 function(response) {
                     if (!response) return;
-                    executeActivateDeactivate(data, action);
+                    executeActivateDeactivateDelete(data, action);
                 },
                 function(error) {
                     logger.error(error.data.message);
@@ -183,26 +182,24 @@ import MESSAGE from 'Helpers/message';
             );
         }
 
-        function executeActivateDeactivate(data, action) {
+        function executeActivateDeactivateDelete(data, action) {
             var request = {
-                method: 'PUT',
+                method: action == 'delete' ? 'DELETE' : 'PUT',
                 body: false,
                 params: false,
                 hasFile: false,
-                route: { [vm.route_name]: data.id, [action]: '' },
+                route: { [vm.route_name]: data.id },
                 cache: false
             };
+            if (action != 'delete') request.route[action] = '';
 
             QueryService.query(request).then(
                 function(response) {
-                    vm.option_table.data.splice(
-                        vm.option_table.data.indexOf(
-                            $filter('filter')(vm.option_table.data, {
-                                id: data.id
-                            })[0]
-                        ),
-                        1
-                    );
+                    vm.option_table.data.splice(vm.option_table.data.indexOf(
+                        $filter('filter')(vm.option_table.data, {
+                            id: data.id
+                        })[0]
+                    ), 1);
                     logger.success(vm.title + ' ' + action + 'd!');
                 },
                 function(err) {

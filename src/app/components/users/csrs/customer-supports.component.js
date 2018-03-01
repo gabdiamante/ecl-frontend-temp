@@ -167,7 +167,7 @@ import MESSAGE from 'Helpers/message';
                 .then(
                     function (response) {
                         if (!response) return; 
-                        activateDeactivateCsr(data, action);
+                        activateDeactivateDeleteCsr(data, action);
                     },
                     function (err) {
                         console.log(err);
@@ -175,14 +175,15 @@ import MESSAGE from 'Helpers/message';
                 );
         }
 
-        function activateDeactivateCsr (data, action) {
+        function activateDeactivateDeleteCsr (data, action) {
             var request = {
-                method: 'PUT',
+                method: action == 'delete' ? 'DELETE' : 'PUT',
                 body: {},
                 params: false,
                 hasFile: false,
-                route: { site:data.site_id, csr:data.user_id, [action]:'' } 
+                route: { site:data.site_id, csr:data.user_id } 
             };
+            if (action != 'delete') request.route[action] = '';
 
             QueryService
                 .query(request)
@@ -214,16 +215,5 @@ import MESSAGE from 'Helpers/message';
         function goTo(data) {
             $state.go($state.current.name, data);
         }
-
-        vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {
-            // var values_of_id = _.pluck(vm.option_table.data, propertyName);
-            if (checkbox)
-                GLOBAL.getModel(
-                    vm.items,
-                    model_name,
-                    angular.copy(vm.option_table.data)
-                );
-            else GLOBAL.getModel(vm.items, model_name, []);
-        };
     }
 })();

@@ -133,17 +133,17 @@ import angular from 'angular';
 
             //DELIVERIES
             .state('app.deliveries-bad_address', {
-                url: 'deliveries_v1?view&page&limit',
+                url: 'deliveries_v1?view&page&limit&siteId',
                 component: 'deliveriesBadAddress'
             })
 
             .state('app.deliveries-staging', {
-                url: 'deliveries_v2?view&page&limit',
+                url: 'deliveries_v2?view&page&limit&siteId&zoneId',
                 component: 'deliveriesStaging'
             })
 
             .state('app.deliveries-dispatched', {
-                url: 'deliveries_v3?view&page&limit',
+                url: 'deliveries_v3?view&page&limit&siteId&zoneId',
                 component: 'deliveriesDispatched'
             })
 
@@ -152,25 +152,43 @@ import angular from 'angular';
                 component: 'deliveryDetails'
             })
 
+            .state('cmr-drs', {
+                url: '/print?date&hubId&courierId&vehicleId',
+                views: {
+                    content: {
+                        component: 'cmrDrsSheet'
+                    }
+                }
+            })
+
             //PICKUPS
             .state('app.pickups-bad_address', {
-                url: 'pickups_v1?view&page&limit',
+                url: 'pickups_v1?view&page&limit&siteId',
                 component: 'pickupsBadAddress'
             })
 
             .state('app.pickups-staging', {
-                url: 'pickups_v2?view&page&limit',
+                url: 'pickups_v2?view&page&limit&siteId&zoneId',
                 component: 'pickupsStaging'
             })
 
             .state('app.pickups-dispatched', {
-                url: 'pickups_v3?view&page&limit',
+                url: 'pickups_v3?view&page&limit&siteId&zoneId',
                 component: 'pickupsDispatched'
             })
 
             .state('app.pickup-details', {
                 url: 'pickup-details?id',
                 component: 'pickupDetails'
+            })
+
+            .state('pickup-sheet', {
+                url: '/pickup-sheet?date&hubId&courierId&vehicleId',
+                views: {
+                    content: {
+                        component: 'pickupSheet'
+                    }
+                }
             })
 
             // USERS
@@ -261,7 +279,7 @@ import angular from 'angular';
             })
 
             .state('app.zones', {
-                url: 'zones?siteType&siteFront&siteId&zoom&center_map_lat_lng',
+                url: 'zones?siteType&siteFront&siteId&includeUnassigned&filterClose&zoom&center_map_lat_lng&deactivated',
                 component: 'zones'
             })
 
@@ -285,16 +303,18 @@ import angular from 'angular';
                 component: 'packagingCodeDetails'
             })
 
+            //IMPORT/EXPORT
             .state('app.import-export', {
                 url: 'import-export',
                 component: 'importExport'
             })
 
+            //HISTORY
             .state('app.history', {
                 url: 'history',
                 component: 'history'
             })
-
+            //SETTINGS
             .state('app.settings', {
                 url: 'settings',
                 component: 'settings'

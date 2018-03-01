@@ -61,6 +61,7 @@ import MESSAGE from 'Helpers/message';
             getSiteTypes();
 
             getSites();
+            getDestinations();
             getZones();
             //console.log(Modal);
         };
@@ -101,6 +102,40 @@ import MESSAGE from 'Helpers/message';
                 )
                 .finally(function() {
                     vm.loadingSites = false;
+                });
+        }
+
+        function getDestinations() {
+            vm.loadingDestinations = true;
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '9999999999',
+                    page: '1',
+                    is_active: 1,
+                    type: 'DC'
+                },
+                hasFile: false,
+                route: { site: '' },
+                cache: false
+            };
+
+            console.log('hubr', request);
+
+            QueryService.query(request)
+                .then(
+                    function(response) {
+                        vm.destinations = response.data.data.items;
+                        vm.destinations.unshift({ code: 'Select Destination' });
+                        vm.data.dc_id = vm.data.dc_id || vm.destinations[0].id;
+                    },
+                    function(error) {
+                        logger.errorFormatResponse(error);
+                    }
+                )
+                .finally(function() {
+                    vm.loadingDestinations = false;
                 });
         }
 

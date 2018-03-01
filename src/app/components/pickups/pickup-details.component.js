@@ -32,16 +32,46 @@ import DUMMY from 'Helpers/dummy';
     ) {
         var vm = this;
         vm.titleHeader = 'Pickup Details';
-        vm.per_page = ['10', '20', '50', '100', '200'];
         vm.loading = false;
+        vm.route_name = 'booking';
+        vm.id = $stateParams.id;
 
         init();
 
         function init() {
-            vm.data = $filter('filter')(DUMMY.users.courier_pickups, {
-                booking_code: $stateParams.id
-            })[0];
-            vm.titleHeader = vm.data.booking_code;
+            // vm.data = $filter('filter')(DUMMY.users.courier_pickups, {
+            //     booking_code: $stateParams.id
+            // })[0];
+            // vm.titleHeader = vm.data.code;
+            getData();
         }
+
+        function getData () {
+            vm.isLoading = true;
+    
+            var req =  { 
+                method  : 'GET', 
+                body    : false,
+                params  : false, 
+                hasFile : false, 
+                cache   : true,
+                route   : { [vm.route_name] : vm.id } ,
+                ignoreLoadingBar:true
+            };
+
+            QueryService
+                .query(req)
+                .then(function (response) { 
+                    console.log(response);
+                    vm.data = response.data.data.items[0];
+                }, function (error) { 
+                    logger.errorFormatResponse(error);
+                    vm.isLoading = false;
+                });
+        }
+
+
+
+
     }
 })();

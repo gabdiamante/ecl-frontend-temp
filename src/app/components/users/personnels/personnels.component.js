@@ -48,7 +48,6 @@ import MESSAGE from 'Helpers/message';
         vm.per_page = ['10', '20', '50', '100', '200'];
         vm.total_page = '1';
         vm.total_items = '0';
-        vm.items = { roleUserCheck: [] };
         vm.loading = false;
 
         vm.option_table = {
@@ -174,7 +173,7 @@ import MESSAGE from 'Helpers/message';
                 .then(
                     function (response) {
                         if (!response) return; 
-                        activateDeactivatePersonnel(data, action);
+                        activateDeactivateDeletePersonnel(data, action);
                     },
                     function (err) {
                         console.log(err);
@@ -182,14 +181,15 @@ import MESSAGE from 'Helpers/message';
                 );
         }
 
-        function activateDeactivatePersonnel (data, action) {
+        function activateDeactivateDeletePersonnel (data, action) {
             var request = {
-                method: 'PUT',
+                method: action == 'delete' ? 'DELETE' : 'PUT',
                 body: {},
                 params: false,
                 hasFile: false,
-                route: { site:data.site_id, [vm.route_name]:data.user_id, [action]:'' } 
+                route: { site:data.site_id, [vm.route_name]:data.user_id } 
             };
+            if (action != 'delete') request.route[action] = '';
 
             QueryService
                 .query(request)

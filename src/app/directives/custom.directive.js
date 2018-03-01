@@ -1,4 +1,6 @@
 import angular from 'angular';
+import GLOBAL from 'Helpers/global';
+var _ = require('lodash');
 
 (function() {
     'use strict';
@@ -36,41 +38,64 @@ import angular from 'angular';
         .directive('customValidationFunction', customValidationFunction);
     // .directive('mainImage', mainImage);
 
+    // function uiSrefIf($compile) {
+    //     return {
+    //         link: function($scope, $element, $attrs) {
+    //             var uiSrefVal = $attrs.uiSrefVal,
+    //                 uiSrefIf = $attrs.uiSrefIf,
+    //                 uiSrefNgBind = $attrs.uiSrefNgBind;
+
+    //             $element.removeAttr('ui-sref-if');
+    //             $element.removeAttr('ui-sref-val');
+
+    //             $scope.$watch(
+    //                 function() {
+    //                     return $scope.$eval(uiSrefIf);
+    //                 },
+    //                 function(bool) {
+    //                     if (bool) {
+    //                         $element.attr('ui-sref', uiSrefVal);
+    //                         $element.removeClass('no_style');
+    //                     } else {
+    //                         $element.attr('class', 'no_style');
+    //                         $element.removeAttr('ui-sref');
+    //                         $element.removeAttr('href');
+    //                     }
+
+    //                     if (uiSrefNgBind)
+    //                         $element.attr(
+    //                             'ng-bind-html',
+    //                             uiSrefNgBind + ' | displaynone'
+    //                         );
+
+    //                     $compile($element)($scope);
+    //                 }
+    //             );
+    //         }
+    //     };
+    // }
+
     function uiSrefIf($compile) {
-        return {
-            link: function($scope, $element, $attrs) {
-                var uiSrefVal = $attrs.uiSrefVal,
-                    uiSrefIf = $attrs.uiSrefIf,
-                    uiSrefNgBind = $attrs.uiSrefNgBind;
-
-                $element.removeAttr('ui-sref-if');
-                $element.removeAttr('ui-sref-val');
-
-                $scope.$watch(
-                    function() {
-                        return $scope.$eval(uiSrefIf);
-                    },
-                    function(bool) {
-                        if (bool) {
-                            $element.attr('ui-sref', uiSrefVal);
-                            $element.removeClass('no_style');
-                        } else {
-                            $element.attr('class', 'no_style');
-                            $element.removeAttr('ui-sref');
-                            $element.removeAttr('href');
-                        }
-
-                        if (uiSrefNgBind)
-                            $element.attr(
-                                'ng-bind-html',
-                                uiSrefNgBind + ' | displaynone'
-                            );
-
-                        $compile($element)($scope);
-                    }
-                );
-            }
+        var directive = {
+            restrict: 'A',
+            link: linker
         };
+        return directive;
+        function linker(scope, elem, attrs) {
+            elem.removeAttr('ui-sref-if');
+            $compile(elem)(scope);
+            scope.$watch(attrs.condition, function(bool) {
+                if (bool) {
+                    elem.attr('ui-sref', attrs.value);
+                    elem.removeClass('no-link-decorate');
+                } else {
+                    elem.removeAttr('ui-sref');
+                    elem.removeAttr('href');
+                    elem.addClass('no-link-decorate');
+                }
+                $compile(elem)(scope);
+            });
+        }
     }
 
     function compileTemplate($compile, $parse, $sce) {
@@ -387,6 +412,7 @@ import angular from 'angular';
                 totalValue: '&',
                 exportData: '&',
                 options: '=options',
+                index: '=index',
                 vm: '=vm',
                 // calendar
                 disabled: '=disabled',
@@ -411,6 +437,29 @@ import angular from 'angular';
                         model,
                         angular.copy($scope.vm.search_old)
                     );
+                };
+
+                $scope.ct = {
+                    parseDate: function(date_val) {
+                        if (date_val)
+                            return new Date(date_val);
+                        else 
+                            return new Date();
+                    },
+                    toggleCheckBox: function(checkbox, model_name, propertyName, merge) {
+                        var val;
+                        var merge_val = [];
+
+                        if (propertyName) 
+                            val = _.map(angular.copy($scope.vm.option_table.data), propertyName);
+                        else 
+                            val = angular.copy($scope.vm.option_table.data);
+
+                        if (checkbox) 
+                            GLOBAL.getModel($scope.vm.items, model_name, val);
+                        else 
+                            GLOBAL.getModel($scope.vm.items, model_name, []);
+                    }
                 };
             }
         };
@@ -770,10 +819,7 @@ import angular from 'angular';
 
                 function maxSizeChange() {
                     // Get window width
-                    $scope.windowWidth =
-                        'innerWidth' in window
-                            ? window.innerWidth
-                            : document.documentElement.offsetWidth;
+                    $scope.windowWidth = 'innerWidth' in window ? window.innerWidth : document.documentElement.offsetWidth;
 
                     // Change maxSize based on window width
                     if ($scope.windowWidth > 1000) {

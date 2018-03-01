@@ -24,7 +24,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.courier-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.courier-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             {
@@ -56,7 +56,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.merchant-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.merchant-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
             },
             // { name: 'username', displayName:'Username' },
             {
@@ -71,7 +71,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'name',
-                cellTemplate: `<a ui-sref="app.dispatcher-details({ site_id: row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.dispatcher-details({ site_id: row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
             },
             { name: 'username' },
             { name: 'email' },
@@ -91,7 +91,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'name',
-                cellTemplate: `<a ui-sref="app.personnel-details({ site_id:row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.personnel-details({ site_id:row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
             },
             { name: 'username' },
             { name: 'email' },
@@ -112,7 +112,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.hub-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.hub-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             { name: 'email', displayName: 'Email' },
@@ -134,7 +134,7 @@ const TABLES = {
             {
                 name: 'fullname',
                 displayName: 'Name',
-                cellTemplate: `<a ui-sref="app.customer-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.customer-support-details({ user_id:row.entity.user_id, site_id:row.entity.site_id })">{{COL_FIELD}}</a>`
             },
             { name: 'username', displayName: 'Username' },
             { name: 'email', displayName: 'Email' },
@@ -161,7 +161,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'code',
-                cellTemplate: `<a ui-sref="app.hub-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.hub-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'name' },
             {
@@ -183,7 +183,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'code',
-                cellTemplate: `<a ui-sref="app.dc-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.dc-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'name' },
             {
@@ -208,7 +208,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'plate_number',
-                cellTemplate: `<a ui-sref="app.vehicle-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.vehicle-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'model' },
             { name: 'max_weight' },
@@ -229,7 +229,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'code',
-                cellTemplate: `<a ui-sref="app.bin-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.bin-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'name' },
             { name: 'volume' },
@@ -251,7 +251,7 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'code',
-                cellTemplate: `<a ui-sref="app.packaging-code-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.packaging-code-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
             { name: 'name' },
             { name: 'volume' },
@@ -269,13 +269,13 @@ const TABLES = {
             }
         ]
     },
-    //
+    //DELIVERIES
     courier_deliveries: {
         columnDefs: [
             {
-                name: 'airway_bill',
+                name: 'code',
                 displayName: 'AWB CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'cneeName', displayName: 'CNEE' },
@@ -293,122 +293,142 @@ const TABLES = {
                 name: 'checkout',
                 displayName: 'CHECK OUT',
                 cellTemplate: `{{ COL_FIELD | date:'HH:mm' }}`
-            }
-        ]
-    },
-    courier_pickups: {
-        columnDefs: [
-            {
-                name: 'booking_code',
-                displayName: 'BOOKING CODE',
-                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
-            },
-            { name: 'shipperName', displayName: 'SHPR' },
-            { name: 'cneeName', displayName: 'CNEE' },
-            {
-                name: 'status',
-                displayName: 'STATUS',
-                cellTemplate: `<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>`
-            },
-            {
-                name: 'checkin',
-                displayName: 'CHECK IN',
-                cellTemplate: `{{ COL_FIELD | date:'hh:mm' }}`
-            },
-            {
-                name: 'checkout',
-                displayName: 'CHECK OUT',
-                cellTemplate: `{{ COL_FIELD | date:'hh:mm' }}`
             }
         ]
     },
     delivery_bad_address: {
         columnDefs: [
             {
-                name: 'airway_bill',
+                name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.delivery-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'cneeName', displayName: 'CNEE' },
             {
                 name: 'cneeAddress',
                 displayName: 'CNEE ADDRESS',
-                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;<i class="fa fa-pencil"></i>`
+                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;
+                                <div class="pull-right ng-scope">
+                                    <ul class="list list-inline">
+                                        <li title="Update Address">
+                                            <i class="fa text-grey fa-lg fa-pencil" ng-class="{ 'fa-pencil': !isEdit, 'fa-times' : isEdit }" ng-click="vm.viewMap(row.entity, $index)">
+                                            </i>
+                                        </li>
+                                    </ul>
+                                </div>`
             },
             {
                 name: 'reason',
                 displayName: 'REASON',
-                cellTemplate: `<span ng-bind="COL_FIELD | date:short"></span>`
+                cellTemplate: `<span ng-bind="COL_FIELD"></span>`
+            },
+            {
+                name: 'datePickup',
+                displayName: 'PICKUP DATE',
+                cellTemplate: `<span ng-bind="ct.parseDate(datePickup) | date:short"></span>`
             }
         ]
     },
     delivery_staging: {
         columnDefs: [
             {
-                name: 'airway_bill',
+                name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'cneeName', displayName: 'CNEE' },
             { name: 'cneeAddress', displayName: 'CNEE ADDRESS' },
             {
                 name: 'datePickup',
-                displayName: 'REASON',
-                cellTemplate: `<span ng-bind="datePickup || vm.date | date:short"></span>`
+                displayName: 'PICKUP DATE',
+                cellTemplate: `<span ng-bind="ct.parseDate(datePickup) | date:short"></span>`
             },
             {
                 width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="ct.toggleCheckBox(vm.checkbox,'checkItems', '')">`,
                 cellTemplate:
-                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                    '<input checklist-model="vm.items.checkItems" checklist-value="row.entity" type="checkbox" />'
             }
         ]
     },
     delivery_dispatched: {
         columnDefs: [
             {
-                name: 'airway_bill',
-                displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.delivery-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                name: 'code',
+                displayName: 'AWB CODE',
+                cellTemplate: `<a ui-sref="app.delivery-details({ id:row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
-            { name: 'cneeName', displayName: 'CNEE' },
-            { name: 'cneeAddress', displayName: 'CNEE ADDRESS' },
+            { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
             {
-                name: 'datePickup',
-                displayName: 'REASON',
-                cellTemplate: `<span ng-bind="datePickup || vm.date | date:short"></span>`
+                name: 'status', displayName: 'STATUS',
+                cellTemplate: `<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD | titlecase"></span>`
             },
             {
                 width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox[index]" ng-change="ct.toggleCheckBox(vm.checkbox[index],'checkItems[{{index}}]','id')">`,
                 cellTemplate:
-                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                    '<input checklist-model="vm.items.checkItems[index]" checklist-value="row.entity.id" type="checkbox" />'
+            }
+        ]
+    },
+    //PICKUPS
+    courier_pickups: {
+        columnDefs: [
+            {
+                name: 'code',
+                displayName: 'BOOKING CODE',
+                cellTemplate: `<a ui-sref="app.pickup-details({ id:row.entity.id })" ng-bind="COL_FIELD"></a>`
+            },
+            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'cneeName', displayName: 'CNEE' },
+            {
+                name: 'status',
+                displayName: 'STATUS',
+                cellTemplate: `<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>`
+            },
+            {
+                name: 'checkin',
+                displayName: 'CHECK IN',
+                cellTemplate: `{{ COL_FIELD | date:'hh:mm' }}`
+            },
+            {
+                name: 'checkout',
+                displayName: 'CHECK OUT',
+                cellTemplate: `{{ COL_FIELD | date:'hh:mm' }}`
             }
         ]
     },
     pickup_bad_address: {
         columnDefs: [
             {
-                name: 'booking_code',
+                name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.pickup-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
-            { name: 'shipperName', displayName: 'SHPR' },
+            { name: 'shipper_name', displayName: 'SHPR' },
             {
-                name: 'shipperAddress',
+                name: 'shipper_address',
                 displayName: 'SHPR ADDRESS',
-                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;<i class="fa fa-pencil"></i>`
+                cellTemplate: `<span ng-bind="COL_FIELD"></span>&nbsp;
+                <div class="pull-right ng-scope">
+                    <ul class="list list-inline">
+                        <li title="Update Address">
+                            <i class="fa text-grey fa-lg fa-pencil" ng-class="{ 'fa-pencil': !isEdit, 'fa-times' : isEdit }" ng-click="vm.viewMap(row.entity, $index)">
+                            </i>
+                        </li>
+                    </ul>
+                </div>`
             },
             {
-                name: 'reason',
+                name: 'bad_address_reason',
                 displayName: 'REASON',
-                cellTemplate: `<span ng-bind="COL_FIELD | date:short"></span>`
+                cellTemplate: `<span ng-bind-html="COL_FIELD | displaynone"></span>`
             },
             {
-                name: 'shipperContactNumber',
+                name: 'shipper_contact_number',
                 displayName: 'CONTACT',
                 cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
             }
@@ -417,44 +437,44 @@ const TABLES = {
     pickup_staging: {
         columnDefs: [
             {
-                name: 'booking_code',
+                name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.pickup-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
-            { name: 'shipperName', displayName: 'SHPR' },
-            { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
+            { name: 'shipper_name', displayName: 'SHPR' },
+            { name: 'shipper_address', displayName: 'SHPR ADDRESS' },
             {
-                name: 'shipperContactNumber',
+                name: 'shipper_contact_number',
                 displayName: 'CONTACT',
                 cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
             },
             {
                 width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="ct.toggleCheckBox(vm.checkbox,'checkItems', 'id')">`,
                 cellTemplate:
-                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                    '<input checklist-model="vm.items.checkItems" checklist-value="row.entity.id" type="checkbox" />'
             }
         ]
     },
     pickup_dispatched: {
         columnDefs: [
             {
-                name: 'booking_code',
+                name: 'code',
                 displayName: 'CODE',
-                cellTemplate: `<a ui-sref="app.pickup-details({ id:COL_FIELD })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.pickup-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'SHPR' },
             { name: 'shipperAddress', displayName: 'SHPR ADDRESS' },
             {
                 name: 'status',
                 displayName: 'STATUS',
-                cellTemplate: `<span ng-bind="COL_FIELD | displaynone"></span>`
+                cellTemplate: `<span ng-class="{'label label-success':COL_FIELD=='successful', 'label label-danger':COL_FIELD=='failed' }" ng-bind="COL_FIELD"></span>`
             },
             {
                 width: 50,
-                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox" ng-change="vm.toggleCheckRoleUserAll(vm.checkbox,'roleUserCheck', '')">`,
+                headerCellTemplate: `<input type="checkbox" ng-model="vm.checkbox[index]" ng-change="ct.toggleCheckBox(vm.checkbox[index],'checkItems[{{index}}]','id')">`,
                 cellTemplate:
-                    '<input checklist-model="vm.items.roleUserCheck" checklist-value="row.entity" type="checkbox" />'
+                    '<input checklist-model="vm.items.checkItems[index]" checklist-value="row.entity.id" type="checkbox" />'
             }
         ]
     },
@@ -464,7 +484,7 @@ const TABLES = {
             {
                 name: 'code',
                 width: 50,
-                cellTemplate: `<a ui-sref="app.hub-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+                cellTemplate: `<a ui-sref="app.hub-details({ id: row.entity.id })" ng-bind="COL_FIELD"></a>`
             },
             { name: 'shipperName', displayName: 'Shpr' },
             {

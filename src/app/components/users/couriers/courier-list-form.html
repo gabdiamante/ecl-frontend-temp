@@ -1,0 +1,54 @@
+<div class="modal-header bg-primary">
+	<span class="text-uppercase lead" ng-cloak>
+		<span ng-bind="vm.titleHeader"></span>
+	</span>
+	<button  type="button" 
+                class="close"
+                ng-click="vm.cancel()" 
+                data-dismiss="modal" 
+                aria-hidden="true">&times;</button>
+</div>
+<div class="modal-body margin-top clearfix">
+	<div class="col-md-12 ">
+		<form class="materialize margin-top" ng-submit="vm.search(vm.key)">
+			<div class="inner-addon left-addon">
+				<i class="fa fa-search"></i>
+	            <input type="text" class="form-control" name="Search" ng-model="data.name" placeholder=" " required>
+	            <label for="Search" class="md-label">Search</label>
+			</div>
+			<span class="btn-reset" ng-show="vm.key" ng-click="vm.key='';vm.reset()">
+				&times;
+			</span>
+		</form>
+		<br>
+		<ul class="list-group list-scroll">
+		
+			<li class="list-group-item" ng-repeat="data in vm.filteredList = (vm.list | filter: data.name)">
+				<span ng-init="data.name = data.last_name + ', '+ data.first_name " ng-bind="data.last_name + ', '+ data.first_name" ></span> 
+			 	<button ng-if="!vm.transfer && !vm.dispatch" class="btn btn-xs btn-primary pull-right" ng-disabled="vm.disable" ng-click="vm.assign(data)">
+                    Select
+                    <span ng-if="vm.disable">                                  
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                    </span>
+				</button>
+				<button class="btn btn-xs btn-primary pull-right" ng-if="vm.transfer" ng-disabled="vm.disable" ng-click="vm.transferToCourier(data)">
+                    Select
+                    <span ng-if="vm.disable">                                
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                    </span>
+				</button>
+				<button class="btn btn-xs btn-primary pull-right" ng-if="vm.dispatch" ng-disabled="vm.disable" ng-click="vm.dispatchToCourier(data)">
+                    Select
+                    <span ng-if="vm.disable">                                
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                    </span>
+                </button>
+
+			</li>
+			<li class="list-group-item text-center"  ng-if="!vm.filteredList.length">
+				<span class="center" ng-bind-html="vm.isLoading | handlefetch : 'couriers'"></span>
+			</li>
+		</ul>
+	</div>
+
+</div>

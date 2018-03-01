@@ -1,0 +1,173 @@
+<div class="loading" ng-if="vm.isLoading" >
+	<i class="fa fa-circle-o-notch fa-spin fa-5x"></i>
+</div>
+<div class="printable clearfix" ng-repeat="(key, data) in vm.manifests">
+	<div class="col-md-4">
+		<span>Code Disruptors, Inc</span> <br>	
+		<span>Cargo Movement Report</span> <br>
+		<span class="text-uppercase text-bold"
+				ng-bind="data[0].manifestCode"></span>
+	</div>
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+		<div class="pull-right">
+			<span  class="large" ng-cloak>
+				{{data[0].vehicleId}}
+			</span><br>
+			<span class="small text-uppercase">Plate Number</span>
+		</div>
+		<span>
+			Manifest Date: 
+		</span>
+		<span ng-bind="vm.manifestDate | date:'MMM dd, yyyy'"></span> <br>
+		<span>Print Date:</span>
+		<span ng-bind="vm.today"></span><br>
+	</div>
+	<div class="col-md-12 margin-top">
+		<table cellpadding="3" id="printTable">
+			<thead>
+				<tr>
+					<th>Code</th>
+					<th class="text-center">QTY</th>
+					<th class="text-center">AGW</th>
+					<th class="text-center">CBM</th>
+					<th>Orig</th>
+					<th>Dest</th>
+					<th>Shpr Name</th>
+					<th>Cnee Name</th>
+					<th class="retDoc">Return Docs</th>
+					<th class="text-center">Scan <br> Qty</th>
+					<th>Pmode</th>
+					<th class="text-center">COD Amt</th>
+					<th class="text-center">Total Charge</th>
+					<th>Rcvd by</th>
+					<th>Date Rcvd</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tbody ng-init="items.total = {}">
+				<tr ng-repeat="item in data"
+					ng-class="{'page-break': $index==20}">
+					<td>
+						<span class="text-uppercase"
+							  ng-bind="item.code || item.id"></span>
+					</td>
+					<td class="text-center">
+						<span 	ng-init="items.total.parcelQuantity = items.total.parcelQuantity  + item.parcelQuantity;"
+								ng-bind="item.parcelQuantity">
+						</span>
+					</td>
+					<td class="text-center">
+						<span 	class=""
+								ng-init="items.total.totalWeight = items.total.totalWeight  + item.totalWeight"
+							  	ng-bind="item.totalWeight || 0"></span>
+					</td>
+					<td class="text-center">
+						<span 	class=""
+								ng-init="items.total.totalDimension = items.total.totalDimension  + item.totalDimension"
+							  	ng-bind="item.totalDimension.toFixed(2) || 0"></span>
+					</td>
+					<td>
+						<span 	class=""
+								ng-bind="item.originCode"></span>
+					</td>
+					<td>
+						<span 	class=""
+								ng-bind="item.destinationCode"></span>
+					</td>
+					<td>
+						<span 	class=""
+								ng-bind="item.shipperName"></span>
+					</td>
+					<td>
+						<span 	class="text-uppercase"
+								ng-bind="item.cneeName"></span>
+					</td>
+
+					<td class="col-md-2 retDoc">
+							<span 	class=""
+									ng-bind="vm.parseJSON(item.returnDocs)"></span>
+
+					</td>
+					<td class="text-center">
+						<span 	
+								ng-init="items.total.scanQty = items.total.scanQty  + item.scanQty"
+								ng-bind="item.scanQty || 0"></span>
+					</td>
+					<td>
+						<span 	class=""
+								ng-bind="item.payMode"></span>
+					</td>
+					<td class="text-center">						
+						<span 	ng-init="items.total.codAmt = items.total.codAmt  + item.cod"
+								ng-bind="item.cod || 0"></span>
+					</td>
+					<td class="text-center">
+						<span 	ng-init="items.total.charges = items.total.charges  + item.totalCharges"
+								ng-bind="item.totalCharges || 0"></span>
+					</td>
+					<td>
+						<hr>
+					</td>
+					<td>
+						<hr>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="total text-center">
+						<span 	class="" ng-cloak>
+								{{items.total.parcelQuantity}}
+						</span>
+					</td>
+					<td class="total text-center">
+						<span class="" ng-cloak>
+							{{vm.manifests[0].actualWeight.toFixed(2) || 0}}
+						</span>
+					</td>
+					<td class="total text-center">
+						<span class="" ng-cloak>
+							<!-- {{items.total.totalDimension || 0}} -->
+							{{vm.manifests[0].actualVolume || 0 | number: 2}}
+
+						</span>
+					</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td class="total text-center">
+						<span  	class=""
+								ng-bind="items.total.scanQty  || 0"></span>
+					</td>
+					<td></td>
+					<td class="total text-center">
+						<span  	class=""
+								ng-bind="items.total.codAmt | currency:'&#x20B1;'"></span>
+					</td>
+					<td class="total text-center">
+						<span  	class=""
+								ng-bind="items.total.charges | currency:'&#x20B1;'"></span>
+					</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<br>	
+		<div class="margin-top">
+			<div class="left">
+				<p>Scanned by:</p>
+				<div class="blank">
+					<section></section>
+				</div>
+			</div>
+			<div class="right">
+				<p>Received by:</p>
+				<div class="blank">
+					<section></section>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

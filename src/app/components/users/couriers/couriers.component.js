@@ -39,7 +39,6 @@ import CONSTANTS from 'Helpers/constants';
         vm.route_name           = 'couriers';
         vm.per_page             = ['10', '20', '50', '100', '200']; 
         vm.total_items          = '0';
-        vm.items                = { roleUserCheck: [] };
         vm.params               = angular.copy($stateParams);
         vm.deactivated          = ($stateParams.deactivated == 'true') ? 1 : 0;
         vm.activated            = +!vm.deactivated;
@@ -225,7 +224,7 @@ import CONSTANTS from 'Helpers/constants';
                 .then(
                     function (response) {
                         if (!response) return; 
-                        activateDeactivateCourier(data, action);
+                        activateDeactivateDeleteCourier(data, action);
                     },
                     function (err) {
                         console.log(err);
@@ -233,24 +232,26 @@ import CONSTANTS from 'Helpers/constants';
                 );
         }
 
-        function activateDeactivateCourier (data, action) {
+        function activateDeactivateDeleteCourier (data, action) {
             var request = {
-                method: 'PUT',
+                method: action == 'delete' ? 'DELETE' : 'PUT',
                 body: {},
                 params: false,
                 hasFile: false,
-                route: { site:data.site_id, courier:data.user_id, [action]:'' } 
+                route: { site:data.site_id, courier:data.user_id } 
             };
+            if (action != 'delete') request.route[action] = '';
 
             QueryService
                 .query(request)
                 .then( 
                     function (response) { 
                         logger.success(MESSAGE.loggerSuccess('Courier', '', action+'d'));
-                        vm.option_table.data.splice(
-                            vm.option_table.data.indexOf(
-                                $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
-                            ), 1);
+                        vm.option_table.data.splice(vm.option_table.data.indexOf(
+                                $filter('filter')(vm.option_table.data, { 
+                                    user_id:data.user_id 
+                                })[0]
+                        ), 1);
                     },
                     function (err) {
                         logger.error(MESSAGE.loggerFailed('Courier', '', action));
@@ -273,15 +274,5 @@ import CONSTANTS from 'Helpers/constants';
             $state.go($state.current.name, data);
         } 
 
-        vm.toggleCheckRoleUserAll = (checkbox, model_name, propertyName) => {
-            // var values_of_id = _.pluck(vm.option_table.data, propertyName);
-            if (checkbox)
-                GLOBAL.getModel(
-                    vm.items,
-                    model_name,
-                    angular.copy(vm.option_table.data)
-                );
-            else GLOBAL.getModel(vm.items, model_name, []);
-        };
     }
 })();
