@@ -2,6 +2,7 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
 import UTILS from 'Helpers/util';
+import { GoogleCharts } from 'google-charts';
 
 (function() {
     'use strict';
@@ -42,16 +43,27 @@ import UTILS from 'Helpers/util';
         vm.dynMarkers       = [];
         vm.bgColors         = UTILS.bgColors;
         vm.bgColors2        = UTILS.bgColors2;
-        vm.mapStyles        = UTILS.mapStyles;
+        // vm.mapStyles        = UTILS.mapStyles;
         vm.mapOptions       = UTILS.clusterMapOptions;
 
         vm.goToPickups      = goToPickups;
         vm.showDropdown     = showDropdown;
         vm.goToDeliveries   = goToDeliveries;
         vm.getPerformance   = getPerformance;
-        vm.round            = window.Math.round;
-        vm.deliveryChart    = document.getElementById("deliveryChart");
-        vm.pickupsChart     = document.getElementById("pickupsChart");
+        vm.round            = window.Math.round; 
+
+        vm.delivery_data    = [
+            ['Delivery', 'Percentage'],
+            ['No Attempt', 60],
+            ['Unsuccessful', 22],
+            ['Successful', 18]
+        ];
+        vm.pickup_data      = [
+            ['Pickup', 'Percentage'],
+            ['No Attempt', 48],
+            ['Unsuccessful', 22],
+            ['Successful', 30]
+        ];
 
         if(vm.user){
             init();
@@ -59,7 +71,7 @@ import UTILS from 'Helpers/util';
 
         function init() {
             // socket.connect();
-            // getData();
+            getData();
             // getVehicles();
             // getPerformance();
             // dashboardUpdate();
@@ -142,19 +154,21 @@ import UTILS from 'Helpers/util';
                 route   : r
             };
 
-            QueryService
-                .query(req)
-                .then(function (response) { 
-                    vm.dashboardData = response.data.data;
-                    vm.pickups      = vm.dashboardData.pickups;
-                    vm.deliveries   = vm.dashboardData.deliveries;
-                    google.charts.load("current", {packages:["corechart"]});
-                    google.charts.setOnLoadCallback(drawChart);
-                    google.charts.setOnLoadCallback(drawPickupChart);
-                }, function (error) {
-                    logger.error(error.data.errors[0].context, error, error.data.errors[0].message);
-                    vm.isLoading = false;
-                });
+            // QueryService
+            //     .query(req)
+            //     .then(function (response) { 
+            //         vm.dashboardData = response.data.data;
+            //         vm.pickups      = vm.dashboardData.pickups;
+            //         vm.deliveries   = vm.dashboardData.deliveries;
+            //         google.charts.load("current", {packages:["corechart"]});
+            //         google.charts.setOnLoadCallback(drawChart);
+            //         google.charts.setOnLoadCallback(drawPickupChart);
+            //     }, function (error) {
+            //         logger.error(error.data.errors[0].context, error, error.data.errors[0].message);
+            //         vm.isLoading = false;
+            //     }); 
+
+            GoogleCharts.load(drawCharts);
         }
 
         function getPerformance (hub, params, key) {
@@ -276,6 +290,11 @@ import UTILS from 'Helpers/util';
                     }
                     vm.isLoading = false;
             });
+        }
+
+        function drawCharts() {
+            GLOBAL.drawChart(vm.delivery_data, 'deliveriesChart');
+            GLOBAL.drawChart(vm.pickup_data, 'pickupsChart');
         }
 
         function goToPickups(view) {

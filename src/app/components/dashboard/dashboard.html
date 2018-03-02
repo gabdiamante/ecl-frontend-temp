@@ -97,5 +97,55 @@
                 </div>
             </div>
         </div> 
-    </div>
+    </div> 
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6 margin-top">
+                <div class="clearfix div-border">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="padding-small">
+                            <header class="">
+                                <h5 class="text-theme">
+                                    <i class="fa fa-dropbox"></i>
+                                    Pickups
+                                    <span class="right">Total : <a href="" class="text-theme margin-right" ng-bind="vm.dashboardData.dispatched.pickups ||0" ng-click="vm.goToPickups('dispatched')"></a></span>
+                                </h5>
+                            </header>
+                            <div class="bar-block">
+                                <div class="col-md-12">
+                                    <div class="padding-16">
+                                        <div id="pickupsChart" class="chart"></div>
+                                    </div>                        
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 margin-top">
+                <div class="clearfix div-border">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="padding-small">
+                            <header>
+                                <h5 class="text-theme">
+                                    <i class="fa fa-th-large"></i>
+                                    Deliveries
+                                    <span class="right">Total : <a href="" class=" margin-right text-theme" ng-bind="vm.dashboardData.dispatched.deliveries ||0" ng-click="vm.goToDeliveries('dispatched')"></a></span>
+                                </h5>
+                            </header>
+                            
+                            <div class="bar-block">
+                                <div class="col-md-12">
+                                    <div class="padding-16">
+                                        <div id="deliveriesChart" class="chart"></div>
+                                    </div>                        
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div> 
 </div>

@@ -102,7 +102,7 @@ import { GoogleCharts } from 'google-charts';
                 .then(
                     function(response) {
                         vm.courier = response.data.data;
-                        vm.courier.fullname = ((vm.courier.last_name) ? vm.courier.last_name + ', ' : '') + vm.courier.first_name + ' ' + vm.courier.middle_name;
+                        vm.courier.fullname = ((vm.courier.last_name)?vm.courier.last_name+', ':'')+vm.courier.first_name+' '+vm.courier.middle_name;
                     },
                     function(err) {
                         logger.error(MESSAGE.error, err, '');

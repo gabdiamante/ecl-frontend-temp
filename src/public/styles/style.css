@@ -94,21 +94,21 @@ a {
     background-color: #0b65b1 !important;
 }
 .text-theme {
-    color: #009688 !important;
+    color: #065496 !important;
 }
 .border-theme {
-    border-color: #009688 !important;
+    border-color: #065496 !important;
 }
 
 .hover-theme:hover {
     color: #fff !important;
-    background-color: #009688 !important;
+    background-color: #065496 !important;
 }
 .hover-text-theme:hover {
-    color: #009688 !important;
+    color: #065496 !important;
 }
 .hover-border-theme:hover {
-    border-color: #009688 !important;
+    border-color: #065496 !important;
 }
 .bg-primary,
 .btn-primary,
@@ -348,7 +348,7 @@ div {
 }
 
 .div-border {
-    box-shadow: 0px 0px 5px 0px #a3a3a3;
+    box-shadow: 0px 0px 5px 0px #575353;
 }
 .div-border-solid {
     border: solid 1px #cfcdcd;
@@ -1006,7 +1006,7 @@ body.scroll::-webkit-scrollbar {
 
 .black-op {
     background: rgba(0, 0, 0, 0.2);
-}
+} 
 
 @media print {
 
