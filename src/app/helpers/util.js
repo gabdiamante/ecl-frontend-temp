@@ -295,7 +295,6 @@ const UTIL = {
         }
         return color;
     },
-
     apiKey: 'AIzaSyB7qDqpj2GgOSU7YaGk5Vccv8fFKBinkt4',
     snapToRoadUrl: 'https://roads.googleapis.com/v1/snapToRoads',
     mapUrl: '//maps.google.com/maps/api/js?key=AIzaSyAbc_f76Ej5CwmfeGq0p-lYHtJWSyOLk34&libraries=drawing,geometry,places',
@@ -460,7 +459,7 @@ const UTIL = {
         }
     ],
     hubIcon: {
-        url: 'assets/img/warehouse.svg', // url
+        url: require('Images/map_svg/warehouse.svg'), // url
         scaledSize: [35, 35]
     },
     types: ['delivery', 'pickup'],

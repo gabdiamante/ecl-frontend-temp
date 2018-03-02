@@ -70,7 +70,7 @@ var jsts = require('jsts');
         vm.siteType = $stateParams.siteType;
         vm.siteFront = $stateParams.siteFront;
         vm.siteId = $stateParams.siteId;
-        vm.includeUnassigned = ($stateParams.includeUnassigned === 'false') ? false : true;
+        vm.isUnassigned = $stateParams.isUnassigned || 'all';
 
         vm.filterClose = ($stateParams.filterClose === 'false' || typeof $stateParams.filterClose == 'undefined') ? false : true;
         vm.filterIsOpen =  !vm.filterClose; /*(vm.siteFront || vm.siteId || !vm.includeUnassigned) ? true : false; */
@@ -103,7 +103,6 @@ var jsts = require('jsts');
 
         vm.updated_pol = null;
         
-
         vm.selectedZone = {};
 
         vm.onMapOverlayCompleted = onMapOverlayCompleted;
@@ -128,7 +127,7 @@ var jsts = require('jsts');
         vm.selectType = selectType;
         vm.selectSiteFront = selectSiteFront;
         vm.selectSite = selectSite;
-        vm.selectIncludeUnassigned = selectIncludeUnassigned;
+        vm.selectIsUnassigned = selectIsUnassigned;
         vm.viewDeactivate          = viewDeactivate;
 
         init();
@@ -255,8 +254,7 @@ var jsts = require('jsts');
                 params: {
                     page: 1,
                     limit: 999999999,
-                    is_active: vm.activated,
-                    include_unassigned: +vm.includeUnassigned
+                    is_active: vm.activated
                 },
                 hasFile: false,
                 cache: false,
@@ -266,6 +264,7 @@ var jsts = require('jsts');
 
             if (vm.site_type.code) req.params.site_type = vm.site_type.code;
             if (vm.site.id) req.params.site_id = vm.site.id;
+            if (vm.isUnassigned != 'all') req.params.is_unassigned = (vm.isUnassigned === 'true') ? 1 : (vm.isUnassigned === 'false') ? 0 : 0;
 
             console.log('z req', req);
 
@@ -316,25 +315,25 @@ var jsts = require('jsts');
                 siteType: type.code,
                 siteFront: '',
                 siteId: '',
-                includeUnassigned: vm.includeUnassigned,
+                isUnassigned: vm.isUnassigned,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
-                deactivated: vm.deactivated
+                deactivated: $stateParams.deactivated
             });
             getZones();
         }
 
-        function selectIncludeUnassigned(val) {
+        function selectIsUnassigned(val) {
             $state.go($state.current.name, {
                 siteType: vm.site_type.code,
                 siteFront: vm.site_front.code,
                 siteId: vm.siteId,
-                includeUnassigned: val,
+                isUnassigned: val,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
-                deactivated: vm.deactivated
+                deactivated: $stateParams.deactivated
             });
             getZones();
         }
@@ -344,11 +343,11 @@ var jsts = require('jsts');
                 siteType: vm.site_type.code,
                 siteFront: type.code,
                 siteId: '',
-                includeUnassigned: vm.includeUnassigned,
+                isUnassigned: vm.isUnassigned,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
-                deactivated: vm.deactivated
+                deactivated: $stateParams.deactivated
             });
             getZones();
         }
@@ -359,11 +358,11 @@ var jsts = require('jsts');
             $state.go($state.current.name, {
                 siteType: vm.site_type.code,
                 siteId: vm.siteId,
-                includeUnassigned: vm.includeUnassigned,
+                isUnassigned: vm.isUnassigned,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
-                deactivated: vm.deactivated
+                deactivated: $stateParams.deactivated
             });
             vm.buttonName = site.name;
             getZones();
@@ -374,7 +373,7 @@ var jsts = require('jsts');
                 siteType: vm.site_type.code,
                 siteFront: vm.site_front.code,
                 siteId: vm.siteId,
-                includeUnassigned: vm.includeUnassigned,
+                isUnassigned: vm.isUnassigned,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
@@ -459,38 +458,44 @@ var jsts = require('jsts');
         }
 
         function onMouseUp(e, shape, index) {
+          
             // vm.zones[index] = vm.zones[index] || {};
             // vm.zones[index].general_overlap = {};
             // vm.zones['new'] = {};
             // vm.zones['new'].general_overlap = {};
             // vm.zones['new'].general_overlap.zone = [];
 
-            if (typeof vm.shapeIndex != 'undefined' && shape.editable) {
-                console.log(index, 'index');
-                var data = angular.copy(vm.updated_shape);
-                shape = {
-                    type: 'polygon'
-                };
-
-                NgMap.getMap({ id: 'geofencing' }).then(function(map) {
-                    vm.geofenceMaps = map;
-
-                    Object.keys(vm.geofenceMaps.shapes).forEach(function(prop) {
-                        if (prop == vm.shapeIndex) {
-                            shape.overlay = vm.geofenceMaps.shapes[prop];
-                            for (var key in vm.geofenceMaps.shapes) {
-                                //console.log(vm.zones[key], data); // determine dc hub
-                                var wkt = checkPolygon(
-                                    shape.overlay,
-                                    vm.geofenceMaps.shapes[key]
-                                );
-                                detectLap(shape, key, wkt);
+            $timeout(function() {
+                console.log(vm.shapeIndex);
+                if (typeof vm.shapeIndex != 'undefined' && shape.editable) {
+                    // console.log(index, 'index');
+                    var data = angular.copy(vm.updated_shape);
+                    shape = {
+                        type: 'polygon'
+                    };
+    
+                    NgMap.getMap({ id: 'geofencing' }).then(function(map) {
+                        vm.geofenceMaps = map;
+    
+                        Object.keys(vm.geofenceMaps.shapes).forEach(function(prop) {
+                            console.log();
+                            if (prop == vm.shapeIndex) {
+                                shape.overlay = vm.geofenceMaps.shapes[prop];
+                                for (var key in vm.geofenceMaps.shapes) {
+                                    //console.log(vm.zones[key], data); // determine dc hub
+                                    var wkt = checkPolygon(
+                                        shape.overlay,
+                                        vm.geofenceMaps.shapes[key]
+                                    );
+                                    detectLap(shape, key, wkt);
+                                }
+                                handleOverlap();
                             }
-                            handleOverlap();
-                        }
+                        });
                     });
-                });
-            }
+                }
+            }, 150);
+            
         }
 
         // function resetOverlapData() {
@@ -616,7 +621,7 @@ var jsts = require('jsts');
                 method: 'POST',
                 body: {
                     polygon: data.polygon,
-                    general_overlap: resOverlap.general_overlap
+                    // general_overlap: resOverlap.general_overlap
                 },
                 params: false,
                 hasFile: false,

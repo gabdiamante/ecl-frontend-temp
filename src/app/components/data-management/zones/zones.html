@@ -84,17 +84,18 @@
 								<div class="col-md-12 top-margin-sm">
 									<form class="materialize" novalidate>   
 										<div class="form-group">
-											<button type="button" ng-if="!vm.deactivated" title="View deactivated {{vm.titleHeader}}" class="btn btn-sm btn-primary" ng-click="vm.viewDeactivate(true)">
+											<button type="button" ng-if="!vm.deactivated" title="View deactivated {{vm.titleHeader}}" class="btn btn-sm btn-primary" ng-click="vm.viewDeactivate('true')">
 												<span ng-bind="'View Deactivated '+vm.titleHeader"></span>
 											</button>
-											<button type="button" ng-if="vm.deactivated" title="View active {{vm.titleHeader}}" class="btn btn-sm btn-primary" ng-click="vm.viewDeactivate(false)">
+											<button type="button" ng-if="vm.deactivated" title="View active {{vm.titleHeader}}" class="btn btn-sm btn-primary" ng-click="vm.viewDeactivate('false')">
 												<span ng-bind="'View Active '+vm.titleHeader"></span>
 											</button>
 										</div>
 										<div class="form-group">
-											<label for="site_id" class="control-label small text-theme">Include Unassigned:  </label>
-											<input type="radio" ng-model="vm.includeUnassigned" ng-value="true" ng-click="vm.selectIncludeUnassigned(vm.includeUnassigned)" /> Yes 
-											<input type="radio" ng-model="vm.includeUnassigned" ng-value="false" ng-click="vm.selectIncludeUnassigned(vm.includeUnassigned)" /> No
+											<label for="site_id" class="control-label small text-theme">Is Unassigned:  </label>
+											<input type="radio" ng-model="vm.isUnassigned" ng-value="'all'" ng-click="vm.selectIsUnassigned(vm.isUnassigned)" /> Include
+											<input type="radio" ng-model="vm.isUnassigned" ng-value="'false'" ng-click="vm.selectIsUnassigned(vm.isUnassigned)" /> No
+											<input type="radio" ng-model="vm.isUnassigned" ng-value="'true'" ng-click="vm.selectIsUnassigned(vm.isUnassigned)" /> Yes 
 										</div>    
 										<div class="form-group">
 											<label for="site_id" class="control-label small text-theme">Select Front Zone:  </label>

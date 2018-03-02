@@ -29,7 +29,6 @@ const GLOBAL = {
                 }
             }
         }
-
         return new_object_val;
     },
     set_url: function(ids) {

@@ -1391,7 +1391,7 @@ const DUMMY = {
     monitoring: {
         courier_vehicle_out_for_del_list: [
             {
-                "courierId": 852,
+                "courier_id": 852,
                 "email": "DAGERO",
                 "first_name": "RONNIE",
                 "last_name": "DE GUZMAN",
@@ -1407,7 +1407,7 @@ const DUMMY = {
                 "user_id": "9fdfc69d-2f16-4359-89ca-297888f0bca1"
             }, 
             {
-                "courierId": 853,
+                "courier_id": 853,
                 "email": "ZSAMURONG",
                 "first_name": "JOMARI",
                 "last_name": "HIDALGO",
@@ -1423,7 +1423,7 @@ const DUMMY = {
                 "user_id": "30ec7933-cf75-4508-be73-cdde0639997d"
             },
             {
-                "courierId": 854,
+                "courier_id": 854,
                 "email": "JAMBA",
                 "first_name": "RYAN",
                 "last_name": "MACAWILI",
@@ -1439,7 +1439,7 @@ const DUMMY = {
                 "user_id": "6600f8f6-d106-4236-a1fa-af081791d854"
             },
             {
-                "courierId": 855,
+                "courier_id": 855,
                 "email": "JBARASI",
                 "first_name": "JAKE",
                 "last_name": "CABRERA",
@@ -1455,7 +1455,7 @@ const DUMMY = {
                 "user_id": "c452c226-50b2-4fe4-afd9-787cebcb5700"
             }, 
             {
-                "courierId": 856,
+                "courier_id": 856,
                 "email": "JDEGALA",
                 "first_name": "MARK ",
                 "last_name": "TAJARAN",
@@ -1471,7 +1471,7 @@ const DUMMY = {
                 "user_id": "9819ffc8-98f4-4ab0-950a-59cad83be462"
             }, 
             {
-                "courierId": 857,
+                "courier_id": 857,
                 "email": "JLEANO",
                 "first_name": "FERDINAND",
                 "last_name": "ADAYA",
@@ -1487,7 +1487,7 @@ const DUMMY = {
                 "user_id": "10094e63-0d92-4df9-bc54-4dc381660625"
             }, 
             {
-                "courierId": 858,
+                "courier_id": 858,
                 "email": "JHINALOC",
                 "first_name": "AIRO",
                 "last_name": "GOMEZ",
@@ -1503,7 +1503,7 @@ const DUMMY = {
                 "user_id": "b23f91de-a93d-489f-b778-0d205232747c"
             }, 
             {
-                "courierId": 859,
+                "courier_id": 859,
                 "email": "MANTALAN",
                 "first_name": "ZALDY",
                 "last_name": "FACUNDO ",
@@ -1519,7 +1519,7 @@ const DUMMY = {
                 "user_id": "0cc16ae7-b35d-4743-a764-61b7bd9db8e1"
             }, 
             {
-                "courierId": 860,
+                "courier_id": 860,
                 "email": "JVALDEZ",
                 "first_name": "MARK JUNEL",
                 "last_name": "MALOMAYA",
@@ -1535,7 +1535,7 @@ const DUMMY = {
                 "user_id": "ed77bfb4-e6bc-4f8f-990e-9782580aa948"
             }, 
             {
-                "courierId": 861,
+                "courier_id": 861,
                 "email": "RQUIJANO",
                 "first_name": "BOBBY",
                 "last_name": "ILAGAN",
@@ -1551,7 +1551,7 @@ const DUMMY = {
                 "user_id": "a9ab460a-a909-4e81-8084-d5aa503b197b"
             }, 
             {
-                "courierId": 862,
+                "courier_id": 862,
                 "email": "FCUEVAS",
                 "first_name": "MARK JUNEL",
                 "last_name": "MILTANTE",
@@ -1583,7 +1583,7 @@ const DUMMY = {
                 "user_id": "75ca747e-ea6c-4ea1-bf1b-f9b56b280f58"
             }, 
             {
-                "courierId": 864,
+                "courier_id": 864,
                 "email": "DGONZALES",
                 "first_name": "RUBEN",
                 "last_name": "ROMERO",
@@ -1599,7 +1599,7 @@ const DUMMY = {
                 "user_id": "5f7a2e4e-18c1-4c54-8767-04fe195825a4"
             }, 
             {
-                "courierId": 865,
+                "courier_id": 865,
                 "email": "RALMONTE",
                 "first_name": "JUAN PAULO R",
                 "last_name": "DELA CRUZ ",
@@ -1615,7 +1615,7 @@ const DUMMY = {
                 "user_id": "a717b260-c249-4d83-841c-c4b3cc11bf18"
             }, 
             {
-                "courierId": 866,
+                "courier_id": 866,
                 "email": "JTEODORO",
                 "first_name": "MARK JUNEL",
                 "last_name": "DIMAALA",
@@ -1631,7 +1631,7 @@ const DUMMY = {
                 "user_id": "f46147d0-3af1-4077-8dbe-a9e165273e5c"
             }, 
             {
-                "courierId": 867,
+                "courier_id": 867,
                 "email": "RLELIS",
                 "first_name": "JOHN JENREE",
                 "last_name": "HINALOC",
@@ -1647,7 +1647,7 @@ const DUMMY = {
                 "user_id": "79aee687-57ff-435d-8db5-3b4379210e5c"
             },
             {
-                "courierId": 868,
+                "courier_id": 868,
                 "email": "RNECIO",
                 "first_name": "BIEN",
                 "last_name": "BONDAME",
@@ -1663,7 +1663,7 @@ const DUMMY = {
                 "user_id": "5d63bb5c-4641-4f09-bbbb-65b5cb514b3d"
             }, 
             {
-                "courierId": 869,
+                "courier_id": 869,
                 "email": "JCASTRO2",
                 "first_name": "ADELIO JR",
                 "last_name": "SOLLER",
@@ -1679,7 +1679,7 @@ const DUMMY = {
                 "user_id": "bcdb2a5f-71d9-4011-bd58-b95163c847a0"
             }, 
             {
-                "courierId": 870,
+                "courier_id": 870,
                 "email": "BEDIEZCA",
                 "first_name": "ROBERT",
                 "last_name": "VINZON",
@@ -1695,7 +1695,7 @@ const DUMMY = {
                 "user_id": "8a34677e-2cc5-4702-8477-8f4d3becb576"
             }, 
             {
-                "courierId": 871,
+                "courier_id": 871,
                 "email": "LBERTOSO",
                 "first_name": "ANGELO",
                 "last_name": "TAJARAN",
@@ -1711,7 +1711,7 @@ const DUMMY = {
                 "user_id": "5638702b-44f9-4274-b051-7db67c5cb033"
             }, 
             {
-                "courierId": 872,
+                "courier_id": 872,
                 "email": "NGATAN",
                 "first_name": "LALLAINE",
                 "last_name": "MABANSAG",
@@ -1727,7 +1727,7 @@ const DUMMY = {
                 "user_id": "68b14330-0b68-4004-b4c4-c5e686046d11"
             }, 
             {
-                "courierId": 873,
+                "courier_id": 873,
                 "email": "JSANCHEZ",
                 "first_name": "Joema",
                 "last_name": "ROBELLON ",
@@ -1742,7 +1742,222 @@ const DUMMY = {
                 "type": "TRUCK",
                 "user_id": "a0b71919-11ca-4905-990c-a7cd30b48c3c"
             }, 
-        ]
+        ],
+        courier_assignments: {
+            "assignments": [{
+                "id": "c7685bfc-d81c-456a-a433-a9d334616c35",
+                "code": "Y74252",
+                "hub_id": "48f16971-7594-4105-bc42-29fb797e746d",
+                "courier_id": 857,
+                "pay_mode": "COLLECT SHIPPER",
+                "shipper_code": "2012097847",
+                "shipper_name": "DARWIN ESTINOR",
+                "shipper_company": "International Container Terminal Services",
+                "shipper_address": "340 DR. JOSE FERNANDEZ ST., MANDALUYONG CITY/MANDALUYONG CPO/MANILA/MM",
+                "shipper_contact_number": "(632)-501-9504",
+                "cnee_name": "",
+                "cnee_contact_number": "",
+                "status": "OUT-FOR-DEL",
+                "origin_code": "MNL",
+                "zone_code": "MNL-MAN-Z1",
+                "reason": null,
+                "lat": 14.5840438,
+                "lng": 121.04583720000005,
+                "dist_from_hub": 11686,
+                "duration_from_hub": 1980,
+                "distance": 11827,
+                "duration": 2109,
+                "size": "",
+                "length": 0,
+                "width": 0,
+                "height": 0,
+                "total_weight": 100,
+                "total_dimension": 0,
+                "qty": 200,
+                "suggested_route": "cirwAm|paVWz[y~@vFeC_^q|@bGyF_z@eGiWcmBqfCe\\uCcOtEw[`Kgs@ug@mDkH{BaHgMjGqFeATuJ}E~B",
+                "actual_route": null,
+                "as_transfered": null,
+                "eta": "2018-01-09T01:35:09.000Z",
+                "check_in": null,
+                "check_out": null,
+                "date_assigned": "2018-03-02T03:41:17.000Z",
+                "date_attempted": null,
+                "date_completed": null,
+                "date_created": "2018-03-02T03:41:17.000Z",
+                "date_updated": "2018-03-02T03:44:29.000Z",
+                "date_cancelled": null,
+                "deleted": null,
+                "sent_already": 0,
+                "type": "TRUCK",
+                "assignment_type": "pickup"
+            }, {
+                "id": "e060c104-2176-4c8f-92e2-d7d4bcd12c88",
+                "code": "Y74242",
+                "hub_id": "48f16971-7594-4105-bc42-29fb797e746d",
+                "courier_id": 857,
+                "pay_mode": "COLLECT SHIPPER",
+                "shipper_code": "2012097847",
+                "shipper_name": "PAOLO DAVA",
+                "shipper_company": "Arms Corporation of the Philippines",
+                "shipper_address": "340 DR. JOSE FERNANDEZ ST., MANDALUYONG CITY/MANDALUYONG CPO/MANILA/MM",
+                "shipper_contact_number": "(632)-501-9504",
+                "shipper_signature": null,
+                "cnee_name": "",
+                "cnee_contact_number": "",
+                "status": "OUT-FOR-DEL",
+                "origin_code": "MNL",
+                "zone_code": "MNL-MAN-Z1",
+                "reason": null,
+                "lat": 14.5840438,
+                "lng": 121.04583720000005,
+                "dist_from_hub": 11686,
+                "duration_from_hub": 1980,
+                "distance": 0,
+                "duration": 0,
+                "size": "",
+                "length": 0,
+                "width": 0,
+                "height": 0,
+                "total_weight": 100,
+                "total_dimension": 0,
+                "qty": 200,
+                "suggested_route": "cirwAm|paVWz[y~@vFeC_^q|@bGyF_z@eGiWcmBqfCe\\uCcOtEw[`Kgs@ug@mDkH{BaHgMjGqFeATuJ}E~B",
+                "actual_route": null,
+                "as_transfered": null,
+                "eta": "2018-01-09T01:35:09.000Z",
+                "check_in": null,
+                "check_out": null,
+                "date_assigned": "2018-03-02T03:41:17.000Z",
+                "date_attempted": null,
+                "date_completed": null,
+                "date_created": "2018-03-02T03:41:17.000Z",
+                "date_updated": "2018-03-02T03:44:29.000Z",
+                "date_cancelled": null,
+                "deleted": null,
+                "sent_already": 0,
+                "area_code": "P1550",
+                "type": "TRUCK",
+                "assignment_type": "pickup"
+            }, {
+                "id": "13dc6d15-f263-47b1-b8db-785039b5916a",
+                "code": "F000006330",
+                "hub_id": "48f16971-7594-4105-bc42-29fb797e746d",
+                "courier_id": 857,
+                "pay_mode": "PREPAID",
+                "shipper_code": null,
+                "shipperAreaCode": null,
+                "shipper_name": "YNNA ESTINOR",
+                "shipper_company": "ABS-CBN Publishing",
+                "shipper_address": "3F WORLDWIDE CORP CENTER SHAW BLVD COR EDZA MANDALUYONG CITY/HIGHWAY HILLS/MANDALUYONG/METRO MANILA",
+                "shipper_contact_number": "4610800 / 4610888 LOC 474",
+                "shipper_signature": null,
+                "cnee_name": "",
+                "cnee_contact_number": "",
+                "status": "OUT-FOR-DEL",
+                "origin_code": "MNL",
+                "zone_code": "MNL-MAN-Z1",
+                "reason": null,
+                "lat": 14.5824277,
+                "lng": 121.0512472,
+                "dist_from_hub": 12479,
+                "duration_from_hub": 2112,
+                "distance": 903,
+                "duration": 269,
+                "size": "",
+                "length": 0,
+                "width": 0,
+                "height": 0,
+                "total_weight": 102,
+                "total_dimension": 0,
+                "qty": 1,
+                "suggested_route": "mm_xAcxxaVsA}VpEwFxBwB",
+                "actual_route": null,
+                "as_transfered": null,
+                "eta": "2018-01-09T01:54:38.000Z",
+                "check_in": null,
+                "check_out": null,
+                "date_assigned": "2018-03-02T03:41:17.000Z",
+                "date_attempted": null,
+                "date_completed": null,
+                "date_created": "2018-03-02T03:41:17.000Z",
+                "date_updated": "2018-03-02T03:44:29.000Z",
+                "date_cancelled": null,
+                "deleted": null,
+                "sent_already": 0,
+                "area_code": "MAND1550MB",
+                "type": "TRUCK",
+                "assignment_type": "pickup"
+            }, {
+                "id": "32674a32-27d4-4af3-ae3f-745f8eaf1ae6",
+                "code": "Y74735",
+                "hub_id": "48f16971-7594-4105-bc42-29fb797e746d",
+                "courier_id": 857,
+                "pay_mode": "COLLECT SHIPPER",
+                "shipper_code": "2014000327",
+                "shipperAreaCode": null,
+                "shipper_name": "TONY  YUMOL",
+                "shipper_company": "Bayan Telecommunications",
+                "shipper_address": "664 GUMATAY PLAINVIEW MANDALUYONG CITY/PLAINVIEW/MANDALUYONG/METRO MANILA",
+                "shipper_contact_number": "(632)-6348181",
+                "shipper_signature": null,
+                "cnee_name": "",
+                "cnee_contact_number": "",
+                "status": "OUT-FOR-DEL",
+                "origin_code": "MNL",
+                "zone_code": "MNL-MAN-Z1",
+                "reason": null,
+                "lat": 14.572316,
+                "lng": 121.032636,
+                "dist_from_hub": 10104,
+                "duration_from_hub": 1563,
+                "distance": 4847,
+                "duration": 899,
+                "size": "",
+                "length": 0,
+                "width": 0,
+                "height": 0,
+                "total_weight": 100,
+                "total_dimension": 0,
+                "qty": 100,
+                "suggested_route": "ue_xAo{yaVxmC|bAa_@`Ow[`KHvEwDjFmA_A_GvI",
+                "actual_route": null,
+                "as_transfered": null,
+                "eta": "2018-01-09T02:19:37.000Z",
+                "check_in": null,
+                "check_out": null,
+                "date_assigned": "2018-03-02T03:41:17.000Z",
+                "date_attempted": null,
+                "date_completed": null,
+                "date_created": "2018-03-02T03:41:17.000Z",
+                "date_updated": "2018-03-02T03:44:29.000Z",
+                "date_cancelled": null,
+                "deleted": null,
+                "sent_already": 0,
+                "area_code": "M3135",
+                "type": "TRUCK",
+                "assignment_type": "pickup"
+            }],
+            "transfer": [],
+            "hub": {
+                "id": "48f16971-7594-4105-bc42-29fb797e746d",
+                "name": "MNL CORP",
+                "lat": 14.5178793,
+                "lng": 121.0064827
+            },
+            "courier": {
+                "first_name": "FERDINAND",
+                "last_name": "ADAYA",
+                "zone_code": "MNL-MAN-Z1",
+                "email": "JLEANO",
+                "courier_id": 857,
+                "assigned_full_route": "cirwAm|paVEHAN@b@DRLZrB`D^^j@\\PHXNiBnEsBvFWh@[`Aa@Am@?sQVsUZa@@i@HwDdAyF`Bs@T]?M@c@EWYIOCQOkAIUu@oA_A{ASk@I_@Ca@@eArA{Nm@Ce@@{DFcAJ}@PqJnBeDr@}Cj@cAJqERyCF}GVgBFOAUGQSYmEO}BaAeOQgD{@mLw@_KIw@KUs@iEkBuHcAeDS{@AO_@{@]w@y@aB}@eBoAaCcAaBwAuBoCkDgEsFkEiF{JeMwD}EgLmNwAoBwCsDcAyAkG}HaE}E}ByC}@iAcAwAm@}@mDaE}CiEgBgBm@g@u@m@yGqIc@[[I_@CS?]Ji@X{AlAoAh@eEtAc@JS@}@Vs@RgEpAw@ZqCz@YNyA^QFeFj@M@kFx@g@FYLON}CdE]@}@UuEiDqJuHsG}EgF{DkBkAwGoEgDuBSQyAcD_AuB}@uCy@}BCMuCfAmA`@aAZi@TgBvAOV]As@KqCs@MCD_CLuFUFgEvBfEwBTGpBoHB_@A[GSQ]q@a@w@a@cCeA}CsApEyFNEf@a@`AmApHqJrCbBdAt@TLpG`ExAz@^P`DtB~F|DnP|KfB`Ab@RdA`@rBp@~Ab@fF~@hB\\vGrA`Dn@~HpAfDv@lAb@bBp@lBz@dAl@zB~A`BxAzA~AtChDn@x@xAjBKJQRk@f@mC|AiExA{Aj@}@Vs@RgEpAw@ZqCz@YNyA^QFeFj@M@kFx@g@FYLON}CdE]@e@Ka@lCARBHX^NJwAnB_BzBWSu@k@u@lAsBrCsAtB",
+                "dateTaskCompletion": "2018-01-09T02:19:37.000Z",
+                "vehicleId": "ARA4292",
+                "latitude": 14.5178267,
+                "longitude": 121.0063567
+            },
+            "actual_full_route": null
+        }        
     },
     history: [
         {

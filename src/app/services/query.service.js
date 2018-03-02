@@ -1,6 +1,8 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 
+import UTILS from 'Helpers/util';
+
 (function() {
     'use strict';
 
