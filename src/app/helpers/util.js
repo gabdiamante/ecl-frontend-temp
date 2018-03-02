@@ -610,7 +610,7 @@ const UTIL = {
             },
             {
                 name: 'packaging_codes',
-                icon: 'fa-codepen',
+                icon: 'fa-qrcode',
                 import: {
                     express: '',
                     'packaging-codes': '',

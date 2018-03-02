@@ -38,33 +38,33 @@ import UTILS from 'Helpers/util';
         logger,
         NgMap
     ) {
-        var vm = this;
-        var socket = SocketService;
-        var bounds = new google.maps.LatLngBounds();
-        vm.isOpen = false;
-        vm.visible = false;
-        vm.viewOne = false;
+        var vm              = this;
+        var socket          = SocketService;
+        var bounds          = new google.maps.LatLngBounds();
+        vm.isOpen           = false;
+        vm.visible          = false;
+        vm.viewOne          = false;
         vm.ignoreLoadingBar = false;
-        vm.path = [[0, 0]];
-        vm.actualRoute = [[0, 0]];
-        vm.curState = $state.current.name;
-        vm.user = GLOBAL.user($cookies, $state);
-        vm.mapStyles = UTILS.mapStyles;
-        vm.mapUrl = UTILS.mapUrl;
-        vm.today = new Date();
-        vm.hubIcon = UTILS.hubIcon;
+        vm.path             = [[0, 0]];
+        vm.actualRoute      = [[0, 0]];
+        vm.curState         = $state.current.name;
+        vm.user             = GLOBAL.user($cookies, $state);
+        vm.mapStyles        = UTILS.mapStyles;
+        vm.mapUrl           = UTILS.mapUrl;
+        vm.today            = new Date();
+        vm.hubIcon          = UTILS.hubIcon;
 
-        vm.zoomIn = zoomIn;
-        vm.zoomOut = zoomOut;
-        vm.viewAll = viewAll;
-        vm.resetZoom = resetZoom;
-        vm.selectHub = selectHub;
-        vm.viewDetails = viewDetails;
-        vm.clickCourier = clickCourier;
-        vm.polylineArrow = UTILS.polylineArrow;
-        vm.viewAssignments = viewAssignments;
-        vm.clickAssignment = clickAssignment;
-        vm.viewItemDetails = viewItemDetails;
+        vm.zoomIn           = zoomIn;
+        vm.zoomOut          = zoomOut;
+        vm.viewAll          = viewAll;
+        vm.resetZoom        = resetZoom;
+        vm.selectHub        = selectHub;
+        vm.viewDetails      = viewDetails;
+        vm.clickCourier     = clickCourier;
+        vm.polylineArrow    = UTILS.polylineArrow;
+        vm.viewAssignments  = viewAssignments;
+        vm.clickAssignment  = clickAssignment;
+        vm.viewItemDetails  = viewItemDetails;
 
         init();
 

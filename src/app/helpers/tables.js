@@ -59,7 +59,7 @@ const TABLES = {
                 cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.merchant-details({ id:row.entity.id })">{{COL_FIELD}}</a>`
             },
             // { name: 'username', displayName:'Username' },
-            {
+            { 
                 name: 'contact',
                 displayName: 'Contact',
                 cellTemplate: `<span ng-bind-html="COL_FIELD | handlePccDisplay : '+63'"></span>`
@@ -91,7 +91,8 @@ const TABLES = {
         columnDefs: [
             {
                 name: 'name',
-                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.personnel-details({ site_id:row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>`
+                cellTemplate: `<a ng-if="!vm.deactivated" ui-sref="app.personnel-details({ site_id:row.entity.site_id, user_id: row.entity.user_id })" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></a>
+                                <span ng-if="vm.deactivated" ng-bind="row.entity.first_name + ' ' + row.entity.last_name"></span>`
             },
             { name: 'username' },
             { name: 'email' },
