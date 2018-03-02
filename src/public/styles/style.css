@@ -619,7 +619,7 @@ body.scroll::-webkit-scrollbar {
 }
 
 .map-toolbar {
-    /* position: absolute; */
+    position: absolute;
     background: rgba(58, 56, 56, 0.89);
     top: 0;
     width: 100%;
