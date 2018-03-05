@@ -50,7 +50,7 @@ import MESSAGE from 'Helpers/message';
         vm.$onInit = function() {
             Modal           = vm.resolve.Modal;
             Request         = vm.resolve.Request;
-            vm.titleHeader  = Modal.header;
+            vm.titleHeader  = Modal.titleHeader;
             vm.data         = angular.copy(Request.body) || {};
             vm.method       = angular.copy(Request.method);
             vm.storeData    = [];

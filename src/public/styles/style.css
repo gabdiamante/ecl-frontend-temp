@@ -1285,7 +1285,7 @@ body.scroll::-webkit-scrollbar {
 
 #loading-bar {
   pointer-events: all;
-  z-index: 2;
+  z-index: 4!important;
   border: none;
   margin: 0px;
   padding: 0px;
