@@ -3,6 +3,8 @@ import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
 import DUMMY from 'Helpers/dummy';
 import MESSAGE from 'Helpers/message';
+import CONSTANTS from 'Helpers/constants';
+
 
 (function() {
     'use strict';
@@ -41,11 +43,15 @@ import MESSAGE from 'Helpers/message';
         vm.params               = angular.copy($stateParams);
         vm.deactivated          = ($stateParams.deactivated == 'true') ? 1 : 0;
         vm.activated            = +!vm.deactivated;
+        vm.site_types = CONSTANTS.site_types;
+        vm.site_type = $stateParams.site_type || vm.site_types[0].code;
         vm.loading              = false;
         
         vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
         vm.pagination.limit     = $stateParams.limit || '10';
+        vm.site_type = $stateParams.site_type || 'HUB';
+        vm.site_id = $stateParams.site_id;
 
         vm.option_table         = {
             defaultPagination   : true,
@@ -61,12 +67,44 @@ import MESSAGE from 'Helpers/message';
         vm.handleUpdateItem         = handleUpdateItem; 
         vm.handleCSActivation       = handleCSActivation; 
         vm.createCustomerSupport    = createCustomerSupport;
+        vm.getCustomerSupports = getCustomerSupports;
+        vm.selectSiteFiltered = selectSiteFiltered;
 
         init();
 
         function init() {
+            getSites();
             getCustomerSupports();
         } 
+
+        function getSites() {
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '99999',
+                    page: '1',
+                    type: vm.site_type,
+                    is_active: 1
+                },
+                hasFile: false,
+                route: { site: '' },
+                cache: true,
+                cache_string: 'sites'
+            };
+
+            QueryService
+                .query(request)
+                .then(
+                function (response) {
+                    vm.sites = response.data.data.items;
+                },
+                function (error) {
+                    logger.error(error.data.message);
+                    //logger.error(MESSAGE.error, err, '');
+                }
+                );
+        }
 
         function createCustomerSupport () {
             var modal = { header: 'Create '+vm.title };
@@ -90,7 +128,7 @@ import MESSAGE from 'Helpers/message';
                 }); 
         }
 
-        function getCustomerSupports() {
+        function getCustomerSupports(key) {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -98,6 +136,9 @@ import MESSAGE from 'Helpers/message';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
+                    site_id: vm.site_id,
+                    page: vm.pagination.pagestate,
+                    keyword: key,
                     is_active: vm.activated
                 },
                 hasFile: false,
@@ -201,6 +242,10 @@ import MESSAGE from 'Helpers/message';
                     }
                 );
         } 
+
+        function selectSiteFiltered(site_type, site_id, zone_id) {
+            goTo({ site_type: site_type, site_id: site_id});
+        }
 
         function handleNames(data) {
             for (let i = 0; i < data.length; i++)
