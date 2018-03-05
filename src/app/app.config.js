@@ -218,7 +218,7 @@ import angular from 'angular';
 
             // USERS
             .state('app.couriers', {
-                url: 'couriers?page&limit&key&deactivated&site&zone',
+                url: 'couriers?page&limit&key&deactivated&site&zone&site_type&site_id&zone_id',
                 component: 'couriers'
             })
 
@@ -228,7 +228,7 @@ import angular from 'angular';
             })
 
             .state('app.dispatchers', {
-                url: 'dispatchers?deactivated&page&limit&search',
+                url: 'dispatchers?deactivated&page&limit&search&site_type&site_id',
                 component: 'dispatchers'
             })
 
@@ -238,7 +238,7 @@ import angular from 'angular';
             })
 
             .state('app.hub-supports', {
-                url: 'hub-supports?page&limit&deactivated',
+                url: 'hub-supports?page&limit&deactivated&hub_id',
                 component: 'hubSupports'
             })
 
@@ -248,7 +248,7 @@ import angular from 'angular';
             })
 
             .state('app.customer-supports', {
-                url: 'customer-supports?page&limit&deactivated',
+                url: 'customer-supports?page&limit&deactivated&site_type&site_id',
                 component: 'customerSupports'
             })
 
@@ -263,7 +263,7 @@ import angular from 'angular';
             })
 
             .state('app.personnels', {
-                url: 'personnels?deactivated&page&limit&search',
+                url: 'personnels?deactivated&page&limit&search&site_type&site_id',
                 component: 'personnels'
             })
 
