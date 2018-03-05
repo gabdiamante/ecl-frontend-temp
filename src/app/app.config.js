@@ -273,6 +273,16 @@ import angular from 'angular';
             })
 
             //DATA-MANAGEMENT
+            .state('app.accounts', {
+                url: 'accounts?deactivated&page&limit&keyword',
+                component: 'accounts'
+            })
+
+            .state('app.account-details', {
+                url: 'account-details?id',
+                component: 'accountDetails'
+            })
+
             .state('app.hubs', {
                 url: 'hubs?deactivated&page&limit&keyword',
                 component: 'hubs'

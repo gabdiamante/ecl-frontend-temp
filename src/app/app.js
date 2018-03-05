@@ -3,6 +3,7 @@ import 'angular-loading-bar/build/loading-bar.css';
 import 'angular-toastr/dist/angular-toastr.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
+import 'angularjs-slider/dist/rzslider.min.css';
 
 import angular from 'angular';
 
@@ -16,6 +17,7 @@ import 'google-charts';
 import 'ngmap';
 import 'ngstorage';
 import 'ng-file-upload';
+import 'angularjs-slider';
 
 (function() {
     'use strict';
@@ -39,6 +41,7 @@ import 'ng-file-upload';
         'ngAnimate',
         'ngStorage',
         'ngFileUpload',
-        require('angular-dynamic-number')
+        require('angular-dynamic-number'),
+        'rzModule'
     ]);
 })();

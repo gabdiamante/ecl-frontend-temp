@@ -158,6 +158,31 @@ const TABLES = {
         ]
     },
     //DATA-MANAGEMENT
+    accounts: {
+        columnDefs: [
+            {
+                name: 'account_number',
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.account-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'account_company', displayName: 'Account Company' },
+            {
+                name: 'positioning_time_delivery',  displayName: 'Delivery Positioning Time'
+            },
+            {
+                name: 'positioning_time_pickup',  displayName: 'Pickup Positioning Time'
+            },
+            {
+                name: 'updated',
+                displayName: 'Date Updated',
+                cellTemplate: `<span ng-bind-html="COL_FIELD | date:short | displaynone"></span>`
+            },
+            {
+                name: 'action',
+                displayName: ' ',
+                cellTemplate: `<div ng-include="'template-data-management-account-action'"></div>`
+            }
+        ]
+    },
     hubs: {
         columnDefs: [
             {
