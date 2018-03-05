@@ -200,7 +200,7 @@ fieldset[disabled] .btn-custom {
     background-position: -1000px 0;
     background-size: 100%;
     background-repeat: no-repeat;
-    color: #999;
+    /* color: #999; */
 }
 
 .materialize input.form-control:focus,
@@ -807,6 +807,9 @@ body.scroll::-webkit-scrollbar {
     left: 0px!important;
 }
 
+.dropdown-menu {
+    z-index:2!important;
+}
 /******************************************************/
 
 /*****************Scroll***************************/
@@ -1259,4 +1262,71 @@ body.scroll::-webkit-scrollbar {
   }
 
 /***********************************************/
+
+/*************************Loading **********/
+
+
+/* .loading {
+	background: rgba(0, 0, 0, 0.22);
+	height: 100vh;
+	width: 100%;
+	position: relative;
+}
+.loading .fa-circle-o-notch {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+} */
+
+#loading-bar .bar {
+	background: #444 !important;
+	height: 3px !important;
+}
+
+#loading-bar {
+  pointer-events: all;
+  z-index: 2;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  cursor: wait;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#loading-bar-spinner .spinner-icon {
+	/*position: absolute;*/
+	border:  solid 7px transparent;
+	border-top-color:  #fff !important;
+	border-left-color: #fff !important;
+	width: 70px!important;
+	height: 70px!important;
+}
+
+#loading-bar-spinner {
+  top: 40%!important;
+  left: 50%!important;
+}
+
+#loading-bar .peg {
+	position: absolute;
+	width: 70px;
+	right: 0;
+	height: 3px;
+	opacity: .45;
+	-moz-box-shadow: #444 1px 0 6px 1px !important;
+	-ms-box-shadow: #444 1px 0 6px 1px !important;
+	-webkit-box-shadow: #444 1px 0 6px 1px !important;
+	box-shadow: #444 1px 0 6px 1px !important;
+}
+
+/***********************************************/
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+    z-index:2!important;
+}
 

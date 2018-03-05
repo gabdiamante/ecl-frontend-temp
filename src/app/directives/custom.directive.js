@@ -420,7 +420,8 @@ var _ = require('lodash');
                 toDate: '&'
             },
             template: require('./html/complex-table-directive.html'),
-            controller: function($scope) {
+            controller: function($scope, $stateParams) {
+
                 var viewWatch = $scope.$watch('vm.search', function(
                     currentValue,
                     oldValue

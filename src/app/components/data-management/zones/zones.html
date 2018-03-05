@@ -93,11 +93,11 @@
 										</div>
 										<div class="form-group">
 											<label for="site_id" class="control-label small text-theme">Is Unassigned:  </label>
-											<input type="radio" ng-model="vm.isUnassigned" ng-value="'all'" ng-click="vm.selectIsUnassigned(vm.isUnassigned)" /> Include
+											<input type="radio" ng-model="vm.isUnassigned" ng-value="'all'" ng-click="vm.selectIsUnassigned(vm.isUnassigned)" /> Both
 											<input type="radio" ng-model="vm.isUnassigned" ng-value="'false'" ng-click="vm.selectIsUnassigned(vm.isUnassigned)" /> No
 											<input type="radio" ng-model="vm.isUnassigned" ng-value="'true'" ng-click="vm.selectIsUnassigned(vm.isUnassigned)" /> Yes 
 										</div>    
-										<div class="form-group">
+										<div class="form-group" ng-if="false">
 											<label for="site_id" class="control-label small text-theme">Select Front Zone:  </label>
 											<select class="form-control" ng-change="vm.selectSiteFront(vm.site_front)" ng-options="site_front as site_front.name for site_front in vm.site_fronts"  ng-model="vm.site_front">
 											</select>
@@ -118,8 +118,8 @@
 							</div>
 						</div>
 
-						<div class="btn-group" uib-dropdown auto-close="disabled">
-							<button type="button" class="btn-default dropdown-toggle" uib-dropdown-toggle >
+						<div class="btn-group" uib-dropdown auto-close="disabled" is-open="vm.zoneIsOpen">
+							<button type="button" class="btn-default dropdown-toggle" uib-dropdown-toggle  ng-disabled="!vm.zoneIsOpen && (vm.showButton || vm.showSaveChanges)">
 								<i class="fa fa-compass"></i>	Zones <span ng-bind="'(' + vm.zones.length+')'"></span>  <span class="caret"></span>
 							</button>
 							<div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box box-right  drop-list" role="menu" >
@@ -128,10 +128,9 @@
 										<div class="col-md-11">
 											<div class="inner-addon left-addon">
 												<i class="fa fa-search"></i>
-												<input type="text" class="form-control input-sm" name="Search" ng-disabled="vm.showButton || vm.showSaveChanges" ng-change="vm.resetSearch()" ng-model="zone" placeholder=" " required>
+												<input type="text" class="form-control input-sm" name="Search" ng-change="vm.resetSearch()" ng-model="zone" placeholder=" " required>
 												<label for="Search" class="md-label" ng-click="vm.cancel()">Search</label>
 											</div>
-											<span class="text-red small" ng-if="vm.showButton || vm.showSaveChanges">Please click the cancel button (green) to enable search!</span>
 											<span class="btn-reset" ng-show="vm.key" ng-click="vm.key='';vm.reset()">
 												&times;
 											</span>
@@ -146,7 +145,7 @@
 										<div ng-repeat="zone in vm.filteredZones[type.name] = (vm.zones | filter:zone | filter: { type: type.code } )">
 											<li class="list-group-item" >
 												<div class="pull-right" ng-show="zone.editable">
-													<button class="btn-success btn-xs" title="Cancel" ng-click="vm.cancel()">
+													<button class="btn-success btn-xs" title="Cancel" ng-click="vm.cancel();">
 															<i class="fa fa-chevron-circle-left"></i>
 													</button>	
 													<span ng-if="vm.activated">
@@ -168,7 +167,7 @@
 													
 												</div>
 												<i ng-style="{ color: (zone.type == 'HUB' || zone.type == 'DC') ?  vm.colors[vm.zones.indexOf(zone)] : 'black' }" class="fa fa-fw fa-map-marker" aria-hidden="true" ></i>
-												<a href="" ng-click="vm.updatePolygon($event, zone, vm.zones.indexOf(zone), true)" class="text-blue-grey text-bold" ng-bind="zone.code"></a>
+												<a href="" ng-click="vm.zoneIsOpen = false; vm.updatePolygon($event, zone, vm.zones.indexOf(zone), true)" class="text-blue-grey text-bold" ng-bind="zone.code"></a>
 											</li>
 										</div>
 									</div>

@@ -6,6 +6,16 @@
             <i  class="fa fa-plus fa-lg text-white" ></i>
     </button>
 
+    <div class="col-md-12 top-margin-sm">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-12">				
+                <span class="control-label text-theme small">Select Hub</span>
+                <select class="form-control text-uppercase" id="select" ng-model="vm.hub" ng-change="vm.filterTable()" ng-options="hub as hub.name for hub in vm.hubs" >
+                </select>
+            </div> 
+            <div class="col-md-9 col-sm-9 col-xs-12"></div>
+        </div>
+    </div>
     <div class="col-md-12">
             <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
     </div>

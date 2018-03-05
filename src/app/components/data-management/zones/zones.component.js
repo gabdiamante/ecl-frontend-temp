@@ -162,7 +162,7 @@ var jsts = require('jsts');
         function getTypes() {
             vm.site_types = [];
             vm.site_types = angular.copy(CONSTANTS.site_types);
-            vm.site_types.unshift({ name: 'HUB w/ DC' });
+            vm.site_types.unshift({ name: 'ALL' });
             vm.site_type = vm.site_type || vm.site_types[0];
             checkSiteType(vm.siteType, vm.site_types);
         }
@@ -285,17 +285,8 @@ var jsts = require('jsts');
                         vm.total = response.data.data.total;
 
                         if (!angular.equals(vm.selectedZone, {})) {
-                            var selZone = $filter('filter')(
-                                vm.zones,
-                                { id: vm.selectedZone.id },
-                                true
-                            )[0];
-
-                            vm.updatePolygon(
-                                {},
-                                selZone,
-                                vm.selectedZone.index
-                            );
+                            var selZone = $filter('filter')(vm.zones,{ id: vm.selectedZone.id },true)[0];
+                            vm.updatePolygon({},selZone,vm.selectedZone.index );
                         }
                         // if (update_view_center_latlng)
                         //     vm.center_map_lat_lng = response.data.data.center.lat + ', ' + response.data.data.center.lng;
@@ -458,7 +449,20 @@ var jsts = require('jsts');
         }
 
         function onMouseUp(e, shape, index) {
-          
+            
+            if (vm.siteType && !e.Ga) { //e.Ga change polydot
+                var selectedZone = angular.copy(shape);
+                $timeout(function(){
+                    vm.cancel();
+                }, 300);
+                $timeout(function(){
+                    var selZone = $filter('filter')(vm.zones,{ id: selectedZone.id },true)[0];
+                    vm.updatePolygon({},selZone, vm.zones.indexOf(selZone));
+                },800);
+                logger.info('Change The Filter type to `HUB w/ DC` update the polygon');
+                return;
+            }
+            
             // vm.zones[index] = vm.zones[index] || {};
             // vm.zones[index].general_overlap = {};
             // vm.zones['new'] = {};
@@ -466,8 +470,8 @@ var jsts = require('jsts');
             // vm.zones['new'].general_overlap.zone = [];
 
             $timeout(function() {
-                console.log(vm.shapeIndex);
                 if (typeof vm.shapeIndex != 'undefined' && shape.editable) {
+                    
                     // console.log(index, 'index');
                     var data = angular.copy(vm.updated_shape);
                     shape = {
@@ -477,9 +481,11 @@ var jsts = require('jsts');
                     NgMap.getMap({ id: 'geofencing' }).then(function(map) {
                         vm.geofenceMaps = map;
     
+                        let self = false;
                         Object.keys(vm.geofenceMaps.shapes).forEach(function(prop) {
                             console.log();
                             if (prop == vm.shapeIndex) {
+                                self = true;
                                 shape.overlay = vm.geofenceMaps.shapes[prop];
                                 for (var key in vm.geofenceMaps.shapes) {
                                     //console.log(vm.zones[key], data); // determine dc hub
@@ -490,7 +496,7 @@ var jsts = require('jsts');
                                     detectLap(shape, key, wkt);
                                 }
                                 handleOverlap();
-                            }
+                            } 
                         });
                     });
                 }
@@ -780,12 +786,14 @@ var jsts = require('jsts');
             vm.showName = false;
             vm.shapePath = null;
             vm.overlap = angular.copy(vm.overlapCopy);
+            
             $timeout(function() {
                 vm.zones = angular.copy(vm.polygonsCopy);
             }, 100);
 
             vm.showSaveChanges = false;
             vm.pending_update = 0;
+
             for (var i = vm.zones.length - 1; i >= 0; i--) {
                 vm.zones[i].editable = false;
             }
@@ -854,6 +862,7 @@ var jsts = require('jsts');
                     }
 
                     shape.editable = true;
+                    
                     vm.pending_update++;
                 }
 

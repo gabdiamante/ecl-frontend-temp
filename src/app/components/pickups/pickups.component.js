@@ -144,7 +144,7 @@ import DUMMY from 'Helpers/dummy';
                     function(response) {
                         console.log('sites filter', response);
                         var sites = response.data.data.items;
-                        vm.sites = $filter('orderBy')(angular.copy(sites), ['-type']);
+                        vm.sites = $filter('orderBy')(angular.copy(sites), ['-type', 'code']);
                         vm.site = checkId(vm.siteId, vm.sites);
                         vm.sites.unshift({ code: 'All', name: 'All' });
                         vm.site = vm.site || vm.sites[0];

@@ -80,6 +80,7 @@ import UTILS from 'Helpers/util';
                         method: 'GET',
                         url: UTILS.snapToRoadUrl,
                         ignoreLoadingBar: true,
+                        passToken: false,
                         params: {
                             interpolate: true,
                             key: UTILS.apiKey,

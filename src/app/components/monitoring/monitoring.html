@@ -31,17 +31,17 @@
                         <span 	class="text-bold"
                                 ng-bind="vm.assign.assignment_type | uppercase">
                         </span> <br>
-                        <span ng-if="vm.assign.assignmentType !=='redemption'">
+                        <span ng-if="vm.assign.assignment_type !=='redemption'">
                             Code:
                             <a href="" class="text-bold text-uppercase" ng-click="vm.viewItemDetails(vm.assign)" ng-bind="vm.assign.code" ng-cloak></a>
                             <br>
                         </span>
-                        <span ng-if="vm.assign.assignmentType !=='redemption'">
-                            Shipper: <span class="text-bold text-uppercase" ng-bind="vm.assign.shipperName" ng-cloak></span>
+                        <span ng-if="vm.assign.assignment_type !=='redemption'">
+                            Shipper: <span class="text-bold text-uppercase" ng-bind="vm.assign.shipper_name" ng-cloak></span>
                             <br>
                         </span> 
-                        <span ng-if="vm.assign.assignmentType !=='redemption'">
-                            Cnee: <span class="text-bold text-uppercase" ng-bind="vm.assign.cneeName" ng-cloak></span>
+                        <span ng-if="vm.assign.assignment_type !=='redemption'">
+                            Cnee: <span class="text-bold text-uppercase" ng-bind="vm.assign.cnee_name" ng-cloak></span>
                             <br>
                         </span> 
                         <span>
