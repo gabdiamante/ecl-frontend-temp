@@ -4,7 +4,7 @@
   "description": "## Introduction",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --open",
+    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --open --host 192.168.0.108",
     "build": "rimraf dist && NODE_ENV=production node_modules/.bin/webpack -p",
     "precommit": "lint-staged",
     "prettify": "prettier --tab-width 4 --single-quote --write \"./src/**/*.js\""
