@@ -1284,23 +1284,23 @@ body.scroll::-webkit-scrollbar {
 }
 
 #loading-bar {
-  pointer-events: all;
+  pointer-events: all!important;
   z-index: 4!important;
-  border: none;
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
-  cursor: wait;
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.6);
+  border: none!important;
+  margin: 0px!important;
+  padding: 0px!important;
+  width: 100%!important;
+  height: 100%!important;
+  top: 0px!important;
+  left: 0px!important;
+  cursor: wait!important;
+  position: fixed!important;
+  background-color: rgba(0, 0, 0, 0.6)!important;
 }
 
 #loading-bar-spinner .spinner-icon {
 	/*position: absolute;*/
-	border:  solid 7px transparent;
+	border:  solid 7px transparent!important;
 	border-top-color:  #fff !important;
 	border-left-color: #fff !important;
 	width: 70px!important;
@@ -1313,11 +1313,11 @@ body.scroll::-webkit-scrollbar {
 }
 
 #loading-bar .peg {
-	position: absolute;
-	width: 70px;
-	right: 0;
-	height: 3px;
-	opacity: .45;
+	position: absolute!important;
+	width: 70px!important;
+	right: 0!important;
+	height: 3px!important;
+	opacity: .45!important;
 	-moz-box-shadow: #444 1px 0 6px 1px !important;
 	-ms-box-shadow: #444 1px 0 6px 1px !important;
 	-webkit-box-shadow: #444 1px 0 6px 1px !important;

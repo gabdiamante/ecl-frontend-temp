@@ -38,6 +38,7 @@ import 'ng-file-upload';
         require('angular-ui-mask'),
         'ngAnimate',
         'ngStorage',
-        'ngFileUpload'
+        'ngFileUpload',
+        require('angular-dynamic-number')
     ]);
 })();

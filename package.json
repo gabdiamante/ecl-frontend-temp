@@ -4,7 +4,7 @@
   "description": "## Introduction",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --open --host 192.168.0.108",
+    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --open --host 192.168.0.21",
     "build": "rimraf dist && NODE_ENV=production node_modules/.bin/webpack -p",
     "precommit": "lint-staged",
     "prettify": "prettier --tab-width 4 --single-quote --write \"./src/**/*.js\""
@@ -26,6 +26,7 @@
     "angular-aria": "^1.6.4",
     "angular-chart.js": "^1.1.1",
     "angular-cookies": "^1.6.4",
+    "angular-dynamic-number": "^2.5.1",
     "angular-loading-bar": "^0.9.0",
     "angular-messages": "^1.6.4",
     "angular-permission": "^6.0.0",

@@ -195,10 +195,6 @@ const TABLES = {
                 displayName: 'Hub'
             },
             {
-                name: 'zone_code',
-                displayName: 'Zone'
-            },
-            {
                 name: 'action',
                 displayName: ' ',
                 cellTemplate: `<div ng-include="'template-data-management-dcs-action'"></div>`

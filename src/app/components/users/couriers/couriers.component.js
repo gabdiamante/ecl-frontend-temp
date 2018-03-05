@@ -153,6 +153,7 @@ import CONSTANTS from 'Helpers/constants';
                 .form_modal(request, modal, 'courierForm', 'md', '')
                 .then(function(response) { 
                     if (!response) return;
+                    response.updated = new Date();
                     vm.option_table.data.unshift(response); 
                     vm.option_table.data = handleNames(vm.option_table.data);
                 }, function(error) {

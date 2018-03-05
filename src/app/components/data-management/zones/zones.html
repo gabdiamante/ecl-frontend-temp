@@ -119,7 +119,7 @@
 						</div>
 
 						<div class="btn-group" uib-dropdown auto-close="disabled" is-open="vm.zoneIsOpen">
-							<button type="button" class="btn-default dropdown-toggle" uib-dropdown-toggle  ng-disabled="!vm.zoneIsOpen && (vm.showButton || vm.showSaveChanges)">
+							<button type="button" class="btn-default dropdown-toggle" uib-dropdown-toggle  ng-hide="!vm.zoneIsOpen && (vm.showButton || vm.showSaveChanges)">
 								<i class="fa fa-compass"></i>	Zones <span ng-bind="'(' + vm.zones.length+')'"></span>  <span class="caret"></span>
 							</button>
 							<div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box box-right  drop-list" role="menu" >
