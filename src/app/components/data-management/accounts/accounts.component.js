@@ -23,7 +23,7 @@ import MESSAGE from 'Helpers/message';
         vm.titleHeader = vm.title + 's';
 
         vm.TPLS = 'accountFormModal';
-        vm.route_name = 'site';
+        vm.route_name = 'account';
 
         vm.deactivated = $stateParams.deactivated == 'true' ? 1 : 0;
         vm.activated = +!vm.deactivated;
@@ -94,14 +94,12 @@ import MESSAGE from 'Helpers/message';
             QueryService
                 .query(req)
                 .then(function (response) { 
-
                     //console.log('accounts', response);
-                    vm.option_table.data = DUMMY.accounts;
-
-                    //vm.option_table.data = response.data.data.items;
-                    // vm.pagination.total = response.data.data.total;
-                    // vm.pagination.page = $stateParams.page || '1';
-                    // vm.pagination.limit = $stateParams.limit || '10';
+                    //vm.option_table.data = DUMMY.accounts;
+                    vm.option_table.data = response.data.data.items;
+                    vm.pagination.total = response.data.data.total;
+                    vm.pagination.page = $stateParams.page || '1';
+                    vm.pagination.limit = $stateParams.limit || '10';
                     
                 }, function (error) { 
                     vm.data=[];
@@ -157,9 +155,7 @@ import MESSAGE from 'Helpers/message';
                 function(response) {
                     if (response) {
                         console.log(response);
-                        vm.option_table.data[
-                            vm.option_table.data.indexOf(item)
-                        ] = response;
+                        vm.option_table.data[vm.option_table.data.indexOf(item)] = response;
                     }
                 },
                 function(error) {
@@ -200,9 +196,7 @@ import MESSAGE from 'Helpers/message';
             QueryService.query(request).then(
                 function(response) {
                     vm.option_table.data.splice(vm.option_table.data.indexOf(
-                        $filter('filter')(vm.option_table.data, {
-                            id: data.id
-                        })[0]
+                        $filter('filter')(vm.option_table.data, { id: data.id })[0]
                     ), 1);
                     logger.success(vm.title + ' ' + action + 'd!');
                 },
@@ -223,7 +217,7 @@ import MESSAGE from 'Helpers/message';
         }
 
         function trClick(data) {
-            $state.go('app.hub-details', { id: data.id });
+            $state.go('app.account-details', { id: data.id });
         }
 
         function filterTable(value, key) {

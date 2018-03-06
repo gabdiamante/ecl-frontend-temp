@@ -2,6 +2,8 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import UTILS from 'Helpers/util';
 import DUMMY from 'Helpers/dummy';
+import OverlappingMarkerSpiderfier from 'overlapping-marker-spiderfier';
+import UTIL from '../../helpers/util';
 
 (function() {
     'use strict';
@@ -109,29 +111,91 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function spiderFierMarkers(data) {
+
+            NgMap.getMap({ id: 'mntrng-map' }).then(function(map) {
+                vm.map = map;
+                const options = { 
+                    markersWontMove: true,
+                    markersWontHide: true,
+                    basicFormatEvents: true,
+                    keepSpiderfied: true,
+                    // nearbyDistance: 30,
+                    legWeight: 2
+                
+                }; // Just an example of options - please set your own if necessary 
+                const oms = new OverlappingMarkerSpiderfier(map, options);
+                const iw = new google.maps.InfoWindow();
+
+                oms.addListener('click', function(marker, event) {
+                    vm.assign = marker.data;
+                    if (vm.assign.lat && vm.assign.lng)
+                        vm.assignPosition = vm.assign.lat + ', ' + vm.assign.lng;
+                    vm.map.showInfoWindow('assignInfo',vm.assign.lat,vm.assign.lng);
+                });
+
+                oms.addListener('spiderfy', function(markers) {
+                    iw.close();
+                });
+
+                for (let i = 0; i < data.length; i ++) {
+                    if (data[i].lat) {
+                        var markerLat = angular.copy(data[i].lat);
+                        var markerLng = angular.copy(data[i].lng);
+                        var latLng = new google.maps.LatLng(
+                            markerLat,
+                            markerLng
+                        );
+                        bounds.extend(latLng);
+                        const marker = new google.maps.Marker({
+                            position: latLng,
+                            map: map,
+                            icon: UTILS.icon(data[i].color),
+                            data: data[i],
+                            id: 'marker-' + (i + 1),
+                            label: {
+                                text: (i + 1).toString(),
+                                color: '#fff',
+                                fontSize: '10px'
+                            },
+                        });
+                        oms.addMarker(marker);  // <-- here 
+                    }
+                }
+                map.fitBounds(bounds);
+            });   
+
+
             // NgMap.getMap({ id: 'mntrng-map' }).then(function(map) {
+
             //     vm.map = map;
+
             //     var oms = new OverlappingMarkerSpiderfier(map, {
             //         markersWontMove: true,
             //         markersWontHide: true,
             //         basicFormatEvents: true,
-            //         keepSpiderfied: true,
-            //         nearbyDistance: 10,
-            //         legWeight: 5
+            //         keepSpiderfied: false,
+            //         nearbyDistance: 30,
+            //         legWeight: 2
             //     });
+
+            //     console.log('oms',oms);
 
             //     for (var i = 0; i < data.length; i++) {
             //         if (data[i].lat) {
-            //             var markerLat = data[i].lat;
-            //             var markerLng = data[i].lng;
+            //             var markerLat = angular.copy(data[i].lat);
+            //             var markerLng = angular.copy(data[i].lng);
             //             var latLng = new google.maps.LatLng(
             //                 markerLat,
             //                 markerLng
             //             );
+
             //             bounds.extend(latLng);
+                                  
+
+
             //             var markerOptions = {
             //                 icon: {
-            //                     url: require('Images/map_svg/' + data[i].color + '.svg'),
+            //                     url: UTILS.icon(data[i].color),
             //                     origin: new google.maps.Point(0, 0),
             //                     anchor: new google.maps.Point(15, 15)
             //                 },
@@ -142,20 +206,25 @@ import DUMMY from 'Helpers/dummy';
             //                     text: (i + 1).toString(),
             //                     color: '#fff',
             //                     fontSize: '10px'
-            //                 }
+            //                 },
+            //                 map: map
             //             };
+
+            //             console.log('markerOptions icon', markerOptions.data);
+                        
             //             var marker = new google.maps.Marker(markerOptions);
-            //             google.maps.event.addListener(
-            //                 marker,
-            //                 'spider_click',
-            //                 function(e) {
-            //                     vm.assign = this.data;
-            //                     if (vm.assign.lat && vm.assign.lng)
-            //                         vm.assignPosition = vm.assign.lat + ', ' + vm.assign.lng;
-            //                     vm.map.showInfoWindow('assignInfo',vm.assign.lat,vm.assign.lng);
-            //                 }
-            //             );
-            //             oms.addMarker(marker);
+            //             // google.maps.event.addListener(
+            //             //     marker,
+            //             //     'spider_click',
+            //             //     function(e) {
+            //             //         console.log('ssss',this.data);
+            //             //         vm.assign = this.data;
+            //             //         if (vm.assign.lat && vm.assign.lng)
+            //             //             vm.assignPosition = vm.assign.lat + ', ' + vm.assign.lng;
+            //             //         vm.map.showInfoWindow('assignInfo',vm.assign.lat,vm.assign.lng);
+            //             //     }
+            //             // );
+            //            oms.addMarker(marker);
             //         }
             //     }
             //     map.fitBounds(bounds);
@@ -253,12 +322,13 @@ import DUMMY from 'Helpers/dummy';
         }
 
         function setIconColor(markers) {
+
             for (var i = 0; i < markers.length; i++) {
-                if (markers[i].dateCompleted) {
+                if (markers[i].date_completed) {
                     markers[i].color = 'green';
-                } else if (markers[i].dateAttempted) {
+                } else if (markers[i].date_attempted) {
                     markers[i].color = 'red';
-                } else if (!markers[i].dateAttempted) {
+                } else if (!markers[i].date_attempted) {
                     markers[i].color = 'blue-grey';
                 } else {
                     markers[i].color = 'yellow';
@@ -293,17 +363,12 @@ import DUMMY from 'Helpers/dummy';
 
             QueryService.query(req).then(
                 function(response) {
-                    response = {
-                        data: {
-                            data: {}
-                        }
-                    }
+                    response = { data: { data: {} } };
                     response.data.data = DUMMY.monitoring.courier_assignments;
                     console.log('getAssignments', response);
                     setIconColor(response.data.data.assignments || []);
                     vm.courier = response.data.data.courier;
                     // vm.courier.name = vm.courier.first_name + ' ' + vm.courier.last_name;
-                    
                     vm.hub = response.data.data.hub;
                     // listenToCourier(vm.courier);
                     changeBookingStatus();
@@ -439,12 +504,8 @@ import DUMMY from 'Helpers/dummy';
                             i++
                         ) {
                             var latlng = new google.maps.LatLng(
-                                res[idx].data.snappedPoints[
-                                    i
-                                ].location.latitude,
-                                res[idx].data.snappedPoints[
-                                    i
-                                ].location.longitude
+                                res[idx].data.snappedPoints[i].location.latitude,
+                                res[idx].data.snappedPoints[i].location.longitude
                             );
                             path.push(latlng);
                         }

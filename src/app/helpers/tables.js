@@ -164,7 +164,7 @@ const TABLES = {
                 name: 'account_number',
                 cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.account-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
             },
-            { name: 'account_company', displayName: 'Account Company' },
+            { name: 'account_name', displayName: 'Account Name' },
             {
                 name: 'positioning_time_delivery',  displayName: 'Delivery Positioning Time'
             },

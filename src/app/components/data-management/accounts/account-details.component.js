@@ -17,7 +17,7 @@ import DUMMY from 'Helpers/dummy';
     function AccountDetailsCtrl ($rootScope,$cookies, $state, $scope, $stateParams, $filter, QueryService,ModalService,logger) {
         
         var vm = this;
-        vm.route_name = 'site';
+        vm.route_name = 'account';
         vm.title = 'Account';
         vm.titleHeader = vm.title + ' Details';
 
@@ -44,11 +44,11 @@ import DUMMY from 'Helpers/dummy';
                     function(response) {
                         console.log('account details', response);
 
-                        console.log(DUMMY.accounts);
-                        vm.item_details = $filter('filter')(angular.copy(DUMMY.accounts), { id : $state.params.id })[0];
-                        console.log(vm.item_details);
+                        // console.log(DUMMY.accounts);
+                        // vm.item_details = $filter('filter')(angular.copy(DUMMY.accounts), { id : $state.params.id })[0];
+                        // console.log(vm.item_details);
 
-                        //vm.item_details = response.data.data.items[0];
+                        vm.item_details = response.data.data.items[0];
                     },
                     function(error) {
                         logger.errorFormatResponse(error);

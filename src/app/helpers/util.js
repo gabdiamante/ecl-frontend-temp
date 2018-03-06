@@ -462,6 +462,9 @@ const UTIL = {
         url: require('Images/map_svg/warehouse.svg'), // url
         scaledSize: [35, 35]
     },
+    icon: function(color) {
+        return require('Images/map_svg/'+color+'.svg');
+    },
     types: ['delivery', 'pickup'],
     moduleItems: {
         users: [

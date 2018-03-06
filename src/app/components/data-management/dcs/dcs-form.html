@@ -27,14 +27,13 @@
 				</select>
                 <span class="text-red font-10" ng-show="nameForm.hub_id.$invalid && vm.submitted">*Required</span>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="zone_name" class="control-label small text-theme">Zones: <span ng-if="vm.loadingZones"> <i class="fa fa-pulse fa-spinner"></i></span> </label>
                 <select class="form-control" ng-options="item.id as item.code for item in vm.zones" ng-model="vm.data.zone_id" name="zone_id" >
                 </select>
                 <span class="text-red font-10" ng-show="nameForm.zone_id.$invalid && vm.submitted">*Required</span>
-            </div>
-            
-
+            </div> -->
+        
         </div>
         <div class="text-center top-margin-sm clearfix">
             <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>
