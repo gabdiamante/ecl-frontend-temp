@@ -4,39 +4,25 @@ import TABLES from 'Helpers/tables';
 import DUMMY from 'Helpers/dummy';
 import MESSAGE from 'Helpers/message';
 
-(function() {
+
+;(function (){
     'use strict';
 
-    angular.module('app').component('dcs', {
-        template: require('./dcs.html'),
-        controller: DistributionCentersCtrl,
+    angular.module('app').component('accounts', {
+        template: require('./accounts.html'),
+        controller: AccountsCtrl,
         controllerAs: 'vm'
     });
 
-    DistributionCentersCtrl.$inject = [
-        '$scope',
-        '$state',
-        '$stateParams',
-        '$filter',
-        'ModalService',
-        'QueryService',
-        'logger'
-    ];
+    AccountsCtrl.$inject = ['$rootScope', '$cookies','$state', '$scope', '$stateParams','$filter','$localStorage','QueryService','ModalService','logger'];
 
-    function DistributionCentersCtrl(
-        $scope,
-        $state,
-        $stateParams,
-        $filter,
-        ModalService,
-        QueryService,
-        logger
-    ) {
+    function AccountsCtrl ($rootScope,$cookies, $state, $scope, $stateParams, $filter, $localStorage, QueryService,ModalService,logger) {
+        
         var vm = this;
-        vm.title = 'Distribution Center';
+        vm.title = 'Account';
         vm.titleHeader = vm.title + 's';
 
-        vm.TPLS = 'distributionCenterFormModal';
+        vm.TPLS = 'accountFormModal';
         vm.route_name = 'site';
 
         vm.deactivated = $stateParams.deactivated == 'true' ? 1 : 0;
@@ -48,7 +34,6 @@ import MESSAGE from 'Helpers/message';
         vm.total_page = '1';
         vm.total_items = '0';
         vm.loading = false;
-        vm.hubId = $state.params.hubId;
         vm.keyword = $state.params.keyword;
 
         vm.option_table = {
@@ -60,100 +45,77 @@ import MESSAGE from 'Helpers/message';
             tableDeactivate: true
         };
 
-        vm.option_table.columnDefs = TABLES.distribution_centers.columnDefs;
+        vm.option_table.columnDefs = TABLES.accounts.columnDefs;
         vm.option_table.data = [];
 
-       
         vm.goTo = goTo;
         vm.trClick = trClick;
+
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
         vm.handleActivation = handleActivation;
         vm.filterTable    = filterTable;
 
+
         init();
 
         function init() {
-            getHubs();
             getData();
-        }
+        } //init
 
-        getHubs();
+        vm.minRangeSlider = {
+            minValue: 8,
+            maxValue: 17,
+            options: {
+                floor: 0,
+                ceil: 24,
+                step: 0.1
+            }
+        };
 
-        function getHubs() { 
-            var request = {
-                method: 'GET',
-                body: false,
-                params: {
-                    limit: '9999999',
-                    page: '1',
-                    type: 'HUB',
-                    is_active: 1
-                },
-                hasFile: false,
-                route: { site: '' },
-                cache: false,
-                cache_string: 'site'
-            }; 
+        function getData (key) {
+            vm.isLoading = true;
 
-            QueryService.query(request)
-                .then(
-                    function(response) { 
-                        vm.hubs = response.data.data.items;
-                        vm.hubs.unshift({ id: null, code: 'All', name: 'All' });
-                        vm.hubId = vm.hubId || vm.hubs[0].id;
-                        vm.hub = $filter('filter')(vm.hubs, { id: vm.hubId }, true)[0];
-                    },
-                    function(error) {
-                       logger.errorFormatResponse(error);
-                    }
-                );
-        }
-
-        function getData() {
-            vm.loading = true;
-            var request = {
-                method: 'GET',
-                body: false,
-                params: {
+            var req =  { 
+                method  : 'GET', 
+                body    : false,
+                params  : {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
-                    type: 'DC',
                     is_active: vm.activated,
-                    keyword: vm.keyword,
-                    hub_id: vm.hubId
-                },
-                hasFile: false,
-                route: { [vm.route_name]: '' },
-                cache: false,
-                cache_string: vm.route_name
+                    keyword: vm.keyword
+                }, 
+                hasFile : false, 
+                cache   : false,
+                route   : {[vm.route_name]: ''},
+                ignoreLoadingBar:true,
             };
 
-            console.log(request);
-            
-            QueryService.query(request)
-                .then(
-                    function(response) {
-                        console.log('dcs', response);
-                        vm.option_table.data = response.data.data.items;
-                        vm.pagination.total = response.data.data.total;
-                        vm.pagination.page = $stateParams.page || '1';
-                        vm.pagination.limit = $stateParams.limit || '10';
-                    },
-                    function(error) {
-                        logger.errorFormatResponse(error);
-                    }
-                )
-                .finally(function() {
-                    vm.loading = false;
+            QueryService
+                .query(req)
+                .then(function (response) { 
+
+                    //console.log('accounts', response);
+                    vm.option_table.data = DUMMY.accounts;
+
+                    //vm.option_table.data = response.data.data.items;
+                    // vm.pagination.total = response.data.data.total;
+                    // vm.pagination.page = $stateParams.page || '1';
+                    // vm.pagination.limit = $stateParams.limit || '10';
+                    
+                }, function (error) { 
+                    vm.data=[];
+                    logger.errorFormatResponse(error);
+                }).finally(function(){
+                    vm.isLoading = false;
                 });
         }
+
 
         function handlePostItem() {
             var modal = {
                 title: vm.title,
-                titleHeader: 'Add ' + vm.title,
-                method: 'add'
+                titleHeader: 'Add ' + vm.title
             };
 
             var request = {
@@ -167,13 +129,12 @@ import MESSAGE from 'Helpers/message';
             ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
-                        response.updatedAt = new Date();
-                        $state.reload();
+                        response.updated = new Date();
                         vm.option_table.data.unshift(response);
                     }
                 },
                 function(error) {
-                    console.log(error);
+                    logger.error(error.data.message);
                 }
             );
         }
@@ -181,8 +142,7 @@ import MESSAGE from 'Helpers/message';
         function handleUpdateItem(item) {
             var modal = {
                 title: vm.title,
-                titleHeader: 'Edit ' + vm.title,
-                method: 'edit'
+                titleHeader: 'Edit ' + vm.title
             };
 
             var request = {
@@ -196,12 +156,14 @@ import MESSAGE from 'Helpers/message';
             ModalService.form_modal(request, modal, vm.TPLS).then(
                 function(response) {
                     if (response) {
-                        console.log('update res update item', response);
-                        $state.reload();
+                        console.log(response);
+                        vm.option_table.data[
+                            vm.option_table.data.indexOf(item)
+                        ] = response;
                     }
                 },
                 function(error) {
-                    console.log(error);
+                    logger.error(error.data.message);
                 }
             );
         }
@@ -219,7 +181,7 @@ import MESSAGE from 'Helpers/message';
                     executeActivateDeactivateDelete(data, action);
                 },
                 function(error) {
-                    console.log(error);
+                    logger.error(error.data.message);
                 }
             );
         }
@@ -230,7 +192,6 @@ import MESSAGE from 'Helpers/message';
                 body: false,
                 params: false,
                 hasFile: false,
-                //route: { [vm.route_name]: data.id },
                 route: { [vm.route_name]: data.id },
                 cache: false
             };
@@ -251,19 +212,23 @@ import MESSAGE from 'Helpers/message';
             );
         }
 
+        function handleNames(data) {
+            for (let i = 0; i < data.length; i++)
+                data[i].fullname = data[i].first_name + ' ' + data[i].last_name;
+            return data;
+        }
+
         function goTo(data) {
             $state.go($state.current.name, data);
         }
 
         function trClick(data) {
-            $state.go('app.distribution-center-details', { id: data.id });
+            $state.go('app.hub-details', { id: data.id });
         }
 
         function filterTable(value, key) {
-            console.log(vm.hubId);
             $state.go($state.current.name, { 
                 keyword: vm.keyword,
-                hubId: vm.hub.id,
                 page: '',
                 limit: ''
             });

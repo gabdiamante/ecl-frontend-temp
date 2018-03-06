@@ -1,5 +1,8 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
+import URLS from 'Helpers/urls';
+import io from 'socket.io-client';
+var socket_enable = false;
 
 (function() {
     'use strict';
@@ -26,45 +29,47 @@ import GLOBAL from 'Helpers/global';
         return service;
 
         function connect() {
-            if (!ss) {
-                var connectSocket = io.connect(GLOBAL.socketUrl, {
-                    query: 'token=' + GLOBAL.user($cookies, $state).token,
-                    transports: ['websocket'],
-                    path: '/socket.io'
-                });
+            if (socket_enable) {
+                if (!ss) {
+                    var connectSocket = io.connect(URLS.socketUrl, {
+                        query: 'token=' + GLOBAL.user($cookies, $state).token,
+                        transports: ['websocket'],
+                        path: '/socket.io'
+                    });
 
-                var newSocket = socketFactory({
-                    ioSocket: connectSocket,
-                    forceNew: true
-                });
-                ss = newSocket;
-            } else newSocket = ss;
+                    var newSocket = socketFactory({
+                        ioSocket: connectSocket,
+                        forceNew: true
+                    });
+                    ss = newSocket;
+                } else newSocket = ss;
 
-            socket = newSocket;
+                socket = newSocket;
+            }
         }
 
         function on(event, callback) {
-            socket.on(event, function(data) {
+            if (socket_enable) socket.on(event, function(data) {
                 callback(data);
             });
         }
 
         function emit(event, data, callback) {
-            socket.emit(event, data, function(data) {
+            if (socket_enable)  socket.emit(event, data, function(data) {
                 callback(data);
             });
         }
 
         function forward(event) {
-            socket.forward(event);
+            if (socket_enable)  socket.forward(event);
         }
 
         function removeListener(event) {
-            socket.removeListener(event);
+            if (socket_enable)  socket.removeListener(event);
         }
 
         function removeAllListeners() {
-            socket.removeAllListeners();
+            if (socket_enable) socket.removeAllListeners();
         }
 
         function disconnect() {

@@ -6,18 +6,17 @@
 
 
 <div class="margin-bottom">
-
     <div class="map-container">
         <map name="" map-lazy-load="vm.mapUrl" id="mntrng-map" class="dashboard-map" zoom="{{vm.zoom || 8}}" styles="{{vm.mapStyles}}" zoom-control="false" street-view-control="false" map-type-control="false">
-            <custom-marker position="{{vehicle.latitude}}, {{vehicle.longitude}}"
+            <custom-marker position="{{vehicle.lat}}, {{vehicle.lng}}"
                     ng-repeat="vehicle in vm.vehicles"
-                    ng-if="vehicle.latitude"
+                    ng-if="vehicle.lat"
                     on-click="vm.clickCourier(vehicle)">
                     <div class="pulse-container" >
                             <div class="pulse"></div>
                     </div>
             </custom-marker>
-            <custom-marker ng-if="vm.viewOne" position="{{vm.courier.latitude}}, {{vm.courier.longitude}}" on-click="vm.clickCourier(vm.courier)">
+            <custom-marker ng-if="vm.viewOne" position="{{vm.courier.lat}}, {{vm.courier.lng}}" on-click="vm.clickCourier(vm.courier)">
                 <div class="pulse-container" >
                         <div class="pulse"></div>
                     </div>
@@ -27,22 +26,22 @@
                     <marker position="{{vm.hub.lat}}, {{vm.hub.lng}}" id="hub-marker"  on-click="vm.showHubInfo(vm.hub)" icon={{vm.hubIcon}} title="{{vm.hub.name}}">		
                     </marker>
             </div>
-            <info-window id="assignInfo" position="{{vm.assign.lat}}, {{vm.assign.lng}}">
+            <info-window id="assignInfo" position="{{vm.assignPosition}}">
                 <div ng-non-bindable>
                         <span 	class="text-bold"
-                                ng-bind="vm.assign.assignmentType | uppercase">
+                                ng-bind="vm.assign.assignment_type | uppercase">
                         </span> <br>
-                        <span ng-if="vm.assign.assignmentType !=='redemption'">
+                        <span ng-if="vm.assign.assignment_type !=='redemption'">
                             Code:
                             <a href="" class="text-bold text-uppercase" ng-click="vm.viewItemDetails(vm.assign)" ng-bind="vm.assign.code" ng-cloak></a>
                             <br>
                         </span>
-                        <span ng-if="vm.assign.assignmentType !=='redemption'">
-                            Shipper: <span class="text-bold text-uppercase" ng-bind="vm.assign.shipperName" ng-cloak></span>
+                        <span ng-if="vm.assign.assignment_type !=='redemption'">
+                            Shipper: <span class="text-bold text-uppercase" ng-bind="vm.assign.shipper_name" ng-cloak></span>
                             <br>
                         </span> 
-                        <span ng-if="vm.assign.assignmentType !=='redemption'">
-                            Cnee: <span class="text-bold text-uppercase" ng-bind="vm.assign.cneeName" ng-cloak></span>
+                        <span ng-if="vm.assign.assignment_type !=='redemption'">
+                            Cnee: <span class="text-bold text-uppercase" ng-bind="vm.assign.cnee_name" ng-cloak></span>
                             <br>
                         </span> 
                         <span>
@@ -55,15 +54,15 @@
                 </div>
             </info-window>
 
-            <info-window id="courierInfo" position="{{vm.courier.latitude}}, {{vm.courier.longitude}}">
+            <info-window  id="courierInfo" position="{{vm.courierPosition}}">
                 <div ng-non-bindable>
                         <span>
                             Courier:
-                            <a href="" class="text-blue text-bold text-uppercase" ng-bind="vm.courier.lastName +', '+ vm.courier.firstName"  ng-click="vm.viewDetails(vm.courier)"ng-cloak></a>
+                            <a href="" class="text-blue text-bold text-uppercase" ng-bind="vm.courier.last_name +', '+ vm.courier.first_name"  ng-click="vm.viewDetails(vm.courier)"ng-cloak></a>
                             <br>
                         </span>
                         <span>
-                            Vehicle: <span class="text-bold text-uppercase" ng-bind="vm.courier.vehicleId || vm.courier.id" ng-cloak></span>
+                            Vehicle: <span class="text-bold text-uppercase" ng-bind="vm.courier.vehicle_id || vm.courier.id" ng-cloak></span>
                             <br>
                         </span> 
                 </div>
@@ -107,8 +106,8 @@
                                 </span>
                                 <span class="caret caret-right"></span>
                             </button>
-                            <div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box drop-list-2" uib-dropdown-menu role="menu" >
-                                <ul class="drop-list-menu list-group text-bold">
+                            <div class="dropdown-menu dropdown-menu-2 box box-left drop-list-2" uib-dropdown-menu role="menu" >
+                                <ul class="drop-list-menu text-bold">
                                     <li role="menuitem" class="list-group-item" ng-repeat="hub in vm.hubs" ng-click="vm.selectHub(hub)" > 
                                         <a href=""  class="text-uppercase" ng-bind="hub.name"></a>
                                     </li>
@@ -128,7 +127,7 @@
                                             </span> 
                                             <span class="caret caret-right"></span>
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box  drop-list" role="menu" >
+                                        <div class="dropdown-menu dropdown-menu-2 dropdown-menu-right box box-right  drop-list" role="menu" >
                                             <form class="materialize margin-top" ng-submit="vm.search(vm.key)">
                                                 <div class="col-md-12">
                                                     <div class=" col-pull-left">
@@ -145,10 +144,10 @@
                                             </form>
                                             <ul class="list-group clearfix">
                                                 <li class="list-group-item" ng-repeat="vehicle in vm.filteredVehicles = (vm.vehicles | filter:vehicle)">
-                                                    <i class="fa small" ng-class="vehicle.latitude ? 'fa-circle text-green' : 'fa-circle-o text-grey'"></i> &nbsp;
-                                                    <a href="" ng-click="vm.viewDetails(vehicle)" class="text-blue-grey text-bold" ng-bind="vehicle.lastName +', ' +vehicle.firstName"></a>
+                                                    <i class="fa small" ng-class="vehicle.lat ? 'fa-circle text-green' : 'fa-circle-o text-grey'"></i> &nbsp;
+                                                    <a href="" ng-click="vm.viewDetails(vehicle)" class="text-blue-grey text-bold" ng-bind="vehicle.last_name +', ' +vehicle.first_name"></a>
                                                 </li>
-                                                <div class="text-center" ng-if="!vm.filteredVehicles.length">
+                                                <div class="text-center text-grey" ng-if="!vm.filteredVehicles.length">
                                                     <span class="center" ng-bind-html="vm.isLoading | handlefetch : 'couriers'"></span>
                                                 </div>
                                             </ul>
@@ -181,7 +180,7 @@
                 <div class="col-md-5">
                     <button class="btn btn-warning pull-right" ui-sref="app.courier({id:vm.courier.courierId, view:'courier-dashboard'})">
                         <i class="fa fa-user"></i>
-                        <span ng-if="vm.courier.lastName" ng-bind="vm.courier.lastName+', '+vm.courier.firstName"></span>
+                        <span ng-if="vm.courier.lastName" ng-bind="vm.courier.last_name+', '+vm.courier.first_name"></span>
                         <i 	class="fa small"
                             ng-class="vm.courier.status == 'online' ? 'fa-circle text-green' : 'fa-circle-o text-grey'">
                         </i>

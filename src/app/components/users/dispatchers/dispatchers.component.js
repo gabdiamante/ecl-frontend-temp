@@ -175,7 +175,11 @@ import CONSTANTS from 'Helpers/constants';
         }
 
         function handleUpdateItem(data) {
-            var modal = { header: 'Update '+vm.title };
+            var modal = {
+                title: vm.title,
+                titleHeader: 'Update ' + vm.title,
+                method: 'edit'
+            };
             var request = {
                 method: 'PUT',
                 body: data,

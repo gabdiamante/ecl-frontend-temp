@@ -1,0 +1,65 @@
+<div class="content-view">
+	<div class="col-md-12 sub-header">
+		<span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
+	</div> 
+	
+	<button ng-if="vm.item_details" class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handleUpdateItem(vm.item_details)" >
+		<i  class="fa fa-pencil fa-lg text-white" ></i>
+	</button>
+	<br />
+
+	<div style="clear:both;"></div>
+
+	<div class="top-margin-sm">
+		<div class="col-md-6 col-sm-6 col-xs-6">
+				<button class="btn btn-primary" ng-click="$root.$back()">
+					<i class="fa fa-chevron-circle-left"></i> Back
+				</button>
+		</div>
+		<div style="clear:both;"></div>
+		<br />
+		<div  class="col-md-12">
+			<ul class="list-group margin-top">
+				<li class="list-group-item clearfix">
+					<span class="col-md-3">Account Number : </span> 
+					<span class="text-bold" ng-bind-html="vm.item_details.account_number | displaynone"></span>
+				</li>
+				<li class="list-group-item clearfix">
+					<span class="col-md-3">Company : </span> 
+					<span class="text-bold" ng-bind-html="vm.item_details.account_company | displaynone"></span>
+				</li>
+				<li class="list-group-item clearfix">
+					<span class="col-md-3">Address : </span> 
+					<span class="text-bold" ng-bind-html="vm.item_details.account_address | displaynone"></span>
+				</li>
+				<li class="list-group-item clearfix">
+					<span class="col-md-3">Description : </span> 
+					<span class="text-bold" ng-bind-html="vm.item_details.description | displaynone" ></span>
+				</li>
+				<li class="list-group-item clearfix">
+					<span class="col-md-3">Email : </span> 
+					<span class="text-bold" ng-bind-html="vm.item_details.email | displaynone" ></span>
+				</li>
+				<li class="list-group-item clearfix">
+					<span class="col-md-3">Contact : </span> 
+					<span class="text-bold" ng-bind-html="vm.item_details.account_contact_number | displaynone" ></span>
+				</li>
+				<li class="list-group-item clearfix">
+					<span class="col-md-3">Delivery Positioning Time : </span> 
+					<span class="text-bold" ng-bind-html="vm.item_details.positioning_time_delivery | displaynone" ></span>
+				</li>
+				<li class="list-group-item clearfix">
+					<span class="col-md-3">Pickup Positioning Time : </span> 
+					<span class="text-bold"ng-bind-html="vm.item_details.positioning_time_pickup | displaynone" ></span>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+		

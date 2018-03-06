@@ -15,7 +15,11 @@ import angular from 'angular';
 
                         // Attach an x-access-token header to the request
                         // With the token from sesison service as value
-                        config.headers['x-access-token'] = token;
+                        config = config || {};
+                        config.passToken = (typeof config.passToken == 'undefined') ? true : config.passToken;
+
+                        if (config.passToken)
+                            config.headers['x-access-token'] = token; 
 
                         return config;
                     }
@@ -72,7 +76,12 @@ import angular from 'angular';
                 });
             }
         ])
+        .run(removeSocket)
         .config(router)
+        .config(['cfpLoadingBarProvider','$qProvider', function(cfpLoadingBarProvider, $qProvider) {
+            cfpLoadingBarProvider.includeBackdrop = true;
+            //$qProvider.errorOnUnhandledRejections(false);
+         }])
         .run([
             '$transitions',
             function($transitions) {
@@ -102,6 +111,22 @@ import angular from 'angular';
 
     router.$inject = ['$stateProvider', '$urlRouterProvider'];
 
+    function removeSocket ($rootScope, $state, SocketService) {
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            
+            if(fromParams.courier !== localStorage.courier) {
+                // unlistenToCourier
+                SocketService.emit('unlistenToCourier', {courierId:fromParams.courier}, function(data) {
+                    logger.log(data);
+                });
+            }
+
+            if(fromState.url == 'monitoring?hub&courier' || fromState =='courier?id&view') { 
+                SocketService.removeAllListeners();
+            } 
+        });
+    }
+
     function router($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/login');
         $stateProvider
@@ -127,7 +152,7 @@ import angular from 'angular';
             })
 
             .state('app.monitoring', {
-                url: 'monitoring',
+                url: 'monitoring?courier',
                 component: 'monitoring'
             })
 
@@ -248,8 +273,18 @@ import angular from 'angular';
             })
 
             //DATA-MANAGEMENT
+            .state('app.accounts', {
+                url: 'accounts?deactivated&page&limit&keyword',
+                component: 'accounts'
+            })
+
+            .state('app.account-details', {
+                url: 'account-details?id',
+                component: 'accountDetails'
+            })
+
             .state('app.hubs', {
-                url: 'hubs?deactivated&page&limit&search',
+                url: 'hubs?deactivated&page&limit&keyword',
                 component: 'hubs'
             })
 
@@ -259,7 +294,7 @@ import angular from 'angular';
             })
 
             .state('app.distribution-centers', {
-                url: 'distribution-centers?deactivated&page&limit&search',
+                url: 'distribution-centers?deactivated&page&limit&keyword&hubId',
                 component: 'dcs'
             })
 
@@ -269,7 +304,7 @@ import angular from 'angular';
             })
 
             .state('app.vehicles', {
-                url: 'vehicles?deactivated&page&limit&search',
+                url: 'vehicles?deactivated&page&limit&keyword&siteId',
                 component: 'vehicles'
             })
 
@@ -279,12 +314,12 @@ import angular from 'angular';
             })
 
             .state('app.zones', {
-                url: 'zones?siteType&siteFront&siteId&includeUnassigned&filterClose&zoom&center_map_lat_lng&deactivated',
+                url: 'zones?siteType&siteFront&siteId&isUnassigned&filterClose&zoom&center_map_lat_lng&deactivated',
                 component: 'zones'
             })
 
             .state('app.bins', {
-                url: 'bins?deactivated&page&limit&search',
+                url: 'bins?deactivated&page&limit&keyword&siteId',
                 component: 'bins'
             })
 
@@ -294,7 +329,7 @@ import angular from 'angular';
             })
 
             .state('app.packaging-codes', {
-                url: 'packaging-codes?deactivated&page&limit&search',
+                url: 'packaging-codes?deactivated&page&limit&keyword',
                 component: 'packagingCodes'
             })
 

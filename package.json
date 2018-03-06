@@ -4,7 +4,7 @@
   "description": "## Introduction",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --open --host 192.168.0.108",
+    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --open --host 192.168.0.21",
     "build": "rimraf dist && NODE_ENV=production node_modules/.bin/webpack -p",
     "precommit": "lint-staged",
     "prettify": "prettier --tab-width 4 --single-quote --write \"./src/**/*.js\""
@@ -26,6 +26,7 @@
     "angular-aria": "^1.6.4",
     "angular-chart.js": "^1.1.1",
     "angular-cookies": "^1.6.4",
+    "angular-dynamic-number": "^2.5.1",
     "angular-loading-bar": "^0.9.0",
     "angular-messages": "^1.6.4",
     "angular-permission": "^6.0.0",
@@ -34,7 +35,7 @@
     "angular-toastr": "^2.1.1",
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-mask": "^1.8.7",
-    "angularjs-slider": "^6.2.2",
+    "angularjs-slider": "^6.5.0",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.6.0",
     "checklist-model": "^0.11.0",
@@ -56,7 +57,7 @@
     "npm": "^5.6.0",
     "print.js": "^1.0.18",
     "roboto-fontface": "^0.7.0",
-    "socket.io": "^2.0.3",
+    "socket.io": "^2.0.4",
     "titatoggle": "^1.2.15",
     "wicket": "^1.3.2"
   },

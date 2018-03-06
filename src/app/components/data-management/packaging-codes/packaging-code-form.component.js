@@ -71,7 +71,6 @@ import MESSAGE from 'Helpers/message';
                         vm.modalInstance.close(response_data);
                     },
                     function(error) {
-                        console.log(err);
                         logger.error(
                             MESSAGE.loggerFailed(vm.title, Request.method)
                         );

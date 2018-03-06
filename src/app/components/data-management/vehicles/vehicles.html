@@ -5,6 +5,16 @@
     <button ng-if="vm.activated" class="btn-circle-lg btn-fixed" type="button" ng-click="vm.handlePostItem()" >
             <i  class="fa fa-plus fa-lg text-white" ></i>
     </button>
+    <div class="col-md-12 top-margin-sm">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-12">				
+                <span class="control-label text-theme small">Select Site</span>
+                <select class="form-control text-uppercase" id="select" ng-change="vm.filterTable()" ng-model="vm.site" ng-options="site as site.name group by site.type for site in vm.sites" >
+                </select>
+            </div> 
+            <div class="col-md-9 col-sm-9 col-xs-12"></div>
+        </div>
+    </div>
     <div class="col-md-12">
             <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
     </div>

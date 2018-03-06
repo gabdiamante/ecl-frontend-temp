@@ -1,6 +1,8 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 
+import UTILS from 'Helpers/util';
+
 (function() {
     'use strict';
 
@@ -78,6 +80,7 @@ import GLOBAL from 'Helpers/global';
                         method: 'GET',
                         url: UTILS.snapToRoadUrl,
                         ignoreLoadingBar: true,
+                        passToken: false,
                         params: {
                             interpolate: true,
                             key: UTILS.apiKey,
