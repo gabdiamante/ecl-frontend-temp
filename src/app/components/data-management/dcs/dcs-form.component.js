@@ -151,10 +151,10 @@ import MESSAGE from 'Helpers/message';
                     function(response) {
                         var response_data = response.data.data.items[0] || {};
                         if (vm.data.zone_id) updateZone(response);
-                        else if (Request.method == 'POST')
+                        else if (Request.method == 'POST' || Request.method == 'PUT')
                             executeClosing(response.data.data.items[0] || {});
-                        else if (Request.method == 'PUT')
-                            unassignZone(response);
+                        // else if (Request.method == 'PUT')
+                        //     unassignZone(response);
                     },
                     function(error) {
                         console.log(error);

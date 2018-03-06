@@ -7,7 +7,7 @@
 
 <div class="margin-bottom">
     <div class="map-container">
-        <map name="" map-lazy-load="vm.mapUrl" id="mntrng-map" class="dashboard-map" zoom="{{vm.zoom || 8}}" styles="{{vm.mapStyles}}" zoom-control="false" street-view-control="false" map-type-control="false">
+        <map name="" map-lazy-load="vm.mapUrl" id="mntrng-map" class="dashboard-map" zoom="{{vm.zoom || 8}}" styles="{{vm.mapStyles}}" zoom-control="false" street-view-control="false"  >
             <custom-marker position="{{vehicle.lat}}, {{vehicle.lng}}"
                     ng-repeat="vehicle in vm.vehicles"
                     ng-if="vehicle.lat"
@@ -180,7 +180,7 @@
                 <div class="col-md-5">
                     <button class="btn btn-warning pull-right" ui-sref="app.courier({id:vm.courier.courierId, view:'courier-dashboard'})">
                         <i class="fa fa-user"></i>
-                        <span ng-if="vm.courier.lastName" ng-bind="vm.courier.last_name+', '+vm.courier.first_name"></span>
+                        <span ng-if="vm.courier.last_name" ng-bind="vm.courier.last_name+', '+vm.courier.first_name"></span>
                         <i 	class="fa small"
                             ng-class="vm.courier.status == 'online' ? 'fa-circle text-green' : 'fa-circle-o text-grey'">
                         </i>
