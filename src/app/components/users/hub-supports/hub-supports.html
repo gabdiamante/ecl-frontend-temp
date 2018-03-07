@@ -5,7 +5,7 @@
     <button ng-if="vm.activated" class="btn-circle-lg btn-fixed" type="button" ng-click="vm.createHubSupport()" >
         <i  class="fa fa-plus fa-lg text-white" ></i>
     </button>
-    <div class="col-md-12 top-margin-sm">
+    <div class="col-md-12 top-margin-sm materialize">
         <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12">				
                 <span class="control-label text-theme small">Select Hub</span>
@@ -16,15 +16,17 @@
             <div class="col-md-8 col-sm-8 col-xs-12"></div>
         </div>
     </div>
-    <div class="col-md-12 top-margin-sm">
+    <div class="col-md-12 top-margin-sm materialize">
         <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12" > 
-                <div class="input-group" >
-                    <input type="text" class="form-control" placeholder="Search Keyword" ng-model="vm.key" ng-keyup="$event.keyCode == 13 && vm.getHubSupports(vm.key)"/> <!--ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.keyword)"-->
-                    <span class="input-group-addon" ng-click="vm.getHubSupports(vm.key)">
-                        <i class="fa fa-search"></i>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search Keyword" ng-model="vm.key" ng-keyup="$event.keyCode == 13 && vm.getCouriers(vm.key)">
+                    <span class="input-group-btn" ng-click="vm.getHubSupports(vm.key)">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
                     </span>
-                </div> 
+                </div>
             </div> 
             <div class="col-md-8 col-sm-8 col-xs-12"></div>
         </div>

@@ -4,55 +4,55 @@
         </span>
         <button  type="button" class="close"ng-click="vm.cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
     </div>
-    <div class="modal-body margin-top">
-        <div class="col-md-12 pad-0">
-            <form action="" name="courierForm" class="materialize" novalidate > 
-                <div class="form-group">
-                    <label class="control-label text-theme small">Site</label>
-                    <select class="form-control text-uppercase" id="site" ng-required="true" name="site" ng-model="vm.data.site_id" ng-options="site.id as site.name group by site.type for site in vm.sites" ></select>
-                    <span class="text-red small" ng-show="courierForm.site.$invalid && vm.submitted">* Required</span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label text-theme small">First Name</label>
-                    <input  class="form-control" type="text" placeholder="" ng-model="vm.data.first_name" name="first_name" required="" />
-                    
-                    <span class="text-red small" ng-show="courierForm.first_name.$invalid && vm.submitted">* Required</span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label text-theme small">Middle Name </label> 
-                    <input  class="form-control" type="text" placeholder="" ng-model="vm.data.middle_name" name="middle_name" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label text-theme small">Last Name </label>
-                    <input  class="form-control" type="text" placeholder="" ng-model="vm.data.last_name" name="last_name" required="" />
-                    <span class="text-red small" ng-show="courierForm.last_name.$invalid && vm.submitted">* Required</span>
-                </div>
-                <div class="form-group" ng-if="vm.method=='POST'">
-                    <label class="control-label text-theme small">Username</label>
-                    <input  class="form-control" type="text" name="username" placeholder="" ng-model="vm.data.username" required="" />
-                    <span class="text-red small" ng-show="courierForm.username.$invalid && vm.submitted">* Required</span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label text-theme small">Email </label>
-                    <input  class="form-control" type="email" placeholder="" ng-model="vm.data.email" name="email" required="" />
-                    <span class="text-red small" ng-show="courierForm.email.$invalid && vm.submitted">* Invalid Email</span>
-                </div>
-                <div class="form-group" ng-if="vm.method=='POST'">
-                    <label class="control-label text-theme small">Password </label>
-                    <input  class="form-control" type="password" placeholder="" ng-model="vm.data.password" name="password" required="" />
-                    <span class="text-red small" ng-show="courierForm.password.$invalid && vm.submitted">* Required</span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label small text-theme">Contact Number</label>
-                    <input type="text" name="contact_number" placeholder="" class="form-control" required="" ng-model="vm.data.contact_number" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_" required="" />
-                    <span class="small">(+63) 921-123-4567</span><br />
-                    <span class="text-red small" ng-show="courierForm.contact_number.$invalid && vm.submitted">* Required</span>
-                </div>
-            </form>
-        </div>    
+<div class="modal-body top-margin-sm">
+    <form name="courierForm" class="materialize">
+        <div class="clearfix">
+            <div class="form-group">
+                <label class="control-label text-theme small" for="site">Site</label>
+                <select class="form-control text-uppercase" id="site" ng-required="true" name="site" ng-model="vm.data.site_id" ng-options="site.id as site.name group by site.type for site in vm.sites" ></select>
+                <span class="text-red small" ng-show="courierForm.site.$invalid && vm.submitted">* Required</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label small text-theme" for="first_name">First Name: </label>
+                <input type="text" ng-model="vm.data.first_name" class="form-control" placeholder="First Name" id="first_name" name="first_name"
+                    ng-required="true">
+                <span class="text-red font-10" ng-show="courierForm.first_name.$invalid && vm.submitted">*Required</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label text-theme small">Middle Name </label> 
+                <input  class="form-control" type="text" placeholder="Middle Name" ng-model="vm.data.middle_name" name="middle_name" />
+            </div>
+            <div class="form-group">
+                <label class="control-label text-theme small">Last Name </label>
+                <input  class="form-control" type="text" placeholder="Last Name" ng-model="vm.data.last_name" name="last_name" required="" />
+                <span class="text-red small" ng-show="courierForm.last_name.$invalid && vm.submitted">* Required</span>
+            </div>
+            <div class="form-group" ng-if="vm.method=='POST'">
+                <label class="control-label text-theme small">Username</label>
+                <input  class="form-control" type="text" name="username" placeholder="User Name" ng-model="vm.data.username" required="" />
+                <span class="text-red small" ng-show="courierForm.username.$invalid && vm.submitted">* Required</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label text-theme small">Email </label>
+                <input  class="form-control" type="email" placeholder="Email" ng-model="vm.data.email" name="email" required="" />
+                <span class="text-red small" ng-show="courierForm.email.$invalid && vm.submitted">* Invalid Email</span>
+            </div>
+            <div class="form-group" ng-if="vm.method=='POST'">
+                <label class="control-label text-theme small">Password </label>
+                <input  class="form-control" type="password" placeholder="Password" ng-model="vm.data.password" name="password" required="" />
+                <span class="text-red small" ng-show="courierForm.password.$invalid && vm.submitted">* Required</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label small text-theme">Contact Number</label>
+                <input type="text" name="contact_number" placeholder="" class="form-control" required="" ng-model="vm.data.contact_number" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_" required="" />
+                <span class="small">(+63) 921-123-4567</span><br />
+                <span class="text-red small" ng-show="courierForm.contact_number.$invalid && vm.submitted">* Required</span>
+            </div>
+        </div>
         <div class="text-center top-margin-sm clearfix">
             <button type="button" class="btn btn-default" ng-disabled="vm.disable" ng-click="vm.cancel()">Cancel</button>
             <button type="button" class="btn btn-primary" ng-disabled="vm.disable" ng-click="vm.submitted=true; courierForm.$valid && vm.save(vm.data)" >Save &amp; Close</button>
         </div>
-    </div>
+    </form>
+</div>
     
