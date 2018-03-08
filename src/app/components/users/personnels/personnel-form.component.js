@@ -104,11 +104,12 @@ import MESSAGE from 'Helpers/message';
                 .query(Request)
                 .then(
                     function(response) { 
+                        var details = response.data.data;
                         logger.success(MESSAGE.loggerSuccess('Personnel', Request.method));
-                        vm.modalInstance.close(data);
+                        vm.modalInstance.close(details);
                     },
-                    function(err) {
-                        logger.error(MESSAGE.loggerFailed('Personnel', Request.method));
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

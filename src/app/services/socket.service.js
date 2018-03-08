@@ -2,7 +2,7 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import URLS from 'Helpers/urls';
 import io from 'socket.io-client';
-var socket_enable = false;
+var socket_enable = true;
 
 (function() {
     'use strict';

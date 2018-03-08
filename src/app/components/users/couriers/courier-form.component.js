@@ -92,18 +92,27 @@ import MESSAGE from 'Helpers/message';
         }
 
         function save(data) { 
+
             vm.disable = true; 
             Request.body = data; 
-            // if (Request.method=='PUT') Request.route.site = data.site_id;
+            if (Request.method=='PUT') {
+                Request.route = { site:data.site_id, courier: data.user_id }
+            }
+
+            console.log(Request);
+
             QueryService
                 .query(Request)
                 .then(
                     function(response) { 
+                        console.log('response up', response);
+                        
+                        var details = response.data.data;
                         logger.success(MESSAGE.loggerSuccess('Courier', Request.method));
-                        vm.modalInstance.close(data);
+                        vm.modalInstance.close(details);
                     },
-                    function(err) {
-                        logger.error(MESSAGE.loggerFailed('Courier', Request.method));
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

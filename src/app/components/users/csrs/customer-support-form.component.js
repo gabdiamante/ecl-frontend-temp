@@ -96,6 +96,9 @@ import MESSAGE from 'Helpers/message';
         }
 
         function save(data) {
+
+            
+
             vm.disable = true;
             Request.body = angular.copy(data);
             // if (Request.method=='PUT') Request.route.site = data.site_id;
@@ -103,11 +106,12 @@ import MESSAGE from 'Helpers/message';
                 .query(Request)
                 .then(
                     function(response) { 
+                        var details = response.data.data;
                         logger.success(MESSAGE.loggerSuccess('Customer Support', Request.method));
-                        vm.modalInstance.close(data);
+                        vm.modalInstance.close(details);
                     },
-                    function(err) {
-                        logger.error(MESSAGE.loggerFailed('Customer Support', Request.method));
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

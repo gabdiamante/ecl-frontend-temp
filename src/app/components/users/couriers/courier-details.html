@@ -44,13 +44,14 @@
                             <i class="fa fa-envelope" title="Email"></i>
                         </div>
                         <div class="col-md-8 col-sm-8 col-xs-8 padding-lg">
-                            <span ng-bind-html="vm.courier.contact_number | handlePccDisplay : '+63'"></span>
+                            <span ng-bind-html="vm.courier.email | displaynone"></span>
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-4 padding-lg" align="right">
                             <i class="fa fa-phone" title="Contact Number"></i>
                         </div>
+                        
                         <div class="col-md-8 col-sm-8 col-xs-8 padding-lg">
-                            <span ng-bind-html="vm.courier.email | displaynone"></span>
+                            <span ng-bind-html="vm.courier.contact_number | handlePccDisplay : '+63'"></span>
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-4 padding-lg" align="right">
                             <i class="fa fa-car" title="Vehicle"></i>

@@ -133,7 +133,14 @@ const config = {
     ],
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
-        publicPath: '/'
+        publicPath: '/',
+        // proxy: {
+        //     '/socket.io/*': {
+        //         target: 'ws://192.168.0.94:8000',
+        //         ws: true,
+        //         secure: false
+        //     },
+        // },
     },
     node: {
         console: true,
