@@ -85,7 +85,7 @@ import MESSAGE from 'Helpers/message';
                         vm.sites = response.data.data.items; 
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                         //logger.error(MESSAGE.error, err, '');
                     }
                 );

@@ -192,12 +192,10 @@ import CONSTANTS from 'Helpers/constants';
                 function(response) {
                     if (!response) return;
                     response.updated = new Date();
-                    vm.option_table.data[
-                        vm.option_table.data.indexOf(data)
-                    ] = response; 
+                    vm.option_table.data[vm.option_table.data.indexOf(data)] = response; 
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -215,7 +213,7 @@ import CONSTANTS from 'Helpers/constants';
                     executeActivateDeactivateDelete(data, action);
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -245,8 +243,8 @@ import CONSTANTS from 'Helpers/constants';
                     ), 1);
                     logger.success(vm.title + ' ' + action + 'd');
                 },
-                function(err) {
-                    console.log(err);
+                function(error) {
+                    logger.errorFormatResponse(error);
                 }
             );
         }

@@ -86,8 +86,8 @@ import MESSAGE from 'Helpers/message';
                         vm.sites = response.data.data.items; 
                         vm.data.site_id = (vm.method=='POST') ? vm.sites[0].id : vm.data.site_id;
                     },
-                    function(err) {
-                        console.log(err); 
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

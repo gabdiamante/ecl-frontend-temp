@@ -82,7 +82,7 @@ import CONSTANTS from 'Helpers/constants';
                     vm.isLoading = false;
                 }, function (error) { 
                     vm.list=[];
-                    logger.log(error.data.errors[0].message, error, error.data.errors[0].context);
+                    logger.errorFormatResponse(error);
                     vm.isLoading = false;
                 });
         }
@@ -114,7 +114,7 @@ import CONSTANTS from 'Helpers/constants';
                     response.data.data.lastName=data.lastName;
                     vm.modalInstance.close(response);
                 }, function (error) { 
-                    logger.error(error.data.errors[0].message, error, error.data.errors[0].context);
+                    logger.errorFormatResponse(error);
                     vm.modalInstance.close(false);
                     vm.isLoading = false;
                 });
@@ -145,7 +145,7 @@ import CONSTANTS from 'Helpers/constants';
                     logger.success('','',MSG.successfulTransfer);
                 }, function (error) { 
                     console.log(error);
-                    logger.error(error.data.message, error);
+                    logger.errorFormatResponse(error);
                     vm.modalInstance.close(false);
                     vm.isLoading = false;
                 });
@@ -184,7 +184,7 @@ import CONSTANTS from 'Helpers/constants';
                     logger.success('','',response.data.data.message);
                 }, function (error) { 
                     console.log(error);
-                    logger.error(error.data.message, error);
+                    logger.errorFormatResponse(error);
                     vm.modalInstance.close(false);
                     vm.isLoading = false;
                 });

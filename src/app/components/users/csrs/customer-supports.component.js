@@ -95,15 +95,13 @@ import CONSTANTS from 'Helpers/constants';
 
             QueryService
                 .query(request)
-                .then(
-                function (response) {
-                    vm.sites = response.data.data.items;
+                .then(function (response) {
+                        vm.sites = response.data.data.items;
                 },
                 function (error) {
-                    logger.error(error.data.message);
+                    logger.errorFormatResponse(error);
                     //logger.error(MESSAGE.error, err, '');
-                }
-                );
+                });
         }
 
         function createCustomerSupport () {
@@ -155,8 +153,8 @@ import CONSTANTS from 'Helpers/constants';
                         vm.pagination.limit     = $stateParams.limit || '10'; 
                         vm.pagination.total     = response.data.data.total; 
                     },
-                    function(err) {
-                        console.log(err);
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -189,9 +187,7 @@ import CONSTANTS from 'Helpers/constants';
                         ); 
                     },
                     function(error) {
-                        logger.error(
-                            error.data.message || catchError(request.route)
-                        );
+                        console.log(error);
                     }
                 );
         }
@@ -210,8 +206,8 @@ import CONSTANTS from 'Helpers/constants';
                         if (!response) return; 
                         activateDeactivateDeleteCsr(data, action);
                     },
-                    function (err) {
-                        console.log(err);
+                    function (error) {
+                        console.log(error);
                     }
                 );
         }
@@ -236,9 +232,9 @@ import CONSTANTS from 'Helpers/constants';
                                 $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
                             ), 1);
                     },
-                    function (err) {
+                    function (error) {
                         logger.error(MESSAGE.loggerFailed('CSR', '', action));
-                        console.log(err);
+                        console.log(error);
                     }
                 );
         } 

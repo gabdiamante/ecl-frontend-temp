@@ -130,9 +130,7 @@ import MESSAGE from 'Helpers/message';
                     },
                     function(error) {
                         console.log(error);
-                        logger.error(
-                            MESSAGE.loggerFailed(vm.title, Request.method)
-                        );
+                        logger.error(MESSAGE.loggerFailed(vm.title, Request.method));
                         logger.errorFormatResponse(error);
                     }
                 )

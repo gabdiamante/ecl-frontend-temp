@@ -133,7 +133,7 @@ import MESSAGE from 'Helpers/message';
                     }
                 },
                 function(error) {
-                    logger.errorFormatResponse(error);
+                    console.log(error);
                 }
             );
         }
@@ -205,8 +205,8 @@ import MESSAGE from 'Helpers/message';
                     ), 1);
                     logger.success(vm.title + ' ' + action + 'd!');
                 },
-                function(err) {
-                    console.log(err);
+                function(error) {
+                    logger.errorFormatResponse(error);
                 }
             );
         }

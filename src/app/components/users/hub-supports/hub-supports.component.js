@@ -96,15 +96,13 @@ import CONSTANTS from 'Helpers/constants';
 
             QueryService
                 .query(request)
-                .then(
-                function (response) {
+                .then(function (response) {
                     vm.sites = response.data.data.items;
                 },
                 function (error) {
-                    logger.error(error.data.message);
+                    logger.errorFormatResponse(error);
                     //logger.error(MESSAGE.error, err, '');
-                }
-                );
+                });
         }
 
         function getHubs() { 

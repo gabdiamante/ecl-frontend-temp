@@ -83,7 +83,7 @@ import DUMMY from 'Helpers/dummy';
                         // vm.total_items          = response.data.total;
                     },
                     function(err) {
-                        logger.error(MESSAGE.error, err, '');
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
