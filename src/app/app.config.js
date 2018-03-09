@@ -42,9 +42,9 @@ import angular from 'angular';
                     // containerId: 'toast-container',
                     maxOpened: 4,
                     // newestOnTop: true,
-                    positionClass: 'toast-bottom-right'
-                    // preventDuplicates: false,
-                    // preventOpenDuplicates: false,
+                    positionClass: 'toast-bottom-right',
+                    // preventDuplicates: true,
+                    preventOpenDuplicates: true,
                     // target: 'body'
                 });
 

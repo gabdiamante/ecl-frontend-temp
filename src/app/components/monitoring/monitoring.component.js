@@ -93,6 +93,18 @@ import UTIL from '../../helpers/util';
             if ($stateParams.courier) {
                 vm.viewOne = true;
                 socket.connect();
+
+                socket.emit('echo', { test: 'grabe ka sa akin sir' },
+                    function(data) {
+                        // logger.success('socket_data',data);
+                    }
+                );
+     
+                socket.on('echo', function(data) {
+                    logger.success('socket_data',data);
+                });
+
+
                 getAssignments();
                 localStorage.setItem('courierId', $stateParams.courier);
             } else {
@@ -110,7 +122,7 @@ import UTIL from '../../helpers/util';
             });
         }
 
-        function spiderFierMarkers(data) {
+        function spiderFierMarkers(data, activate) {
 
             NgMap.getMap({ id: 'mntrng-map' }).then(function(map) {
                 vm.map = map;
@@ -119,14 +131,17 @@ import UTIL from '../../helpers/util';
                     markersWontHide: true,
                     basicFormatEvents: true,
                     keepSpiderfied: true,
-                    // nearbyDistance: 30,
+                    nearbyDistance: 30,
                     legWeight: 2
                 
                 }; // Just an example of options - please set your own if necessary 
                 const oms = new OverlappingMarkerSpiderfier(map, options);
+                vm.oms = oms;
                 const iw = new google.maps.InfoWindow();
 
                 oms.addListener('click', function(marker, event) {
+                    console.log('s');
+                    vm.currentmarker = marker;
                     vm.assign = marker.data;
                     if (vm.assign.lat && vm.assign.lng)
                         vm.assignPosition = vm.assign.lat + ', ' + vm.assign.lng;
@@ -134,7 +149,9 @@ import UTIL from '../../helpers/util';
                 });
 
                 oms.addListener('spiderfy', function(markers) {
+                    console.log('spiderfy');
                     iw.close();
+                   // oms.unspiderfy();
                 });
 
                 for (let i = 0; i < data.length; i ++) {
@@ -158,7 +175,10 @@ import UTIL from '../../helpers/util';
                                 fontSize: '10px'
                             },
                         });
-                        oms.addMarker(marker);  // <-- here 
+                    
+                        console.log(activate);
+                         // <-- here 
+                        oms.addMarker(marker); 
                     }
                 }
                 map.fitBounds(bounds);
@@ -334,7 +354,7 @@ import UTIL from '../../helpers/util';
                     markers[i].color = 'yellow';
                 }
             }
-            vm.assignments = markers;
+            vm.assignments = angular.copy(markers);
             spiderFierMarkers(markers);
         }
 

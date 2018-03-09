@@ -7,7 +7,7 @@
 <div class="modal-body margin-top">
     <div class="col-md-12 pad-0">
         <form action="" name="hubSupportForm" class="materialize" novalidate > 
-            <div class="form-group">
+            <div class="form-group" ng-if="vm.method=='POST'">
                 <label class="control-label small text-theme" for="zone_name">Site Hub:</label>
                 <select class="form-control" ng-options="hub.id as hub.name for hub in vm.hubs" ng-model="vm.data.site_id" name="site_id" required></select>
                 <span class="text-red font-10" ng-show="nameForm.site_id.$invalid && vm.submitted">*Required</span>
@@ -46,7 +46,7 @@
                 <label class="control-label small text-theme">Contact Number</label>
                 <input  class="form-control" type="text" name="contact_number" placeholder="" class="form-control" required="" ng-model="vm.data.contact_number" ui-mask="(+63) 999-999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_" required="" />
                 <span class="small">(+63) 921-123-4567</span><br />
-                <span class="text-red small" ng-show="hubSupportForm.contact_number.$invalid && vm.submitted">* Invalid Email</span>
+                <span class="text-red small" ng-show="hubSupportForm.contact_number.$invalid && vm.submitted">* Required</span>
             </div>
         </form>
     </div>    

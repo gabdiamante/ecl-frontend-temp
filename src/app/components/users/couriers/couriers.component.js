@@ -104,7 +104,7 @@ import CONSTANTS from 'Helpers/constants';
                         vm.sites = response.data.data.items; 
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                         //logger.error(MESSAGE.error, err, '');
                     }
                 );
@@ -128,11 +128,7 @@ import CONSTANTS from 'Helpers/constants';
                         vm.zones = response.data.data.items || [];  
                     },
                     function(error) {
-                        logger.log(
-                            error.data.errors[0].context,
-                            error,
-                            error.data.errors[0].message
-                        );
+                        logger.errorFormatResponse(error);
                     }
                 );
         }
@@ -184,14 +180,14 @@ import CONSTANTS from 'Helpers/constants';
                 .query(request)
                 .then(
                     function(response) {
-                        console.log(response); 
+                        console.log('couirers',response); 
                         vm.option_table.data = handleNames(response.data.data.items); 
                         vm.pagination.total  = response.data.data.total;
                         vm.pagination.page   = $stateParams.page || '1';
                         vm.pagination.limit  = $stateParams.limit || '10';
                     },
-                    function(err) {
-                        logger.error(MESSAGE.error, err, '');
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -206,7 +202,7 @@ import CONSTANTS from 'Helpers/constants';
                 body: data,
                 params: false,
                 hasFile: false,
-                route: { site:data.site_id, courier:data.user_id },
+                // route: { site:data.site_id, courier:data.user_id },
                 cache_string: 'user'
             };
             
@@ -218,7 +214,6 @@ import CONSTANTS from 'Helpers/constants';
                     vm.option_table.data = handleNames(vm.option_table.data);
                 }, function(error) {
                     console.log(error);
-                    // logger.error(error.data.message);
                 });
         } 
 
@@ -263,9 +258,9 @@ import CONSTANTS from 'Helpers/constants';
                                 })[0]
                         ), 1);
                     },
-                    function (err) {
+                    function (error) {
                         logger.error(MESSAGE.loggerFailed('Courier', '', action));
-                        console.log(err);
+                        logger.errorFormatResponse(error);
                     }
                 );
         } 

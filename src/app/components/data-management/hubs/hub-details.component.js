@@ -57,7 +57,7 @@ import DUMMY from 'Helpers/dummy';
                         vm.item_details = response.data.data.items[0];
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

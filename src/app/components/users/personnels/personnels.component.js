@@ -99,15 +99,13 @@ import CONSTANTS from 'Helpers/constants';
 
             QueryService
                 .query(request)
-                .then(
-                function (response) {
+                .then(function (response) {
                     vm.sites = response.data.data.items;
                 },
                 function (error) {
-                    logger.error(error.data.message);
+                    logger.errorFormatResponse(error);
                     //logger.error(MESSAGE.error, err, '');
-                }
-                );
+                });
         }
 
         function getData(key) {
@@ -137,7 +135,7 @@ import CONSTANTS from 'Helpers/constants';
                         vm.pagination.limit = $stateParams.limit || '10';
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -167,7 +165,7 @@ import CONSTANTS from 'Helpers/constants';
                     vm.option_table.data.unshift(response);
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -192,12 +190,10 @@ import CONSTANTS from 'Helpers/constants';
                 function(response) {
                     if (!response) return;
                     response.updated = new Date();
-                    vm.option_table.data[
-                        vm.option_table.data.indexOf(data)
-                    ] = response; 
+                    vm.option_table.data[vm.option_table.data.indexOf(data)] = response; 
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -216,8 +212,8 @@ import CONSTANTS from 'Helpers/constants';
                         if (!response) return; 
                         activateDeactivateDeletePersonnel(data, action);
                     },
-                    function (err) {
-                        console.log(err);
+                    function (error) {
+                        console.log(error);
                     }
                 );
         }
@@ -242,9 +238,9 @@ import CONSTANTS from 'Helpers/constants';
                                 $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
                             ), 1);
                     },
-                    function (err) {
+                    function (error) {
                         logger.error(MESSAGE.loggerFailed(vm.title, '', action));
-                        console.log(err);
+                        logger.errorFormatResponse(error);
                     }
                 );
         } 

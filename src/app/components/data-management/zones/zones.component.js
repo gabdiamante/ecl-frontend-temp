@@ -933,8 +933,8 @@ var jsts = require('jsts');
                     getZones(vm.search_key);
                     logger.success(vm.title + ' ' + action + 'd!');
                 },
-                function(err) {
-                    console.log(err);
+                function(error) {
+                    logger.errorFormatResponse(error);
                 }
             );
         }

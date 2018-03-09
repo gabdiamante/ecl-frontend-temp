@@ -89,7 +89,7 @@ import DUMMY from 'Helpers/dummy';
                     }
                 },
                 function(error) {
-                    logger.errorFormatResponse(error);
+                    console.log(error);
                 }
             );
         }

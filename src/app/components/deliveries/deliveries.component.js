@@ -384,7 +384,7 @@ import DUMMY from 'Helpers/dummy';
                     // vm.assignmentHub = response.data.data.hub;
                     // vm.option_table.data = handleNames(response.data.data);
                 },
-                function(err) {
+                function(error) {
                     logger.errorFormatResponse(error);
                     vm.isLoading = false;
                 }

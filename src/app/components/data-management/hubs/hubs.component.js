@@ -103,7 +103,7 @@ import MESSAGE from 'Helpers/message';
                         vm.pagination.limit = $stateParams.limit || '10';
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -133,7 +133,7 @@ import MESSAGE from 'Helpers/message';
                     }
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -162,7 +162,7 @@ import MESSAGE from 'Helpers/message';
                     }
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -180,7 +180,7 @@ import MESSAGE from 'Helpers/message';
                     executeActivateDeactivateDelete(data, action);
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -205,8 +205,8 @@ import MESSAGE from 'Helpers/message';
                     ), 1);
                     logger.success(vm.title + ' ' + action + 'd!');
                 },
-                function(err) {
-                    console.log(err);
+                function(error) {
+                    logger.errorFormatResponse(error);
                 }
             );
         }

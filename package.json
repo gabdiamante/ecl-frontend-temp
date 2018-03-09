@@ -4,7 +4,7 @@
   "description": "## Introduction",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --open --host 192.168.0.21",
+    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --open",
     "build": "rimraf dist && NODE_ENV=production node_modules/.bin/webpack -p",
     "precommit": "lint-staged",
     "prettify": "prettier --tab-width 4 --single-quote --write \"./src/**/*.js\""
@@ -55,7 +55,7 @@
     "ngmap": "^1.18.4",
     "ngstorage": "^0.3.11",
     "npm": "^5.6.0",
-    "overlapping-marker-spiderfier": "^1.1.4",
+    "overlapping-marker-spiderfier": "^1.0.1",
     "print.js": "^1.0.18",
     "roboto-fontface": "^0.7.0",
     "socket.io": "^2.0.4",
