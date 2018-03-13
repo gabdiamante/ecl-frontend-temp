@@ -1,0 +1,128 @@
+<div class="content-view">
+    <div class="col-md-12 sub-header">
+        <span class="subheader-title text-white">
+			<i class="fa fa-calculator"></i> Import <span ng-bind="vm.moduleName"></span> Order Details
+		</span><br />
+    </div> 
+
+    <br />
+    <div style="clear:both;"></div>
+
+    <div class="top-margin-sm">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+                <button class="btn btn-primary" ng-click="$root.$back()">
+                    <i class="fa fa-chevron-circle-left"></i> Back
+                </button>
+        </div>
+        <div style="clear:both;"></div>
+        <br />
+        <div  class="col-md-12">
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Order Number </span> 
+				<span class="text-bold" ng-bind-html="vm.data.code | displaynone"></span>
+            </li>
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Date Uploaded: </span> 
+				<span class="text-bold" ng-bind-html="vm.data.dateCreated | date:short | displaynone"></span>
+            </li>
+            <li class="list-group-item clearfix">
+                <span class="col-md-3">Total Items : </span> 
+				<span class="text-bold" ng-bind-html="vm.data.items.length | displaynone"></span>
+            </li>
+		</div>
+		<div class="content-body margin-top-sm">
+			<div class="col-md-12 margin-top" >
+				<complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
+			</div>
+		</div>
+    </div>
+
+</div>
+
+
+<!-- 
+<div class="content-body margin-top-sm">
+	<div class="col-md-12 margin-top " ng-if="vm.module == 'pickups'">
+		<div class="table-responsive ">
+			<table class="table  ">
+				<thead class="theme">
+					<tr class="text-uppercase">
+						<th>Item Code</th>
+						<th>Item Name</th>
+						<th>Qty</th>
+						<th>Shipment Type</th>
+						<th>Recommended Price</th>
+					</tr>						
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in vm.data.items" class="text-uppercase">
+						<td>
+							<span ng-bind-html="item.itemCode | displaynone"></span>
+						</td>
+						<td class="transform-none">
+							<span ng-bind-html="item.itemName | displaynone"></span>
+						</td>
+
+						<td class="transform-none">
+							<span ng-bind-html="item.qty | displaynone"></span>
+						</td>
+						<td class="transform-none">
+							<span ng-bind-html="item.shipmentType | displaynone"></span>
+						</td>
+						<td class="transform-none">
+							<span ng-bind-html="item.recommendedPrice | displaynone"></span>
+						</td>
+					</tr>
+					<tr ng-if="!vm.data.items.length">
+						<td colspan="5" align="center" ng-bind-html="vm.isLoading | handlefetch : 'booking item'"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>	
+
+
+	<div class="col-md-12 margin-top " ng-if="vm.module == 'deliveries'">
+		<div class="table-responsive ">
+			<table class="table  ">
+				<thead class="theme">
+					<tr class="text-uppercase">
+						<th>Content</th>
+						<th>Quantity</th>
+						<th>Length</th>
+						<th>Volume</th>
+						<th>Width</th>
+						<th>Height</th>
+					</tr>						
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in vm.data.items" class="text-uppercase">
+						<td>
+							<span ng-bind-html="item.content | displaynone"></span>
+						</td>
+						<td class="transform-none">
+							<span ng-bind-html="item.quantity | displaynone"></span>
+						</td>
+
+						<td class="transform-none">
+							<span ng-bind-html="item.length | displaynone"></span>
+						</td>
+						<td class="transform-none">
+							<span ng-bind-html="item.volume | displaynone"></span>
+						</td>
+						<td class="transform-none">
+							<span ng-bind-html="item.width | displaynone"></span>
+						</td>
+						<td class="transform-none">
+							<span ng-bind-html="item.height | displaynone"></span>
+						</td>
+					</tr>
+					<tr ng-if="!vm.data.items.length">
+						<td colspan="6" align="center" ng-bind-html="vm.isLoading | handlefetch : 'booking item'"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>	
+
+</div> -->

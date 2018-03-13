@@ -270,7 +270,7 @@
                 </td> 
             </tr>
             <tr ng-if="options.data.length == 0">
-                <td colspan="{{options.columnDefs.length}}" align="center" ng-bind-html="vm.loading | handlefetch : vm.titleHeader"></td>
+                <td colspan="{{options.columnDefs.length}}" align="center" ng-bind-html="vm.loading | handlefetch : ( (options.loadingTitle || vm.titleHeader) | titlecase )"></td>
             </tr>
         </tbody>
         <tfoot ng-if="options.footerTemplate && (options.data.length > 0)">

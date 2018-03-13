@@ -156,6 +156,16 @@ import angular from 'angular';
                 component: 'monitoring'
             })
 
+            .state('app.order-management', {
+                url: 'order-management?page&limit&search&module',  
+                component: 'orderManagement'
+            })
+
+            .state('app.order-management-details', {
+                url: 'order-management-details?id&module',  
+                component: 'orderManagementDetails'
+            })
+
             //DELIVERIES
             .state('app.deliveries-bad_address', {
                 url: 'deliveries_v1?view&page&limit&siteId',
