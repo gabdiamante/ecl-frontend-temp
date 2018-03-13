@@ -3,7 +3,7 @@ import GLOBAL from 'Helpers/global';
 import DUMMY from 'Helpers/dummy';
 import UTILS from 'Helpers/util';
 
-(function (){
+(function() {
     'use strict';
 
     angular.module('app').component('pickupSheet', {
@@ -13,21 +13,30 @@ import UTILS from 'Helpers/util';
     });
 
     PickupSheetCtrl.$inject = [
-        '$scope', 
+        '$scope',
         '$state',
         '$stateParams',
         '$cookies',
         '$filter',
         '$timeout',
-        'ModalService', 
+        'ModalService',
         'QueryService',
         'logger'
     ];
 
-    function PickupSheetCtrl ($scope, $state, $stateParams, $cookies, $filter, $timeout, ModalService, QueryService,logger) {
-       
-        var vm  = this;
-        vm.getManifest = getManifest;
+    function PickupSheetCtrl(
+        $scope,
+        $state,
+        $stateParams,
+        $cookies,
+        $filter,
+        $timeout,
+        ModalService,
+        QueryService,
+        logger
+    ) {
+        var vm = this;
+        // vm.getManifest = getManifest;
         vm.today = new Date();
         vm[$stateParams.vehicle] = true;
         vm.allManifest = true;
@@ -41,109 +50,113 @@ import UTILS from 'Helpers/util';
         vm.parseJSON = JSON.parse;
 
         init();
-        function init () {
+        function init() {
             console.log('sss');
-            if($stateParams.courierId) {
-                getOneManifest ();
+            if ($stateParams.courierId) {
+                getOneManifest();
                 vm.allManifest = false;
             } else {
                 getAllManifest();
                 vm.allManifest = true;
             }
         }
-        
-        function getAllManifest () {
+
+        function getAllManifest() {
             vm.isLoading = true;
-           
+
             vm.route = {
-                express:"",
-                bookings:"",
-                couriers:"",
-                manifest:""
+                express: '',
+                bookings: '',
+                couriers: '',
+                manifest: ''
             };
 
             var params = {
                 date: $stateParams.date,
-                hubId:$stateParams.hubId
+                hubId: $stateParams.hubId
             };
             var req = {
-                method  : 'GET', 
-                ignoreLoadingBar:true,
-                body    : false,
-                params  : params, 
-                hasFile : false, 
-                cache   : true,
-                route   : vm.route
+                method: 'GET',
+                ignoreLoadingBar: true,
+                body: false,
+                params: params,
+                hasFile: false,
+                cache: true,
+                route: vm.route
             };
 
             console.log('sss');
             vm.manifests = DUMMY.pickup_manifests;
 
-            QueryService
-                .query(req)
-                .then(function (response) { 
-                    
+            QueryService.query(req).then(
+                function(response) {
                     //vm.manifests = response.data.data;
                     vm.isLoading = false;
-                }, function (error) {
+                },
+                function(error) {
                     vm.isLoading = false;
-                   if(error.status == -1) {
+                    if (error.status == -1) {
                         logger.error('', error, 'Cannot connect to server.');
                     } else {
-                        logger.error(error.data.errors[0].context, error, error.data.errors[0].message );
+                        logger.errorFormatResponse(error);
                     }
-                });
+                }
+            );
         }
 
         // express/bookings/couriers/manifest?date=2017-08-10
-        function getOneManifest () {
+        function getOneManifest() {
             vm.isLoading = true;
-           
+
             vm.route = {
-                express:"",
-                bookings:"",
-                courier:$stateParams.courierId,
-                manifest:""
+                express: '',
+                bookings: '',
+                courier: $stateParams.courierId,
+                manifest: ''
             };
 
             var params = {
                 date: $stateParams.date,
-                hubId:$stateParams.hubId
+                hubId: $stateParams.hubId
             };
             var req = {
-                method  : 'GET', 
-                ignoreLoadingBar:true,
-                body    : false,
-                params  : params, 
-                hasFile : false, 
-                cache   : true,
-                route   : vm.route
+                method: 'GET',
+                ignoreLoadingBar: true,
+                body: false,
+                params: params,
+                hasFile: false,
+                cache: true,
+                route: vm.route
             };
 
-            QueryService
-                .query(req)
-                .then(function (response) { 
+            QueryService.query(req).then(
+                function(response) {
                     console.log(response);
                     vm.manifests = response.data.data;
                     vm.isLoading = false;
-                }, function (error) {
+                },
+                function(error) {
                     vm.isLoading = false;
-                   if(error.status == -1) {
+                    if (error.status == -1) {
                         logger.error('', error, 'Cannot connect to server.');
                     } else {
-                        logger.error(error.data.errors[0].context, error, error.data.errors[0].message );
+                        logger.error(
+                            error.data.errors[0].context,
+                            error,
+                            error.data.errors[0].message
+                        );
                     }
-                });
+                }
+            );
         }
-        
+
         vm.tableHead = {
-            bkngNo   : "Booking No.",            
-            shpr     : "Shipper's Name",
-            pcs      : "Pcs",
-            weight   : "Weight (kg)",
-            cbm      : "CBM",
-            rem      : "Remarks"
+            bkngNo: 'Booking No.',
+            shpr: "Shipper's Name",
+            pcs: 'Pcs',
+            weight: 'Weight (kg)',
+            cbm: 'CBM',
+            rem: 'Remarks'
         };
     }
-
 })();
