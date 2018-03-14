@@ -16,10 +16,10 @@
                             <div class="pulse"></div>
                     </div>
             </custom-marker>
-            <custom-marker ng-if="vm.viewOne && !vm.isLoadingAssignments" position="{{vm.courierPosition}}" on-click="vm.clickCourier(vm.courier)">
+            <custom-marker ng-if="vm.viewOne && vm.courier.lat" position="{{vm.courierPosition}}" z-index="9999" on-click="vm.clickCourier(vm.courier)">
                 <div class="pulse-container" >
                         <div class="pulse"></div>
-                    </div>
+                </div>
             </custom-marker>
             <div ng-if="vm.viewOne">
                     <marker position="{{vm.hubPosition}}" id="hub-marker"  on-click="vm.showHubInfo(vm.hub)" icon={{vm.hubIcon}} title="{{vm.hub.name}}">		

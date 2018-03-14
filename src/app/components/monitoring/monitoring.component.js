@@ -74,6 +74,7 @@ import UTIL from '../../helpers/util';
 
         vm.assignPosition = '';
         vm.courierPosition = '';
+        vm.hubPosition = '';
 
         vm.map_render = false;
         $timeout(function () {
@@ -98,7 +99,8 @@ import UTIL from '../../helpers/util';
                 JSON.parse(localStorage.getItem('hubsList'))
             );
             vm.hub = vm.hubs[0];
-            vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
+            if (vm.hub.lat && vm.hub.lng) 
+                vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
             vm.hubId = $stateParams.hub || vm.hubs[0].id;
             checkHubId(vm.hubId, vm.hubs);
 
@@ -298,7 +300,8 @@ import UTIL from '../../helpers/util';
                 return hub.id == hubId;
             })[0];
             vm.hub = hub;
-            vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
+            if (vm.hub.lat && vm.hub.lng) 
+                vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
         }
 
         function selectHub(hub) {
@@ -405,10 +408,12 @@ import UTIL from '../../helpers/util';
                     console.log('getAssignments', response);
                     setIconColor(response.data.data.assignments || []);
                     vm.courier = response.data.data.courier;
-                    vm.courierPosition = vm.courier.lat + ', ' + vm.courier.lng;
+                    if (vm.courier.lat && vm.courier.lng) 
+                        vm.courierPosition = vm.courier.lat + ', ' + vm.courier.lng;
                     // vm.courier.name = vm.courier.first_name + ' ' + vm.courier.last_name;
                     vm.hub = response.data.data.hub;
-                    vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
+                    if (vm.hub.lat && vm.hub.lng) 
+                        vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
                     // listenToCourier(vm.courier);
                     changeBookingStatus();
                     changeAwbStatus();
