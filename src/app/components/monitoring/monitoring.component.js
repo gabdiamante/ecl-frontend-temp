@@ -74,11 +74,22 @@ import UTIL from '../../helpers/util';
 
         vm.assignPosition = '';
         vm.courierPosition = '';
+        vm.hubPosition = '';
 
         vm.map_render = false;
         $timeout(function () {
             vm.map_render = true;
         }, 1000);
+
+
+        $scope.$on('$destroy', function (event) {
+            var list = [
+                'courierUpdateConnStatus','unlistenToCourier', 'courierUpdateLocation','listenToCourier',
+                'changeAwbStatus','changeBookingStatus','COURIER'
+            ];
+            socket.removeListListener(list);
+            console.log('Destroy Socket specific listener');
+        });
 
         init();
 
@@ -88,12 +99,15 @@ import UTIL from '../../helpers/util';
                 JSON.parse(localStorage.getItem('hubsList'))
             );
             vm.hub = vm.hubs[0];
+            if (vm.hub.lat && vm.hub.lng) 
+                vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
             vm.hubId = $stateParams.hub || vm.hubs[0].id;
             checkHubId(vm.hubId, vm.hubs);
+
+            socket.connect();
+
             if ($stateParams.courier) {
                 vm.viewOne = true;
-                socket.connect();
-
                 socket.emit('echo', { test: 'grabe ka sa akin sir' },
                     function(data) {
                         // logger.success('socket_data',data);
@@ -145,6 +159,8 @@ import UTIL from '../../helpers/util';
                     vm.assign = marker.data;
                     if (vm.assign.lat && vm.assign.lng)
                         vm.assignPosition = vm.assign.lat + ', ' + vm.assign.lng;
+
+                    var center = new google.maps.LatLng(vm.assign.lat, vm.assign.lng);
                     vm.map.showInfoWindow('assignInfo',vm.assign.lat,vm.assign.lng);
                 });
 
@@ -284,6 +300,8 @@ import UTIL from '../../helpers/util';
                 return hub.id == hubId;
             })[0];
             vm.hub = hub;
+            if (vm.hub.lat && vm.hub.lng) 
+                vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
         }
 
         function selectHub(hub) {
@@ -324,6 +342,7 @@ import UTIL from '../../helpers/util';
                     vm.vehicles = DUMMY.monitoring.courier_vehicle_out_for_del_list;
                     centerAllCouriers(vm.vehicles);
                     GLOBAL.sortOn(vm.vehicles, 'last_name');
+                    changeCourierStatus();
                 },
                 function(error) {
                     logger.errorFormatResponse(error);
@@ -359,6 +378,7 @@ import UTIL from '../../helpers/util';
         }
 
         function getAssignments(isLoading, socketUpdate) {
+            vm.isLoadingAssignments = true;
             console.log(isLoading);
             
             // var route = {
@@ -388,8 +408,12 @@ import UTIL from '../../helpers/util';
                     console.log('getAssignments', response);
                     setIconColor(response.data.data.assignments || []);
                     vm.courier = response.data.data.courier;
+                    if (vm.courier.lat && vm.courier.lng) 
+                        vm.courierPosition = vm.courier.lat + ', ' + vm.courier.lng;
                     // vm.courier.name = vm.courier.first_name + ' ' + vm.courier.last_name;
                     vm.hub = response.data.data.hub;
+                    if (vm.hub.lat && vm.hub.lng) 
+                        vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
                     // listenToCourier(vm.courier);
                     changeBookingStatus();
                     changeAwbStatus();
@@ -404,7 +428,9 @@ import UTIL from '../../helpers/util';
                     logger.errorFormatResponse(error);
                     vm.isLoading = false;
                 }
-            );
+            ).finally(function() {
+                vm.isLoadingAssignments = false;
+            });
         }
 
         function getPath(response) {
@@ -566,7 +592,8 @@ import UTIL from '../../helpers/util';
         }
 
         function viewItemDetails(item) {
-            var state = 'app.' + item.assignmentType;
+            var state = 'app.' + item.assignment_type + '-details';
+            console.log(state);
             $state.go(state, { id: item.id });
         }
 
@@ -626,6 +653,35 @@ import UTIL from '../../helpers/util';
                 console.log('booking status', data);
                 getAssignments(true);
             });
+        }
+
+        function changeCourierStatus() {
+            socket.on('COURIER', function (data) {
+                // $timeout(function(){
+                //     // $state.reload();
+                //     getVehicles(vm.hub);
+                //     getMap();
+                // },300);
+                if (data.action) {
+                    $scope.$apply( function () {
+                        $timeout(function(){
+                            console.log('socket courier data',data);
+                            var filteredCourier;
+                            var indexCourier;
+                            var formatData = data.data || {};
+                            
+                            filteredCourier = $filter('filter')(vm.vehicles, { courierId: parseInt(formatData.courierId), userId: formatData.id }, true)[0];
+                            indexCourier = vm.vehicles.indexOf(filteredCourier) || {};
+                            vm.vehicles[indexCourier].status = formatData.status;
+    
+                            if (data.action == 'ONLINE'){
+                                vm.vehicles[indexCourier].latitude = formatData.latitude;
+                                vm.vehicles[indexCourier].longitude = formatData.longitude;
+                            }
+                        },300);
+                    });
+                }
+            }); 
         }
     }
 })();

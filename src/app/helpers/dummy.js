@@ -2127,8 +2127,8 @@ const DUMMY = {
                 "email": "JLEANO",
                 "courier_id": 857,
                 "assigned_full_route": "cirwAm|paVEHAN@b@DRLZrB`D^^j@\\PHXNiBnEsBvFWh@[`Aa@Am@?sQVsUZa@@i@HwDdAyF`Bs@T]?M@c@EWYIOCQOkAIUu@oA_A{ASk@I_@Ca@@eArA{Nm@Ce@@{DFcAJ}@PqJnBeDr@}Cj@cAJqERyCF}GVgBFOAUGQSYmEO}BaAeOQgD{@mLw@_KIw@KUs@iEkBuHcAeDS{@AO_@{@]w@y@aB}@eBoAaCcAaBwAuBoCkDgEsFkEiF{JeMwD}EgLmNwAoBwCsDcAyAkG}HaE}E}ByC}@iAcAwAm@}@mDaE}CiEgBgBm@g@u@m@yGqIc@[[I_@CS?]Ji@X{AlAoAh@eEtAc@JS@}@Vs@RgEpAw@ZqCz@YNyA^QFeFj@M@kFx@g@FYLON}CdE]@}@UuEiDqJuHsG}EgF{DkBkAwGoEgDuBSQyAcD_AuB}@uCy@}BCMuCfAmA`@aAZi@TgBvAOV]As@KqCs@MCD_CLuFUFgEvBfEwBTGpBoHB_@A[GSQ]q@a@w@a@cCeA}CsApEyFNEf@a@`AmApHqJrCbBdAt@TLpG`ExAz@^P`DtB~F|DnP|KfB`Ab@RdA`@rBp@~Ab@fF~@hB\\vGrA`Dn@~HpAfDv@lAb@bBp@lBz@dAl@zB~A`BxAzA~AtChDn@x@xAjBKJQRk@f@mC|AiExA{Aj@}@Vs@RgEpAw@ZqCz@YNyA^QFeFj@M@kFx@g@FYLON}CdE]@e@Ka@lCARBHX^NJwAnB_BzBWSu@k@u@lAsBrCsAtB",
-                "dateTaskCompletion": "2018-01-09T02:19:37.000Z",
-                "vehicleId": "ARA4292",
+                "date_task_completion": "2018-01-09T02:19:37.000Z",
+                "vehicle_id": "ARA4292",
                 "lat": 14.5178267,
                 "lng": 121.0063567
             },

@@ -18,6 +18,29 @@ const TABLES = {
         ],
         filter_fields: []
     },
+
+    order_management: {
+        deliveries: {
+            columnDefs: [
+                { name: 'content'},
+                { name: 'quantity' },
+                { name: 'length' },
+                { name: 'volume' },
+                { name: 'width'},
+                { name: 'height'}
+            ]
+
+        },
+        pickups: {
+            columnDefs: [
+                { name: 'item_code' },
+                { name: 'item_name' },
+                { name: 'qty' },
+                { name: 'shipmentType' },
+                { name: 'recommended_price' },
+            ]
+        }
+    },
     //USERS
     couriers: {
         columnDefs: [

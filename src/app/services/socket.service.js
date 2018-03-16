@@ -21,7 +21,9 @@ var socket_enable = true;
             on: on,
             emit: emit,
             forward: forward,
-            removeListener: removeListener,
+            getSocket 	     : getSocket,
+			removeListener   : removeListener,
+			removeListListener: removeListListener,
             removeAllListeners: removeAllListeners,
             disconnect: disconnect
         };
@@ -64,9 +66,22 @@ var socket_enable = true;
             if (socket_enable)  socket.forward(event);
         }
 
+        function getSocket() {
+			return socket;
+		}
+
         function removeListener(event) {
             if (socket_enable)  socket.removeListener(event);
         }
+
+        function removeListListener(arr) {
+			var event;
+			arr = arr || [];
+			for (var i=0; i< arr.length; i++) {
+				event = arr[0];
+				socket.removeListener(event);
+			}
+		}
 
         function removeAllListeners() {
             if (socket_enable) socket.removeAllListeners();
