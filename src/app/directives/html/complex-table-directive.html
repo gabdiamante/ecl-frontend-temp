@@ -146,7 +146,7 @@
                 <span ng-bind="options.data.length + ' Records Found'"></span>
             </div>
         </div>
-        <div class="col-md-6 col-xs-12 top-margin-sm form-inline" ng-if="options.tableSearch" > 
+        <div class="col-md-3 col-xs-12 top-margin-sm" ng-if="options.tableSearch" > 
             <div class="input-group" >
                 <input type="text" style="z-index:0;" class="form-control" placeholder="Search by Keyword" ng-model="vm.keyword" ng-keyup="$event.keyCode == 13 && vm.filterTable(vm.keyword)" />
                 <span class="input-group-addon">
@@ -270,7 +270,7 @@
                 </td> 
             </tr>
             <tr ng-if="options.data.length == 0">
-                <td colspan="{{options.columnDefs.length}}" align="center" ng-bind-html="vm.loading | handlefetch : vm.titleHeader"></td>
+                <td colspan="{{options.columnDefs.length}}" align="center" ng-bind-html="vm.loading | handlefetch : ( (options.loadingTitle || vm.titleHeader) | titlecase )"></td>
             </tr>
         </tbody>
         <tfoot ng-if="options.footerTemplate && (options.data.length > 0)">

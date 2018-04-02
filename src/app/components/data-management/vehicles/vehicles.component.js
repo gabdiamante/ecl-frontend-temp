@@ -49,6 +49,8 @@ import MESSAGE from 'Helpers/message';
         vm.total_page = '1';
         vm.total_items = '0';
         vm.loading = false;
+        vm.siteId = $state.params.siteId;
+        vm.keyword = $state.params.keyword;
 
         vm.option_table = {
             emptyColumn: true,
@@ -69,7 +71,49 @@ import MESSAGE from 'Helpers/message';
         vm.handleUpdateItem = handleUpdateItem;
         vm.handleActivation = handleActivation;
 
-        getData();
+        vm.filterTable      = filterTable;
+
+        init();
+
+        function init() {
+            getSites();
+            getData();
+        }
+        
+        function getSites() {
+            vm.loadingSites = true;
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    page: '1',
+                    limit: '9999999999',
+                    is_active: '1'
+                },
+                hasFile: false,
+                route: { 'site': '' },
+                cache: false,
+                cache_string: vm.route_name
+            };
+            
+            QueryService.query(request)
+                .then(
+                    function(response) {
+                        console.log('sites filter', response);
+                        var sites = response.data.data.items;
+                        vm.sites = $filter('orderBy')(angular.copy(sites), ['-type', 'code']);
+                        vm.sites.unshift({ code: 'All', name: 'All' });
+                        vm.siteId = vm.siteId || vm.sites[0].id;
+                        vm.site = $filter('filter')(vm.sites, { id: vm.siteId }, true)[0];
+                    },
+                    function(error) {
+                        logger.errorFormatResponse(error);
+                    }
+                )
+                .finally(function() {
+                    vm.loadingSites = false;
+                });
+        }
 
         function getData() {
             vm.loading = true;
@@ -79,7 +123,9 @@ import MESSAGE from 'Helpers/message';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
-                    is_active: vm.activated
+                    is_active: vm.activated,
+                    site_id: vm.siteId,
+                    keyword : vm.keyword
                 },
                 hasFile: false,
                 route: { [vm.route_name]: '' },
@@ -129,7 +175,7 @@ import MESSAGE from 'Helpers/message';
                     }
                 },
                 function(error) {
-                    logger.errorFormatResponse(error);
+                    console.log(error);
                 }
             );
         }
@@ -202,8 +248,8 @@ import MESSAGE from 'Helpers/message';
                     ), 1);
                     logger.success(vm.title + ' ' + action + 'd!');
                 },
-                function(err) {
-                    console.log(err);
+                function(error) {
+                    logger.errorFormatResponse(error);
                 }
             );
         }
@@ -214,6 +260,15 @@ import MESSAGE from 'Helpers/message';
 
         function trClick(data) {
             $state.go('app.vehicle-details', { id: data.id });
+        }
+
+        function filterTable(value, key) {
+            $state.go($state.current.name, { 
+                keyword: vm.keyword,
+                siteId: vm.site.id,
+                page: '',
+                limit: ''
+            });
         }
     }
 })();

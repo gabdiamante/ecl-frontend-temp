@@ -50,7 +50,7 @@ import MESSAGE from 'Helpers/message';
         vm.$onInit = function() {
             Modal           = vm.resolve.Modal;
             Request         = vm.resolve.Request;
-            vm.titleHeader  = Modal.header;
+            vm.titleHeader  = Modal.titleHeader;
             vm.data         = angular.copy(Request.body) || {};
             vm.method       = angular.copy(Request.method);
             vm.storeData    = [];
@@ -104,12 +104,12 @@ import MESSAGE from 'Helpers/message';
                 .query(Request)
                 .then(
                     function(response) { 
+                        var details = response.data.data;
                         logger.success(MESSAGE.loggerSuccess('Dispatcher', Request.method));
-                        vm.modalInstance.close(data);
+                        vm.modalInstance.close(details);
                     },
-                    function(err) {
-                        console.log(err);
-                        logger.error(MESSAGE.loggerFailed('Dispatcher', Request.method));
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

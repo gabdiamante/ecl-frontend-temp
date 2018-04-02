@@ -49,6 +49,10 @@ import CONSTANTS from 'Helpers/constants';
         vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
         vm.pagination.limit     = $stateParams.limit || '10';
+        vm.site_type            = $stateParams.site_type || 'HUB';
+        vm.site_id              = $stateParams.site_id;
+        vm.zone_id              = $stateParams.zone_id;
+        
 
         vm.option_table         = { 
             defaultPagination   : true, 
@@ -66,24 +70,25 @@ import CONSTANTS from 'Helpers/constants';
         vm.handleHSActivation   = handleHSActivation; 
         vm.createCourier        = createCourier;
         vm.updateCourier        = updateCourier;
-        vm.selectSiteType       = selectSiteType;
+        vm.getCouriers = getCouriers;
+        vm.selectSiteFiltered = selectSiteFiltered;
 
         init ();
 
         function init () {
             getCouriers();  
-            getSites(vm.site_type);
+            getSites();
             getZones();
         }
 
-        function getSites (site_type) {
+        function getSites () {
             var request = {
                 method: 'GET',
                 body: false,
                 params: {
                     limit: '99999',
                     page: '1',
-                    type: site_type,
+                    type: vm.site_type,
                     is_active: 1
                 },
                 hasFile: false,
@@ -99,7 +104,7 @@ import CONSTANTS from 'Helpers/constants';
                         vm.sites = response.data.data.items; 
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                         //logger.error(MESSAGE.error, err, '');
                     }
                 );
@@ -123,11 +128,7 @@ import CONSTANTS from 'Helpers/constants';
                         vm.zones = response.data.data.items || [];  
                     },
                     function(error) {
-                        logger.log(
-                            error.data.errors[0].context,
-                            error,
-                            error.data.errors[0].message
-                        );
+                        logger.errorFormatResponse(error);
                     }
                 );
         }
@@ -148,6 +149,7 @@ import CONSTANTS from 'Helpers/constants';
                 .form_modal(request, modal, 'courierForm', 'md', '')
                 .then(function(response) { 
                     if (!response) return;
+                    response.updated = new Date();
                     vm.option_table.data.unshift(response); 
                     vm.option_table.data = handleNames(vm.option_table.data);
                 }, function(error) {
@@ -155,7 +157,7 @@ import CONSTANTS from 'Helpers/constants';
                 }); 
         }
 
-        function getCouriers () {
+        function getCouriers (key) {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -163,6 +165,9 @@ import CONSTANTS from 'Helpers/constants';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
+                    site_id: vm.site_id,
+                    zone_id: vm.zone_id,
+                    keyword: key,
                     is_active:vm.activated
                 },
                 hasFile: false,
@@ -174,14 +179,15 @@ import CONSTANTS from 'Helpers/constants';
             QueryService
                 .query(request)
                 .then(
-                    function(response) { 
+                    function(response) {
+                        console.log('couirers',response); 
                         vm.option_table.data = handleNames(response.data.data.items); 
                         vm.pagination.total  = response.data.data.total;
                         vm.pagination.page   = $stateParams.page || '1';
                         vm.pagination.limit  = $stateParams.limit || '10';
                     },
-                    function(err) {
-                        logger.error(MESSAGE.error, err, '');
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -196,7 +202,7 @@ import CONSTANTS from 'Helpers/constants';
                 body: data,
                 params: false,
                 hasFile: false,
-                route: { site:data.site_id, courier:data.user_id },
+                // route: { site:data.site_id, courier:data.user_id },
                 cache_string: 'user'
             };
             
@@ -208,7 +214,6 @@ import CONSTANTS from 'Helpers/constants';
                     vm.option_table.data = handleNames(vm.option_table.data);
                 }, function(error) {
                     console.log(error);
-                    // logger.error(error.data.message);
                 });
         } 
 
@@ -253,15 +258,15 @@ import CONSTANTS from 'Helpers/constants';
                                 })[0]
                         ), 1);
                     },
-                    function (err) {
+                    function (error) {
                         logger.error(MESSAGE.loggerFailed('Courier', '', action));
-                        console.log(err);
+                        logger.errorFormatResponse(error);
                     }
                 );
         } 
 
-        function selectSiteType (site_type) {
-            getSites(site_type);
+        function selectSiteFiltered (site_type, site_id, zone_id) {
+            goTo({ site_type: site_type, site_id: site_id, zone_id: zone_id});
         }
 
         function handleNames (data) {

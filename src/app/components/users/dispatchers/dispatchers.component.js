@@ -2,7 +2,9 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
 import DUMMY from 'Helpers/dummy';
-import MESSAGE from 'Helpers/message';
+import MESSAGE from 'Helpers/message'; 
+import CONSTANTS from 'Helpers/constants';
+
 
 (function() {
     'use strict';
@@ -44,7 +46,14 @@ import MESSAGE from 'Helpers/message';
 
         vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
-        vm.pagination.limit     = $stateParams.limit || '10';
+        vm.pagination.limit = $stateParams.limit || '10'; 
+        vm.site_types = CONSTANTS.site_types;
+        vm.site_type = $stateParams.site_type || vm.site_types[0].code;
+        vm.site_type = $stateParams.site_type || 'HUB';
+        vm.site_id = $stateParams.site_id;
+
+
+
         vm.per_page         = ['10', '20', '50', '100', '200'];
         vm.total_page       = '1';
         vm.total_items      = '0';
@@ -64,10 +73,43 @@ import MESSAGE from 'Helpers/message';
         vm.handlePostItem       = handlePostItem;
         vm.handleUpdateItem     = handleUpdateItem;
         vm.handleActivation     = handleActivation;
+        vm.selectSiteFiltered = selectSiteFiltered;
+        vm.getData = getData;
 
         getData();
+        getSites();
 
-        function getData() {
+        function getSites() {
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '99999',
+                    page: '1',
+                    type: vm.site_type,
+                    is_active: 1
+                },
+                hasFile: false,
+                route: { site: '' },
+                cache: true,
+                cache_string: 'sites'
+            };
+
+            QueryService
+                .query(request)
+                .then(
+                function (response) {
+                    vm.sites = response.data.data.items;
+                },
+                function (error) {
+                    logger.error(error.data.message);
+                    //logger.error(MESSAGE.error, err, '');
+                }
+                );
+        }
+
+
+        function getData(key) {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -75,6 +117,8 @@ import MESSAGE from 'Helpers/message';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
+                    site_id: vm.site_id,
+                    keyword: key,
                     is_active: vm.activated
                 },
                 hasFile: false,
@@ -83,7 +127,7 @@ import MESSAGE from 'Helpers/message';
                 cache_string: vm.route_name
             };
 
-            console.log('vehcilesr', request);
+            console.log('vehciles', request);
 
             QueryService.query(request)
                 .then(
@@ -131,7 +175,11 @@ import MESSAGE from 'Helpers/message';
         }
 
         function handleUpdateItem(data) {
-            var modal = { header: 'Update '+vm.title };
+            var modal = {
+                title: vm.title,
+                titleHeader: 'Update ' + vm.title,
+                method: 'edit'
+            };
             var request = {
                 method: 'PUT',
                 body: data,
@@ -144,12 +192,10 @@ import MESSAGE from 'Helpers/message';
                 function(response) {
                     if (!response) return;
                     response.updated = new Date();
-                    vm.option_table.data[
-                        vm.option_table.data.indexOf(data)
-                    ] = response; 
+                    vm.option_table.data[vm.option_table.data.indexOf(data)] = response; 
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -167,9 +213,13 @@ import MESSAGE from 'Helpers/message';
                     executeActivateDeactivateDelete(data, action);
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
+        }
+
+        function selectSiteFiltered(site_type, site_id, zone_id) {
+            goTo({ site_type: site_type, site_id: site_id});
         }
 
         function executeActivateDeactivateDelete(data, action) {
@@ -193,8 +243,8 @@ import MESSAGE from 'Helpers/message';
                     ), 1);
                     logger.success(vm.title + ' ' + action + 'd');
                 },
-                function(err) {
-                    console.log(err);
+                function(error) {
+                    logger.errorFormatResponse(error);
                 }
             );
         }

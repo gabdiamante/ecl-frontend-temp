@@ -1,6 +1,9 @@
 import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import UTILS from 'Helpers/util';
+import DUMMY from 'Helpers/dummy';
+import OverlappingMarkerSpiderfier from 'overlapping-marker-spiderfier';
+import UTIL from '../../helpers/util';
 
 (function() {
     'use strict';
@@ -18,6 +21,7 @@ import UTILS from 'Helpers/util';
         '$stateParams',
         '$cookies',
         '$filter',
+        '$timeout',
         'QueryService',
         'ViewService',
         'SocketService',
@@ -32,39 +36,60 @@ import UTILS from 'Helpers/util';
         $stateParams,
         $cookies,
         $filter,
+        $timeout,
         QueryService,
         ViewService,
         SocketService,
         logger,
         NgMap
     ) {
-        var vm              = this;
-        var socket          = SocketService;
-        var bounds          = new google.maps.LatLngBounds();
-        vm.isOpen           = false;
-        vm.visible          = false;
-        vm.viewOne          = false;
-        vm.ignoreLoadingBar = false;
-        vm.path             = [[0, 0]];
-        vm.actualRoute      = [[0, 0]];
-        vm.curState         = $state.current.name;
-        vm.user             = GLOBAL.user($cookies, $state);
-        vm.mapStyles        = UTILS.mapStyles;
-        vm.mapUrl           = UTILS.mapUrl;
-        vm.today            = new Date();
-        vm.hubIcon          = UTILS.hubIcon;
+        var vm = this;
+        var socket = SocketService;
+        var bounds = new google.maps.LatLngBounds();
 
-        vm.zoomIn           = zoomIn;
-        vm.zoomOut          = zoomOut;
-        vm.viewAll          = viewAll;
-        vm.resetZoom        = resetZoom;
-        vm.selectHub        = selectHub;
-        vm.viewDetails      = viewDetails;
-        vm.clickCourier     = clickCourier;
-        vm.polylineArrow    = UTILS.polylineArrow;
-        vm.viewAssignments  = viewAssignments;
-        vm.clickAssignment  = clickAssignment;
-        vm.viewItemDetails  = viewItemDetails;
+        vm.center_map_lat_lng = $stateParams.center_map_lat_lng || UTILS.latlngcenter;
+        vm.isOpen = false;
+        vm.visible = false;
+        vm.viewOne = false;
+        vm.ignoreLoadingBar = false;
+        vm.path = [[0, 0]];
+        vm.actualRoute = [[0, 0]];
+        vm.curState = $state.current.name;
+        vm.mapStyles = UTILS.mapStyles;
+        vm.mapUrl = UTILS.mapUrl;
+        vm.today = new Date();
+        vm.hubIcon = UTILS.hubIcon;
+
+        vm.zoomIn = zoomIn;
+        vm.zoomOut = zoomOut;
+        vm.viewAll = viewAll;
+        vm.resetZoom = resetZoom;
+        vm.selectHub = selectHub;
+        vm.viewDetails = viewDetails;
+        vm.clickCourier = clickCourier;
+        vm.polylineArrow = UTILS.polylineArrow;
+        vm.viewAssignments = viewAssignments;
+        vm.clickAssignment = clickAssignment;
+        vm.viewItemDetails = viewItemDetails;
+
+        vm.assignPosition = '';
+        vm.courierPosition = '';
+        vm.hubPosition = '';
+
+        vm.map_render = false;
+        $timeout(function () {
+            vm.map_render = true;
+        }, 1000);
+
+
+        $scope.$on('$destroy', function (event) {
+            var list = [
+                'courierUpdateConnStatus','unlistenToCourier', 'courierUpdateLocation','listenToCourier',
+                'changeAwbStatus','changeBookingStatus','COURIER'
+            ];
+            socket.removeListListener(list);
+            console.log('Destroy Socket specific listener');
+        });
 
         init();
 
@@ -74,79 +99,172 @@ import UTILS from 'Helpers/util';
                 JSON.parse(localStorage.getItem('hubsList'))
             );
             vm.hub = vm.hubs[0];
+            if (vm.hub.lat && vm.hub.lng) 
+                vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
             vm.hubId = $stateParams.hub || vm.hubs[0].id;
             checkHubId(vm.hubId, vm.hubs);
+
+            socket.connect();
+
             if ($stateParams.courier) {
                 vm.viewOne = true;
-                socket.connect();
+                socket.emit('echo', { test: 'grabe ka sa akin sir' },
+                    function(data) {
+                        // logger.success('socket_data',data);
+                    }
+                );
+     
+                socket.on('echo', function(data) {
+                    logger.success('socket_data',data);
+                });
+
+
                 getAssignments();
                 localStorage.setItem('courierId', $stateParams.courier);
             } else {
-                getVehicles(vm.hub);
                 getMap();
+                getVehicles(vm.hub);
             }
         }
 
         function getMap() {
-            NgMap.getMap({ id: 'mntrng-map' }).then(function(map) {
-                vm.map = map;
+            $timeout(function(){
+                NgMap.getMap({ id: 'mntrng-map' }).then(function(map) {
+                    vm.map = map;
+                });
+
             });
         }
 
-        function spiderFierMarkers(data) {
+        function spiderFierMarkers(data, activate) {
+
             NgMap.getMap({ id: 'mntrng-map' }).then(function(map) {
                 vm.map = map;
-                var oms = new OverlappingMarkerSpiderfier(map, {
+                const options = { 
                     markersWontMove: true,
                     markersWontHide: true,
                     basicFormatEvents: true,
                     keepSpiderfied: true,
-                    nearbyDistance: 10,
-                    legWeight: 5
+                    nearbyDistance: 30,
+                    legWeight: 2
+                
+                }; // Just an example of options - please set your own if necessary 
+                const oms = new OverlappingMarkerSpiderfier(map, options);
+                vm.oms = oms;
+                const iw = new google.maps.InfoWindow();
+
+                oms.addListener('click', function(marker, event) {
+                    console.log('s');
+                    vm.currentmarker = marker;
+                    vm.assign = marker.data;
+                    if (vm.assign.lat && vm.assign.lng)
+                        vm.assignPosition = vm.assign.lat + ', ' + vm.assign.lng;
+
+                    var center = new google.maps.LatLng(vm.assign.lat, vm.assign.lng);
+                    vm.map.showInfoWindow('assignInfo',vm.assign.lat,vm.assign.lng);
                 });
 
-                for (var i = 0; i < data.length; i++) {
+                oms.addListener('spiderfy', function(markers) {
+                    console.log('spiderfy');
+                    iw.close();
+                   // oms.unspiderfy();
+                });
+
+                for (let i = 0; i < data.length; i ++) {
                     if (data[i].lat) {
-                        var markerLat = data[i].lat;
-                        var markerLng = data[i].lng;
+                        var markerLat = angular.copy(data[i].lat);
+                        var markerLng = angular.copy(data[i].lng);
                         var latLng = new google.maps.LatLng(
                             markerLat,
                             markerLng
                         );
                         bounds.extend(latLng);
-                        var markerOptions = {
-                            icon: {
-                                url: 'assets/img/' + data[i].color + '.svg',
-                                origin: new google.maps.Point(0, 0),
-                                anchor: new google.maps.Point(15, 15)
-                            },
+                        const marker = new google.maps.Marker({
                             position: latLng,
+                            map: map,
+                            icon: UTILS.icon(data[i].color),
                             data: data[i],
                             id: 'marker-' + (i + 1),
                             label: {
                                 text: (i + 1).toString(),
                                 color: '#fff',
                                 fontSize: '10px'
-                            }
-                        };
-                        var marker = new google.maps.Marker(markerOptions);
-                        google.maps.event.addListener(
-                            marker,
-                            'spider_click',
-                            function(e) {
-                                vm.assign = this.data;
-                                vm.map.showInfoWindow(
-                                    'assignInfo',
-                                    vm.assign.lat,
-                                    vm.assign.lng
-                                );
-                            }
-                        );
-                        oms.addMarker(marker);
+                            },
+                        });
+                    
+                        console.log(activate);
+                         // <-- here 
+                        oms.addMarker(marker); 
                     }
                 }
                 map.fitBounds(bounds);
-            });
+            });   
+
+
+            // NgMap.getMap({ id: 'mntrng-map' }).then(function(map) {
+
+            //     vm.map = map;
+
+            //     var oms = new OverlappingMarkerSpiderfier(map, {
+            //         markersWontMove: true,
+            //         markersWontHide: true,
+            //         basicFormatEvents: true,
+            //         keepSpiderfied: false,
+            //         nearbyDistance: 30,
+            //         legWeight: 2
+            //     });
+
+            //     console.log('oms',oms);
+
+            //     for (var i = 0; i < data.length; i++) {
+            //         if (data[i].lat) {
+            //             var markerLat = angular.copy(data[i].lat);
+            //             var markerLng = angular.copy(data[i].lng);
+            //             var latLng = new google.maps.LatLng(
+            //                 markerLat,
+            //                 markerLng
+            //             );
+
+            //             bounds.extend(latLng);
+                                  
+
+
+            //             var markerOptions = {
+            //                 icon: {
+            //                     url: UTILS.icon(data[i].color),
+            //                     origin: new google.maps.Point(0, 0),
+            //                     anchor: new google.maps.Point(15, 15)
+            //                 },
+            //                 position: latLng,
+            //                 data: data[i],
+            //                 id: 'marker-' + (i + 1),
+            //                 label: {
+            //                     text: (i + 1).toString(),
+            //                     color: '#fff',
+            //                     fontSize: '10px'
+            //                 },
+            //                 map: map
+            //             };
+
+            //             console.log('markerOptions icon', markerOptions.data);
+                        
+            //             var marker = new google.maps.Marker(markerOptions);
+            //             // google.maps.event.addListener(
+            //             //     marker,
+            //             //     'spider_click',
+            //             //     function(e) {
+            //             //         console.log('ssss',this.data);
+            //             //         vm.assign = this.data;
+            //             //         if (vm.assign.lat && vm.assign.lng)
+            //             //             vm.assignPosition = vm.assign.lat + ', ' + vm.assign.lng;
+            //             //         vm.map.showInfoWindow('assignInfo',vm.assign.lat,vm.assign.lng);
+            //             //     }
+            //             // );
+            //            oms.addMarker(marker);
+            //         }
+            //     }
+            //     map.fitBounds(bounds);
+            // });
         }
 
         function clickAssignment($event, data, index) {
@@ -154,12 +272,22 @@ import UTILS from 'Helpers/util';
             vm.zoom = 16;
             var center = new google.maps.LatLng(data.lat, data.lng);
             vm.map.panTo(center);
+
+            if (vm.assign.lat && vm.assign.lng)
+                vm.assignPosition = vm.assign.lat + ', ' + vm.assign.lng;
             vm.map.showInfoWindow('assignInfo', center);
         }
 
         function clickCourier($event, data, index) {
             vm.courier = data;
+            if (vm.courier.lat && vm.courier.lng) 
+                vm.courierPosition = vm.courier.lat + ', ' + vm.courier.lng;
+
+            console.log('click_courier', vm.map);
+
             vm.map.showInfoWindow('courierInfo');
+
+           
         }
 
         function viewAssignments() {
@@ -172,6 +300,8 @@ import UTILS from 'Helpers/util';
                 return hub.id == hubId;
             })[0];
             vm.hub = hub;
+            if (vm.hub.lat && vm.hub.lng) 
+                vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
         }
 
         function selectHub(hub) {
@@ -182,10 +312,16 @@ import UTILS from 'Helpers/util';
             vm.list = [];
             vm.vehicles = [];
             vm.isLoading = true;
+
+            // var route = {
+            //     express: '',
+            //     vehicles: 'out-del'
+            // };
+
             var route = {
-                express: '',
-                vehicles: 'out-del'
+                couriers: ''
             };
+
             var params = {
                 all: true,
                 hubId: hub.id
@@ -194,30 +330,22 @@ import UTILS from 'Helpers/util';
             var req = {
                 method: 'GET',
                 body: false,
-                token: vm.user.token,
                 params: params,
                 hasFile: false,
-                cache: true,
+                cache: false,
                 route: route
             };
 
             QueryService.query(req).then(
                 function(response) {
-                    vm.vehicles = response.data.data.items;
+                    // vm.vehicles = response.data.data.items;
+                    vm.vehicles = DUMMY.monitoring.courier_vehicle_out_for_del_list;
                     centerAllCouriers(vm.vehicles);
-                    GLOBAL.sortOn(vm.vehicles, 'lastName');
-                    vm.isLoading = false;
+                    GLOBAL.sortOn(vm.vehicles, 'last_name');
+                    changeCourierStatus();
                 },
                 function(error) {
-                    if (error.data.errors) {
-                        logger.error(
-                            error.data.errors[0].message,
-                            error,
-                            error.data.errors[0].context
-                        );
-                    } else {
-                        logger.error(error.statusText, error, '');
-                    }
+                    logger.errorFormatResponse(error);
                     vm.isLoading = false;
                 }
             );
@@ -225,7 +353,7 @@ import UTILS from 'Helpers/util';
 
         function viewDetails(data) {
             console.log(data);
-            $state.go(vm.curState, { courier: data.courierId });
+            $state.go(vm.curState, { courier: data.courier_id });
         }
 
         function viewAll() {
@@ -233,32 +361,38 @@ import UTILS from 'Helpers/util';
         }
 
         function setIconColor(markers) {
+
             for (var i = 0; i < markers.length; i++) {
-                if (markers[i].dateCompleted) {
+                if (markers[i].date_completed) {
                     markers[i].color = 'green';
-                } else if (markers[i].dateAttempted) {
+                } else if (markers[i].date_attempted) {
                     markers[i].color = 'red';
-                } else if (!markers[i].dateAttempted) {
+                } else if (!markers[i].date_attempted) {
                     markers[i].color = 'blue-grey';
                 } else {
                     markers[i].color = 'yellow';
                 }
             }
-            vm.assignments = markers;
+            vm.assignments = angular.copy(markers);
             spiderFierMarkers(markers);
         }
 
         function getAssignments(isLoading, socketUpdate) {
+            vm.isLoadingAssignments = true;
             console.log(isLoading);
+            
+            // var route = {
+            //     express: 'assignments',
+            //     courier: $stateParams.courier
+            // };
+
             var route = {
-                express: 'assignments',
-                courier: $stateParams.courier
+                couriers: ''
             };
 
             var req = {
                 method: 'GET',
                 body: false,
-                token: vm.user.token,
                 params: false,
                 hasFile: false,
                 cache: false,
@@ -266,14 +400,21 @@ import UTILS from 'Helpers/util';
                 ignoreLoadingBar: isLoading,
                 cache_string: ['assignments']
             };
+
             QueryService.query(req).then(
                 function(response) {
-                    setIconColor(response.data.data.assignments);
+                    response = { data: { data: {} } };
+                    response.data.data = DUMMY.monitoring.courier_assignments;
+                    console.log('getAssignments', response);
+                    setIconColor(response.data.data.assignments || []);
                     vm.courier = response.data.data.courier;
-                    vm.courier.name =
-                        vm.courier.firstName + ' ' + vm.courier.lastName;
+                    if (vm.courier.lat && vm.courier.lng) 
+                        vm.courierPosition = vm.courier.lat + ', ' + vm.courier.lng;
+                    // vm.courier.name = vm.courier.first_name + ' ' + vm.courier.last_name;
                     vm.hub = response.data.data.hub;
-                    listenToCourier(vm.courier);
+                    if (vm.hub.lat && vm.hub.lng) 
+                        vm.hubPosition = vm.hub.lat + ', ' + vm.hub.lng;
+                    // listenToCourier(vm.courier);
                     changeBookingStatus();
                     changeAwbStatus();
                     courierUpdateLoc();
@@ -284,20 +425,18 @@ import UTILS from 'Helpers/util';
                     }
                 },
                 function(error) {
-                    logger.error(
-                        error.data.errors[0].message,
-                        error,
-                        error.data.errors[0].context
-                    );
+                    logger.errorFormatResponse(error);
                     vm.isLoading = false;
                 }
-            );
+            ).finally(function() {
+                vm.isLoadingAssignments = false;
+            });
         }
 
         function getPath(response) {
-            vm.actualFullRoute = response.data.data.actualFullRoute;
-            if (vm.courier.assignedFullRoute) {
-                decodePolylines(vm.courier.assignedFullRoute);
+            vm.actualFullRoute = response.data.data.actual_full_route;
+            if (vm.courier.assigned_full_route) {
+                decodePolylines(vm.courier.assigned_full_route);
             }
             if (vm.actualFullRoute) {
                 vm.runsnap = 0;
@@ -309,11 +448,11 @@ import UTILS from 'Helpers/util';
             vm.onlineCount = 0;
             NgMap.getMap({ id: 'mntrng-map' }).then(function(map) {
                 for (var i = 0; i < vehicles.length; i++) {
-                    if (vehicles[i].latitude) {
+                    if (vehicles[i].lat) {
                         vm.onlineCount++;
                         var latLng = new google.maps.LatLng(
-                            vehicles[i].latitude,
-                            vehicles[i].longitude
+                            vehicles[i].lat,
+                            vehicles[i].lng
                         );
                         bounds.extend(latLng);
                     }
@@ -325,7 +464,7 @@ import UTILS from 'Helpers/util';
         function countCompleted(data) {
             vm.completed = 0;
             for (var i = data.length - 1; i >= 0; i--) {
-                if (data[i].dateCompleted) {
+                if (data[i].date_completed) {
                     vm.completed++;
                 }
             }
@@ -411,12 +550,8 @@ import UTILS from 'Helpers/util';
                             i++
                         ) {
                             var latlng = new google.maps.LatLng(
-                                res[idx].data.snappedPoints[
-                                    i
-                                ].location.latitude,
-                                res[idx].data.snappedPoints[
-                                    i
-                                ].location.longitude
+                                res[idx].data.snappedPoints[i].location.latitude,
+                                res[idx].data.snappedPoints[i].location.longitude
                             );
                             path.push(latlng);
                         }
@@ -457,7 +592,8 @@ import UTILS from 'Helpers/util';
         }
 
         function viewItemDetails(item) {
-            var state = 'app.' + item.assignmentType;
+            var state = 'app.' + item.assignment_type + '-details';
+            console.log(state);
             $state.go(state, { id: item.id });
         }
 
@@ -491,16 +627,14 @@ import UTILS from 'Helpers/util';
         function courierUpdateLoc() {
             socket.on('courierUpdateLocation', function(data) {
                 $scope.$apply(function() {
-                    vm.courier.latitude = data.coordinates.latitude;
-                    vm.courier.longitude = data.coordinates.longitude;
+                    vm.courier.lat = data.coordinates.lat;
+                    vm.courier.lng = data.coordinates.lng;
                 });
             });
         }
 
         function listenToCourier(courier) {
-            socket.emit(
-                'listenToCourier',
-                { courierId: courier.courierId },
+            socket.emit('listenToCourier',{ courierId: courier.courier_id },
                 function(data) {
                     // console.log(data);
                 }
@@ -519,6 +653,35 @@ import UTILS from 'Helpers/util';
                 console.log('booking status', data);
                 getAssignments(true);
             });
+        }
+
+        function changeCourierStatus() {
+            socket.on('COURIER', function (data) {
+                // $timeout(function(){
+                //     // $state.reload();
+                //     getVehicles(vm.hub);
+                //     getMap();
+                // },300);
+                if (data.action) {
+                    $scope.$apply( function () {
+                        $timeout(function(){
+                            console.log('socket courier data',data);
+                            var filteredCourier;
+                            var indexCourier;
+                            var formatData = data.data || {};
+                            
+                            filteredCourier = $filter('filter')(vm.vehicles, { courierId: parseInt(formatData.courierId), userId: formatData.id }, true)[0];
+                            indexCourier = vm.vehicles.indexOf(filteredCourier) || {};
+                            vm.vehicles[indexCourier].status = formatData.status;
+    
+                            if (data.action == 'ONLINE'){
+                                vm.vehicles[indexCourier].latitude = formatData.latitude;
+                                vm.vehicles[indexCourier].longitude = formatData.longitude;
+                            }
+                        },300);
+                    });
+                }
+            }); 
         }
     }
 })();

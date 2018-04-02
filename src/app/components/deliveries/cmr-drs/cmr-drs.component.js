@@ -28,7 +28,6 @@ import UTILS from 'Helpers/util';
        
         var vm  = this;
         // vm.user = GLOBAL.user($cookies, $state);
-        vm.getManifest = getManifest;
         vm.today = $filter('date')(new Date(), "yyyy-MM-dd");
         vm[$stateParams.vehicle] = true;
         vm.courier = $stateParams.courier;
@@ -73,7 +72,7 @@ import UTILS from 'Helpers/util';
                 cache_string:'print-all'
             };
 
-            vm.manifests = DUMMY.manifests;
+            vm.manifests = DUMMY.delivery_manifests;
 
             QueryService
                 .query(req)

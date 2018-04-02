@@ -87,8 +87,8 @@ import MESSAGE from 'Helpers/message';
                         vm.hubs = response.data.data.items; 
                         vm.data.site_id = (vm.method=='POST') ? vm.hubs[0].id : vm.data.site_id;
                     },
-                    function(err) {
-                        console.log(err); 
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -104,11 +104,12 @@ import MESSAGE from 'Helpers/message';
                 .query(Request)
                 .then(
                     function(response) { 
+                        var details = response.data.data;
                         logger.success(MESSAGE.loggerSuccess('Hub Support', Request.method));
-                        vm.modalInstance.close(data);
+                        vm.modalInstance.close(details);
                     },
-                    function(err) {
-                        logger.error(MESSAGE.loggerFailed('Hub Support', Request.method));
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {

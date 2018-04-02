@@ -64,8 +64,8 @@ import DUMMY from 'Helpers/dummy';
                             ((vm.item_details.last_name) ? vm.item_details.last_name + ', ' : '') + 
                             vm.item_details.first_name +' '+ vm.item_details.middle_name;
                     },
-                    function(err) {
-                        console.log(err);
+                    function(error) {
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -92,9 +92,7 @@ import DUMMY from 'Helpers/dummy';
                             vm.item_details.first_name +' '+ vm.item_details.middle_name; 
                 },
                 function(error) {
-                    logger.error(
-                        error.data.message || catchError(request.route)
-                    );
+                    logger.errorFormatResponse(error);
                 }
             );
         }

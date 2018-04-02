@@ -51,8 +51,7 @@ var jsts = require('jsts');
 
         vm.user = GLOBAL.user($cookies, $state);
         //vm.center_map_lat_lng = GLOBAL.map_default_position[0] + ',' + GLOBAL.map_default_position[1];
-        vm.center_map_lat_lng =
-            $stateParams.center_map_lat_lng || '14.599512, 120.984222';
+        vm.center_map_lat_lng = $stateParams.center_map_lat_lng || UTILS.latlngcenter;
         //vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
 
         vm.route_name = 'zone';
@@ -71,7 +70,7 @@ var jsts = require('jsts');
         vm.siteType = $stateParams.siteType;
         vm.siteFront = $stateParams.siteFront;
         vm.siteId = $stateParams.siteId;
-        vm.includeUnassigned = ($stateParams.includeUnassigned === 'false') ? false : true;
+        vm.isUnassigned = $stateParams.isUnassigned || 'all';
 
         vm.filterClose = ($stateParams.filterClose === 'false' || typeof $stateParams.filterClose == 'undefined') ? false : true;
         vm.filterIsOpen =  !vm.filterClose; /*(vm.siteFront || vm.siteId || !vm.includeUnassigned) ? true : false; */
@@ -104,7 +103,6 @@ var jsts = require('jsts');
 
         vm.updated_pol = null;
         
-
         vm.selectedZone = {};
 
         vm.onMapOverlayCompleted = onMapOverlayCompleted;
@@ -129,14 +127,13 @@ var jsts = require('jsts');
         vm.selectType = selectType;
         vm.selectSiteFront = selectSiteFront;
         vm.selectSite = selectSite;
-        vm.selectIncludeUnassigned = selectIncludeUnassigned;
+        vm.selectIsUnassigned = selectIsUnassigned;
         vm.viewDeactivate          = viewDeactivate;
 
         init();
 
         function init() {
-            google.maps.Polygon.prototype.my_getBounds =
-                GMAP.prototype.my_getBounds;
+            google.maps.Polygon.prototype.my_getBounds = GMAP.prototype.my_getBounds;
 
             vm[vm.user.app] = true;
 
@@ -155,22 +152,17 @@ var jsts = require('jsts');
                     vm.zoom = map.getZoom();
                 });
 
-                google.maps.event.addListener(
-                    map,
-                    'center_changed',
-                    function() {
-                        var center_map = map.getCenter();
-                        vm.center_map_lat_lng =
-                            center_map.lat() + ', ' + center_map.lng();
-                    }
-                );
+                google.maps.event.addListener(map,'center_changed',function() {
+                    var center_map = map.getCenter();
+                    vm.center_map_lat_lng =center_map.lat() + ', ' + center_map.lng();
+                });
             });
         }
 
         function getTypes() {
             vm.site_types = [];
             vm.site_types = angular.copy(CONSTANTS.site_types);
-            vm.site_types.unshift({ name: 'HUB w/ DC' });
+            vm.site_types.unshift({ name: 'ALL' });
             vm.site_type = vm.site_type || vm.site_types[0];
             checkSiteType(vm.siteType, vm.site_types);
         }
@@ -262,8 +254,7 @@ var jsts = require('jsts');
                 params: {
                     page: 1,
                     limit: 999999999,
-                    is_active: vm.activated,
-                    include_unassigned: +vm.includeUnassigned
+                    is_active: vm.activated
                 },
                 hasFile: false,
                 cache: false,
@@ -273,6 +264,7 @@ var jsts = require('jsts');
 
             if (vm.site_type.code) req.params.site_type = vm.site_type.code;
             if (vm.site.id) req.params.site_id = vm.site.id;
+            if (vm.isUnassigned != 'all') req.params.is_unassigned = (vm.isUnassigned === 'true') ? 1 : (vm.isUnassigned === 'false') ? 0 : 0;
 
             console.log('z req', req);
 
@@ -293,17 +285,8 @@ var jsts = require('jsts');
                         vm.total = response.data.data.total;
 
                         if (!angular.equals(vm.selectedZone, {})) {
-                            var selZone = $filter('filter')(
-                                vm.zones,
-                                { id: vm.selectedZone.id },
-                                true
-                            )[0];
-
-                            vm.updatePolygon(
-                                {},
-                                selZone,
-                                vm.selectedZone.index
-                            );
+                            var selZone = $filter('filter')(vm.zones,{ id: vm.selectedZone.id },true)[0];
+                            vm.updatePolygon({},selZone,vm.selectedZone.index );
                         }
                         // if (update_view_center_latlng)
                         //     vm.center_map_lat_lng = response.data.data.center.lat + ', ' + response.data.data.center.lng;
@@ -323,25 +306,25 @@ var jsts = require('jsts');
                 siteType: type.code,
                 siteFront: '',
                 siteId: '',
-                includeUnassigned: vm.includeUnassigned,
+                isUnassigned: vm.isUnassigned,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
-                deactivated: vm.deactivated
+                deactivated: $stateParams.deactivated
             });
             getZones();
         }
 
-        function selectIncludeUnassigned(val) {
+        function selectIsUnassigned(val) {
             $state.go($state.current.name, {
                 siteType: vm.site_type.code,
                 siteFront: vm.site_front.code,
                 siteId: vm.siteId,
-                includeUnassigned: val,
+                isUnassigned: val,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
-                deactivated: vm.deactivated
+                deactivated: $stateParams.deactivated
             });
             getZones();
         }
@@ -351,11 +334,11 @@ var jsts = require('jsts');
                 siteType: vm.site_type.code,
                 siteFront: type.code,
                 siteId: '',
-                includeUnassigned: vm.includeUnassigned,
+                isUnassigned: vm.isUnassigned,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
-                deactivated: vm.deactivated
+                deactivated: $stateParams.deactivated
             });
             getZones();
         }
@@ -366,11 +349,11 @@ var jsts = require('jsts');
             $state.go($state.current.name, {
                 siteType: vm.site_type.code,
                 siteId: vm.siteId,
-                includeUnassigned: vm.includeUnassigned,
+                isUnassigned: vm.isUnassigned,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
-                deactivated: vm.deactivated
+                deactivated: $stateParams.deactivated
             });
             vm.buttonName = site.name;
             getZones();
@@ -381,7 +364,7 @@ var jsts = require('jsts');
                 siteType: vm.site_type.code,
                 siteFront: vm.site_front.code,
                 siteId: vm.siteId,
-                includeUnassigned: vm.includeUnassigned,
+                isUnassigned: vm.isUnassigned,
                 zoom: vm.zoom,
                 center_map_lat_lng: vm.center_map_lat_lng,
                 filterClose: vm.filterClose,
@@ -393,7 +376,7 @@ var jsts = require('jsts');
         function overlayClickListener(overlay, method) {
             if (!method) return;
             google.maps.event.addListener(overlay, 'mouseup', function(event) {
-                resetOverlapData();
+                // resetOverlapData();
                 console.log('overlayClickListener');
                 var shape = {
                     type: 'polygon'
@@ -417,7 +400,7 @@ var jsts = require('jsts');
         function onMapOverlayCompleted(e, method) {
             console.log('onMapOverlayCompleted', e.overlay);
 
-            resetOverlapData();
+            // resetOverlapData();
 
             vm.showDrawingManager = false;
             vm.shape = e;
@@ -450,10 +433,7 @@ var jsts = require('jsts');
             if (polygon[0].length > 2) {
                 overlayClickListener(e.overlay, method);
                 for (var key in vm.geofenceMap.shapes) {
-                    var wkt = checkPolygon(
-                        e.overlay,
-                        vm.geofenceMap.shapes[key]
-                    );
+                    var wkt = checkPolygon(e.overlay,vm.geofenceMap.shapes[key]);
                     detectLap(e, key, wkt);
                 }
                 handleOverlap();
@@ -469,47 +449,68 @@ var jsts = require('jsts');
         }
 
         function onMouseUp(e, shape, index) {
-            vm.zones[index] = vm.zones[index] || {};
-            vm.zones[index].general_overlap = {};
-            vm.zones['new'] = {};
-            vm.zones['new'].general_overlap = {};
-            vm.zones['new'].general_overlap.zone = [];
-
-            if (typeof vm.shapeIndex != 'undefined' && shape.editable) {
-                console.log(index, 'index');
-                var data = angular.copy(vm.updated_shape);
-                shape = {
-                    type: 'polygon'
-                };
-
-                NgMap.getMap({ id: 'geofencing' }).then(function(map) {
-                    vm.geofenceMaps = map;
-
-                    Object.keys(vm.geofenceMaps.shapes).forEach(function(prop) {
-                        if (prop == vm.shapeIndex) {
-                            shape.overlay = vm.geofenceMaps.shapes[prop];
-                            for (var key in vm.geofenceMaps.shapes) {
-                                //console.log(vm.zones[key], data); // determine dc hub
-                                var wkt = checkPolygon(
-                                    shape.overlay,
-                                    vm.geofenceMaps.shapes[key]
-                                );
-                                detectLap(shape, key, wkt);
-                            }
-                            handleOverlap();
-                        }
-                    });
-                });
+            
+            if (vm.siteType && !e.Ga) { //e.Ga change polydot
+                var selectedZone = angular.copy(shape);
+                $timeout(function(){
+                    vm.cancel();
+                }, 300);
+                $timeout(function(){
+                    var selZone = $filter('filter')(vm.zones,{ id: selectedZone.id },true)[0];
+                    vm.updatePolygon({},selZone, vm.zones.indexOf(selZone));
+                },800);
+                logger.info('Change The Filter type to `HUB w/ DC` update the polygon');
+                return;
             }
+            
+            // vm.zones[index] = vm.zones[index] || {};
+            // vm.zones[index].general_overlap = {};
+            // vm.zones['new'] = {};
+            // vm.zones['new'].general_overlap = {};
+            // vm.zones['new'].general_overlap.zone = [];
+
+            $timeout(function() {
+                if (typeof vm.shapeIndex != 'undefined' && shape.editable) {
+                    
+                    // console.log(index, 'index');
+                    var data = angular.copy(vm.updated_shape);
+                    shape = {
+                        type: 'polygon'
+                    };
+    
+                    NgMap.getMap({ id: 'geofencing' }).then(function(map) {
+                        vm.geofenceMaps = map;
+    
+                        let self = false;
+                        Object.keys(vm.geofenceMaps.shapes).forEach(function(prop) {
+                            console.log();
+                            if (prop == vm.shapeIndex) {
+                                self = true;
+                                shape.overlay = vm.geofenceMaps.shapes[prop];
+                                for (var key in vm.geofenceMaps.shapes) {
+                                    //console.log(vm.zones[key], data); // determine dc hub
+                                    var wkt = checkPolygon(
+                                        shape.overlay,
+                                        vm.geofenceMaps.shapes[key]
+                                    );
+                                    detectLap(shape, key, wkt);
+                                }
+                                handleOverlap();
+                            } 
+                        });
+                    });
+                }
+            }, 150);
+            
         }
 
-        function resetOverlapData() {
-            vm.zones[vm.shapeIndex] = vm.zones[vm.shapeIndex] || {};
-            vm.zones[vm.shapeIndex].general_overlap = {};
-            vm.zones['new'] = {};
-            vm.zones['new'].general_overlap = {};
-            vm.zones['new'].general_overlap.zone = [];
-        }
+        // function resetOverlapData() {
+        //     vm.zones[vm.shapeIndex] = vm.zones[vm.shapeIndex] || {};
+        //     vm.zones[vm.shapeIndex].general_overlap = {};
+        //     vm.zones['new'] = {};
+        //     vm.zones['new'].general_overlap = {};
+        //     vm.zones['new'].general_overlap.zone = [];
+        // }
 
         function addZone() {
             vm.showDrawingManager = true;
@@ -545,75 +546,50 @@ var jsts = require('jsts');
         }
 
         function detectLap(shape, key, wkt) {
-            vm.zones[vm.shapeIndex] = vm.zones[vm.shapeIndex] || {};
-            vm.zones[key] = vm.zones[key] || {};
-            vm.zones['new'] = vm.zones['new'] || {};
-            vm.zones['new'].general_overlap =
-                vm.zones['new'].general_overlap || {};
+
+            // vm.zones[vm.shapeIndex] = vm.zones[vm.shapeIndex] || {};
+            // vm.zones[key] = vm.zones[key] || {};
+            // vm.zones['new'] = vm.zones['new'] || {};
+            // vm.zones['new'].general_overlap = vm.zones['new'].general_overlap || {};
 
             if (shape.overlay !== vm.geofenceMap.shapes[key]) {
-                var shapeIndexOrNew = vm.shapeIndex || 'new';
-                detectOverlap(wkt[0], wkt[1], true, function(res) {
-                    if (res) {
-                        var general_overlap =
-                            vm.zones[shapeIndexOrNew].general_overlap;
-                        general_overlap.zone = general_overlap.zone || [];
-                        var overlap_zone_shape_key =
-                            angular.copy(vm.zones[key]) || {};
-                        general_overlap.zone.push(overlap_zone_shape_key);
+                // var shapeIndexOrNew = vm.shapeIndex || 'new';
+                // detectOverlap(wkt[0], wkt[1], true, function(res) {
+                //     if (res) {
+                //         var general_overlap = vm.zones[shapeIndexOrNew].general_overlap;
+                //         general_overlap.zone = general_overlap.zone || [];
+                //         var overlap_zone_shape_key = angular.copy(vm.zones[key]) || {};
+                //         general_overlap.zone.push(overlap_zone_shape_key);
 
-                        var overlapcondfilter_hub =
-                            $filter('filter')(
-                                angular.copy(general_overlap.zone),
-                                { type: 'HUB' },
-                                true
-                            ) || [];
-                        var overlapcondfilter_dc =
-                            $filter('filter')(
-                                angular.copy(general_overlap.zone),
-                                { type: 'DC' },
-                                true
-                            ) || [];
-                        vm.zones[
-                            shapeIndexOrNew
-                        ].general_overlap.overlapcondfilter_hub = overlapcondfilter_hub;
-                        vm.zones[
-                            shapeIndexOrNew
-                        ].general_overlap.overlapcondfilter_dc = overlapcondfilter_dc;
+                //         var overlapcondfilter_hub = $filter('filter')(angular.copy(general_overlap.zone),{ type: 'HUB' },true) || [];
+                //         var overlapcondfilter_dc = $filter('filter')(angular.copy(general_overlap.zone),{ type: 'DC' }, true) || [];
+                //         vm.zones[shapeIndexOrNew].general_overlap.overlapcondfilter_hub = overlapcondfilter_hub;
+                //         vm.zones[shapeIndexOrNew].general_overlap.overlapcondfilter_dc = overlapcondfilter_dc;
 
-                        var overlapcondfilter =
-                            $filter('filterWithOr')(
-                                angular.copy(general_overlap.zone),
-                                { type: ['DC', 'HUB'] }
-                            ) || []; // filter with DC or hub
-                        // detect if zone overlap with dc or hub
-                        vm.zones[shapeIndexOrNew].general_overlap.overlap =
-                            overlapcondfilter.length > 0;
-                    }
-                });
+                //         var overlapcondfilter =$filter('filterWithOr')(angular.copy(general_overlap.zone),{ type: ['DC', 'HUB'] }) || []; // filter with DC or hub
+                //         // detect if zone overlap with dc or hub
+                //         vm.zones[shapeIndexOrNew].general_overlap.overlap =overlapcondfilter.length > 0;
+                //     }
+                // });
 
-                if (
-                    vm.zones[vm.shapeIndex].type == vm.zones[key].type &&
-                    typeof vm.zones[vm.shapeIndex].type != 'undefined' &&
-                    typeof vm.zones[key].type != 'undefined' &&
-                    vm.zones[vm.shapeIndex].type != null &&
-                    vm.zones[key].type != null
-                ) {
+                // if (
+                //     // vm.zones[vm.shapeIndex].type == vm.zones[key].type &&
+                //     typeof vm.zones[vm.shapeIndex].type != 'undefined' &&
+                //     typeof vm.zones[key].type != 'undefined' &&
+                //     vm.zones[vm.shapeIndex].type != null &&
+                //     vm.zones[key].type != null
+                // ) {
                     detectOverlap(wkt[0], wkt[1], false, function(res) {
                         if (res) {
                             vm.intersect_count++;
-                            logger.info(
-                                'Zone overlaps with other existing zone at ' +
-                                    vm.zones[vm.shapeIndex].type +
-                                    '. Please remove overlap to continue.'
-                            );
+                            logger.info('Zone overlaps with other existing zone. Please remove overlap to continue.');
                         }
                     });
-                }
-            } else {
-                vm.zones[vm.shapeIndex].general_overlap =
-                    vm.zones[vm.shapeIndex].general_overlap || {};
-            }
+                // }
+            } 
+            // else {
+            //     vm.zones[vm.shapeIndex].general_overlap = vm.zones[vm.shapeIndex].general_overlap || {};
+            // }
         }
 
         function detectOverlap(wkt1, wkt2, modalExecuteCond, callback) {
@@ -631,9 +607,10 @@ var jsts = require('jsts');
         }
 
         function savePolygon() {
-            var resOverlap = preventOverlapUponSubmitHubDc('new');
-            // console.log('resOverlap',resOverlap);
-            if (!resOverlap) return; // do not execute below
+            // var resOverlap = preventOverlapUponSubmitHubDc('new');
+            // if (!resOverlap) return; // do not execute below
+
+            if (vm.overlap) return; // do not execute below
 
             var new_polygon = onMapOverlayCompleted(vm.shape);
             var data = {};
@@ -642,18 +619,15 @@ var jsts = require('jsts');
             var modal = {
                 titleHeader: 'Add ' + vm.title,
                 title: vm.title,
-                site_type:
-                    resOverlap.type_cond ||
-                    vm.site_front.code ||
-                    vm.site_type.code ||
-                    'HUB'
+                //site_type: resOverlap.type_cond || vm.site_front.code || vm.site_type.code || 'HUB',
+                site_type: vm.site_front.code || vm.site_type.code || 'HUB'
             };
 
             var request = {
                 method: 'POST',
                 body: {
                     polygon: data.polygon,
-                    general_overlap: resOverlap.general_overlap
+                    // general_overlap: resOverlap.general_overlap
                 },
                 params: false,
                 hasFile: false,
@@ -738,17 +712,16 @@ var jsts = require('jsts');
 
         function shapeDetailsUpdate(data) {
             console.log('shapeDetails', vm.shapeIndex);
-            var resOverlap = preventOverlapUponSubmitHubDc(vm.shapeIndex);
-            if (!resOverlap) return; // do not execute below
+            // var resOverlap = preventOverlapUponSubmitHubDc(vm.shapeIndex);
+            // if (!resOverlap) return; // do not execute below
+            if (vm.overlap) return; // do not execute below
+            
 
             var modal = {
                 titleHeader: 'Update ' + vm.title,
                 title: vm.title,
-                site_type:
-                    resOverlap.type_cond ||
-                    vm.site_front.code ||
-                    vm.site_type.code ||
-                    'HUB'
+                //site_type: resOverlap.type_cond || vm.site_front.code || vm.site_type.code || 'HUB',
+                site_type: vm.site_front.code || vm.site_type.code || 'HUB'
             };
 
             var request = {
@@ -783,33 +756,28 @@ var jsts = require('jsts');
             // }
         }
 
-        function preventOverlapUponSubmitHubDc(indexValue) {
-            vm.zones[indexValue] = vm.zones[indexValue] || {};
-            vm.zones[indexValue].general_overlap =
-                vm.zones[indexValue].general_overlap || {};
-            var general_overlap = vm.zones[indexValue].general_overlap;
+        // function preventOverlapUponSubmitHubDc(indexValue) {
+        //     vm.zones[indexValue] = vm.zones[indexValue] || {};
+        //     vm.zones[indexValue].general_overlap =
+        //         vm.zones[indexValue].general_overlap || {};
+        //     var general_overlap = vm.zones[indexValue].general_overlap;
 
-            var overlapcondfilter_hub =
-                general_overlap.overlapcondfilter_hub || [];
-            var overlapcondfilter_dc =
-                general_overlap.overlapcondfilter_dc || [];
+        //     var overlapcondfilter_hub =general_overlap.overlapcondfilter_hub || [];
+        //     var overlapcondfilter_dc = general_overlap.overlapcondfilter_dc || [];
 
-            if (
-                overlapcondfilter_hub.length > 0 &&
-                overlapcondfilter_dc.length > 0
-            ) {
-                logger.info(
-                    'New Zone overlaps with other existing zone both HUB and DC. Please remove overlap to continue.'
-                );
-                return false; // do not execute below
-            } else {
-                return {
-                    type_cond:
-                        overlapcondfilter_hub.length > 0 ? 'DC' : overlapcondfilter_dc.length > 0 ? 'HUB' : 'HUB',
-                    general_overlap: general_overlap
-                };
-            }
-        }
+        //     if ( overlapcondfilter_hub.length > 0 && overlapcondfilter_dc.length > 0
+        //     ) {
+        //         logger.info(
+        //             'New Zone overlaps with other existing zone both HUB and DC. Please remove overlap to continue.'
+        //         );
+        //         return false; // do not execute below
+        //     } else {
+        //         return {
+        //             type_cond:overlapcondfilter_hub.length > 0 ? 'DC' : overlapcondfilter_dc.length > 0 ? 'HUB' : 'HUB',
+        //             general_overlap: general_overlap
+        //         };
+        //     }
+        // }
 
         function cancel() {
             delete vm.shapeIndex;
@@ -818,12 +786,14 @@ var jsts = require('jsts');
             vm.showName = false;
             vm.shapePath = null;
             vm.overlap = angular.copy(vm.overlapCopy);
+            
             $timeout(function() {
                 vm.zones = angular.copy(vm.polygonsCopy);
             }, 100);
 
             vm.showSaveChanges = false;
             vm.pending_update = 0;
+
             for (var i = vm.zones.length - 1; i >= 0; i--) {
                 vm.zones[i].editable = false;
             }
@@ -892,6 +862,7 @@ var jsts = require('jsts');
                     }
 
                     shape.editable = true;
+                    
                     vm.pending_update++;
                 }
 
@@ -962,8 +933,8 @@ var jsts = require('jsts');
                     getZones(vm.search_key);
                     logger.success(vm.title + ' ' + action + 'd!');
                 },
-                function(err) {
-                    console.log(err);
+                function(error) {
+                    logger.errorFormatResponse(error);
                 }
             );
         }

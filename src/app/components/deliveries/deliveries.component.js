@@ -99,16 +99,18 @@ import DUMMY from 'Helpers/dummy';
         vm.printOne         = printOne;
 
         //scope watch
-        
-        $scope.$watch('vm.items.checkItems', function(new_value, old_value) {
-            vm.checkItems           = [];
-            for (let n in new_value) {
-                var newCheckItems = new_value[n];
-                vm.checkItems = vm.checkItems.concat(newCheckItems.filter(function(el) {
+        if (vm.view=='dispatched')
+            $scope.$watch('vm.items.checkItems', function(new_value, old_value) {
+                vm.checkItems           = [];
+                for (let n in new_value) {
+                    var newCheckItems = new_value[n];
+                    console.log(newCheckItems);
+                    vm.checkItems = vm.checkItems.concat(newCheckItems.filter(checkUnique));
+                }
+                function checkUnique(el) {
                     return vm.checkItems.indexOf(el) === -1;
-                }));
-            }
-        }, true);
+                }
+            }, true);
         
         init();
 
@@ -139,7 +141,7 @@ import DUMMY from 'Helpers/dummy';
                     function(response) {
                         console.log('sites filter', response);
                         var sites = response.data.data.items;
-                        vm.sites = $filter('orderBy')(angular.copy(sites), ['-type']);
+                        vm.sites = $filter('orderBy')(angular.copy(sites), ['-type','code']);
                         vm.site = checkId(vm.siteId, vm.sites);
                         vm.sites.unshift({ code: 'All', name: 'All' });
                         vm.site = vm.site || vm.sites[0];
@@ -373,7 +375,7 @@ import DUMMY from 'Helpers/dummy';
             };
 
             vm.option_table.data = DUMMY.users.courier_deliveries;
-            
+
             QueryService.query(request).then(
                 function(response) {
                    
@@ -382,7 +384,7 @@ import DUMMY from 'Helpers/dummy';
                     // vm.assignmentHub = response.data.data.hub;
                     // vm.option_table.data = handleNames(response.data.data);
                 },
-                function(err) {
+                function(error) {
                     logger.errorFormatResponse(error);
                     vm.isLoading = false;
                 }

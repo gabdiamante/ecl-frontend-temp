@@ -48,6 +48,8 @@ import MESSAGE from 'Helpers/message';
         vm.total_page = '1';
         vm.total_items = '0';
         vm.loading = false;
+        vm.hubId = $state.params.hubId;
+        vm.keyword = $state.params.keyword;
 
         vm.option_table = {
             emptyColumn: true,
@@ -61,15 +63,52 @@ import MESSAGE from 'Helpers/message';
         vm.option_table.columnDefs = TABLES.distribution_centers.columnDefs;
         vm.option_table.data = [];
 
+       
         vm.goTo = goTo;
         vm.trClick = trClick;
-
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
-
         vm.handleActivation = handleActivation;
+        vm.filterTable    = filterTable;
 
-        getData();
+        init();
+
+        function init() {
+            getHubs();
+            getData();
+        }
+
+        getHubs();
+
+        function getHubs() { 
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '9999999',
+                    page: '1',
+                    type: 'HUB',
+                    is_active: 1
+                },
+                hasFile: false,
+                route: { site: '' },
+                cache: false,
+                cache_string: 'site'
+            }; 
+
+            QueryService.query(request)
+                .then(
+                    function(response) { 
+                        vm.hubs = response.data.data.items;
+                        vm.hubs.unshift({ id: null, code: 'All', name: 'All' });
+                        vm.hubId = vm.hubId || vm.hubs[0].id;
+                        vm.hub = $filter('filter')(vm.hubs, { id: vm.hubId }, true)[0];
+                    },
+                    function(error) {
+                       logger.errorFormatResponse(error);
+                    }
+                );
+        }
 
         function getData() {
             vm.loading = true;
@@ -80,7 +119,9 @@ import MESSAGE from 'Helpers/message';
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
                     type: 'DC',
-                    is_active: vm.activated
+                    is_active: vm.activated,
+                    keyword: vm.keyword,
+                    hub_id: vm.hubId
                 },
                 hasFile: false,
                 route: { [vm.route_name]: '' },
@@ -217,5 +258,17 @@ import MESSAGE from 'Helpers/message';
         function trClick(data) {
             $state.go('app.distribution-center-details', { id: data.id });
         }
+
+        function filterTable(value, key) {
+            console.log(vm.hubId);
+            $state.go($state.current.name, { 
+                keyword: vm.keyword,
+                hubId: vm.hub.id,
+                page: '',
+                limit: ''
+            });
+        }
+
+
     }
 })();

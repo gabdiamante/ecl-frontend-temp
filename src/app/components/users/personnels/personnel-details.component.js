@@ -90,9 +90,7 @@ import DUMMY from 'Helpers/dummy';
                             vm.item_details.first_name +' '+ vm.item_details.middle_name; 
                 },
                 function(error) {
-                    logger.error(
-                        error.data.message || catchError(request.route)
-                    );
+                    console.log(error);
                 }
             );
         }

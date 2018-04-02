@@ -2,7 +2,9 @@ import angular from 'angular';
 import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
 import DUMMY from 'Helpers/dummy';
-import MESSAGE from 'Helpers/message';
+import MESSAGE from 'Helpers/message'; 
+import CONSTANTS from 'Helpers/constants';
+
 
 (function() {
     'use strict';
@@ -46,6 +48,8 @@ import MESSAGE from 'Helpers/message';
         vm.pagination           = {};
         vm.pagination.pagestate = $stateParams.page || '1';
         vm.pagination.limit     = $stateParams.limit || '10';
+        vm.site_types = CONSTANTS.site_types;
+        vm.hub = $stateParams.hub_id;
 
         vm.option_table         = {
             defaultPagination   : true,
@@ -60,15 +64,46 @@ import MESSAGE from 'Helpers/message';
         vm.goTo                 = goTo; 
         vm.handleUpdateItem     = handleUpdateItem; 
         vm.handleHSActivation   = handleHSActivation; 
-        vm.createHubSupport     = createHubSupport;
+        vm.createHubSupport = createHubSupport; 
+        vm.getHubSupports = getHubSupports; 
+        vm.selectSiteFiltered = selectSiteFiltered;
 
         init();
 
         function init() {
             getHubSupports();
+            getSites();
+
         }
 
         getHubs();
+
+        function getSites() {
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '99999',
+                    page: '1',
+                    type: vm.site_type,
+                    is_active: 1
+                },
+                hasFile: false,
+                route: { site: '' },
+                cache: true,
+                cache_string: 'sites'
+            };
+
+            QueryService
+                .query(request)
+                .then(function (response) {
+                    vm.sites = response.data.data.items;
+                },
+                function (error) {
+                    logger.errorFormatResponse(error);
+                    //logger.error(MESSAGE.error, err, '');
+                });
+        }
 
         function getHubs() { 
             var request = {
@@ -125,7 +160,7 @@ import MESSAGE from 'Helpers/message';
                 ); 
         }
 
-        function getHubSupports() {
+        function getHubSupports(key) {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -133,6 +168,8 @@ import MESSAGE from 'Helpers/message';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
+                    site_id: vm.hub,
+                    keyword: key,
                     is_active: vm.activated
                 },
                 hasFile: false,
@@ -239,6 +276,10 @@ import MESSAGE from 'Helpers/message';
                     }
                 );
         } 
+
+        function selectSiteFiltered(hub_id) {
+            goTo({ hub_id: hub_id});
+        }
 
         function handleNames(data) {
             for (let i = 0; i < data.length; i++)

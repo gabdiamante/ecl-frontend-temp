@@ -3,6 +3,8 @@ import GLOBAL from 'Helpers/global';
 import TABLES from 'Helpers/tables';
 import DUMMY from 'Helpers/dummy';
 import MESSAGE from 'Helpers/message';
+import CONSTANTS from 'Helpers/constants';
+
 
 (function() {
     'use strict';
@@ -45,6 +47,11 @@ import MESSAGE from 'Helpers/message';
         vm.pagination = {};
         vm.pagination.pagestate = $stateParams.page || '1';
         vm.pagination.limit = $stateParams.limit || '10';
+        vm.site_types = CONSTANTS.site_types;
+        vm.site_type = $stateParams.site_type || vm.site_types[0].code;
+        vm.site_type = $stateParams.site_type || 'HUB';
+        vm.site_id = $stateParams.site_id;
+
         vm.per_page = ['10', '20', '50', '100', '200'];
         vm.total_page = '1';
         vm.total_items = '0';
@@ -54,7 +61,7 @@ import MESSAGE from 'Helpers/message';
             emptyColumn: true,
             defaultPagination: true,
             hideSearchByKey: true,
-            searchTemplate: true,
+            searchTemplate: false,
             tableSearch: true,
             tableDeactivate: true
         };
@@ -67,11 +74,41 @@ import MESSAGE from 'Helpers/message';
 
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
-        vm.handleActivation = handleActivation;
+        vm.handleActivation = handleActivation; 
+        vm.selectSiteFiltered = selectSiteFiltered;
+        vm.getData = getData;
 
         getData();
+        getSites();
 
-        function getData() {
+        function getSites() {
+            var request = {
+                method: 'GET',
+                body: false,
+                params: {
+                    limit: '99999',
+                    page: '1',
+                    type: vm.site_type,
+                    is_active: 1
+                },
+                hasFile: false,
+                route: { site: '' },
+                cache: true,
+                cache_string: 'sites'
+            };
+
+            QueryService
+                .query(request)
+                .then(function (response) {
+                    vm.sites = response.data.data.items;
+                },
+                function (error) {
+                    logger.errorFormatResponse(error);
+                    //logger.error(MESSAGE.error, err, '');
+                });
+        }
+
+        function getData(key) {
             vm.loading = true;
             var request = {
                 method: 'GET',
@@ -79,6 +116,8 @@ import MESSAGE from 'Helpers/message';
                 params: {
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
+                    site_id: vm.site_id,
+                    keyword: key,
                     is_active: vm.activated
                 },
                 hasFile: false,
@@ -96,7 +135,7 @@ import MESSAGE from 'Helpers/message';
                         vm.pagination.limit = $stateParams.limit || '10';
                     },
                     function(error) {
-                        logger.error(error.data.message);
+                        logger.errorFormatResponse(error);
                     }
                 )
                 .finally(function() {
@@ -126,7 +165,7 @@ import MESSAGE from 'Helpers/message';
                     vm.option_table.data.unshift(response);
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -151,12 +190,10 @@ import MESSAGE from 'Helpers/message';
                 function(response) {
                     if (!response) return;
                     response.updated = new Date();
-                    vm.option_table.data[
-                        vm.option_table.data.indexOf(data)
-                    ] = response; 
+                    vm.option_table.data[vm.option_table.data.indexOf(data)] = response; 
                 },
                 function(error) {
-                    logger.error(error.data.message);
+                    console.log(error);
                 }
             );
         }
@@ -175,8 +212,8 @@ import MESSAGE from 'Helpers/message';
                         if (!response) return; 
                         activateDeactivateDeletePersonnel(data, action);
                     },
-                    function (err) {
-                        console.log(err);
+                    function (error) {
+                        console.log(error);
                     }
                 );
         }
@@ -201,12 +238,16 @@ import MESSAGE from 'Helpers/message';
                                 $filter('filter')(vm.option_table.data, { user_id:data.user_id })[0]
                             ), 1);
                     },
-                    function (err) {
+                    function (error) {
                         logger.error(MESSAGE.loggerFailed(vm.title, '', action));
-                        console.log(err);
+                        logger.errorFormatResponse(error);
                     }
                 );
         } 
+
+        function selectSiteFiltered(site_type, site_id, zone_id) {
+            goTo({ site_type: site_type, site_id: site_id });
+        }
 
         function goTo(data) {
             $state.go($state.current.name, data);

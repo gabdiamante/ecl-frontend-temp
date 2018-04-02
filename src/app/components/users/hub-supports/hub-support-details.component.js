@@ -60,7 +60,8 @@ import DUMMY from 'Helpers/dummy';
                         vm.data = response.data.data;
                         vm.data.fullname = ((vm.data.last_name) ? vm.data.last_name + ', ' : '') + vm.data.first_name + ' ' + vm.data.middle_name;
                     },
-                    function(err) {
+                    function(error) {
+                        logger.errorFormatResponse(error);
                         vm.data = {};
                     }
                 )
@@ -88,9 +89,7 @@ import DUMMY from 'Helpers/dummy';
                     }
                 },
                 function(error) {
-                    logger.error(
-                        error.data.message || catchError(request.route)
-                    );
+                    console.log(error);
                 }
             );
         }

@@ -18,6 +18,29 @@ const TABLES = {
         ],
         filter_fields: []
     },
+
+    order_management: {
+        deliveries: {
+            columnDefs: [
+                { name: 'content'},
+                { name: 'quantity' },
+                { name: 'length' },
+                { name: 'volume' },
+                { name: 'width'},
+                { name: 'height'}
+            ]
+
+        },
+        pickups: {
+            columnDefs: [
+                { name: 'item_code' },
+                { name: 'item_name' },
+                { name: 'qty' },
+                { name: 'shipmentType' },
+                { name: 'recommended_price' },
+            ]
+        }
+    },
     //USERS
     couriers: {
         columnDefs: [
@@ -158,6 +181,31 @@ const TABLES = {
         ]
     },
     //DATA-MANAGEMENT
+    accounts: {
+        columnDefs: [
+            {
+                name: 'account_number',
+                cellTemplate: `<a ui-sref-if condition="vm.activated" value="app.account-details({ id: row.entity.id })">{{COL_FIELD}}</a>`
+            },
+            { name: 'account_name', displayName: 'Account Name' },
+            {
+                name: 'positioning_time_delivery',  displayName: 'Delivery Positioning Time'
+            },
+            {
+                name: 'positioning_time_pickup',  displayName: 'Pickup Positioning Time'
+            },
+            {
+                name: 'updated',
+                displayName: 'Date Updated',
+                cellTemplate: `<span ng-bind-html="COL_FIELD | date:short | displaynone"></span>`
+            },
+            {
+                name: 'action',
+                displayName: ' ',
+                cellTemplate: `<div ng-include="'template-data-management-account-action'"></div>`
+            }
+        ]
+    },
     hubs: {
         columnDefs: [
             {
@@ -193,10 +241,6 @@ const TABLES = {
             {
                 name: 'hub_code',
                 displayName: 'Hub'
-            },
-            {
-                name: 'zone_code',
-                displayName: 'Zone'
             },
             {
                 name: 'action',

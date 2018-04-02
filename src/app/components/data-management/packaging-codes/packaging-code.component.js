@@ -50,6 +50,7 @@ import MESSAGE from 'Helpers/message';
         vm.total_page = '1';
         vm.total_items = '0';
         vm.loading = false;
+        vm.keyword = $state.params.keyword;
 
         vm.option_table = {
             emptyColumn: true,
@@ -69,6 +70,7 @@ import MESSAGE from 'Helpers/message';
         vm.handlePostItem = handlePostItem;
         vm.handleUpdateItem = handleUpdateItem;
         vm.handleActivation = handleActivation;
+        vm.filterTable    = filterTable;
 
         getData();
 
@@ -81,7 +83,8 @@ import MESSAGE from 'Helpers/message';
                     limit: vm.pagination.limit,
                     page: vm.pagination.pagestate,
                     type: 'HUB',
-                    is_active: vm.activated
+                    is_active: vm.activated,
+                    keyword: vm.keyword
                 },
                 hasFile: false,
                 route: { [vm.route_name]: '' },
@@ -130,7 +133,7 @@ import MESSAGE from 'Helpers/message';
                     }
                 },
                 function(error) {
-                    logger.errorFormatResponse(error);
+                    console.log(error);
                 }
             );
         }
@@ -202,8 +205,8 @@ import MESSAGE from 'Helpers/message';
                     ), 1);
                     logger.success(vm.title + ' ' + action + 'd!');
                 },
-                function(err) {
-                    console.log(err);
+                function(error) {
+                    logger.errorFormatResponse(error);
                 }
             );
         }
@@ -221,5 +224,14 @@ import MESSAGE from 'Helpers/message';
         function trClick(data) {
             $state.go('app.packaging-code-details', { id: data.id });
         }
+
+        function filterTable(value, key) {
+            $state.go($state.current.name, { 
+                keyword: vm.keyword,
+                page: '',
+                limit: ''
+            });
+        }
+
     }
 })();

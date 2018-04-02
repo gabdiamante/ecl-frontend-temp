@@ -12,7 +12,7 @@
 	<div class="col-md-4">
 		<div class="pull-right">
 			<span  class="large" ng-cloak>
-				{{data[0].vehicleId}}
+				{{data[0].vehicle_id}}
 			</span><br>
 			<span class="small text-uppercase">Plate Number</span>
 		</div>
@@ -53,53 +53,53 @@
 							  ng-bind="item.code || item.id"></span>
 					</td>
 					<td class="text-center">
-						<span 	ng-init="items.total.parcelQuantity = items.total.parcelQuantity  + item.parcelQuantity;"
-								ng-bind="item.parcelQuantity">
+						<span 	ng-init="items.total.parcel_quantity = items.total.parcel_quantity  + item.parcel_quantity;"
+								ng-bind="item.parcel_quantity">
 						</span>
 					</td>
 					<td class="text-center">
 						<span 	class=""
-								ng-init="items.total.totalWeight = items.total.totalWeight  + item.totalWeight"
-							  	ng-bind="item.totalWeight || 0"></span>
+								ng-init="items.total.total_weight = items.total.total_weight  + item.total_weight"
+							  	ng-bind="item.total_weight || 0"></span>
 					</td>
 					<td class="text-center">
 						<span 	class=""
-								ng-init="items.total.totalDimension = items.total.totalDimension  + item.totalDimension"
-							  	ng-bind="item.totalDimension.toFixed(2) || 0"></span>
+								ng-init="items.total.total_dimension = items.total.total_dimension  + item.total_dimension"
+							  	ng-bind="item.total_dimension.toFixed(2) || 0"></span>
 					</td>
 					<td>
 						<span 	class=""
-								ng-bind="item.originCode"></span>
+								ng-bind="item.origin_code"></span>
 					</td>
 					<td>
 						<span 	class=""
-								ng-bind="item.destinationCode"></span>
+								ng-bind="item.destination_code"></span>
 					</td>
 					<td>
 						<span 	class=""
-								ng-bind="item.shipperName"></span>
+								ng-bind="item.shipper_name"></span>
 					</td>
 					<td>
 						<span 	class="text-uppercase"
-								ng-bind="item.cneeName"></span>
+								ng-bind="item.cnee_name"></span>
 					</td>
 
 					<td class="col-md-2 retDoc">
 							<span 	class=""
-									ng-bind="vm.parseJSON(item.returnDocs)"></span>
+									ng-bind="vm.parseJSON(item.return_docs)"></span>
 
 					</td>
 					<td class="text-center">
 						<span 	
-								ng-init="items.total.scanQty = items.total.scanQty  + item.scanQty"
-								ng-bind="item.scanQty || 0"></span>
+								ng-init="items.total.scan_qty = items.total.scan_qty  + item.scan_qty"
+								ng-bind="item.scan_qty || 0"></span>
 					</td>
 					<td>
 						<span 	class=""
-								ng-bind="item.payMode"></span>
+								ng-bind="item.pay_mode"></span>
 					</td>
 					<td class="text-center">						
-						<span 	ng-init="items.total.codAmt = items.total.codAmt  + item.cod"
+						<span 	ng-init="items.total.cod_amt = items.total.cod_amt  + item.cod"
 								ng-bind="item.cod || 0"></span>
 					</td>
 					<td class="text-center">

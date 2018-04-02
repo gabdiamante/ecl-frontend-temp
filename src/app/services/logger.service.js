@@ -8,6 +8,7 @@ import angular from 'angular';
     logger.$inject = ['$log', 'toastr'];
 
     function logger($log, toastr) {
+    
         var service = {
             showToasts: true,
 
@@ -28,8 +29,12 @@ import angular from 'angular';
         }
 
         function errorFormatResponse(error) {
+            console.log('status',error);
             //console.log(error);
             if (error.status == -1) service.error('Connection refused!');
+            else if (error.status == 404) {
+                // service.error('Route Not Found!');
+            }
             else if (error.status == 500) service.error(error.data.message);
             else
                 service.error(

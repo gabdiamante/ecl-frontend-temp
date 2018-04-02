@@ -26,7 +26,7 @@
 
             <div class="form-group">
                 <label for="site_type" class="control-label small text-theme">Site Type</label>
-                <select ng-disabled="vm.data.general_overlap.overlap" ng-change="vm.changeSiteType(item)" class="form-control" ng-options="item.code as item.name for item in vm.site_types" ng-model="vm.site_type" name="site_type">
+                <select ng-change="vm.changeSiteType(item)" class="form-control" ng-options="item.code as item.name for item in vm.site_types" ng-model="vm.site_type" name="site_type">
                 </select>
                 <span class="text-red small" ng-show="zoneForm.site_type.$invalid && vm.submitted">* Required</span>
                 <span class="text-orange small" ng-show="vm.data.general_overlap.overlap">Disabled because of overlapping zone</span>

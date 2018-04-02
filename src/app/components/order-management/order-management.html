@@ -1,0 +1,86 @@
+
+<div class="content-view">
+    <div class="col-md-12 sub-header">
+        <span class="subheader-title text-white" ng-bind="vm.titleHeader"></span><br />
+	</div> 
+	<div class="col-md-12 top-margin-sm">
+		<uib-tabset active="vm.moduleIndex">
+			<uib-tab index="0" heading="Pickups" ng-click="vm.changeModule('pickups')">
+			</uib-tab>
+			<uib-tab index="1" heading="Deliveries" ng-click="vm.changeModule('deliveries')">
+			</uib-tab>
+		</uib-tabset>
+
+		<br/>
+		<div class="form-inline">
+			<div class="col-md-12 col-xs-12 top-margin-sm mg-b-10">
+				<div class="row">
+					<div class="col-md-offset-6 col-md-6" align="right">
+						<div>
+							<div class="form-group form-group-margin" >
+								<div class="form-group"
+									type="text" 
+									aria-label="..." 
+									ng-model= "vm.csv"
+									name="file"  
+									ngf-pattern="'.xls,.csv,.xlsx'"
+									accept=".xls,.csv,.xlsx"
+									ngf-max-size = "5MB"
+									title="Import Booking" 
+									ngf-select
+
+									ng-change="vm.uploadFile(vm.csv)"
+								>
+									<button class="form-control btn-border-thin">
+										<i class="fa fa-upload"></i> 
+										<span ng-if="vm.module == 'pickups'">Import Pickups</span> 
+										<span ng-if="vm.module == 'deliveries'">Import Deliveries</span> 
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="col-md-12">
+            <complex-table vm="vm" options="vm.option_table" go-to="vm.goTo(data)" ></complex-table>
+    </div>
+</div>
+
+
+<!-- 
+<div class="col-md-12 margin-top ">
+	<div class="table-responsive ">
+		<table class="table  ">
+			<thead class="theme">
+				<tr class="text-uppercase">
+					<th>Order Number</th>
+					<th>Date Time Uploaded</th>
+					<th class="text-center">Total Items</th>
+				</tr>						
+			</thead>
+			<tbody>
+				<tr ng-repeat="data in vm.data" class="text-uppercase">
+					<td>
+						<a href="" ui-sref="app.order-management-details({ id:data.id, module: vm.module})" ng-bind-html="data.code | displaynone"></a>
+					</td>
+					<td>
+						<span ng-bind-html="data.dateCreated | date: 'medium' | displaynone"></span>
+					</td>
+					<td class="transform-none text-center">
+						<span ng-bind-html="data.totalItems | displaynone"></span>
+					</td>
+				</tr>
+				<tr ng-if="!vm.data.length">
+					<td colspan="3" align="center" ng-bind-html="vm.isLoading | handlefetch : vm.route_name"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="no-padding">
+		<page-nav page-data="vm.pageData" on-change-page="vm.selectPage(vm.pageData.page)" size-change="vm.changeSize(vm.pageData.size)">
+		</page-nav>
+	</div>
+</div>	 -->
